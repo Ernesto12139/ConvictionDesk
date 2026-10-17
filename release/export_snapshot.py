@@ -1,0 +1,118 @@
+"""Export exact allowlisted blobs from one commit into a NEW empty release tree.
+
+No history, Git configuration, refs, user data or working-tree files are copied.
+This tool never deletes files, changes remotes or publishes anything.
+"""
+import argparse
+import hashlib
+import json
+import re
+import subprocess
+from pathlib import Path, PurePosixPath
+import xml.etree.ElementTree as ET
+
+TEXT_TYPES = {'.py', '.js', '.cjs', '.css', '.html', '.svg', '.json', '.toml', '.md', '.txt',
+              '.yml', '.yaml', '.example', ''}
+RULES = {
+    'private_key': r'-----BEGIN [A-Z ]*PRIVATE KEY-----',
+    'api_key': r'\bsk-[A-Za-z0-9_-]{20,}',
+    'github_token': r'\b(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,})',
+    'aws_key': r'\bAKIA[0-9A-Z]{16}\b',
+    'assigned_secret': r'''(?i)\b(?:[A-Z_]*API_KEY|ACCESS_TOKEN|SECRET|PASSWORD)\b\s*[:=]\s*["'][A-Za-z0-9_-]{24,}["']''',
+    'private_windows_path': r'(?i)\b[A-Z]:[\\/]+(?:Users|Codex|Documents and Settings)[\\/]',
+    'private_home': r'/(?:home|Users)/[A-Za-z0-9_-]+/',
+    'nonexample_email': r'\b[A-Za-z0-9._%+-]+@(?!example\.(?:com|org|net)\b|users\.noreply\.github\.com\b)[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b',
+}
+
+
+def git(source, *args):
+    return subprocess.check_output(['git', '-c', 'core.fsmonitor=false', '-C', str(source), *args])
+
+
+def safe_path(name):
+    path = PurePosixPath(name)
+    return (isinstance(name, str) and name == path.as_posix() and not path.is_absolute()
+            and '..' not in path.parts and ':' not in name and '\\' not in name
+            and not any(p.lower() == '.git' for p in path.parts))
+
+
+def scan(name, data, private_terms=()):
+    errors = []
+    if not safe_path(name) or PurePosixPath(name).suffix.lower() not in TEXT_TYPES:
+        return ['unapproved path or file type']
+    if any(p.startswith('.env') and p != '.env.example' for p in PurePosixPath(name).parts):
+        return ['private environment file']
+    try:
+        text = data.decode('utf-8')
+    except UnicodeDecodeError:
+        return ['not UTF-8 text']
+    for label, pattern in RULES.items():
+        if re.search(pattern, text):
+            errors.append(label)
+    if any(term and term.casefold() in text.casefold() for term in private_terms):
+        errors.append('owner-specified private term')
+    if name.endswith('.svg'):
+        try:
+            root = ET.fromstring(text)
+            for node in root.iter():
+                if node.tag.rsplit('}', 1)[-1] in {'script', 'foreignObject', 'image'}:
+                    errors.append('active or embedded SVG content')
+                if any(k.startswith('on') or k.endswith('href') and not v.startswith('#')
+                       for k, v in node.attrib.items()):
+                    errors.append('external or active SVG attribute')
+        except ET.ParseError:
+            errors.append('invalid SVG')
+    return errors
+
+
+def export(source, sha, target, private_terms=()):
+    if not re.fullmatch('[0-9a-f]{40}', sha):
+        raise ValueError('Full explicit commit SHA required')
+    if git(source, 'rev-parse', sha+'^{commit}').decode().strip() != sha:
+        raise ValueError('Commit identity mismatch')
+    if target.exists() and any(target.iterdir()):
+        raise ValueError('Release directory must be new or empty; preserve existing files')
+    entries = json.loads(git(source, 'show', sha+':release/public-files.json'))
+    if len({e['path'].casefold() for e in entries}) != len(entries):
+        raise ValueError('Duplicate release path')
+    files, findings = [], {}
+    for entry in entries:
+        origin, name = entry['source'], entry['path']
+        if not safe_path(origin) or not safe_path(name):
+            raise ValueError('Unsafe allowlist path')
+        tree = git(source, 'ls-tree', sha, '--', origin).decode().strip()
+        meta, actual = tree.split('\t', 1)
+        mode, kind, oid = meta.split()
+        if actual != origin or kind != 'blob' or mode not in {'100644', '100755'}:
+            raise ValueError('Only explicitly named regular blobs may be exported')
+        data = git(source, 'cat-file', 'blob', oid)
+        errors = scan(name, data, private_terms)
+        if errors:
+            findings[name] = errors
+        files.append((name, data, {'path': name, 'source': origin, 'git_blob': oid,
+                                  'sha256': hashlib.sha256(data).hexdigest()}))
+    if findings:
+        raise ValueError('SECURITY_SCAN_FAILED: '+json.dumps(findings))
+    target.mkdir(parents=True, exist_ok=True)
+    for name, data, _ in files:
+        path = target/name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(data)
+    manifest = {'upstream_source_sha': sha, 'allowlist': 'explicit paths and mappings v0.8.1',
+                'files': [row for _, _, row in files], 'privacy_scan': 'PASS',
+                'history': 'No Git history/configuration/refs exported',
+                'verification': 'Local source candidate; publication and remote CI are separate gates'}
+    (target/'release').mkdir(exist_ok=True)
+    (target/'release/RELEASE_MANIFEST.json').write_text(json.dumps(manifest,indent=2)+'\n', encoding='utf-8')
+    return manifest
+
+
+if __name__ == '__main__':
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--source', type=Path, required=True)
+    p.add_argument('--sha', required=True)
+    p.add_argument('--target', type=Path, required=True)
+    p.add_argument('--private-term', action='append', default=[])
+    args = p.parse_args()
+    result = export(args.source, args.sha, args.target, args.private_term)
+    print(json.dumps({'status': 'PASS', 'source_sha': args.sha, 'files': len(result['files'])}))

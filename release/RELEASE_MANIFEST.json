@@ -1,0 +1,663 @@
+{
+  "upstream_source_sha": "93510c0de9490de787bf4301be3d0c4e90ee791e",
+  "allowlist": "explicit paths and mappings v0.8.1",
+  "files": [
+    {
+      "path": ".dockerignore",
+      "source": ".dockerignore",
+      "git_blob": "58470288632b37213b42152930e08207fe3c80bd",
+      "sha256": "6d9111134c5cbc0fa1a3141d1b32794af1ee6fe4e9a1460ba088d26e9d58cb43"
+    },
+    {
+      "path": ".env.example",
+      "source": ".env.example",
+      "git_blob": "c13f3db56440f221822a56ae2a047b98120583f4",
+      "sha256": "d9fca726e9cad21e43593ee2ec1f6ed7173616e2443a881dc5bf0bcdbf26145d"
+    },
+    {
+      "path": "Dockerfile",
+      "source": "Dockerfile",
+      "git_blob": "c8b748498a410b8ade53e982e5159ea84635fa93",
+      "sha256": "bcad142aeb2cad7157eaf1962a55eee4519ecf4295e6044f06d672cce2bb45d9"
+    },
+    {
+      "path": "evals/__init__.py",
+      "source": "evals/__init__.py",
+      "git_blob": "4ef7cbaf94331376e61718f646b735cdf670021d",
+      "sha256": "5cb8ccdf5afda58e8c55b88e9d0429350db51e00e48dbf851785de05ced2d139"
+    },
+    {
+      "path": "evals/convictiondesk.py",
+      "source": "evals/convictiondesk.py",
+      "git_blob": "1dd8984e0de757d8c4ec65ce2f502a4072c99cbd",
+      "sha256": "d48d045166cee3b79757eb49d1f270b5a31306eda3b02e9de479e00e2c38e1dc"
+    },
+    {
+      "path": "evals/fixtures/market_eod.json",
+      "source": "evals/fixtures/market_eod.json",
+      "git_blob": "d4e941b2f6ac8696941786bcb9a7a8cc645be273",
+      "sha256": "928ffdf1fb365e3cbd6422536d99f5ee20319c2d305388421c5f178fc45b3ac7"
+    },
+    {
+      "path": "evals/fixtures/research_agent/pre-v05-research-task.json",
+      "source": "evals/fixtures/research_agent/pre-v05-research-task.json",
+      "git_blob": "1fb0c09cafeaf24a21fe9d5d7bad3edcf7b3cb2f",
+      "sha256": "3351dd96f49d7916f347aaf94739ecb587fc30e8dfe8d054e87a31134b194354"
+    },
+    {
+      "path": "evals/research_agent.py",
+      "source": "evals/research_agent.py",
+      "git_blob": "5af7e52fdbeab740633a32c3f4d073b3c76488b0",
+      "sha256": "f762af3f904e85878180e94fdc7fb4593fb771ff9a3ddb72b49f58a386491326"
+    },
+    {
+      "path": "pyproject.toml",
+      "source": "pyproject.toml",
+      "git_blob": "386c11509fed445ab607e99bad481c61885582df",
+      "sha256": "3cc45e891aca0e9b0f4689ede56a0ad94070eb2d4329b38fb5f4478130dc7534"
+    },
+    {
+      "path": "release/ASSET_PROVENANCE.md",
+      "source": "release/ASSET_PROVENANCE.md",
+      "git_blob": "2fe970891a13bd42fd9707474a0b2913b1d9cd8e",
+      "sha256": "814ccee9135b8693940ea4b7ced03e9f9508829681506460374656a04dfa623c"
+    },
+    {
+      "path": "release/audit_public_git.py",
+      "source": "release/audit_public_git.py",
+      "git_blob": "8c260480d955e8c5dfa72fe7fb73707cbe32aa9b",
+      "sha256": "f11984225da83e2e36b0335e6db2e848971525c5ddf746942b34fef4238827e9"
+    },
+    {
+      "path": "release/export_snapshot.py",
+      "source": "release/export_snapshot.py",
+      "git_blob": "c04314c69883ab85293d016ff9e0580d2c307abc",
+      "sha256": "666fb85e5e585ad66b268c97d0aed042afa3d0b05ec8c0061f268961e0482b2b"
+    },
+    {
+      "path": "release/public-files.json",
+      "source": "release/public-files.json",
+      "git_blob": "1e9a6c972c00cac38cfa6fb4758d86a204da0987",
+      "sha256": "bc779ff12d57532d969eb0d0f55aef743d326e6cdf03690c45791a2015f0ff70"
+    },
+    {
+      "path": "scripts/build_public_demo_dataset.py",
+      "source": "scripts/build_public_demo_dataset.py",
+      "git_blob": "f7de851fcd579b538d79d114a971940090af6034",
+      "sha256": "a04ba0697cb31d2ae622bfc3dfbd8a295cfd87ad087cf498167f758b0b4aa9d8"
+    },
+    {
+      "path": "scripts/check_product_journey.py",
+      "source": "scripts/check_product_journey.py",
+      "git_blob": "54e990bda6917fcf0ea2c9dbc5bf288a789c341c",
+      "sha256": "d00fede1f9ef1222295f7315bf6a318224250e6fcc66709c1d10ec366bdb0614"
+    },
+    {
+      "path": "scripts/check_saved_research_browser.cjs",
+      "source": "scripts/check_saved_research_browser.cjs",
+      "git_blob": "59bdc7d8bd6aa360d123f13a2a7a3e48677d0645",
+      "sha256": "fe0d4ca5a7d54c21bf66d504263e51f93bd383b05bd9414c0b8ad3365e5d4d29"
+    },
+    {
+      "path": "scripts/check_today_cost_browser.cjs",
+      "source": "scripts/check_today_cost_browser.cjs",
+      "git_blob": "fbb79ebc761e27974149eb59de6204ed58faaade",
+      "sha256": "9c5d42cbdf13f2ad6bc4db41427acf208fc9ed70485bbac37324ca1f530093a9"
+    },
+    {
+      "path": "scripts/smoke_public_demo.py",
+      "source": "scripts/smoke_public_demo.py",
+      "git_blob": "6fdb284263f824d323f867a850077740b43d7e8b",
+      "sha256": "54d7544f322e3175e5c465dda9bfb2e124d0b49b9dd417c2933cb3a2cb79633a"
+    },
+    {
+      "path": "scripts/smoke_public_demo_browser.cjs",
+      "source": "scripts/smoke_public_demo_browser.cjs",
+      "git_blob": "fa859c118a44a305340d139d4571476d4e36d5f9",
+      "sha256": "bb5bcba4bdcf5431eb9b998a5172d9cb2421920862debf91767216b54b233ee8"
+    },
+    {
+      "path": "src/market_agent/__init__.py",
+      "source": "src/market_agent/__init__.py",
+      "git_blob": "db24a7fd3fcb6de6ac210088723fa573e5813094",
+      "sha256": "646e4936b561dff219409d728fa6b026e0127b4a07bb315196213d40be9fe693"
+    },
+    {
+      "path": "src/market_agent/action_decision.py",
+      "source": "src/market_agent/action_decision.py",
+      "git_blob": "116c1494a0c8c84c2b72ad380530d33c634c2487",
+      "sha256": "5e4c9817b9abc8a721a1023b849bcebea703e694420a51152edc3d32f1374c92"
+    },
+    {
+      "path": "src/market_agent/agent.py",
+      "source": "src/market_agent/agent.py",
+      "git_blob": "c47be79c2bc5cefba7b7823b9c4e7c64ee32dbc1",
+      "sha256": "ea29d9f4e8e6fb48ab073f1385a2c2437605b9f4ad1681f0745469111f101949"
+    },
+    {
+      "path": "src/market_agent/analytics.py",
+      "source": "src/market_agent/analytics.py",
+      "git_blob": "7c3e034b57a5291637cb81bc1b941f5b14de7620",
+      "sha256": "8ae7cd40736f9fda4c8d17c69b6d42703024aa2ca9f05b3472b045f90179b835"
+    },
+    {
+      "path": "src/market_agent/attention.py",
+      "source": "src/market_agent/attention.py",
+      "git_blob": "d8ea90e10524821dfebd15b4263a06191798bc91",
+      "sha256": "83112b418cbb42605b32079418c3952d6b010fd852d681afb11ebb19a77dc8d7"
+    },
+    {
+      "path": "src/market_agent/attention_api.py",
+      "source": "src/market_agent/attention_api.py",
+      "git_blob": "f66e49e90d0d8512cb27bb572492d7a3792a406f",
+      "sha256": "0abc8519637ee09057210fc8b53c8aa15da1732c201b71da331d4a29b1092560"
+    },
+    {
+      "path": "src/market_agent/attention_groups.py",
+      "source": "src/market_agent/attention_groups.py",
+      "git_blob": "1421960765a4ba3f055887e595d09e8360de74ce",
+      "sha256": "b370817f83e5e6b678a00e97a1fc6181f9be556fdf876fab0c1e59c1997d1af5"
+    },
+    {
+      "path": "src/market_agent/attention_jev.py",
+      "source": "src/market_agent/attention_jev.py",
+      "git_blob": "3620d177842f3794f79c88147935205a8f53463d",
+      "sha256": "129913cadb4dd6f3d373d715768674e69fcd2b23c4da5a28df1ad24cabe579ff"
+    },
+    {
+      "path": "src/market_agent/attention_selection.py",
+      "source": "src/market_agent/attention_selection.py",
+      "git_blob": "1ed8adf975632b46af7923ce3552dd8cda03d8c7",
+      "sha256": "3167453d9259bf4a0832a17fe5c1756d8a274e909cd32a8bcd5149c9a57284a5"
+    },
+    {
+      "path": "src/market_agent/call_budget.py",
+      "source": "src/market_agent/call_budget.py",
+      "git_blob": "17c0b81dab54bcc85cb5ebff99644e313e712abf",
+      "sha256": "a01bb74815e98c82da1132945e70a9eb017c60ab491ad604ff3d31d3d37f7fde"
+    },
+    {
+      "path": "src/market_agent/clock.py",
+      "source": "src/market_agent/clock.py",
+      "git_blob": "393d6a826d7c8f1732037a8170482eed60175093",
+      "sha256": "96503c405cf4300455a6a98486ecdb43e119ca266874d819cbad6147079b06cd"
+    },
+    {
+      "path": "src/market_agent/cockpit.py",
+      "source": "src/market_agent/cockpit.py",
+      "git_blob": "c59a35b394688887ac46412d549cf08274574412",
+      "sha256": "312a6030b8e4602c5d9e5f70d749e70557b282ba95e723b0b6ed61a441eda8fa"
+    },
+    {
+      "path": "src/market_agent/console.py",
+      "source": "src/market_agent/console.py",
+      "git_blob": "37f2c7b83afe4cc5dfa22118efd640cabfb1f76d",
+      "sha256": "622cf7bafd08b81f3cac674c03579841af8bb9e4a8355f8470d1a770e8043a14"
+    },
+    {
+      "path": "src/market_agent/decision_context.py",
+      "source": "src/market_agent/decision_context.py",
+      "git_blob": "5100aa71bc7c3c4929cdd6f1ed286c1604a69929",
+      "sha256": "db2dbf72a90fe0143bbe85459a6fbdb7b8f60f9b87ced5a16f24a1b105a13ec6"
+    },
+    {
+      "path": "src/market_agent/decision_router.py",
+      "source": "src/market_agent/decision_router.py",
+      "git_blob": "af71404e8fe1555d3e82c3f709fa29be88e9d0ef",
+      "sha256": "198fc0db0543deb66d664c0c73bceec2224f7077bf16f116c41f55eea116a99a"
+    },
+    {
+      "path": "src/market_agent/deepseek.py",
+      "source": "src/market_agent/deepseek.py",
+      "git_blob": "7c58a493eae7a61dc4c7873b486cb78bc68dc896",
+      "sha256": "518296804cdf4d0034a66089f16d4ec5498ea7638442aea0cc231eacd19976de"
+    },
+    {
+      "path": "src/market_agent/demo_assets/research-replay-v2.json",
+      "source": "src/market_agent/demo_assets/research-replay-v2.json",
+      "git_blob": "81007cc17fbe1f5c1579fcbb47dcb5398ca5f58e",
+      "sha256": "1a55cc39bec3819f573334d432e09150a9ec9424cbc6411b3d7d44a2a4bb5d9c"
+    },
+    {
+      "path": "src/market_agent/domain.py",
+      "source": "src/market_agent/domain.py",
+      "git_blob": "ae91b6757c8e1ff7e77a6b29ced2573863038ec2",
+      "sha256": "72eaf4a6db0cd93c2fb23c0135f6a7889d0d5e067b53e67be88c471bc6f81444"
+    },
+    {
+      "path": "src/market_agent/fast_decision.py",
+      "source": "src/market_agent/fast_decision.py",
+      "git_blob": "73684e358f4f16929397809c3dc08ec729135f97",
+      "sha256": "bb15b7a7e7da358c746a706ce0a2a19f8cc66d151256de2624d3f1a07ab17ea6"
+    },
+    {
+      "path": "src/market_agent/financial_series.py",
+      "source": "src/market_agent/financial_series.py",
+      "git_blob": "7138b1bd0eccf663b6e427450e2a91925e2955d8",
+      "sha256": "d6ea60bf22852b5ade0a5795ac4c71364eeb26002e5c8077c32b678db57aa9f6"
+    },
+    {
+      "path": "src/market_agent/hybrid_retrieval.py",
+      "source": "src/market_agent/hybrid_retrieval.py",
+      "git_blob": "d3b4d3958654c7c0a2b68dc9e06fdfd498726ce8",
+      "sha256": "6db9fbf91cb9bd911ba90cf262d3700bf355a1b0d5d69f6e57e62a1ff143b9e1"
+    },
+    {
+      "path": "src/market_agent/investigation.py",
+      "source": "src/market_agent/investigation.py",
+      "git_blob": "0f3b18283ee294cdd00365533510fc9575d5d601",
+      "sha256": "effbc2a44d127d90a17fd68a166daad8688b2d0f75c30184b62814eba59cb622"
+    },
+    {
+      "path": "src/market_agent/investment_context.py",
+      "source": "src/market_agent/investment_context.py",
+      "git_blob": "a43a07765fd08df6eebf5469b22baed0a2c579c0",
+      "sha256": "a899068cf80bd2b0a028551a39e313af99775c02188c93b9dede1576ee92f041"
+    },
+    {
+      "path": "src/market_agent/language.py",
+      "source": "src/market_agent/language.py",
+      "git_blob": "814cf970fec6320d74f58328406250d025c70ee2",
+      "sha256": "ae96bcf8184b6728bd9385ab8d684cd09183c0c5ee02469ee0e31bdcb9d77469"
+    },
+    {
+      "path": "src/market_agent/legacy.py",
+      "source": "src/market_agent/legacy.py",
+      "git_blob": "1cbe7a46dc14a29c152c2069cfc0bfa74ba7c10a",
+      "sha256": "e374deaa99130dbd02193d624fff0d69450380ad30ec3bdecf5c64390b200484"
+    },
+    {
+      "path": "src/market_agent/llm.py",
+      "source": "src/market_agent/llm.py",
+      "git_blob": "797fe545e86b1e5eab40226312e3d8feed6d9f0c",
+      "sha256": "74496d2622aa9c6e18f1b7f2a53464cbacfdc778613d59e41661079473495d99"
+    },
+    {
+      "path": "src/market_agent/local_credentials.py",
+      "source": "src/market_agent/local_credentials.py",
+      "git_blob": "2e0ed6008a0a9520cd5a9892b1f8178d91a14042",
+      "sha256": "5fb4ac904653feb8a151ef35a1c2ab4b71e2f237fec0de793ee91bc0f604e377"
+    },
+    {
+      "path": "src/market_agent/longbridge_mcp.py",
+      "source": "src/market_agent/longbridge_mcp.py",
+      "git_blob": "7a25c103d6af158d19e5b5fb8873a2a54b63f9ce",
+      "sha256": "1d9d577b478c6dac26c075a6b1e01f64922834973b62c4661a2fc4c65ecc9b6e"
+    },
+    {
+      "path": "src/market_agent/main.py",
+      "source": "src/market_agent/main.py",
+      "git_blob": "3d9e275f2590180dcdfc9c8fb7cb76a7905fe51f",
+      "sha256": "e41b77ed3ae89749e0ad8033dca594e8a1128e64941bcd575fae2b3cded0f9f5"
+    },
+    {
+      "path": "src/market_agent/market_evidence.py",
+      "source": "src/market_agent/market_evidence.py",
+      "git_blob": "001af0766bdcbd094abe520067bcbb4f17016424",
+      "sha256": "0358130722017ef1070ff573cd73075655f918f39592020f638581223ee3e386"
+    },
+    {
+      "path": "src/market_agent/model_profiles.py",
+      "source": "src/market_agent/model_profiles.py",
+      "git_blob": "05f1fae9f82b4d174c17a85c781c5b39ff52d32f",
+      "sha256": "0fa478e409012f85016668b0e863ca97e4a4bd76628ec78dde478d20ae56ca95"
+    },
+    {
+      "path": "src/market_agent/news.py",
+      "source": "src/market_agent/news.py",
+      "git_blob": "45a54acf7758acf0c44fe9c39f884a1dd9950eec",
+      "sha256": "edf68172004d5fede12c9e69f2beb7d4cbb3bb21325e719b9640b7da3b5b8efb"
+    },
+    {
+      "path": "src/market_agent/persistence.py",
+      "source": "src/market_agent/persistence.py",
+      "git_blob": "3ec3d1606004908e2ec928a6872d7f8c4f1d4dcb",
+      "sha256": "7c62af1e7abda36287dc8f225c40867dbc0efd11bcd938328858aaea6cb3a9b1"
+    },
+    {
+      "path": "src/market_agent/portfolio_csv.py",
+      "source": "src/market_agent/portfolio_csv.py",
+      "git_blob": "afd506b3f782e4e437789b9d9d904ab43faf625d",
+      "sha256": "d47de18e6488531efe7dabecca031adb8f7d474a37fb6d4b76a8f72d08014708"
+    },
+    {
+      "path": "src/market_agent/portfolio_entry.py",
+      "source": "src/market_agent/portfolio_entry.py",
+      "git_blob": "6c48bf3031ce2311b71f8d8a68158f877811a5f5",
+      "sha256": "37abe5dea627dd966296729f8078a79e47cb8ab09d345b534ccc17e0c9ccabfc"
+    },
+    {
+      "path": "src/market_agent/presentation.py",
+      "source": "src/market_agent/presentation.py",
+      "git_blob": "41db18ba537368bb56f90517f8222ceffe492d0c",
+      "sha256": "3c8a80222ad24df6305d881c6bd819e0ce42162a2a704e299a820613d8833dfe"
+    },
+    {
+      "path": "src/market_agent/provider.py",
+      "source": "src/market_agent/provider.py",
+      "git_blob": "a27d5d70ef873037de3f59331c4e6911872e7d6e",
+      "sha256": "4822041b457edc80ac3b5e712100d5f8cfb88b8b916331108d523661b567613a"
+    },
+    {
+      "path": "src/market_agent/public_demo.py",
+      "source": "src/market_agent/public_demo.py",
+      "git_blob": "2cf730639df0808638e5628e38b6b3736b368355",
+      "sha256": "8a9be9d153849c7e4d16dec80bc8a70547c97d70af3f5164004a807eb47e6fbd"
+    },
+    {
+      "path": "src/market_agent/quote.py",
+      "source": "src/market_agent/quote.py",
+      "git_blob": "f4210bbd6b7b97e7108df676a6abab8988370482",
+      "sha256": "768447f7a5bf40d8a040a90a6b3b2c361ee2adfeba0644435dd7700b317d66cd"
+    },
+    {
+      "path": "src/market_agent/research_api.py",
+      "source": "src/market_agent/research_api.py",
+      "git_blob": "476ecf1e8a83e60795b8b9b5c67bddd9ce416a6c",
+      "sha256": "f00b27aba62737739314cf5c431d1da29c212418b94cb798e85313e4d1fe0409"
+    },
+    {
+      "path": "src/market_agent/research_context.py",
+      "source": "src/market_agent/research_context.py",
+      "git_blob": "bbae43496eac0d8facb5d6b11ba5f3ac7085d3c1",
+      "sha256": "fe73bd67f528e7febb9b22d5c14efe1fa77a4c740e78d04278dfee132879ed99"
+    },
+    {
+      "path": "src/market_agent/research_portfolio.py",
+      "source": "src/market_agent/research_portfolio.py",
+      "git_blob": "b9729608b9ab435dd63e949c16273d8b50bf6bcd",
+      "sha256": "89b16f9f947ac8e100210f5d64a0d7b93cca094a336bacdbe5dc3ca16a3c5438"
+    },
+    {
+      "path": "src/market_agent/research_task.py",
+      "source": "src/market_agent/research_task.py",
+      "git_blob": "83efac40d7cf5df874e66bbc4d98cc846d9de53b",
+      "sha256": "f6e3038a0b3c2ad0c4a35e488b2a982aea311edb47a52765a7af030bd65b51a9"
+    },
+    {
+      "path": "src/market_agent/research_universe.py",
+      "source": "src/market_agent/research_universe.py",
+      "git_blob": "5d957d0987f6f303898cf0cf3c3d02b025edf968",
+      "sha256": "f9fe5244485c2c7b98e903e2440607db1bbf5835ba673af965b2cdd7d8afe926"
+    },
+    {
+      "path": "src/market_agent/sec.py",
+      "source": "src/market_agent/sec.py",
+      "git_blob": "6f87b5c9931b41703dcf6f64ab1f125b64b116ac",
+      "sha256": "83ee9233a872a7f206b5010d38b9b8e385a0eb76b853f53db9f8aae1d3097dfc"
+    },
+    {
+      "path": "src/market_agent/semantic.py",
+      "source": "src/market_agent/semantic.py",
+      "git_blob": "f1f145a438815fd3c54393a2504857ccd3c800a2",
+      "sha256": "a551ee1da0ef94f27a6eecad3625b0d09c297dc3f11fff3cfd2f6483832a56ec"
+    },
+    {
+      "path": "src/market_agent/serve.py",
+      "source": "src/market_agent/serve.py",
+      "git_blob": "daf9792dda1ede516229da923e588845c5b65e0c",
+      "sha256": "8fe37b7c6604550611d37f37cc901e668d43a93328d664f50557902f628130b0"
+    },
+    {
+      "path": "src/market_agent/static/attention.css",
+      "source": "src/market_agent/static/attention.css",
+      "git_blob": "5be38af3d99de42bf487f6fdef9edfa4042c0c37",
+      "sha256": "1cc17a32cd795440274898d10f42844267d592900d03b7e3d7d31e5dde544ca0"
+    },
+    {
+      "path": "src/market_agent/static/attention.js",
+      "source": "src/market_agent/static/attention.js",
+      "git_blob": "66e19f49ffbae54edbc2cdefea7a1b18d7c1c4d1",
+      "sha256": "35787c329b62660b6cfed4404396edd0943b6b9543c4a61b239acd4ad6278386"
+    },
+    {
+      "path": "src/market_agent/static/cockpit.css",
+      "source": "src/market_agent/static/cockpit.css",
+      "git_blob": "048c1f0d0f227c7cd3f0ac801df25b5176e45597",
+      "sha256": "cfb2adab1f6aedac378b14a28109b9ed680ed1011021ca4815997a1f7341ec44"
+    },
+    {
+      "path": "src/market_agent/static/cockpit.js",
+      "source": "src/market_agent/static/cockpit.js",
+      "git_blob": "6b794fa6a58b7c654383132456a8c81c913d01f8",
+      "sha256": "04dedf50fbf4f4c8eb0773257e0e0b33216c158d11234bfa678ccc13ee8e9f32"
+    },
+    {
+      "path": "src/market_agent/static/console.css",
+      "source": "src/market_agent/static/console.css",
+      "git_blob": "e70e68deed62347595805933f7663b1a137976ce",
+      "sha256": "2d658a836f91addbfb7a67d574ff99db3866a8f4b14e285862be5f3bf0f1e2aa"
+    },
+    {
+      "path": "src/market_agent/static/console.js",
+      "source": "src/market_agent/static/console.js",
+      "git_blob": "a4533297b2f18a58085335ec166c015c8e8e411d",
+      "sha256": "d6223a2c7b859d8b699a429b166e00efd893345139873d77b714cc12e8fee766"
+    },
+    {
+      "path": "src/market_agent/static/cost-dialog.js",
+      "source": "src/market_agent/static/cost-dialog.js",
+      "git_blob": "0a7e9cb634edc36fee2b38120de6dfadc0282620",
+      "sha256": "f448a7604b56172d31de870c13812d930a1a2ff15482cf2349d559b0da99efb1"
+    },
+    {
+      "path": "src/market_agent/static/decision-brief.js",
+      "source": "src/market_agent/static/decision-brief.js",
+      "git_blob": "9eb53a1129690bd42705edc08c1beed956ec78b8",
+      "sha256": "d44376dbda2368ddd6d6e975b62abb4d428f1da29f67e0629872130617d4d346"
+    },
+    {
+      "path": "src/market_agent/static/index.html",
+      "source": "src/market_agent/static/index.html",
+      "git_blob": "1baba824066f097b1df6b836d914963364b285e5",
+      "sha256": "6a2a9ecada618721a15aab740d618526b89b3c0667db1a8e90b6f37cec2a90a9"
+    },
+    {
+      "path": "src/market_agent/static/mia.svg",
+      "source": "src/market_agent/static/mia.svg",
+      "git_blob": "61aa8e0ffb65a0fe61949e37a301c9e6cad89040",
+      "sha256": "786fbf931d54f1636284b12f05b156cd29e45bb19bd0b2f9acff45d4a0143360"
+    },
+    {
+      "path": "src/market_agent/static/portfolio-csv.js",
+      "source": "src/market_agent/static/portfolio-csv.js",
+      "git_blob": "5fc8a7eeb27bcbd59d6d6c47a9b2b61b20212272",
+      "sha256": "c1c35c3dbfea3b49ba59e2a2ad0ac06d4426b5411502437c4b521c85cafe46b8"
+    },
+    {
+      "path": "src/market_agent/static/portfolio-editor.js",
+      "source": "src/market_agent/static/portfolio-editor.js",
+      "git_blob": "29ebbd22a286912ae66aa1206d865efec55414db",
+      "sha256": "ca86ad363d8e4f760827947f4af82646faeaa9fecd81363c3a742da945a6dffa"
+    },
+    {
+      "path": "src/market_agent/static/quiet.css",
+      "source": "src/market_agent/static/quiet.css",
+      "git_blob": "a3aa4e5e9607297c0c6f647d11ab96d852835af4",
+      "sha256": "688e00e56191932b9f3138ca8bf920d2375d5bf409059ae79cc9a1dea6289a5f"
+    },
+    {
+      "path": "src/market_agent/static/research-desk.css",
+      "source": "src/market_agent/static/research-desk.css",
+      "git_blob": "3e1635b5d288b7d2db9c20e02b8411145478c0fe",
+      "sha256": "e57d6d5b5d0811b87b9435ff5722a9699885afe076202c5efd80dd468309e0a4"
+    },
+    {
+      "path": "src/market_agent/static/research-desk.js",
+      "source": "src/market_agent/static/research-desk.js",
+      "git_blob": "563070fc523b426e77d0b156a8e1196974c47c05",
+      "sha256": "860c40ffa903e32315acf0ab6dbfa8b7b1d2c758a65f287278cdc3f2e41cbee0"
+    },
+    {
+      "path": "src/market_agent/static/theme-init.js",
+      "source": "src/market_agent/static/theme-init.js",
+      "git_blob": "3e75033195fbfa2bf0deac21abcc9a37b61ae60e",
+      "sha256": "a24ed8788ddee82e936c4e4ae2b9ad97412c76eca3f4f0bb901e6143ceda455d"
+    },
+    {
+      "path": "src/market_agent/tdb.py",
+      "source": "src/market_agent/tdb.py",
+      "git_blob": "49249d23e6365dbf415750e75bc7f552273c9a4a",
+      "sha256": "039c4dcae5cfc74efa117cd24397fc6c3397b7740b59189ed619bb22653b8e31"
+    },
+    {
+      "path": "src/market_agent/tdb_contract.py",
+      "source": "src/market_agent/tdb_contract.py",
+      "git_blob": "448ad5cc52ea700f23603d1aed819038163e39f1",
+      "sha256": "f52e59e1d9ed5645b197886a4e85200da8e0c9a03df46396d99130d28746276e"
+    },
+    {
+      "path": "src/market_agent/tdb_semantic.py",
+      "source": "src/market_agent/tdb_semantic.py",
+      "git_blob": "d6d9e9f37a07982f267a7de15a810971ae481d5c",
+      "sha256": "aaf0d6f91fa329b737caf152a638f10c60b89fb8957054c0a8b0d5a14c3e4d77"
+    },
+    {
+      "path": "src/market_agent/tdb_workflow.py",
+      "source": "src/market_agent/tdb_workflow.py",
+      "git_blob": "87b1b57e22bc1fe5899440d9906b22fde927a18b",
+      "sha256": "75a146a010179bbf117f9dfc32879b2249cb920ce9966376d91751c5530f537b"
+    },
+    {
+      "path": "src/market_agent/test_isolation.py",
+      "source": "src/market_agent/test_isolation.py",
+      "git_blob": "a468ea0a022ea0a8053903d58c2e1d317b801af4",
+      "sha256": "44491163a6a84a01795cee73026fab8975146cbe0c8314da4787ccb54f20e643"
+    },
+    {
+      "path": "src/market_agent/thesis.py",
+      "source": "src/market_agent/thesis.py",
+      "git_blob": "5b4c0ccf43c0a2c31e3605b9b69c4f85360f8612",
+      "sha256": "6e7c274c766a4630295f001381139e6716ce493e9a90565010a508b62ac120f0"
+    },
+    {
+      "path": "tests/conftest.py",
+      "source": "tests/conftest.py",
+      "git_blob": "05d346bb016d4bb2eb93be30eac30fb94499cbaf",
+      "sha256": "378116e2ba6e64005aab64ee4d271ea421f0e57bec89713fafe3d82776ee7fbf"
+    },
+    {
+      "path": "tests/test_call_budget.py",
+      "source": "tests/test_call_budget.py",
+      "git_blob": "6563eec32a7594abce42eafd3fc32193c260ed25",
+      "sha256": "4d53ffc6dd9d2923da1f0de0f7767ff881207df00c792cf8f0b606f50d524783"
+    },
+    {
+      "path": "tests/test_convictiondesk_attention.py",
+      "source": "tests/test_convictiondesk_attention.py",
+      "git_blob": "065850027d5f301ba315eab4d9472e6b1a00c453",
+      "sha256": "ab865f54a9f76dddaa3bd0bde6155e20a83207e13acc7be3b6a0646b6e931836"
+    },
+    {
+      "path": "tests/test_convictiondesk_decision.py",
+      "source": "tests/test_convictiondesk_decision.py",
+      "git_blob": "ade86e9ca3dead12f7783296198802fd701bad2f",
+      "sha256": "0b84687f03d1006aea8903552adfff843bc58bb4b94104e19c7004d9de6b8361"
+    },
+    {
+      "path": "tests/test_financial_series.py",
+      "source": "tests/test_financial_series.py",
+      "git_blob": "3708a0808f1f2975eeee2bc59cad006adec531a5",
+      "sha256": "32029ca4eb284576a53667d8454bb9320f2dd4a3c8e3ba6cfd19e9f8ea858cde"
+    },
+    {
+      "path": "tests/test_model_profiles.py",
+      "source": "tests/test_model_profiles.py",
+      "git_blob": "7b46be07e6b2d650e4327bee1f853af06e11d525",
+      "sha256": "18b2e6db1888321bfb17080732e2c16cbf0e50df654807eac5a8bf4865a429bc"
+    },
+    {
+      "path": "tests/test_product_journey_gate.py",
+      "source": "tests/test_product_journey_gate.py",
+      "git_blob": "4c843be0c883d176a60eb4140f3f3d34aeb48b38",
+      "sha256": "c034f0c3bd71e64c6844d6cd4093ba66aa6747b90d0342c2895584055457675d"
+    },
+    {
+      "path": "tests/test_public_demo.py",
+      "source": "tests/test_public_demo.py",
+      "git_blob": "085e25d85f4f469589b0f363b63c94dfb6b927c1",
+      "sha256": "4209774ffc30dbe21c6c62525ed251cdcfab85297b974c350cf1147890a6a972"
+    },
+    {
+      "path": "tests/test_quiet_ui_contract.py",
+      "source": "tests/test_quiet_ui_contract.py",
+      "git_blob": "2a4f5c2a8bc1d8365d6cca23e113bc95ce167132",
+      "sha256": "02c03ebff5e0ac15c5c1c5e992fde693a9ab5897ff754a5200c2dc18cd3a9171"
+    },
+    {
+      "path": "tests/test_release_export.py",
+      "source": "tests/test_release_export.py",
+      "git_blob": "480982c71d066d312532709b8c80e883f03de23c",
+      "sha256": "8fa103aa5729663964d8a727941d72e982fdf3f59fdf974decdba45af7fdc475"
+    },
+    {
+      "path": "tests/test_sec_earnings.py",
+      "source": "tests/test_sec_earnings.py",
+      "git_blob": "e47111cfbb570462648a3a9b84112cbc8b9ad243",
+      "sha256": "cb5507e0a8ade1aefe7d32e3fc69eb046a23983cb4f1ff317bbf7d8c9db8c8ad"
+    },
+    {
+      "path": "README.md",
+      "source": "release/PUBLIC_README.md",
+      "git_blob": "c0661e72828f8e1fe9fadaec910f39800ab5eab3",
+      "sha256": "0741da5fe1a7d40325928c9e80329666a240b272f7eaa42d854a795c8dfe2ed4"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "source": "release/PUBLIC_CI.yml",
+      "git_blob": "3bea6113a5019e4a5a3a4a353855863a72f568a4",
+      "sha256": "4cf407905930437566d09b82b6a112d69c1c649acac2a92420f1a9c8b15bdd80"
+    },
+    {
+      "path": "LICENSE",
+      "source": "release/LICENSE",
+      "git_blob": "b0119f3bb25ef940c00079de403524251f513872",
+      "sha256": "040807eb34a5dfedd5babd455f6701496fd89f38d919ebc52e5f2dd70cb1622a"
+    },
+    {
+      "path": ".gitignore",
+      "source": "release/PUBLIC_GITIGNORE",
+      "git_blob": "615cbd00afd98e78c545fd75fff22709c1cf03c0",
+      "sha256": "843559191a043a3f26900a85be776a06a333b42f4ccdc88feb278298c54ae70d"
+    },
+    {
+      "path": "docs/assets/convictiondesk-architecture-dark.svg",
+      "source": "release/assets/convictiondesk-architecture-dark.svg",
+      "git_blob": "00a6cf33fd917b8b020c32b2f31166700ea4d9d8",
+      "sha256": "c6e9bf6676396726672a797ace194d3253ac3dac8fa9215b8d6a50a43ecae452"
+    },
+    {
+      "path": "docs/assets/convictiondesk-architecture-light.svg",
+      "source": "release/assets/convictiondesk-architecture-light.svg",
+      "git_blob": "d7441b1cf6306d1186ba1b62fff640af7e1e0976",
+      "sha256": "d22524090896f0c6162867e6ac44c1a0b7abd4247b8a91690635b80953f9d4f4"
+    },
+    {
+      "path": "docs/assets/convictiondesk-evidence-to-action-dark.svg",
+      "source": "release/assets/convictiondesk-evidence-to-action-dark.svg",
+      "git_blob": "7c252766d380d97231a3902c1b3507f54847fd5b",
+      "sha256": "5f0f53b87c942156db3f844d20c739beda6f19105c7ee50b8a5080205d1cb56f"
+    },
+    {
+      "path": "docs/assets/convictiondesk-evidence-to-action-light.svg",
+      "source": "release/assets/convictiondesk-evidence-to-action-light.svg",
+      "git_blob": "691a98f1cdc8f78168740759840e5efa70bfee09",
+      "sha256": "209a2b6e7ac832d260b0d6870dc4ea9f4fe060156910deebdc32c937218aa12e"
+    },
+    {
+      "path": "docs/assets/convictiondesk-fast-deep-dark.svg",
+      "source": "release/assets/convictiondesk-fast-deep-dark.svg",
+      "git_blob": "221b8ca2b67e4f78be9bbc5c02f5f61cc99f4087",
+      "sha256": "2e6ea5cac4ae74011c6cc505f944b153379f2c4b7eb51c5c140ee3ebfeee6c18"
+    },
+    {
+      "path": "docs/assets/convictiondesk-fast-deep-light.svg",
+      "source": "release/assets/convictiondesk-fast-deep-light.svg",
+      "git_blob": "4bc9dac44d1c822f487273356ba57f7e1e510714",
+      "sha256": "f27bbc9f70a452705bd8207683a1537ff3a19e75ec7da5c678f2d7f383ee5217"
+    }
+  ],
+  "privacy_scan": "PASS",
+  "history": "No Git history/configuration/refs exported",
+  "verification": "Local source candidate; publication and remote CI are separate gates"
+}

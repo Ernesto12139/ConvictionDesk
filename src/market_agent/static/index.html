@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f7f4" />
+    <meta name="color-scheme" content="light dark" />
+    <script src="/static/theme-init.js"></script>
+    <link rel="icon" href="/static/mia.svg" type="image/svg+xml" />
+    <title>ConvictionDesk · 研究与决策工作台</title>
+    <link rel="stylesheet" href="/static/console.css" />
+    <link rel="stylesheet" href="/static/cockpit.css" />
+    <link rel="stylesheet" href="/static/attention.css" />
+    <link rel="stylesheet" href="/static/research-desk.css?v=owner-reset-20261015-v2" />
+    <link rel="stylesheet" href="/static/quiet.css?v=quiet-v03-polish" />
+    <script src="/static/console.js" defer></script>
+    <script src="/static/decision-brief.js" defer></script>
+    <script src="/static/cockpit.js" defer></script>
+    <script src="/static/portfolio-editor.js" defer></script>
+    <script src="/static/portfolio-csv.js" defer></script>
+    <script src="/static/cost-dialog.js?v=quiet-v03-polish" defer></script>
+    <script src="/static/attention.js?v=quiet-v03-polish" defer></script>
+    <script src="/static/research-desk.js?v=quiet-v03-polish" defer></script>
+  </head>
+  <body data-research-mode="cockpit" data-runtime-mode="OWNER">
+    <a class="skip-link" href="#attention">跳到今日关注</a>
+    <aside class="rail" aria-label="工作台导航">
+      <a class="brand" href="/" aria-label="ConvictionDesk 首页"
+        ><span class="brand-mark">CD</span
+        ><span>Conviction<br /><b>Desk</b></span></a
+      >
+      <p class="rail-label">投资决策工作台</p>
+      <nav>
+        <a href="#attention" class="active">研究工作台</a>
+        <a href="#research-history">研究记录</a>
+        <a href="#portfolio">我的组合</a>
+        <a href="#universe">研究范围</a>
+        <details class="desk-nav-more"><summary>更多工具</summary><a class="desk-mobile-scope" href="#universe">研究范围</a><a href="#workspace">快速判断工具</a><a href="#inspector">依据与执行面板</a></details>
+      </nav>
+      <div class="rail-foot">
+        <span class="local-dot"></span> 本地工作空间
+        <p>了解组合 · 理解变化</p>
+      </div>
+    </aside>
+    <div class="shell">
+      <header class="topbar">
+        <span><b>ConvictionDesk</b> <span class="separator">/</span> 研究工作台</span
+        ><span class="tag">本地 · 美元</span
+        ><label class="theme-control" for="mia-theme"><span>外观</span><select id="mia-theme" data-theme-control aria-label="外观主题"><option value="auto">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></label>
+      </header>
+      <main>
+        <p id="public-demo-notice" class="status-line warning" role="note" hidden>Public Demo · OFFLINE_REPLAY · 全部账户、行情和研究均为合成示例；共享只读，不调用模型，不保存访客输入。</p>
+        <div class="page-heading">
+          <div>
+            <h1>你的研究工作台</h1>
+            <p class="muted">先看与你相关的变化，再研究一个重要问题。</p>
+          </div>
+          <button id="manage-portfolio" class="primary" type="button">建立组合</button>
+        </div>
+        <nav class="desk-home-shortcuts" aria-label="选择研究入口"><a href="#attention">今日关注</a><a href="#ask-mia">研究提问</a></nav>
+        <p
+          id="import-status"
+          class="status-line"
+          role="status"
+          aria-live="polite"
+        ></p>
+        <div class="desk-entry-grid">
+        <section id="attention" class="attention-section" aria-labelledby="attention-title" tabindex="-1">
+          <div class="section-heading">
+            <h2 id="attention-title">今日关注</h2>
+            <button id="attention-scan" class="primary" type="button">刷新今日关注</button>
+          </div>
+          <p id="attention-status" class="status-line" role="status" aria-live="polite"></p>
+          <p id="attention-summary" class="small muted" aria-live="polite"></p>
+          <div id="attention-queue" aria-busy="true"><p class="muted">正在读取已保存的关注事项…</p></div>
+          <details id="attention-audit" class="attention-disclosure"><summary>查看覆盖范围与扫描记录</summary><p id="attention-coverage" class="attention-coverage" aria-live="polite"></p><div id="attention-scan-details"></div></details>
+          <dialog id="attention-detail" class="attention-detail" aria-labelledby="attention-detail-title">
+            <div class="attention-detail-heading"><h2 id="attention-detail-title">关注详情</h2><button id="attention-detail-close" type="button">关闭</button></div>
+            <div id="attention-detail-body"></div>
+          </dialog>
+        </section>
+        <section id="ask-mia" class="desk-ask" aria-labelledby="ask-mia-title">
+          <h2 id="ask-mia-title">研究提问</h2>
+          <p class="muted">结合持仓与公司证据，形成可追问的判断。</p>
+          <form id="desk-question-form">
+            <label for="desk-question">你想研究什么？</label>
+            <textarea id="desk-question" name="question" autocomplete="off" rows="5" maxlength="1200" required placeholder="例如：APP 盘前跌到 226，我应该考虑分批加仓吗？"></textarea>
+            <p id="desk-attention-context" class="small muted" hidden><span></span> <button id="desk-clear-attention" type="button">取消关联事项</button></p>
+            <div class="desk-prompt-ideas" aria-label="拟定一个研究问题"><button type="button" data-desk-prompt="APP 的近期变化会影响我的持仓逻辑吗？">复核持仓逻辑</button><button type="button" data-desk-prompt="APP 下次财报应该重点核查什么？">准备财报研究</button></div>
+            <div class="desk-compose-actions">
+              <label for="desk-account">持仓范围<select id="desk-account"><option value="">全部账户</option></select></label>
+              <label id="desk-profile-label" for="desk-model-profile" hidden>研究方式与模型<select id="desk-model-profile" aria-label="研究方式与模型"></select></label>
+              <button id="desk-submit" class="primary" type="submit">开始研究</button>
+            </div>
+          </form>
+          <p class="small muted">提交前会确认账户范围与模型费用；快捷问题只拟定，不提交。</p>
+          <p id="desk-request-status" role="status" aria-live="polite"></p>
+        </section>
+        </div>
+        <section id="research-history" class="desk-history-home" aria-labelledby="desk-recent-title"><div class="desk-recent-heading"><div><h2 id="desk-recent-title">接着上次的研究</h2><p id="desk-recent-count" class="small muted"></p></div><button id="desk-refresh-tasks" type="button">刷新</button></div><div id="desk-recent-search-row" class="desk-recent-search" hidden><label for="desk-recent-search" class="sr-only">搜索研究记录</label><input id="desk-recent-search" type="search" autocomplete="off" placeholder="按股票代码或问题搜索" /></div><div id="desk-recent"><p class="muted">正在读取已保存任务…</p></div><button id="desk-recent-all" class="desk-recent-all" type="button" hidden>全部研究记录</button></section>
+        <section id="desk-task" class="desk-task" aria-labelledby="desk-task-title" hidden tabindex="-1">
+          <div class="desk-reading-nav"><button id="desk-home" type="button">返回工作台</button><div class="desk-reading-tools"><button id="desk-latest" type="button" hidden>最新一轮</button><button id="desk-history-open" type="button">历史版本</button><button id="desk-evidence-open" type="button">查看依据</button></div></div>
+          <div class="desk-task-heading"><h2 id="desk-task-title">研究任务</h2><span id="desk-state" class="desk-state"></span></div>
+          <p id="desk-current-question" class="desk-question-title"></p>
+          <p id="desk-task-meta" class="small muted"></p>
+          <p id="desk-history-note" class="small muted" hidden>正在查看历史版本，来源和价格对应当时的截止时间。选择“最新一轮”后可继续研究。</p>
+          <details id="desk-history"><summary>历史版本与任务信息</summary><label for="desk-history-select">研究记录<select id="desk-history-select"><option value="">最新一轮</option></select></label><p id="desk-task-details" class="small muted"></p></details>
+          <p id="desk-progress" role="status" aria-live="polite"></p>
+          <div id="desk-waiting" class="desk-waiting" hidden>
+            <div class="desk-waiting-heading"><h3>研究正在进行</h3><span id="desk-elapsed" aria-hidden="true"></span><button id="desk-pause-motion" type="button" aria-pressed="false">暂停动画</button></div>
+            <ol id="desk-stages" class="desk-stages" aria-label="已观察到的研究阶段"></ol>
+            <p id="desk-waiting-help" class="small muted"></p>
+          </div>
+          <div id="desk-observation" class="desk-observation" hidden><p id="desk-observation-note" role="status"></p><button id="desk-refresh-progress" type="button">重新读取进度</button></div>
+          <div class="desk-reading-layout">
+          <div id="desk-result"></div>
+          <aside id="desk-action-panel" class="desk-action-panel" aria-label="下一步研究操作">
+          <div id="desk-next-action"></div>
+          <button id="desk-next-draft" class="primary" type="button" hidden>拟定这项核查</button>
+          <button id="desk-read-saved" type="button">重新读取保存状态</button>
+          <form id="desk-followup-form" class="desk-followup">
+            <label for="desk-followup">下一轮想核查什么？</label>
+            <textarea id="desk-followup" name="followup" autocomplete="off" rows="3" maxlength="1200" required placeholder="例如：下次财报优先看什么…"></textarea>
+            <p class="small desk-fee-note">提交前会确认模型费用；旧版本保留。</p>
+            <div class="desk-followup-actions"><button id="desk-continue" class="primary" type="submit">确认继续研究</button><button id="desk-earnings" type="button">拟定财报追问</button></div>
+          </form>
+          <details id="desk-retry-options" hidden><summary>恢复这次研究</summary><p>保留同一任务、账户和旧版本，重新核查资料和价格。提交前会确认模型费用。</p><button id="desk-retry" type="button">确认重新研究同一问题</button></details>
+          <p id="desk-action-hint" class="small muted"></p>
+          </aside></div>
+          <details id="desk-execution"><summary>执行记录与诊断</summary><div id="desk-trace"></div></details>
+          <dialog id="desk-evidence-dialog" class="desk-evidence-dialog" aria-labelledby="desk-evidence-title">
+            <div class="desk-evidence-heading"><h2 id="desk-evidence-title">这次研究的依据</h2><button id="desk-back-to-reading" type="button">返回研究</button></div>
+            <p id="desk-evidence-scope" class="small muted"></p>
+            <details id="desk-sources" open><summary>数据来源与证据</summary><div id="desk-source-list"></div></details>
+          </dialog>
+          <a href="#desk-action-panel" class="desk-mobile-action">下一步核查与继续研究</a>
+        </section>
+        <details id="universe" class="attention-disclosure universe-section">
+          <summary>管理研究范围 <span id="universe-count"></span></summary>
+          <p class="small muted">决定今日关注扫描哪些公司；持仓自动纳入。研究状态不代表投资评级。</p>
+          <details class="universe-help"><summary>这些状态和操作是什么意思？</summary><dl>
+            <dt>持仓</dt><dd>来自当前组合，不能在这里归档。卖出或调整须在组合中管理。</dd>
+            <dt>持续跟踪</dt><dd>继续检查这家公司的新变化，不代表建议买入。</dd>
+            <dt>待评估</dt><dd>先收集材料，判断是否值得持续研究。</dd>
+            <dt>暂停研究 / 恢复</dt><dd>暂停后不再扫描这家公司，历史证据和待筛记录保留；重新选择研究状态即可恢复。</dd>
+            <dt>已复核，移出关注</dt><dd>移出当前卡片所列的研究记录，保留历史证据；之后出现的新材料仍会进入筛选。</dd>
+          </dl></details>
+          <form id="universe-form" class="universe-form">
+            <label for="universe-symbol">股票代码<input id="universe-symbol" maxlength="15" required placeholder="例如 BB" /></label>
+            <label for="universe-state">研究安排<select id="universe-state"><option value="WATCHING">持续跟踪</option><option value="CANDIDATE">待评估</option></select></label>
+              <label for="universe-note">关注原因<input id="universe-note" maxlength="300" placeholder="为什么值得研究；已有标的留空保留原内容" /></label>
+              <label for="universe-owner-note" class="universe-owner-field">个人备注<input id="universe-owner-note" maxlength="500" placeholder="个人提醒；已有标的留空保留原内容" /></label>
+            <button type="submit">保存标的</button>
+          </form>
+          <p id="universe-status" role="status" aria-live="polite"></p>
+          <div id="universe-list"></div>
+        </details>
+        <details id="desk-legacy" class="desk-legacy"><summary>决策工具 · Cockpit 与组合分析</summary>
+        <section id="workspace" aria-labelledby="workspace-title">
+          <div class="section-heading">
+            <div>
+              <h2 id="workspace-title">主动提问 · 快速判断</h2>
+            </div>
+
+          </div>
+          <div class="workspace-grid">
+            <details id="cockpit-composer" class="panel composer" open>
+              <summary id="cockpit-question-summary">问题与研究入口</summary>
+              <details class="advanced-research"><summary>详细研究与手工情景</summary>
+              <div class="research-modes" role="group" aria-label="研究方式">
+                <button type="button" data-research-mode="cockpit" aria-pressed="true">快速判断</button>
+                <button type="button" data-research-mode="event" aria-pressed="false">公开事件研究</button>
+                <button type="button" data-research-mode="decision" aria-pressed="false">手工持仓情景</button>
+              </div></details>
+              <form id="query-form">
+                <label for="query-input">现在发生了什么？你想判断什么？</label>
+                <div class="query-entry"><textarea id="query-input" rows="2" maxlength="2000" placeholder="例如：APP盘前跌到226，现在能不能逢低买入？" required></textarea><button id="query-button" class="primary" type="submit">形成判断</button></div>
+                <details id="cockpit-correction"><summary>修正代码或判断价格</summary><div class="cockpit-corrections"><label for="cockpit-symbol">股票代码<input id="cockpit-symbol" maxlength="15" placeholder="自动识别" /></label><label for="cockpit-price">判断价 · 美元<input id="cockpit-price" type="number" min="0.000001" step="any" placeholder="可留空" /></label></div></details>
+              </form>
+              <div class="quick-actions" role="group" aria-label="研究主题">
+                <button type="button" data-query="现在组合最大的风险是什么？" aria-pressed="false"><span class="action-label">组合集中风险</span><span>持仓与行业的集中情况</span></button>
+                <button type="button" data-query="BB 最近这个事件会不会改变我的持仓逻辑？" aria-pressed="false"><span class="action-label">BB · 事件对持仓的影响</span><span>新事件是否改变投资逻辑</span></button>
+              </div>
+              <form id="tdb-form" class="tdb-form" hidden>
+                <h3>持仓决策简报</h3>
+                <p class="small muted">选择已有持仓，输入你的判断价格。简报提供证据支持，不执行交易。</p>
+                <label for="tdb-symbol">持仓标的</label>
+                <select id="tdb-symbol" required><option value="">先建立组合</option></select>
+                <label for="tdb-intent">这次判断的情景</label>
+                <select id="tdb-intent">
+                  <option value="CURRENT">当前决策 · 基于现有事实</option>
+                  <option value="HYPOTHETICAL">情景预演 · 在假设成立时</option>
+                </select>
+                <div id="tdb-scenario" hidden>
+                  <label for="tdb-cause">为什么会到这个价格？</label>
+                  <select id="tdb-cause">
+                    <option value="MARKET_OR_SECTOR_RISK_OFF">市场或行业风险偏好下降，公司未新增受损</option>
+                    <option value="PRICE_ONLY_NO_NEW_DAMAGE">只改变价格，公司未新增受损</option>
+                    <option value="VALUATION_COMPRESSION">市场压缩估值，未证明公司低估</option>
+                    <option value="COMPANY_SPECIFIC_DAMAGE">假设公司发生特定经营损害</option>
+                    <option value="THESIS_BREAK">假设已有投资逻辑的失效条件触发</option>
+                    <option value="OTHER_EXPLICIT_ASSUMPTION">其他明确假设</option>
+                  </select>
+                  <label for="tdb-assumption">明确写下本次假设</label>
+                  <textarea id="tdb-assumption" rows="3" minlength="5" maxlength="500" placeholder="例如：市场压缩，但核心合同与公司经营没有新增损害。"></textarea>
+                  <div id="tdb-invalidation" hidden>
+                    <label for="tdb-condition">已保存的负面失效条件</label>
+                    <select id="tdb-condition"><option value="">先选择持仓标的</option></select>
+                    <p class="small muted">旧条件没有明确的负面语义标记，暂不提供选择。请在上方独立描述破坏价值创造机制的负面假设，或先补充研究。</p>
+                  </div>
+                  <p class="scenario-form-note">这是情景假设，不是已发生事实。不会更新投资逻辑，也不会成为下次当前决策的历史依据。</p>
+                </div>
+                <label for="tdb-price">判断价格 · 美元（由你输入）</label>
+                <input id="tdb-price" type="number" min="0.000001" step="any" required placeholder="例如 12.50" />
+                <button id="tdb-button" class="primary" type="submit">生成决策简报 →</button>
+              </form>
+            </details>
+            <section
+              id="research"
+              class="panel research"
+              aria-labelledby="result-title"
+              aria-busy="false"
+            >
+              <div class="result-heading">
+                <h3 id="result-title">当前判断</h3>
+                <span id="answer-state" class="tag">等待研究</span>
+              </div>
+              <p
+                id="query-status"
+                role="status"
+                aria-live="polite"
+                class="status-line"
+              ></p>
+              <div id="result">
+                <div class="empty-state">
+
+                  <h3>你的下一次判断，从这里开始。</h3>
+                  <p>输入股票、价格、事件或你想做的决定。<br />我们会读取持仓、核查证据，并保留判断依据。</p>
+                  <div class="empty-steps">
+                    <span>持仓背景</span><span>证据支持</span
+                    ><span>可追溯结论</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+        </details>
+        <details id="portfolio-disclosure" class="portfolio-disclosure">
+          <summary>我的组合 <span id="portfolio-compact" class="small muted">展开查看持仓与集中度</span></summary>
+        <section
+          id="portfolio"
+          class="panel portfolio-panel"
+          aria-labelledby="portfolio-title"
+        >
+          <div class="section-heading">
+            <div>
+
+              <h2 id="portfolio-title">投资组合</h2>
+            </div>
+            <span id="portfolio-state" class="tag">正在读取</span>
+          </div>
+          <div id="portfolio-summary">
+            <p class="muted">正在读取本地保存的持仓快照…</p>
+          </div>
+          <div id="portfolio-intelligence" hidden>
+            <div id="portfolio-cards" class="portfolio-cards"></div>
+            <div id="valuation-notice" class="notice" role="status"></div>
+            <div class="allocation-layout">
+              <div>
+                <div class="allocation-tabs" role="group" aria-label="组合分布维度">
+                  <button type="button" data-allocation="symbols" aria-pressed="true">个股权重</button>
+                  <button type="button" data-allocation="sectors" aria-pressed="false">行业集中度</button>
+                  <button type="button" data-allocation="themes" aria-pressed="false">主题集中度</button>
+                </div>
+                <div class="donut-wrap">
+                  <div id="allocation-donut" class="donut" role="img"></div>
+                  <div id="allocation-center" class="donut-label" aria-hidden="true">组合</div>
+                </div>
+                <p id="allocation-basis" class="allocation-caption"></p>
+              </div>
+              <div id="allocation-legend" class="allocation-legend"></div>
+            </div>
+            <details id="aggregate-details" class="holdings-disclosure"><summary>查看持仓明细 <span id="position-count" class="tag"></span></summary>
+            <label for="holding-search" class="sr-only">查找标的</label><input id="holding-search" type="search" placeholder="查找股票代码" />
+            <div class="table-wrap" tabindex="0" aria-label="跨账户汇总持仓表">
+              <table class="aggregate-table">
+                <thead><tr><th>标的</th><th>总股数</th><th>加权成本</th><th>最近收盘价</th><th>市值 / 权重</th><th>浮盈亏</th><th>账户</th></tr></thead>
+                <tbody id="aggregate-positions"></tbody>
+              </table>
+            </div>
+            </details>
+          </div>
+          <details id="holdings" hidden>
+            <summary>账户与持仓明细</summary>
+            <div id="accounts" class="account-grid"></div>
+            <div class="table-wrap" tabindex="0" aria-label="持仓明细表">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">标的</th>
+                    <th scope="col">账户</th>
+                    <th scope="col">数量</th>
+                    <th scope="col">平均成本 · USD</th>
+                  </tr>
+                </thead>
+                <tbody id="positions"></tbody>
+              </table>
+            </div>
+          </details>
+        </section>
+        </details>
+        <section
+          id="inspector"
+          class="panel inspector"
+          aria-labelledby="inspector-title"
+        >
+          <div class="section-heading">
+            <div>
+
+              <h2 id="inspector-title">结论依据与数据边界</h2>
+            </div>
+            <span id="run-label" class="small muted">分析后可检查</span>
+          </div>
+          <details id="evidence-details">
+            <summary>
+              查看来源与计算依据 <span id="evidence-count" class="tag">0</span>
+            </summary>
+            <div class="filter-row">
+              <button type="button" id="back-to-brief">返回研究结论</button>
+              <label for="evidence-filter">证据类型</label
+              ><select id="evidence-filter">
+                <option value="all">全部证据</option>
+                <option value="news">新闻</option>
+                <option value="sec_filing">SEC 文件</option>
+                <option value="market_data">行情</option>
+                <option value="calculation">确定性计算</option>
+                <option value="thesis">投资逻辑</option>
+                <option value="semantic_judgment">语义评估</option>
+                <option value="portfolio_snapshot">持仓快照</option>
+              </select>
+            </div>
+            <div id="evidence-list">
+              <p class="muted">研究结论会链接到对应的来源与数据时间。</p>
+            </div>
+          </details>
+          <div id="admin-diagnostics" hidden>
+            <details id="trace-details">
+              <summary>管理员诊断：执行记录</summary>
+              <p class="small muted">用于本地诊断的路由、工具、模型和引用关系。</p>
+              <div id="trace"><p class="muted">暂无执行记录。</p></div>
+            </details>
+            <form id="restore-form" class="restore-form">
+              <label for="run-input">恢复本地分析</label
+              ><input id="run-input" placeholder="粘贴 run ID" maxlength="80" required
+              /><button type="submit">载入记录</button>
+            </form>
+            <p id="restore-status" class="small status-line" role="status"></p>
+          </div>
+        </section>
+        <details class="desk-runtime-details"><summary>工作空间与运行状态</summary><details class="environment-details"><summary id="environment">正在读取运行模式…</summary><p id="environment-detail" class="small muted"></p></details><p id="local-acceptance-status" class="status-line warning" role="status" hidden></p></details>
+        <footer>
+          ConvictionDesk
+          <span>本地持久化 · 证据可追溯 · 决策由你</span>
+        </footer>
+      </main>
+    </div>
+    <dialog id="import-dialog" aria-labelledby="import-title">
+      <form method="dialog" class="import-dialog-card">
+        <div class="dialog-heading">
+          <div><p class="eyebrow">旧数据迁移</p><h2 id="import-title">迁移旧数据</h2></div>
+          <button id="import-close" class="icon-button" value="cancel" aria-label="关闭导入窗口">×</button>
+        </div>
+        <p class="muted">已有 Capital Desk 备份？在此导入 JSON v1。新用户可以直接建立组合，无需准备文件。</p>
+        <button id="choose-file" type="button">选择 JSON 文件</button>
+        <input id="portfolio-file" type="file" accept=".json,application/json" hidden />
+        <div id="import-preview" class="import-preview">
+          <strong>尚未选择文件</strong><span>支持 JSON v1，最大 10 MB。</span>
+        </div>
+        <div class="dialog-foot">
+          <span class="small muted">确认后将以文件内容替换当前持仓视图。</span>
+          <button id="confirm-import" class="primary" type="button" disabled>确认导入 <span>→</span></button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="entry-dialog" aria-labelledby="entry-title">
+      <form id="entry-form" class="entry-card">
+        <div class="dialog-heading"><div><p class="eyebrow">我的投资组合</p><h2 id="entry-title">建立你的组合</h2></div><button type="button" id="entry-close" class="icon-button" aria-label="关闭持仓编辑">×</button></div>
+        <p class="muted">选择适合你的方式。持仓成本由你提供，当前股价由行情服务获取。</p>
+        <div class="entry-mode" role="group" aria-label="建立组合的方式"><button id="entry-mode-manual" type="button" aria-pressed="true">逐笔录入</button><button id="entry-mode-csv" type="button" aria-pressed="false">批量导入 CSV</button></div>
+        <div id="entry-fields">
+          <div class="editor-section-heading"><h3>账户与现金</h3><button type="button" id="add-account">添加账户</button></div>
+          <div id="entry-accounts"></div>
+          <div class="editor-section-heading"><h3>你的持仓</h3><button type="button" id="add-position">添加持仓</button></div>
+          <p class="small muted">填写总股数和每股平均成本。同一股票在不同账户的持仓会自动汇总。</p>
+          <label class="entry-search" for="entry-search">查找持仓 <input id="entry-search" type="search" placeholder="输入股票代码" /></label>
+          <div id="entry-positions"></div>
+        </div>
+        <div id="entry-review" hidden></div>
+        <div id="csv-panel" hidden>
+          <p class="muted">每行写一个账户持仓；现金单独写一行。可上传 CSV 文件，也可粘贴表格内容。</p>
+          <div class="csv-tools"><a id="csv-template" href="/api/portfolio/csv/template" download="portfolio-template.csv">下载 CSV 示例模板</a><button id="csv-choose" type="button">选择 CSV 文件</button><input id="csv-file" type="file" accept=".csv,text/csv" hidden /></div>
+          <label for="csv-text">或粘贴 CSV 内容</label><textarea id="csv-text" rows="8" maxlength="1000000" placeholder="type,account,symbol,quantity,avg_cost,cash,sector,theme"></textarea>
+          <details class="csv-help"><summary>查看字段说明</summary><p>持仓行：type 填 position，填写账户、代码、股数和每股成本；现金行：type 填 cash，只填写账户和 cash 金额。行业与主题可留空；不要填写当前股价。</p><p>可用 shares 代替 quantity、average_cost 代替 avg_cost。相同账户的同一股票请合并为一行。</p></details>
+          <p id="csv-error" class="status-line error" role="alert"></p>
+          <div id="csv-preview" hidden></div>
+        </div>
+        <details class="legacy-option"><summary>已有旧产品的备份？</summary><p class="small muted">支持 Capital Desk JSON v1 迁移，普通用户无需准备此文件。</p><button id="import-button" type="button">迁移旧数据</button></details>
+        <p id="entry-error" class="status-line error" role="alert"></p>
+        <div id="entry-footer" class="dialog-foot"><span class="small muted">仅在确认后保存。持仓变化时可再次编辑。</span><div class="entry-actions"><button type="button" id="entry-back" hidden>返回编辑</button><button class="primary" id="entry-submit" type="submit">核对持仓</button></div></div>
+        <div id="csv-footer" class="dialog-foot" hidden><span class="small muted">预览不会写入数据；确认后生成新的持仓快照。</span><div class="entry-actions"><button id="csv-preview-button" type="button">校验并预览</button><button id="csv-confirm" class="primary" type="button" disabled>确认导入</button></div></div>
+      </form>
+    </dialog>
+  </body>
+</html>

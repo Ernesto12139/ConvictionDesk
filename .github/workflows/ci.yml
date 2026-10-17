@@ -1,0 +1,67 @@
+name: CI
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install ".[test]"
+      - run: python -m pytest -q
+      - name: Audit public history and identity
+        run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com
+  journey:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -m pip install .
+      - name: Install isolated browser tooling
+        run: |
+          npm install --prefix "$RUNNER_TEMP/browser" playwright@1.64.1
+          "$RUNNER_TEMP/browser/node_modules/.bin/playwright" install --with-deps chromium
+      - name: Real synthetic HTTP and browser journeys
+        env:
+          MIA_BROWSER_CHANNEL: chromium
+        run: |
+          MIA_DEMO_DIR="$RUNNER_TEMP/demo" MIA_BUILD_REVISION="$GITHUB_SHA" python -m market_agent.serve &
+          for i in $(seq 1 30); do curl -fs http://127.0.0.1:8080/health && break; sleep 1; done
+          python scripts/smoke_public_demo.py --base http://127.0.0.1:8080 --expected-revision "$GITHUB_SHA"
+          node scripts/smoke_public_demo_browser.cjs http://127.0.0.1:8080 output/browser "$RUNNER_TEMP/browser/node_modules/playwright/package.json"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: synthetic-browser-evidence
+          path: output/browser
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and smoke read-only preview
+        run: |
+          docker build --build-arg MIA_BUILD_REVISION="$GITHUB_SHA" -t convictiondesk .
+          docker run -d --name preview -p 127.0.0.1:8080:8080 --cap-drop ALL --security-opt no-new-privileges convictiondesk
+          for i in $(seq 1 30); do curl -fs http://127.0.0.1:8080/health && break; sleep 1; done
+          python3 scripts/smoke_public_demo.py --base http://127.0.0.1:8080 --expected-revision "$GITHUB_SHA"
+          test "$(docker inspect --format '{{.Config.User}}' preview)" = '10001:10001'

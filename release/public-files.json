@@ -1,0 +1,438 @@
+[
+  {
+    "source": ".dockerignore",
+    "path": ".dockerignore"
+  },
+  {
+    "source": ".env.example",
+    "path": ".env.example"
+  },
+  {
+    "source": "Dockerfile",
+    "path": "Dockerfile"
+  },
+  {
+    "source": "evals/__init__.py",
+    "path": "evals/__init__.py"
+  },
+  {
+    "source": "evals/convictiondesk.py",
+    "path": "evals/convictiondesk.py"
+  },
+  {
+    "source": "evals/fixtures/market_eod.json",
+    "path": "evals/fixtures/market_eod.json"
+  },
+  {
+    "source": "evals/fixtures/research_agent/pre-v05-research-task.json",
+    "path": "evals/fixtures/research_agent/pre-v05-research-task.json"
+  },
+  {
+    "source": "evals/research_agent.py",
+    "path": "evals/research_agent.py"
+  },
+  {
+    "source": "pyproject.toml",
+    "path": "pyproject.toml"
+  },
+  {
+    "source": "release/ASSET_PROVENANCE.md",
+    "path": "release/ASSET_PROVENANCE.md"
+  },
+  {
+    "source": "release/audit_public_git.py",
+    "path": "release/audit_public_git.py"
+  },
+  {
+    "source": "release/export_snapshot.py",
+    "path": "release/export_snapshot.py"
+  },
+  {
+    "source": "release/public-files.json",
+    "path": "release/public-files.json"
+  },
+  {
+    "source": "scripts/build_public_demo_dataset.py",
+    "path": "scripts/build_public_demo_dataset.py"
+  },
+  {
+    "source": "scripts/check_product_journey.py",
+    "path": "scripts/check_product_journey.py"
+  },
+  {
+    "source": "scripts/check_saved_research_browser.cjs",
+    "path": "scripts/check_saved_research_browser.cjs"
+  },
+  {
+    "source": "scripts/check_today_cost_browser.cjs",
+    "path": "scripts/check_today_cost_browser.cjs"
+  },
+  {
+    "source": "scripts/smoke_public_demo.py",
+    "path": "scripts/smoke_public_demo.py"
+  },
+  {
+    "source": "scripts/smoke_public_demo_browser.cjs",
+    "path": "scripts/smoke_public_demo_browser.cjs"
+  },
+  {
+    "source": "src/market_agent/__init__.py",
+    "path": "src/market_agent/__init__.py"
+  },
+  {
+    "source": "src/market_agent/action_decision.py",
+    "path": "src/market_agent/action_decision.py"
+  },
+  {
+    "source": "src/market_agent/agent.py",
+    "path": "src/market_agent/agent.py"
+  },
+  {
+    "source": "src/market_agent/analytics.py",
+    "path": "src/market_agent/analytics.py"
+  },
+  {
+    "source": "src/market_agent/attention.py",
+    "path": "src/market_agent/attention.py"
+  },
+  {
+    "source": "src/market_agent/attention_api.py",
+    "path": "src/market_agent/attention_api.py"
+  },
+  {
+    "source": "src/market_agent/attention_groups.py",
+    "path": "src/market_agent/attention_groups.py"
+  },
+  {
+    "source": "src/market_agent/attention_jev.py",
+    "path": "src/market_agent/attention_jev.py"
+  },
+  {
+    "source": "src/market_agent/attention_selection.py",
+    "path": "src/market_agent/attention_selection.py"
+  },
+  {
+    "source": "src/market_agent/call_budget.py",
+    "path": "src/market_agent/call_budget.py"
+  },
+  {
+    "source": "src/market_agent/clock.py",
+    "path": "src/market_agent/clock.py"
+  },
+  {
+    "source": "src/market_agent/cockpit.py",
+    "path": "src/market_agent/cockpit.py"
+  },
+  {
+    "source": "src/market_agent/console.py",
+    "path": "src/market_agent/console.py"
+  },
+  {
+    "source": "src/market_agent/decision_context.py",
+    "path": "src/market_agent/decision_context.py"
+  },
+  {
+    "source": "src/market_agent/decision_router.py",
+    "path": "src/market_agent/decision_router.py"
+  },
+  {
+    "source": "src/market_agent/deepseek.py",
+    "path": "src/market_agent/deepseek.py"
+  },
+  {
+    "source": "src/market_agent/demo_assets/research-replay-v2.json",
+    "path": "src/market_agent/demo_assets/research-replay-v2.json"
+  },
+  {
+    "source": "src/market_agent/domain.py",
+    "path": "src/market_agent/domain.py"
+  },
+  {
+    "source": "src/market_agent/fast_decision.py",
+    "path": "src/market_agent/fast_decision.py"
+  },
+  {
+    "source": "src/market_agent/financial_series.py",
+    "path": "src/market_agent/financial_series.py"
+  },
+  {
+    "source": "src/market_agent/hybrid_retrieval.py",
+    "path": "src/market_agent/hybrid_retrieval.py"
+  },
+  {
+    "source": "src/market_agent/investigation.py",
+    "path": "src/market_agent/investigation.py"
+  },
+  {
+    "source": "src/market_agent/investment_context.py",
+    "path": "src/market_agent/investment_context.py"
+  },
+  {
+    "source": "src/market_agent/language.py",
+    "path": "src/market_agent/language.py"
+  },
+  {
+    "source": "src/market_agent/legacy.py",
+    "path": "src/market_agent/legacy.py"
+  },
+  {
+    "source": "src/market_agent/llm.py",
+    "path": "src/market_agent/llm.py"
+  },
+  {
+    "source": "src/market_agent/local_credentials.py",
+    "path": "src/market_agent/local_credentials.py"
+  },
+  {
+    "source": "src/market_agent/longbridge_mcp.py",
+    "path": "src/market_agent/longbridge_mcp.py"
+  },
+  {
+    "source": "src/market_agent/main.py",
+    "path": "src/market_agent/main.py"
+  },
+  {
+    "source": "src/market_agent/market_evidence.py",
+    "path": "src/market_agent/market_evidence.py"
+  },
+  {
+    "source": "src/market_agent/model_profiles.py",
+    "path": "src/market_agent/model_profiles.py"
+  },
+  {
+    "source": "src/market_agent/news.py",
+    "path": "src/market_agent/news.py"
+  },
+  {
+    "source": "src/market_agent/persistence.py",
+    "path": "src/market_agent/persistence.py"
+  },
+  {
+    "source": "src/market_agent/portfolio_csv.py",
+    "path": "src/market_agent/portfolio_csv.py"
+  },
+  {
+    "source": "src/market_agent/portfolio_entry.py",
+    "path": "src/market_agent/portfolio_entry.py"
+  },
+  {
+    "source": "src/market_agent/presentation.py",
+    "path": "src/market_agent/presentation.py"
+  },
+  {
+    "source": "src/market_agent/provider.py",
+    "path": "src/market_agent/provider.py"
+  },
+  {
+    "source": "src/market_agent/public_demo.py",
+    "path": "src/market_agent/public_demo.py"
+  },
+  {
+    "source": "src/market_agent/quote.py",
+    "path": "src/market_agent/quote.py"
+  },
+  {
+    "source": "src/market_agent/research_api.py",
+    "path": "src/market_agent/research_api.py"
+  },
+  {
+    "source": "src/market_agent/research_context.py",
+    "path": "src/market_agent/research_context.py"
+  },
+  {
+    "source": "src/market_agent/research_portfolio.py",
+    "path": "src/market_agent/research_portfolio.py"
+  },
+  {
+    "source": "src/market_agent/research_task.py",
+    "path": "src/market_agent/research_task.py"
+  },
+  {
+    "source": "src/market_agent/research_universe.py",
+    "path": "src/market_agent/research_universe.py"
+  },
+  {
+    "source": "src/market_agent/sec.py",
+    "path": "src/market_agent/sec.py"
+  },
+  {
+    "source": "src/market_agent/semantic.py",
+    "path": "src/market_agent/semantic.py"
+  },
+  {
+    "source": "src/market_agent/serve.py",
+    "path": "src/market_agent/serve.py"
+  },
+  {
+    "source": "src/market_agent/static/attention.css",
+    "path": "src/market_agent/static/attention.css"
+  },
+  {
+    "source": "src/market_agent/static/attention.js",
+    "path": "src/market_agent/static/attention.js"
+  },
+  {
+    "source": "src/market_agent/static/cockpit.css",
+    "path": "src/market_agent/static/cockpit.css"
+  },
+  {
+    "source": "src/market_agent/static/cockpit.js",
+    "path": "src/market_agent/static/cockpit.js"
+  },
+  {
+    "source": "src/market_agent/static/console.css",
+    "path": "src/market_agent/static/console.css"
+  },
+  {
+    "source": "src/market_agent/static/console.js",
+    "path": "src/market_agent/static/console.js"
+  },
+  {
+    "source": "src/market_agent/static/cost-dialog.js",
+    "path": "src/market_agent/static/cost-dialog.js"
+  },
+  {
+    "source": "src/market_agent/static/decision-brief.js",
+    "path": "src/market_agent/static/decision-brief.js"
+  },
+  {
+    "source": "src/market_agent/static/index.html",
+    "path": "src/market_agent/static/index.html"
+  },
+  {
+    "source": "src/market_agent/static/mia.svg",
+    "path": "src/market_agent/static/mia.svg"
+  },
+  {
+    "source": "src/market_agent/static/portfolio-csv.js",
+    "path": "src/market_agent/static/portfolio-csv.js"
+  },
+  {
+    "source": "src/market_agent/static/portfolio-editor.js",
+    "path": "src/market_agent/static/portfolio-editor.js"
+  },
+  {
+    "source": "src/market_agent/static/quiet.css",
+    "path": "src/market_agent/static/quiet.css"
+  },
+  {
+    "source": "src/market_agent/static/research-desk.css",
+    "path": "src/market_agent/static/research-desk.css"
+  },
+  {
+    "source": "src/market_agent/static/research-desk.js",
+    "path": "src/market_agent/static/research-desk.js"
+  },
+  {
+    "source": "src/market_agent/static/theme-init.js",
+    "path": "src/market_agent/static/theme-init.js"
+  },
+  {
+    "source": "src/market_agent/tdb.py",
+    "path": "src/market_agent/tdb.py"
+  },
+  {
+    "source": "src/market_agent/tdb_contract.py",
+    "path": "src/market_agent/tdb_contract.py"
+  },
+  {
+    "source": "src/market_agent/tdb_semantic.py",
+    "path": "src/market_agent/tdb_semantic.py"
+  },
+  {
+    "source": "src/market_agent/tdb_workflow.py",
+    "path": "src/market_agent/tdb_workflow.py"
+  },
+  {
+    "source": "src/market_agent/test_isolation.py",
+    "path": "src/market_agent/test_isolation.py"
+  },
+  {
+    "source": "src/market_agent/thesis.py",
+    "path": "src/market_agent/thesis.py"
+  },
+  {
+    "source": "tests/conftest.py",
+    "path": "tests/conftest.py"
+  },
+  {
+    "source": "tests/test_call_budget.py",
+    "path": "tests/test_call_budget.py"
+  },
+  {
+    "source": "tests/test_convictiondesk_attention.py",
+    "path": "tests/test_convictiondesk_attention.py"
+  },
+  {
+    "source": "tests/test_convictiondesk_decision.py",
+    "path": "tests/test_convictiondesk_decision.py"
+  },
+  {
+    "source": "tests/test_financial_series.py",
+    "path": "tests/test_financial_series.py"
+  },
+  {
+    "source": "tests/test_model_profiles.py",
+    "path": "tests/test_model_profiles.py"
+  },
+  {
+    "source": "tests/test_product_journey_gate.py",
+    "path": "tests/test_product_journey_gate.py"
+  },
+  {
+    "source": "tests/test_public_demo.py",
+    "path": "tests/test_public_demo.py"
+  },
+  {
+    "source": "tests/test_quiet_ui_contract.py",
+    "path": "tests/test_quiet_ui_contract.py"
+  },
+  {
+    "source": "tests/test_release_export.py",
+    "path": "tests/test_release_export.py"
+  },
+  {
+    "source": "tests/test_sec_earnings.py",
+    "path": "tests/test_sec_earnings.py"
+  },
+  {
+    "source": "release/PUBLIC_README.md",
+    "path": "README.md"
+  },
+  {
+    "source": "release/PUBLIC_CI.yml",
+    "path": ".github/workflows/ci.yml"
+  },
+  {
+    "source": "release/LICENSE",
+    "path": "LICENSE"
+  },
+  {
+    "source": "release/PUBLIC_GITIGNORE",
+    "path": ".gitignore"
+  },
+  {
+    "source": "release/assets/convictiondesk-architecture-dark.svg",
+    "path": "docs/assets/convictiondesk-architecture-dark.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-architecture-light.svg",
+    "path": "docs/assets/convictiondesk-architecture-light.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-evidence-to-action-dark.svg",
+    "path": "docs/assets/convictiondesk-evidence-to-action-dark.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-evidence-to-action-light.svg",
+    "path": "docs/assets/convictiondesk-evidence-to-action-light.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-fast-deep-dark.svg",
+    "path": "docs/assets/convictiondesk-fast-deep-dark.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-fast-deep-light.svg",
+    "path": "docs/assets/convictiondesk-fast-deep-light.svg"
+  }
+]

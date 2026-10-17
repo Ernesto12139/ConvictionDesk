@@ -1,0 +1,5 @@
+[
+  {"symbol": "AAPL", "price": "200", "as_of": "2026-09-18T20:00:00Z", "currency": "USD", "provider": "fixture_eod"},
+  {"symbol": "MSFT", "price": "200", "as_of": "2026-09-18T20:00:00Z", "currency": "USD", "provider": "fixture_eod"},
+  {"symbol": "LUNR", "price": "10", "as_of": "2026-09-18T20:00:00Z", "currency": "USD", "provider": "fixture_eod"}
+]

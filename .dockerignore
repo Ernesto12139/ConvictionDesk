@@ -1,0 +1,12 @@
+**
+!Dockerfile
+!pyproject.toml
+!src/
+!src/market_agent/
+!src/market_agent/**
+**/__pycache__/
+**/*.pyc
+**/.env*
+**/*.db
+**/*.sqlite*
+**/*.dpapi
