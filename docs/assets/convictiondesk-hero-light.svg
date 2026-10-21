@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="400" viewBox="0 0 1280 400" role="img" aria-labelledby="title desc">
+<title id="title">ConvictionDesk — From market noise to portfolio decisions</title>
+<desc id="desc">Scattered market signals pass a point-in-time cutoff and become one typed, cited decision about a position.</desc>
+<rect width="1280" height="400" rx="20" fill="#F6F7F4"/>
+<rect x="0.5" y="0.5" width="1279" height="399" rx="20" fill="none" stroke="#E0E6E2"/>
+<rect x="64" y="96" width="52" height="52" rx="12" fill="#27745F"/>
+<text x="90" y="130" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle"><tspan x="90" dy="0">CD</tspan></text>
+<text x="132" y="133" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="34" font-weight="650" fill="#202B29" text-anchor="start"><tspan x="132" dy="0">ConvictionDesk</tspan></text>
+<text x="64" y="208" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="40" font-weight="650" fill="#202B29" text-anchor="start"><tspan x="64" dy="0">From market noise</tspan><tspan x="64" dy="50">to portfolio decisions.</tspan></text>
+<text x="64" y="308" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="17" font-weight="400" fill="#697C76" text-anchor="start"><tspan x="64" dy="0">An open-source research workstation that ties</tspan><tspan x="64" dy="26">every judgment to your holdings and its evidence.</tspan></text>
+<path d="M690 92 C 750 92, 812 168, 842 168" fill="none" stroke="#C9D3CE" stroke-width="1.5"/>
+<rect x="640" y="78" width="50" height="28" rx="14" fill="#FFFFFF" stroke="#E0E6E2"/>
+<text x="665.0" y="97" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#697C76" text-anchor="middle"><tspan x="665.0" dy="0">News</tspan></text>
+<path d="M742 150 C 802 150, 812 194, 842 194" fill="none" stroke="#C9D3CE" stroke-width="1.5"/>
+<rect x="700" y="136" width="42" height="28" rx="14" fill="#FFFFFF" stroke="#E0E6E2"/>
+<text x="721.0" y="155" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#697C76" text-anchor="middle"><tspan x="721.0" dy="0">8-K</tspan></text>
+<path d="M718 206 C 778 206, 812 220, 842 220" fill="none" stroke="#C9D3CE" stroke-width="1.5"/>
+<rect x="612" y="192" width="106" height="28" rx="14" fill="#FFFFFF" stroke="#E0E6E2"/>
+<text x="665.0" y="211" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#697C76" text-anchor="middle"><tspan x="665.0" dy="0">Price · EOD</tspan></text>
+<path d="M796 262 C 856 262, 812 246, 842 246" fill="none" stroke="#C9D3CE" stroke-width="1.5"/>
+<rect x="690" y="248" width="106" height="28" rx="14" fill="#FFFFFF" stroke="#E0E6E2"/>
+<text x="743.0" y="267" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#697C76" text-anchor="middle"><tspan x="743.0" dy="0">10-Q · XBRL</tspan></text>
+<path d="M710 318 C 770 318, 812 272, 842 272" fill="none" stroke="#C9D3CE" stroke-width="1.5"/>
+<rect x="628" y="304" width="82" height="28" rx="14" fill="#FFFFFF" stroke="#E0E6E2"/>
+<text x="669.0" y="323" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#697C76" text-anchor="middle"><tspan x="669.0" dy="0">Holdings</tspan></text>
+<path d="M822 352 C 882 352, 812 298, 842 298" fill="none" stroke="#C9D3CE" stroke-width="1.5"/>
+<rect x="716" y="338" width="106" height="28" rx="14" fill="#FFFFFF" stroke="#E0E6E2"/>
+<text x="769.0" y="357" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#697C76" text-anchor="middle"><tspan x="769.0" dy="0">Your thesis</tspan></text>
+<line x1="852" y1="72" x2="852" y2="344" stroke="#27745F" stroke-width="2" stroke-dasharray="6 6"/>
+<text x="852" y="60" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="600" fill="#27745F" text-anchor="middle"><tspan x="852" dy="0">point-in-time cutoff</tspan></text>
+<path d="M852 233 L 884 233" stroke="#27745F" stroke-width="2"/>
+<rect x="884" y="112" width="332" height="200" rx="14" fill="#FFFFFF" stroke="#E0E6E2"/>
+<text x="908" y="150" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#202B29" text-anchor="start"><tspan x="908" dy="0">ADD · HOLD · REDUCE · EXIT</tspan></text>
+<text x="908" y="172" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#697C76" text-anchor="start"><tspan x="908" dy="0">typed direction + status</tspan></text>
+<text x="908" y="208" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#697C76" text-anchor="start"><tspan x="908" dy="0">Why</tspan></text>
+<rect x="1024" y="199" width="168" height="8" rx="4" fill="#E6F0EB"/>
+<text x="908" y="238" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#697C76" text-anchor="start"><tspan x="908" dy="0">Counterevidence</tspan></text>
+<rect x="1064" y="229" width="128" height="8" rx="4" fill="#E6F0EB"/>
+<text x="908" y="268" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#697C76" text-anchor="start"><tspan x="908" dy="0">What would change it</tspan></text>
+<rect x="1096" y="259" width="96" height="8" rx="4" fill="#E6F0EB"/>
+<rect x="908" y="298" width="38" height="22" rx="6" fill="#E6F0EB"/>
+<text x="927" y="313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#27745F" text-anchor="middle"><tspan x="927" dy="0">[5]</tspan></text>
+<rect x="952" y="298" width="38" height="22" rx="6" fill="#E6F0EB"/>
+<text x="971" y="313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#27745F" text-anchor="middle"><tspan x="971" dy="0">[8]</tspan></text>
+<rect x="996" y="298" width="38" height="22" rx="6" fill="#E6F0EB"/>
+<text x="1015" y="313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" font-weight="600" fill="#27745F" text-anchor="middle"><tspan x="1015" dy="0">[14]</tspan></text>
+<text x="1196" y="314" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" font-weight="400" fill="#697C76" text-anchor="end"><tspan x="1196" dy="0">cited evidence</tspan></text>
+<rect x="954" y="340" width="192" height="30" rx="15" fill="#E6F0EB"/>
+<text x="1050" y="360" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#27745F" text-anchor="middle"><tspan x="1050" dy="0">What-if → your account</tspan></text>
+</svg>

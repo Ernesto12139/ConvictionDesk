@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="470" viewBox="0 0 1280 470" role="img" aria-labelledby="title desc">
+<title id="title">The ConvictionDesk research loop</title>
+<desc id="desc">Five stages: scope, gather, assess, check a gap, validate and save. Guardrails enforced in code run underneath every stage.</desc>
+<rect width="1280" height="470" rx="20" fill="#101419"/>
+<rect x="0.5" y="0.5" width="1279" height="469" rx="20" fill="none" stroke="#34414A"/>
+<rect x="56" y="72" width="212" height="176" rx="14" fill="#1C252B" stroke="#34414A"/>
+<text x="76" y="106" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#8DC8B5" text-anchor="start"><tspan x="76" dy="0">01</tspan></text>
+<text x="76" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="650" fill="#F1F4F1" text-anchor="start"><tspan x="76" dy="0">Scope</tspan></text>
+<text x="76" y="164" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#AABAB6" text-anchor="start"><tspan x="76" dy="0">Your holdings, the</tspan><tspan x="76" dy="19">account and a time</tspan><tspan x="76" dy="19">cutoff are frozen</tspan><tspan x="76" dy="19">for this task</tspan></text>
+<path d="M270 160.0 L 284 160.0" stroke="#8DC8B5" stroke-width="2"/>
+<path d="M280 156.0 L 286 160.0 L 280 164.0" fill="none" stroke="#8DC8B5" stroke-width="2"/>
+<rect x="288" y="72" width="212" height="176" rx="14" fill="#1C252B" stroke="#34414A"/>
+<text x="308" y="106" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#8DC8B5" text-anchor="start"><tspan x="308" dy="0">02</tspan></text>
+<text x="308" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="650" fill="#F1F4F1" text-anchor="start"><tspan x="308" dy="0">Gather</tspan></text>
+<text x="308" y="164" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#AABAB6" text-anchor="start"><tspan x="308" dy="0">Typed tools fetch</tspan><tspan x="308" dy="19">portfolio, price,</tspan><tspan x="308" dy="19">news, SEC filings</tspan><tspan x="308" dy="19">and XBRL facts</tspan></text>
+<path d="M502 160.0 L 516 160.0" stroke="#8DC8B5" stroke-width="2"/>
+<path d="M512 156.0 L 518 160.0 L 512 164.0" fill="none" stroke="#8DC8B5" stroke-width="2"/>
+<rect x="520" y="72" width="212" height="176" rx="14" fill="#1C252B" stroke="#34414A"/>
+<text x="540" y="106" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#8DC8B5" text-anchor="start"><tspan x="540" dy="0">03</tspan></text>
+<text x="540" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="650" fill="#F1F4F1" text-anchor="start"><tspan x="540" dy="0">Assess</tspan></text>
+<text x="540" y="164" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#AABAB6" text-anchor="start"><tspan x="540" dy="0">A bounded model</tspan><tspan x="540" dy="19">call writes a typed</tspan><tspan x="540" dy="19">decision that cites</tspan><tspan x="540" dy="19">evidence IDs</tspan></text>
+<path d="M734 160.0 L 748 160.0" stroke="#8DC8B5" stroke-width="2"/>
+<path d="M744 156.0 L 750 160.0 L 744 164.0" fill="none" stroke="#8DC8B5" stroke-width="2"/>
+<rect x="752" y="72" width="212" height="176" rx="14" fill="#1C252B" stroke="#34414A"/>
+<text x="772" y="106" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#8DC8B5" text-anchor="start"><tspan x="772" dy="0">04</tspan></text>
+<text x="772" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="650" fill="#F1F4F1" text-anchor="start"><tspan x="772" dy="0">Check</tspan></text>
+<text x="772" y="164" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#AABAB6" text-anchor="start"><tspan x="772" dy="0">In Deep, one material</tspan><tspan x="772" dy="19">gap may earn a single</tspan><tspan x="772" dy="19">targeted news or</tspan><tspan x="772" dy="19">SEC search</tspan></text>
+<path d="M966 160.0 L 980 160.0" stroke="#8DC8B5" stroke-width="2"/>
+<path d="M976 156.0 L 982 160.0 L 976 164.0" fill="none" stroke="#8DC8B5" stroke-width="2"/>
+<rect x="984" y="72" width="212" height="176" rx="14" fill="#1D3530" stroke="#8DC8B5"/>
+<text x="1004" y="106" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#8DC8B5" text-anchor="start"><tspan x="1004" dy="0">05</tspan></text>
+<text x="1004" y="134" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="18" font-weight="650" fill="#F1F4F1" text-anchor="start"><tspan x="1004" dy="0">Validate · save</tspan></text>
+<text x="1004" y="164" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#AABAB6" text-anchor="start"><tspan x="1004" dy="0">Citations, numbers,</tspan><tspan x="1004" dy="19">time and identity</tspan><tspan x="1004" dy="19">are checked, then an</tspan><tspan x="1004" dy="19">immutable revision</tspan></text>
+<path d="M1090.0 72 C 1090.0 28, 162.0 28, 162.0 66" fill="none" stroke="#3C4A52" stroke-width="1.5" stroke-dasharray="5 5"/>
+<path d="M158.0 60 L 162.0 67 L 166.0 60" fill="none" stroke="#3C4A52" stroke-width="1.5"/>
+<text x="626.0" y="36" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#AABAB6" text-anchor="middle"><tspan x="626.0" dy="0">next event → same task, new revision</tspan></text>
+<text x="56" y="282" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#F1F4F1" text-anchor="start"><tspan x="56" dy="0">Every run ends in a saved, reopenable record: a typed Action, its counterevidence, and an account What-if on demand.</tspan></text>
+<rect x="56" y="316" width="1168" height="96" rx="14" fill="#1C252B" stroke="#34414A"/>
+<text x="76" y="346" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#AABAB6" text-anchor="start"><tspan x="76" dy="0">Guardrails in code, under every stage</tspan></text>
+<rect x="76" y="364" width="176" height="30" rx="15" fill="#1D3530"/>
+<text x="164.0" y="384" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#8DC8B5" text-anchor="middle"><tspan x="164.0" dy="0">Point-in-time cutoff</tspan></text>
+<rect x="264.0" y="364" width="161" height="30" rx="15" fill="#1D3530"/>
+<text x="344.4" y="384" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#8DC8B5" text-anchor="middle"><tspan x="344.4" dy="0">Decimal arithmetic</tspan></text>
+<rect x="436.79999999999995" y="364" width="206" height="30" rx="15" fill="#1D3530"/>
+<text x="540.0" y="384" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#8DC8B5" text-anchor="middle"><tspan x="540.0" dy="0">Typed statement identity</tspan></text>
+<rect x="655.1999999999999" y="364" width="184" height="30" rx="15" fill="#1D3530"/>
+<text x="746.9999999999999" y="384" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#8DC8B5" text-anchor="middle"><tspan x="746.9999999999999" dy="0">Unknown stays unknown</tspan></text>
+<rect x="850.8" y="364" width="191" height="30" rx="15" fill="#1D3530"/>
+<text x="946.4" y="384" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#8DC8B5" text-anchor="middle"><tspan x="946.4" dy="0">Source &amp; token budgets</tspan></text>
+<rect x="1054.0" y="364" width="138" height="30" rx="15" fill="#1D3530"/>
+<text x="1123.0" y="384" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="600" fill="#8DC8B5" text-anchor="middle"><tspan x="1123.0" dy="0">Read-only tools</tspan></text>
+</svg>

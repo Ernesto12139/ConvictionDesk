@@ -650,5 +650,61 @@
   {
     "source": "release/assets/convictiondesk-whatif-dark.png",
     "path": "docs/assets/convictiondesk-whatif-dark.png"
+  },
+  {
+    "source": "release/public-docs/README.md",
+    "path": "docs/README.md"
+  },
+  {
+    "source": "release/public-docs/getting-started.md",
+    "path": "docs/getting-started.md"
+  },
+  {
+    "source": "release/public-docs/architecture.md",
+    "path": "docs/architecture.md"
+  },
+  {
+    "source": "release/public-docs/data-sources.md",
+    "path": "docs/data-sources.md"
+  },
+  {
+    "source": "release/public-docs/verification.md",
+    "path": "docs/verification.md"
+  },
+  {
+    "source": "release/public-docs/showcase.md",
+    "path": "docs/showcase.md"
+  },
+  {
+    "source": "release/PUBLIC_CONTRIBUTING.md",
+    "path": "CONTRIBUTING.md"
+  },
+  {
+    "source": "release/PUBLIC_CHANGELOG.md",
+    "path": "CHANGELOG.md"
+  },
+  {
+    "source": "release/assets/convictiondesk-hero-light.svg",
+    "path": "docs/assets/convictiondesk-hero-light.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-hero-dark.svg",
+    "path": "docs/assets/convictiondesk-hero-dark.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-loop-light.svg",
+    "path": "docs/assets/convictiondesk-loop-light.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-loop-dark.svg",
+    "path": "docs/assets/convictiondesk-loop-dark.svg"
+  },
+  {
+    "source": "release/assets/convictiondesk-product-light.png",
+    "path": "docs/assets/convictiondesk-product-light.png"
+  },
+  {
+    "source": "release/assets/convictiondesk-product-dark.png",
+    "path": "docs/assets/convictiondesk-product-dark.png"
   }
 ]
