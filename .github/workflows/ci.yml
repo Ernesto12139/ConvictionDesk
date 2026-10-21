@@ -4,6 +4,20 @@ on:
     branches: [main]
     tags: ['v*']
   pull_request:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Existing immutable annotated release tag to verify
+        required: true
+        type: string
+      expected_commit:
+        description: Full reviewed release commit SHA
+        required: true
+        type: string
+      expected_tag_object:
+        description: Full annotated tag object SHA
+        required: true
+        type: string
 permissions:
   contents: read
 jobs:
@@ -17,6 +31,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ inputs.release_tag || github.sha }}
+      # checkout can replace an annotated tag with the event's peeled commit.
+      # Restore only the runner's local ref from the authoritative remote object.
+      - name: Restore annotated release tag and bind reviewed source
+        if: startsWith(github.ref, 'refs/tags/') || inputs.release_tag != ''
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+          EXPECTED_COMMIT: ${{ inputs.expected_commit || github.sha }}
+          EXPECTED_TAG_OBJECT: ${{ inputs.expected_tag_object }}
+        run: |
+          [[ "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          git fetch --no-tags origin "refs/tags/$RELEASE_TAG"
+          tag_object="$(git rev-parse FETCH_HEAD)"
+          test "$(git cat-file -t "$tag_object")" = tag
+          test "$(git rev-parse "$tag_object^{commit}")" = "$(git rev-parse HEAD)"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_COMMIT"
+          if [ -n "$EXPECTED_TAG_OBJECT" ]; then test "$tag_object" = "$EXPECTED_TAG_OBJECT"; fi
+          git update-ref "refs/tags/$RELEASE_TAG" "$tag_object"
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -39,13 +72,18 @@ jobs:
           git -C "$RUNNER_TEMP/pr-audit" checkout -q main
           python release/audit_public_git.py --repo "$RUNNER_TEMP/pr-audit" --email 198560242+Ernesto12139@users.noreply.github.com --expected-root 555ca4fbc531e61bf0fdc33d5022fec38dece11b
       - name: Bind tagged build to its release commit
-        if: startsWith(github.ref, 'refs/tags/')
-        run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com --release-tag "${{ github.ref_name }}"
+        if: startsWith(github.ref, 'refs/tags/') || inputs.release_tag != ''
+        shell: bash
+        env:
+          RELEASE_TAG: ${{ inputs.release_tag || github.ref_name }}
+        run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com --release-tag "$RELEASE_TAG"
   journey:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag || github.sha }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -60,10 +98,13 @@ jobs:
       - name: Real synthetic HTTP and browser journeys
         env:
           MIA_BROWSER_CHANNEL: chromium
+          EXPECTED_COMMIT: ${{ inputs.expected_commit || github.sha }}
         run: |
-          MIA_DEMO_DIR="$RUNNER_TEMP/demo" MIA_BUILD_REVISION="$GITHUB_SHA" python -m market_agent.serve &
+          revision="$(git rev-parse HEAD)"
+          test "$revision" = "$EXPECTED_COMMIT"
+          MIA_DEMO_DIR="$RUNNER_TEMP/demo" MIA_BUILD_REVISION="$revision" python -m market_agent.serve &
           for i in $(seq 1 30); do curl -fs http://127.0.0.1:8080/health && break; sleep 1; done
-          python scripts/smoke_public_demo.py --base http://127.0.0.1:8080 --expected-revision "$GITHUB_SHA"
+          python scripts/smoke_public_demo.py --base http://127.0.0.1:8080 --expected-revision "$revision"
           node scripts/smoke_public_demo_browser.cjs http://127.0.0.1:8080 output/browser "$RUNNER_TEMP/browser/node_modules/playwright/package.json"
       - uses: actions/upload-artifact@v4
         if: always()
@@ -75,10 +116,16 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.release_tag || github.sha }}
       - name: Build and smoke read-only preview
+        env:
+          EXPECTED_COMMIT: ${{ inputs.expected_commit || github.sha }}
         run: |
-          docker build --build-arg MIA_BUILD_REVISION="$GITHUB_SHA" -t convictiondesk .
+          revision="$(git rev-parse HEAD)"
+          test "$revision" = "$EXPECTED_COMMIT"
+          docker build --build-arg MIA_BUILD_REVISION="$revision" -t convictiondesk .
           docker run -d --name preview -p 127.0.0.1:8080:8080 --cap-drop ALL --security-opt no-new-privileges convictiondesk
           for i in $(seq 1 30); do curl -fs http://127.0.0.1:8080/health && break; sleep 1; done
-          python3 scripts/smoke_public_demo.py --base http://127.0.0.1:8080 --expected-revision "$GITHUB_SHA"
+          python3 scripts/smoke_public_demo.py --base http://127.0.0.1:8080 --expected-revision "$revision"
           test "$(docker inspect --format '{{.Config.User}}' preview)" = '10001:10001'

@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "a8f14eaea51a906735bcf2fce93490340f58eafe",
+  "upstream_source_sha": "634aa1836a49d3dc19e0eb128cea403291d060e4",
   "source_version": "0.9.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -606,8 +606,8 @@
     {
       "path": ".github/workflows/ci.yml",
       "source": "release/PUBLIC_CI.yml",
-      "git_blob": "84f23b1f4a4335a18960be59c78a0063a8947512",
-      "sha256": "892015e9fc52ef9b96f11e7de6526d920250bc0445dc03ba3318702e0e3f1397"
+      "git_blob": "80c9a87eeb5ef0af106da775a4dd2cda38d8dd99",
+      "sha256": "6bdbbdac48422545c76ba22af5dae3ca8dd1425302b74ed49313e0735cb8f60f"
     },
     {
       "path": "LICENSE",
