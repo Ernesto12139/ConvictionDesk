@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "5f795113e7f6f9b904843a349acd120901ea1e3f",
+  "upstream_source_sha": "9d9db7b0c55047dc96e0826d3a0ed5dd030ecb61",
   "source_version": "0.9.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -996,8 +996,8 @@
     {
       "path": "docs/architecture.md",
       "source": "release/public-docs/architecture.md",
-      "git_blob": "9dcdc8abb205e82baf63dd6b4a88c5b89664ccfb",
-      "sha256": "4cd2da58d9ebd13da7409f7d7a54381fcf21f0f56ef27076168235d00bdae492"
+      "git_blob": "c6cdd74d060565bcb295a289ca2f3bfe13a5cc7f",
+      "sha256": "59cad28888cb091df9e6099b7dd25e5a78904945118081973f32609e640b2f5d"
     },
     {
       "path": "docs/data-sources.md",
@@ -1044,14 +1044,14 @@
     {
       "path": "docs/assets/convictiondesk-loop-light.svg",
       "source": "release/assets/convictiondesk-loop-light.svg",
-      "git_blob": "90883255d9f2801c106c3fc35992e0f9411a4a37",
-      "sha256": "7c8bcecbc6e9821e98f832898316e97d67bd6d3699bb4924e8dbfbd740a1f2d4"
+      "git_blob": "29b56995d78b3aba949560554f47993115bebd12",
+      "sha256": "91c4157776c454bf4a6cf0605218b026fc93697539c07cbaabcdbf8d376472fc"
     },
     {
       "path": "docs/assets/convictiondesk-loop-dark.svg",
       "source": "release/assets/convictiondesk-loop-dark.svg",
-      "git_blob": "318c2519308a86f10187279394c55d99ac9eef15",
-      "sha256": "d68a1437a72ce6e9c4ef0ec397060b210e04ce7781df50f92f703e196c02ba40"
+      "git_blob": "8a3d348cdfeceab6f3f79d5f34c79d6f5708e4a8",
+      "sha256": "e4a706f5def9c6c82ee2dcd3e3b27d4dd839b1b51cdc19d669664f001fc23027"
     },
     {
       "path": "docs/assets/convictiondesk-product-light.png",

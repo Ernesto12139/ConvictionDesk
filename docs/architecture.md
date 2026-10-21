@@ -18,7 +18,7 @@ A research task moves through five stages. The tool order is owned by code; the 
 1. **Scope.** The task freezes a portfolio snapshot, the selected account and a cutoff time. A follow-up keeps the same snapshot and account, so a thread of research never silently changes its premises.
 2. **Gather.** Typed tools read the portfolio, end-of-day prices, the latest thesis, the previous decision, company news and SEC filings — plus, in Deep, exact-period SEC financials. Every tool call is recorded with its arguments, status and output IDs.
 3. **Assess.** A model call receives a bounded projection of the evidence and returns a typed `ResearchAssessment`: a direct judgment, reasons, support, counterevidence, change conditions, next checks and an Action.
-4. **Check.** In Deep, the assessment may name one evidence gap that could change the judgment. Exactly one targeted news or SEC search runs; the reassessment must state whether the new evidence changed the call, and a claimed change must cite the new evidence.
+4. **Check.** In Deep, the assessment may name one evidence gap that could change the judgment. At most one targeted news or SEC search runs; the reassessment must state whether the new evidence changed the call, and a claimed change must cite the new evidence.
 5. **Validate and save.** The output is checked before anything is written. A passing result becomes an immutable revision; a failing one is saved as a failed round with its reason, without a new judgment.
 
 Code: [`research_task.py`](../src/market_agent/research_task.py) (`ResearchService.execute`, `validate_assessment`, `ResearchTasks`), [`research_context.py`](../src/market_agent/research_context.py) (`build_context`).
