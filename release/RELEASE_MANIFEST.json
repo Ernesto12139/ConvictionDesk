@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "db3303d8e0b473afd6d44b2da4406b58989eb148",
+  "upstream_source_sha": "34716bfce3c6f53e95b5fe997afdd3c17d4e9f1b",
   "source_version": "0.9.0.dev0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -96,8 +96,8 @@
     {
       "path": "scripts/check_saved_research_browser.cjs",
       "source": "scripts/check_saved_research_browser.cjs",
-      "git_blob": "85a09648c8caa48c0377b6fb9e33543f22290b3d",
-      "sha256": "4eda2d70303def4efc466391bbb5486d71254d7704b723068b9d9408d7b9f8ed"
+      "git_blob": "7f07ad437185a541923fe0deecc189f25137f1d7",
+      "sha256": "19c9217f659853aff6ea2b4444c85fe6f2c5e2ed323b2556b99ffa9762074d98"
     },
     {
       "path": "scripts/check_today_cost_browser.cjs",
@@ -600,14 +600,14 @@
     {
       "path": "README.md",
       "source": "release/PUBLIC_README.md",
-      "git_blob": "24a25426a26ec48a0aee4dd5238ab655f63c9285",
-      "sha256": "bc0814c1a1d090f29f036a2637c57f3d696b9dd2f0c74a63c1bc85709e0b1fa9"
+      "git_blob": "d34349eadbaed6d8c26727bab184388e002e1d3a",
+      "sha256": "1893044c350b11b1dfff692cfcb3427107cf460c3d58ae69007a732bf4bd79bf"
     },
     {
       "path": ".github/workflows/ci.yml",
       "source": "release/PUBLIC_CI.yml",
-      "git_blob": "755794da564ada2f91a0cfb99b09c1f775a1e550",
-      "sha256": "e603cdeba09e839bd9499aec2dd903a348c0c20ac7d0502e428da0061c8ac934"
+      "git_blob": "84f23b1f4a4335a18960be59c78a0063a8947512",
+      "sha256": "892015e9fc52ef9b96f11e7de6526d920250bc0445dc03ba3318702e0e3f1397"
     },
     {
       "path": "LICENSE",

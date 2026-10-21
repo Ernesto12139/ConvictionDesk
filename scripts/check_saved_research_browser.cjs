@@ -56,6 +56,12 @@ const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
     // D-083: with a saved Action the conclusion card shows the direction; the
     // original core judgment is kept once, in the full report (one click).
     if(!task.action_decision)check((await page.locator('.desk-core').innerText()).includes(task.assessment.core_judgment.text),prefix+'_complete_core_judgment');
+    if(task.action_decision){
+     const a=task.action_decision,card=await page.locator('.desk-core').innerText();
+     const head=['ADD','HOLD','REDUCE','EXIT'].includes(a.decision_action)?a.decision_action+' · ':a.decision_status==='NOT_APPLICABLE'?'该操作不适用':'方向未形成 · 证据不足';
+     const note=a.applicability_note||({SUPPORTED:'证据支持的研究方向',PROVISIONAL:'暂定 · PROVISIONAL'}[a.decision_status]||'尚无适用且有依据的操作方向');
+     check(await page.locator('.desk-core').isVisible()&&card.includes(head)&&card.includes(note),prefix+'_conclusion_shows_action_direction_and_status');
+    }
     check(await page.locator('#desk-result .desk-decision-drivers').count()===1&&await page.locator('#desk-result [data-brief="counter"]').count()===1,prefix+'_decision_brief_rendered');
     const full=page.locator('.desk-report-details');await full.locator('summary').click();
     check(await full.evaluate(e=>e.open),prefix+'_full_report_expanded');
@@ -64,9 +70,12 @@ const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
     for(const field of ['key_reasons','support','counterevidence','action_conditions','next_checks']){
      check(task.assessment[field].every(s=>text.includes(s.text)),prefix+'_all_'+field+'_visible');
     }
-    // Wide: side panel. Narrow: the first sentence sits under the conclusion.
+    // Wide (>760px, quiet.css): full text in the side panel. Narrow: the first
+    // sentence sits under the conclusion. innerText of a display:none node still
+    // returns its text, so the branch for this width must also be visible.
     const nextText=task.assessment.next_checks[0].text,nextFirst=(nextText.match(/^.*?[。！？](?:[”」])?/s)||[nextText])[0];
-    check(await page.locator('#desk-next-action').innerText().then(t=>t.includes(nextText))||await page.locator('.desk-core-next').innerText().then(t=>t.includes(nextFirst)).catch(()=>false),prefix+'_next_check_rendered');
+    const nextShown=width>760?page.locator('#desk-next-action .desk-next-check'):page.locator('#desk-result .desk-core-next');
+    check(await nextShown.count()===1&&await nextShown.isVisible()&&(await nextShown.innerText()).includes(width>760?nextText:nextFirst),prefix+'_next_check_visible');
     const cite=full.locator('.desk-citation').first();await cite.click();
     check(await page.locator('#desk-evidence-dialog').evaluate(e=>e.open),prefix+'_citation_opens_evidence');
     check(await page.locator('#desk-source-list > details[open]').count()>0,prefix+'_cited_receipt_expanded');

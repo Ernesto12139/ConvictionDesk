@@ -214,8 +214,8 @@ This table describes the source candidate, not a published v0.9 release. Public 
 | 🧩 Implemented, synthetic/frozen verification | Same-task Fast → Deep continuation |
 | 🧩 Implemented, synthetic/frozen verification | Historical TTM in Deep's cited context and the research page; per-symbol Today coverage; current batch vs. older pending receipts |
 | 🧩 Implemented, synthetic/frozen verification | Local price-scenario receipt from user-supplied dated prices; refuses known share-class or corporate-action conflicts; never updates the saved Action |
-| 🧩 Implemented, synthetic verification; new independent QA pending | Decision-first research page (one brief, same-source disclosure, mobile next step) and single-account share-delta What-if: holding-account default, fees, missing prices, cash/oversell/class guards, trade vs repricing vs modeled P&L, exact plain decimals |
-| 🧩 Implemented, synthetic verification; new independent QA pending | Regular-session OHLCV qualification → SMA20 / simple ATR14 / 10-session candidate bands → explicit hypothetical account preview; real data not admitted |
+| 🧩 Implemented, synthetic verification; independent engineering QA accepted | Decision-first research page (one brief, same-source disclosure, mobile next step) and single-account share-delta What-if: holding-account default, fees, missing prices, cash/oversell/class guards, trade vs repricing vs modeled P&L, exact plain decimals |
+| 🧩 Implemented, synthetic verification; independent engineering QA accepted | Regular-session OHLCV qualification → SMA20 / simple ATR14 / 10-session candidate bands → explicit hypothetical account preview; real data not admitted |
 | 🧪 Experimental | Live Today scans, live research and CSV portfolio import with your own keys; other OpenAI-compatible models |
 
 *Verified (scoped)* means covered by the deterministic and synthetic checks below, not universal live coverage. ConvictionDesk makes **no accuracy, return or backtest claim**; the quality of live screening and direction is not benchmarked.

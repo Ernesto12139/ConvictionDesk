@@ -23,7 +23,21 @@ jobs:
       - run: python -m pip install ".[test]"
       - run: python -m pytest -q
       - name: Audit public history and identity
+        if: github.event_name != 'pull_request'
         run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com --expected-root 555ca4fbc531e61bf0fdc33d5022fec38dece11b
+      # A pull_request checkout holds GitHub's synthetic merge commit and extra
+      # refs. Audit the PR head instead, as the main it would fast-forward to.
+      - name: Audit pull request head as future main
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git update-ref refs/audit/pr-head "$HEAD_SHA"
+          git init -q "$RUNNER_TEMP/pr-audit"
+          git -C "$RUNNER_TEMP/pr-audit" fetch -q --tags "$GITHUB_WORKSPACE" refs/audit/pr-head:refs/heads/main
+          git -C "$RUNNER_TEMP/pr-audit" checkout -q main
+          python release/audit_public_git.py --repo "$RUNNER_TEMP/pr-audit" --email 198560242+Ernesto12139@users.noreply.github.com --expected-root 555ca4fbc531e61bf0fdc33d5022fec38dece11b
       - name: Bind tagged build to its release commit
         if: startsWith(github.ref, 'refs/tags/')
         run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com --release-tag "${{ github.ref_name }}"
