@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "bb0825d1d260c504cef2382301824bccab94a233",
+  "upstream_source_sha": "a8f14eaea51a906735bcf2fce93490340f58eafe",
   "source_version": "0.9.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -834,8 +834,8 @@
     {
       "path": "release/V09_RELEASE_NOTES.md",
       "source": "release/V09_RELEASE_NOTES.md",
-      "git_blob": "61ddb5edff19501240f078dc42f3db8ea5bb0ba5",
-      "sha256": "7b906ffcae4196290bb25eecc00faed70429d6f8927771608d4295e6dafbcd3e"
+      "git_blob": "ccd34492cbe470783ec53343e5ba72f2b83e2543",
+      "sha256": "af79ae2a53a98fcc3af65206aed3370d04bf97efd294d130d936bb7dc2150a8c"
     },
     {
       "path": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json",

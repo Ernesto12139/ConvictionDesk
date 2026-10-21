@@ -10,8 +10,9 @@ upstream source and file hashes are in `release/RELEASE_MANIFEST.json`.
   `REDUCE` / `EXIT`, or `UNDETERMINED`). Up to four distinct reasons, the
   strongest counterevidence, the change condition and the thesis delta are each
   shown once. Repeated citations of one source are disclosed as one source. On
-  phones the next check sits under the conclusion. Opening a saved record no
-  longer scrolls or moves focus. Diagnostics stay collapsed under *执行记录与诊断*.
+  phones the next check sits under the conclusion. A saved record opened by
+  direct link or reload starts at the top of the page without a focus jump.
+  Diagnostics stay collapsed under *执行记录与诊断*.
 - **Single-account What-if** on a saved Action. It defaults to the account
   holding the stock (several holders require a choice) and takes explicit
   shares, a hypothetical fill and fees. It shows cash, shares, NAV, weights and
