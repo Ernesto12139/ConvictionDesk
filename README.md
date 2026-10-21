@@ -54,7 +54,11 @@ A chatbot answers questions about stocks. ConvictionDesk answers a narrower, har
 
 ### Decide — a typed answer, and its cost to your account
 
-Each result is an **Action**: `ADD`, `HOLD`, `REDUCE` or `EXIT`, with a status and evidence strength. It carries the strongest counterevidence, the conditions that would change the call, and the thesis delta. Thin evidence is `UNDETERMINED`, never a default HOLD, and HOLD, REDUCE and EXIT only apply to stocks you hold. From a saved Action, the **account What-if** turns a hypothetical fill into shares, cash, NAV, weight and concentration before and after, separating the trade itself from repricing of shares you already own. Nothing is ordered.
+Each result is an **Action** — `ADD`, `HOLD`, `REDUCE` or `EXIT` — with a status and evidence strength.
+
+- It carries the strongest counterevidence, the conditions that would change the call, and the thesis delta.
+- Thin evidence is `UNDETERMINED`, never a default HOLD. `HOLD`, `REDUCE` and `EXIT` apply only to stocks you actually hold.
+- From a saved Action, the **account What-if** turns a hypothetical fill into shares, cash, NAV, weight and concentration before and after, separating the trade itself from repricing of shares you already own. Nothing is ordered.
 
 ## Quickstart
 
@@ -114,7 +118,7 @@ ConvictionDesk is one Python service (FastAPI, Pydantic v2, `httpx`, stdlib `sql
 | Concern | Start here |
 |---|---|
 | Research loop, validators, saved revisions | [`research_task.py`](src/market_agent/research_task.py) |
-| Bounded, point-in-time context | [`research_context.py`](src/market_agent/research_context.py) |
+| Bounded model context | [`research_context.py`](src/market_agent/research_context.py) |
 | Typed Action and its checks | [`action_decision.py`](src/market_agent/action_decision.py) |
 | Account What-if in `Decimal` | [`portfolio_whatif.py`](src/market_agent/portfolio_whatif.py) |
 | SEC filings, XBRL and quarters | [`sec.py`](src/market_agent/sec.py), [`financial_series.py`](src/market_agent/financial_series.py) |
@@ -126,7 +130,7 @@ A longer walkthrough, with diagrams of every layer, is in [Architecture](docs/ar
 
 ## Documentation
 
-| | |
+| Guide | What is inside |
 |---|---|
 | [Getting started](docs/getting-started.md) | Keyless replay, live setup with your own keys, troubleshooting |
 | [Architecture](docs/architecture.md) | Layers, the research loop, Fast and Deep, point-in-time and `Decimal` design |

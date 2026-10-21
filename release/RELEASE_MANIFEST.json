@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "1c7b7e9e57f4461ff755c9f703b094dac5a40210",
+  "upstream_source_sha": "5f795113e7f6f9b904843a349acd120901ea1e3f",
   "source_version": "0.9.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -600,8 +600,8 @@
     {
       "path": "README.md",
       "source": "release/PUBLIC_README.md",
-      "git_blob": "11200029655e69c2d97436dc70eaae087d2fbf89",
-      "sha256": "d3369571e318b3f95205d7f7c5364f3972ede9eddaed6222d6a2dbe9d6767194"
+      "git_blob": "2c93189f345e48ca825b077eab872e7831662894",
+      "sha256": "7414e6a61c87d612854679b0a31ddf294b7ad0723b132669fe8668d37c4068af"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -984,8 +984,8 @@
     {
       "path": "docs/README.md",
       "source": "release/public-docs/README.md",
-      "git_blob": "a7e8a8384c679fb2d17e6a4992983262f7b75f37",
-      "sha256": "de15c3b9aaf855469622a141a554208426c25da33932583896541ba21e3e75f8"
+      "git_blob": "89eb5571278bc63ce97bb9ff98a1445b4eeb7ff8",
+      "sha256": "47063a7aa97ab94ce371ac33b1f637ed4ee25c468250aa5454202d1184174166"
     },
     {
       "path": "docs/getting-started.md",

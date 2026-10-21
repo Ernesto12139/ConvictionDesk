@@ -2,7 +2,7 @@
 
 ## Start here
 
-| | |
+| Guide | What is inside |
 |---|---|
 | [Getting started](getting-started.md) | Run the keyless replay in a minute, then connect your own portfolio and keys |
 | [Architecture](architecture.md) | The research loop, Fast and Deep, point-in-time evidence, `Decimal` finance, validation, MCP and evaluation |
@@ -14,7 +14,7 @@
 
 Deeper notes on individual capabilities, written alongside the code:
 
-| | |
+| Note | Topic |
 |---|---|
 | [Account What-if](research-agent/ACCOUNT_WHATIF.md) | Single-account hypothetical fills, repricing versus trade impact, refusals |
 | [Today candidate events](research-agent/TODAY_CANDIDATE_EVENTS.md) | The deterministic candidate projection that runs before Today's bounded screen |
