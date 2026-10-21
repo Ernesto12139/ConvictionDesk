@@ -88,7 +88,7 @@ html[data-theme] .rail :is(.rail-foot,.rail-foot p), html[data-theme] .desk-nav-
 html[data-theme] .local-dot { background:var(--status-success); }
 html[data-theme] .topbar { background:var(--surface-canvas); border-bottom:1px solid var(--border-subtle); color:var(--text-secondary); gap:var(--space-2); flex-wrap:wrap; }
 html[data-theme] .topbar b { color:var(--text-strong); }
-html[data-theme] .topbar .separator { color:var(--border-control); }
+html[data-theme] .topbar .separator { color:var(--text-secondary); }
 html[data-theme] .topbar .tag { margin-left:auto; }
 .theme-control { display:flex; align-items:center; gap:8px; margin:0; color:var(--text-secondary); font-size:var(--text-meta); white-space:nowrap; }
 html[data-theme] .theme-control select { min-height:36px; padding:4px 28px 4px 10px; font-size:var(--text-meta); width:auto; }
@@ -387,3 +387,108 @@ html[data-theme] .desk-recent-all:hover { background:transparent; text-decoratio
   .mia-cost-actions button { width:100%; }
   html[data-theme] .mia-cost-dialog { margin:auto auto 16px; }
 }
+
+/* Owner decision workspace: same DOM and semantic tokens in both themes. */
+#desk-result .desk-core { border:0; padding:0 0 16px; margin:0; }
+#desk-result .desk-core h3 { font-size:24px; }
+#desk-result .desk-statement { font-size:15px; line-height:1.65; max-width:72ch; }
+#desk-result .desk-memo-section { margin-top:20px; }
+#desk-result .desk-decision-drivers .desk-statement { margin:8px 0; }
+#desk-result .desk-evidence-comparison { gap:20px; }
+#desk-result > details { padding-block:12px; border-top:1px solid var(--line); }
+#desk-result > details > summary { font-weight:600; cursor:pointer; }
+#desk-result .desk-whatif-form { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px 16px; }
+.desk-whatif-form > :is(p,details,fieldset,button,section), .desk-whatif-form > label:has(input[type=checkbox]) { grid-column:1/-1; }
+.desk-whatif-form label { min-width:0; }
+.desk-whatif-form input, .desk-whatif-form select { width:100%; min-width:0; box-sizing:border-box; }
+.desk-whatif-form input[type=checkbox] { width:auto; }
+.desk-whatif-advanced > summary { cursor:pointer; padding:8px 0; }
+.desk-whatif-advanced label { display:block; margin-block:12px; }
+.desk-whatif-result { scroll-margin-block:24px; }
+.desk-whatif-deltas { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); font-variant-numeric:tabular-nums; }
+.desk-whatif-deltas dd { font-size:19px; overflow-wrap:anywhere; }
+.desk-trade-impact { border-block:1px solid var(--line); padding-block:8px; }
+.desk-trade-impact p { margin-block:8px; }
+@media(max-width:760px) {
+  body[data-desk-view=task] .desk-mobile-action { position:static; display:block; margin:16px 0; box-shadow:none; }
+  body[data-desk-view=task] #desk-result { padding:20px 16px; }
+  #desk-result .desk-core h3 { font-size:22px; }
+  #desk-result .desk-whatif-form { grid-template-columns:1fr; }
+  .desk-whatif-deltas dd { font-size:17px; }
+}
+
+#desk-result .desk-evidence-comparison { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
+#desk-result .desk-core-note { margin-block:6px; }
+#desk-result .desk-decision-drivers { margin-top:8px; }
+#desk-result .desk-memo { margin-top:16px; }
+@media(max-width:760px) { #desk-result .desk-evidence-comparison { grid-template-columns:1fr; gap:4px; } }
+
+#desk-result .desk-evidence-comparison .desk-overview h3::before { content:none; }
+#desk-result .desk-evidence-comparison .desk-overview:first-child h3 { color:var(--status-uncertain); }
+#desk-result .desk-evidence-comparison .desk-overview:last-child h3 { color:var(--text-strong); }
+
+/* Round-two defect: give each before/after pair a complete mobile row. */
+@media(max-width:760px) {
+  #desk-result .desk-whatif-deltas { grid-template-columns:1fr; }
+  #desk-result .desk-whatif-deltas > div { display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
+  #desk-result .desk-whatif-deltas dd { white-space:nowrap; flex-shrink:0; }
+}
+
+/* Closure 2026-10-21 · decision-first Research Answer (Contract v0.3 §3C).
+   Conclusion, one brief, data timing, then the account preview; everything
+   auditable sits in one reference list. Semantic tokens only, one DOM. */
+#desk-result .desk-brief { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 32px; border-top:1px solid var(--border-subtle); }
+#desk-result .desk-brief-item { margin:0; padding:16px 0 12px; min-width:0; border-bottom:1px solid var(--border-subtle); }
+#desk-result .desk-brief-item > h3 { display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; margin:0 0 6px; font-size:13px; font-weight:650; letter-spacing:.01em; color:var(--text-secondary); }
+#desk-result .desk-brief-item[data-brief="counter"] > h3 { color:var(--status-uncertain); }
+#desk-result .desk-brief-item .desk-statement { font-size:15px; line-height:1.65; margin:0 0 4px; color:var(--text-primary); }
+#desk-result .desk-brief-item .desk-source-button { min-height:32px; padding:4px 0; }
+#desk-result .desk-brief .desk-citation { min-height:0; min-width:24px; padding:0 4px; margin-left:4px; line-height:inherit; vertical-align:baseline; font-size:var(--text-meta); }
+#desk-result .desk-brief-count { font-size:var(--text-label); font-weight:500; color:var(--text-secondary); }
+#desk-result .desk-source-tally { grid-column:1/-1; margin:10px 0 0; color:var(--text-secondary); }
+#desk-result .desk-core-next { display:none; }
+#desk-result > .desk-timebar { display:flex; flex-wrap:wrap; gap:6px 28px; margin:14px 0 20px; padding:0; border:0; border-radius:0; background:transparent; }
+#desk-result > .desk-timebar > div { display:flex; gap:8px; align-items:baseline; padding:0; border:0; }
+#desk-result > .desk-timebar dd { margin:0; font-weight:600; }
+#desk-result > :is(.desk-information-gain,.desk-whatif) { margin:0 0 20px; padding:20px 22px; border:1px solid var(--border-subtle); border-radius:var(--radius-panel); background:var(--surface-panel); }
+#desk-result > :is(.desk-information-gain,.desk-whatif) > h3 { font-size:16px; margin:0 0 8px; }
+#desk-result .desk-gain-effect { margin:10px 0 0; }
+#desk-result .desk-whatif-tags { display:flex; flex-wrap:wrap; gap:6px; margin:0 0 6px; }
+#desk-result .desk-whatif-tags span { font-size:var(--text-label); line-height:1.4; padding:3px 9px; border-radius:999px; background:var(--surface-inset); color:var(--text-secondary); }
+#desk-result .desk-account-scope { display:flex; flex-wrap:wrap; gap:4px 14px; align-items:baseline; margin:0; padding:10px 12px; border-radius:var(--radius-control); background:var(--surface-inset); font-size:var(--text-meta); color:var(--text-secondary); font-variant-numeric:tabular-nums; }
+#desk-result .desk-account-scope strong { color:var(--text-strong); }
+#desk-result .desk-whatif-deltas { grid-template-columns:repeat(4,minmax(0,1fr)); gap:0 16px; margin:12px 0 0; }
+#desk-result .desk-whatif-deltas > div { display:block; padding:10px 0; min-width:0; }
+#desk-result .desk-whatif-deltas dt { font-size:var(--text-label); color:var(--text-secondary); }
+#desk-result .desk-whatif-deltas dd { margin:4px 0 0; font-size:17px; font-weight:650; font-variant-numeric:tabular-nums; color:var(--text-strong); white-space:nowrap; }
+#desk-result .desk-whatif-split { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 24px; margin:14px 0 8px; padding:12px 0; border-block:1px solid var(--border-subtle); }
+#desk-result .desk-whatif-split > div { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:2px 12px; align-items:baseline; min-width:0; }
+#desk-result .desk-whatif-split dt { font-size:var(--text-meta); color:var(--text-secondary); }
+#desk-result .desk-whatif-split dd { margin:0; font-weight:650; text-align:right; font-variant-numeric:tabular-nums; color:var(--text-strong); }
+#desk-result .desk-whatif-split small { grid-column:1/-1; font-size:var(--text-label); color:var(--text-secondary); }
+#desk-result .desk-reference { margin:28px 0 0; }
+#desk-result .desk-reference > h3 { font-size:15px; margin:0 0 4px; color:var(--text-secondary); }
+#desk-result .desk-reference > details { margin:0; padding:0; border-top:1px solid var(--border-subtle); border-radius:0; background:transparent; }
+#desk-result .desk-reference > details:last-child { border-bottom:1px solid var(--border-subtle); }
+#desk-result .desk-reference > details > summary { display:flex; align-items:baseline; gap:12px; padding:14px 0; cursor:pointer; font-weight:600; font-size:15px; list-style:none; color:var(--text-primary); }
+#desk-result .desk-reference > details > summary::-webkit-details-marker { display:none; }
+#desk-result .desk-reference > details > summary::after { content:"+"; margin-left:auto; color:var(--text-secondary); font-weight:400; }
+#desk-result .desk-reference > details[open] > summary::after { content:"−"; }
+#desk-result .desk-reference > details[open] { padding-bottom:16px; }
+#desk-result .desk-fold-hint { font-size:var(--text-label); font-weight:400; color:var(--text-secondary); }
+#desk-result .desk-fold > .desk-memo-section > h3:first-child { display:none; }
+#desk-result .desk-boundary-list { margin:0; padding-left:20px; font-size:var(--text-meta); line-height:1.7; color:var(--text-primary); }
+@media(max-width:760px) {
+  #desk-result .desk-brief { grid-template-columns:1fr; }
+  #desk-result .desk-core-next { display:block; margin:12px 0 0; padding:12px 14px; border-radius:var(--radius-control); background:var(--surface-inset); }
+  #desk-result .desk-core-next h4 { margin:0; font-size:var(--text-label); color:var(--text-secondary); }
+  #desk-result .desk-core-next p { margin:4px 0 6px; font-size:15px; line-height:1.6; color:var(--text-strong); }
+  #desk-result .desk-core-next a { font-size:var(--text-meta); font-weight:600; color:var(--action); }
+  #desk-task:has(.desk-core-next) #desk-next-action .desk-next-check > .desk-statement { display:none; }
+  #desk-result > :is(.desk-information-gain,.desk-whatif) { padding:16px; }
+  #desk-result .desk-whatif-split { grid-template-columns:1fr; }
+  #desk-result .desk-whatif-deltas { grid-template-columns:1fr; }
+  #desk-result .desk-whatif-deltas > div { display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:8px 0; }
+  #desk-result .desk-whatif-deltas dd { margin:0; font-size:16px; }
+}
+@media(max-width:1100px) and (min-width:761px) { #desk-result .desk-whatif-deltas { grid-template-columns:repeat(2,minmax(0,1fr)); } }

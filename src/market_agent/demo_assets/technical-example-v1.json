@@ -1,0 +1,207 @@
+{
+  "symbol": "EXAMPLE",
+  "currency": "USD",
+  "identity": "SYNTHETIC",
+  "source_id": "owned-linear-ohlcv-20261017-v1",
+  "source_note": "Owned synthetic teaching series; not prices or events for this ticker.",
+  "usage_rights": "SYNTHETIC_OWNED",
+  "retrieved_at": "2026-10-17T12:00:00Z",
+  "session": "REGULAR",
+  "adjustment": "UNADJUSTED",
+  "adjustment_as_of": "2026-10-17T12:00:00Z",
+  "adjustment_lineage": "Synthetic native unadjusted OHLC, no actions in constructed series.",
+  "split_status": "NONE_CONFIRMED",
+  "halt_status": "NONE_CONFIRMED",
+  "share_class": "SINGLE_COMMON",
+  "bars": [
+    {
+      "session_date": "2026-09-18",
+      "available_at": "2026-09-18T16:00:00-04:00",
+      "open": "100",
+      "high": "102",
+      "low": "98",
+      "close": "100",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-09-21",
+      "available_at": "2026-09-21T16:00:00-04:00",
+      "open": "101",
+      "high": "103",
+      "low": "99",
+      "close": "101",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-09-22",
+      "available_at": "2026-09-22T16:00:00-04:00",
+      "open": "102",
+      "high": "104",
+      "low": "100",
+      "close": "102",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-09-23",
+      "available_at": "2026-09-23T16:00:00-04:00",
+      "open": "103",
+      "high": "105",
+      "low": "101",
+      "close": "103",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-09-24",
+      "available_at": "2026-09-24T16:00:00-04:00",
+      "open": "104",
+      "high": "106",
+      "low": "102",
+      "close": "104",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-09-25",
+      "available_at": "2026-09-25T16:00:00-04:00",
+      "open": "105",
+      "high": "107",
+      "low": "103",
+      "close": "105",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-09-28",
+      "available_at": "2026-09-28T16:00:00-04:00",
+      "open": "106",
+      "high": "108",
+      "low": "104",
+      "close": "106",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-09-29",
+      "available_at": "2026-09-29T16:00:00-04:00",
+      "open": "107",
+      "high": "109",
+      "low": "105",
+      "close": "107",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-09-30",
+      "available_at": "2026-09-30T16:00:00-04:00",
+      "open": "108",
+      "high": "110",
+      "low": "106",
+      "close": "108",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-01",
+      "available_at": "2026-10-01T16:00:00-04:00",
+      "open": "109",
+      "high": "111",
+      "low": "107",
+      "close": "109",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-02",
+      "available_at": "2026-10-02T16:00:00-04:00",
+      "open": "110",
+      "high": "112",
+      "low": "108",
+      "close": "110",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-05",
+      "available_at": "2026-10-05T16:00:00-04:00",
+      "open": "111",
+      "high": "113",
+      "low": "109",
+      "close": "111",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-06",
+      "available_at": "2026-10-06T16:00:00-04:00",
+      "open": "112",
+      "high": "114",
+      "low": "110",
+      "close": "112",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-07",
+      "available_at": "2026-10-07T16:00:00-04:00",
+      "open": "113",
+      "high": "115",
+      "low": "111",
+      "close": "113",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-08",
+      "available_at": "2026-10-08T16:00:00-04:00",
+      "open": "114",
+      "high": "116",
+      "low": "112",
+      "close": "114",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-09",
+      "available_at": "2026-10-09T16:00:00-04:00",
+      "open": "115",
+      "high": "117",
+      "low": "113",
+      "close": "115",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-12",
+      "available_at": "2026-10-12T16:00:00-04:00",
+      "open": "116",
+      "high": "118",
+      "low": "114",
+      "close": "116",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-13",
+      "available_at": "2026-10-13T16:00:00-04:00",
+      "open": "117",
+      "high": "119",
+      "low": "115",
+      "close": "117",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-14",
+      "available_at": "2026-10-14T16:00:00-04:00",
+      "open": "118",
+      "high": "120",
+      "low": "116",
+      "close": "118",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-15",
+      "available_at": "2026-10-15T16:00:00-04:00",
+      "open": "119",
+      "high": "121",
+      "low": "117",
+      "close": "119",
+      "volume": 100000
+    },
+    {
+      "session_date": "2026-10-16",
+      "available_at": "2026-10-16T16:00:00-04:00",
+      "open": "120",
+      "high": "122",
+      "low": "118",
+      "close": "120",
+      "volume": 100000
+    }
+  ]
+}

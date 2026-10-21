@@ -1037,6 +1037,14 @@ class ResearchService:
                     items = await tool('sec.fundamentals', args,
                         lambda: financial_sources(self.agent.sec.fundamentals(symbol, task.cutoff)),
                         lambda rows: [s.evidence.evidence_id for s in rows],receipt_sources=lambda rows:rows)
+                if task.mode=='DEEP':
+                    from .valuation import valuation_evidence
+                    def project_valuation():
+                        evidence=valuation_evidence(task)
+                        return [ResearchSource(identity='VERIFIED_FACT',evidence=evidence,
+                            freshness=company_freshness(evidence,task.cutoff))] if evidence else []
+                    await tool('valuation.project',ThesisToolArgs(symbol=symbol,as_of=task.cutoff),
+                        project_valuation,lambda rows:[s.evidence.evidence_id for s in rows],receipt_sources=lambda rows:rows)
                 await update(limitations=[*task.limitations, 'MARKET_REGIME_NOT_VERIFIED：本轮没有合格的大盘或板块状态证据。',
                     '盘前价格、预测盈利与估值安全边际须独立核实；最近收盘价不能替代。'],
                     progress=[*task.progress,'资料核查结束，正在生成并校验研究判断。'])
@@ -1071,6 +1079,10 @@ class ResearchService:
                     'Lead with the direct conditional judgment and the strongest reason to defer additional capital. '
                     'Use exact-period financial facts when available; distinguish quarter, year-to-date and instant balances. '
                     'Do not derive growth, margins, EPS, valuation multiples or percentages yourself. '
+                    'task_valuation_v1 is a deterministic Python calculation: quote only its AVAILABLE/REFERENCE values '
+                    'with exact unit, period, as_of and citation. REFERENCE multiples never prove cheapness or fair value. '
+                    'Reported shares are dated entity inputs, not reconciled current float; do not claim live market cap. '
+                    'UNKNOWN/NOT_MEANINGFUL never become guessed numbers; no debt/cash pairing means no EV. '
                     'Explain how the user price changes entry cost and the Python hypothetical exposure/P&L, '
                     'without assuming that a cheaper price repairs deteriorating business economics. '
                     'If the user says 跌到, identify the ambiguous comparison time; a close comparison is only a labelled scenario. '
@@ -1082,7 +1094,10 @@ class ResearchService:
                     'EARNINGS_CHECK focuses on specific metrics/disclosures to check next earnings and why, not an add/hold template. '
                     'News CURRENT means recent publication, never proof that the event happened today or is important. '
                     'Compare recent company evidence against historical thesis with its exact provenance; identify conflicts without '
-                    'calling an AI draft the owner thesis. Read market_identity for data age and session; never verify premarket '
+                    'calling an AI draft the owner thesis. Exact duplicate news prose may use excerpt_text_reference/title_text_reference '
+                    'to another selected evidence ID; resolve only that text, retaining each original URL/time/metadata. '
+                    'Shared prose never proves the same event or upgrades source identity. '
+                    'Read market_identity for data age and session; never verify premarket '
                     'with a regular, post-market or overnight quote. A recent filing may discuss an older report period. '
                     'Request evidence_gap ONLY if a specific unresolved fact could change this objective-sensitive judgment. '
                     'Select NEWS for a company-event update or SEC for primary disclosure, exact period or guidance. '

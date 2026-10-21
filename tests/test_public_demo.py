@@ -122,6 +122,7 @@ def test_poisoned_owner_environment_never_loads_credentials_models_or_owner_db(t
         'MIA_DB_PATH':str(owner),'MASSIVE_API_KEY':'not-a-real-key','FINNHUB_API_KEY':'not-a-real-key',
         'LLM_API_KEY':'not-a-real-key','JEV_API_KEY':'not-a-real-key','MIA_RESEARCH_MCP':'readonly',
         'MIA_LONGBRIDGE_CREDENTIALS':str(tmp_path/'never-read.dpapi'),
+        'MIA_CAPITAL_REFERENCE_MODE':'personal-display','MIA_CAPITAL_REFERENCE_DIR':str(tmp_path/'never-read-capital'),
         'MIA_SEC_RETRIEVAL':'hybrid','MIA_EMBEDDING_MODEL_DIR':str(tmp_path/'never-read-model')}
     for key,value in environment.items():monkeypatch.setenv(key,value)
     with TestClient(app_from_environment(environment)) as client:
@@ -130,6 +131,9 @@ def test_poisoned_owner_environment_never_loads_credentials_models_or_owner_db(t
         assert status['synthesis_mode']=='unconfigured' and status['comparison_mode']=='off'
         assert client.post('/api/research/tasks',json={'question':'APP'}).status_code==403
         assert 'not-a-real-key' not in json.dumps(status)
+        example=client.get('/api/public-demo').json()['examples'][0]
+        report=client.get('/api/research/tasks/'+example['task_id']+'/valuation').json()
+        assert 'local_capital_reference' not in report
     assert owner.read_bytes()==b'private-owner-sentinel'
 
 

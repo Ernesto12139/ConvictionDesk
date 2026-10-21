@@ -24,7 +24,7 @@ DATASET = ASSETS / 'research-replay-v2.json'
 READ_ROUTES = re.compile(
     r'^(?:/|/health|/api/console/status|/api/console/portfolio-overview|'
     r'/api/portfolio/current|/api/research-universe|/api/attention/queue|/api/attention/items/(?:sha256:)?[a-f0-9]{64}|'
-    r'/api/public-demo|/api/research/tasks(?:/[^/]+(?:/revisions(?:/[1-9][0-9]*)?)?)?|'
+    r'/api/public-demo|/api/research/tasks(?:/[^/]+(?:/(?:revisions(?:/[1-9][0-9]*)?|valuation))?)?|'
     r'/static/[a-zA-Z0-9_-]+\.(?:js|css|svg))$')
 # SQLite-maintained FTS shadow tables are rebuilt by the schema, never replayed.
 GENERATED_TABLES = ('sqlite_', 'sec_chunks_fts')

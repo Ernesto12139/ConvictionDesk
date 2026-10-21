@@ -12,6 +12,41 @@ CONCEPTS = {
     'diluted_eps': ('USD/shares', ['EarningsPerShareDiluted'])}
 
 
+def common_shares(raw, filings, cutoff):
+    """Latest eligible entity-wide common-share instant, never weighted-average EPS shares.
+
+    SEC CompanyFacts contains standard-taxonomy, entire-filing-entity facts.
+    Conflicting values with the same period/acceptance are left unknown.
+    """
+    accepted = {r['accession_number']:r['filed_at'] for r in filings if r['filed_at'] <= cutoff}
+    candidates = []
+    for namespace, tag in [('us-gaap','CommonStockSharesOutstanding'),
+                           ('dei','EntityCommonStockSharesOutstanding')]:
+        for row in raw.get('facts',{}).get(namespace,{}).get(tag,{}).get('units',{}).get('shares',[]):
+            if row.get('accn') not in accepted or row.get('form') not in {'10-Q','10-K'} or row.get('start'):
+                continue
+            try:
+                end = date.fromisoformat(row['end'])
+                value = Decimal(str(row['val']))
+            except (KeyError, ValueError, TypeError, InvalidOperation):
+                continue
+            available = accepted[row['accn']]
+            if (isinstance(row['val'],bool) or not value.is_finite() or value <= 0
+                    or end > min(cutoff.date(),available.date())):
+                continue
+            candidates.append({'metric':'shares_outstanding','concept':namespace+':'+tag,
+                'value':str(value),'unit':'shares','start':None,'end':str(end),
+                'form':row['form'],'accession_number':row['accn'],
+                'available_at':available.isoformat(),'scope':'ENTIRE_FILING_ENTITY'})
+    if not candidates:
+        return None
+    latest = max((r['end'],r['available_at']) for r in candidates)
+    selected = [r for r in candidates if (r['end'],r['available_at']) == latest]
+    if len({Decimal(r['value']) for r in selected}) != 1:
+        return None
+    return selected[0]
+
+
 def quarterly_series(raw, filings, cutoff):
     accepted = {row['accession_number']:row['filed_at'] for row in filings if row['filed_at'] <= cutoff}
     facts = raw.get('facts',{}).get('us-gaap',{})

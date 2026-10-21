@@ -65,6 +65,9 @@ def check(report, stage, root=Path('.')):
                 for key in ('run_id', 'private_source_sha'):
                     if verdict.get(key) != report.get(key):
                         errors.append(f'independent_qa: {key} mismatch')
+                digests = [verdict[key] for key in ('source_lf_sha256','source_digest') if key in verdict]
+                if not digests or any(value != report.get('source_lf_sha256') for value in digests):
+                    errors.append('independent_qa: source_lf_sha256 mismatch')
                 if not verdict.get('reviewer') or verdict.get('reviewer') == report.get('writer'):
                     errors.append('independent_qa: independent reviewer required')
             except (ValueError, OSError):

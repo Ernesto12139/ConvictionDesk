@@ -1,7 +1,15 @@
 """Small public-source projection and honest scan outcome; no semantic verdicts."""
 import re
+from datetime import timedelta
 
-from .market_evidence import market_identity
+from .market_evidence import NEWS_MAX_AGE, market_identity
+
+
+def current_candidate(packet, cutoff):
+    """Candidate window, not a claim of verified event time/source importance."""
+    receipt = packet.evidence[0]
+    return bool(receipt.published_at and receipt.retrieved_at >= receipt.published_at
+                and 0 <= (cutoff-receipt.published_at).total_seconds() <= NEWS_MAX_AGE.total_seconds())
 
 
 def public_packet(packet):
@@ -25,24 +33,104 @@ def candidate_key(packet, cutoff):
             -(receipt.published_at or receipt.retrieved_at).timestamp(), packet.event_key)
 
 
-def select_candidates(packets, cutoff, limit):
-    ordered = sorted(packets, key=lambda packet:candidate_key(packet, cutoff))
-    selected = []
-    # First give each symbol with eligible recent evidence one candidate. A
-    # high-volume issuer must not consume another issuer's entire screen budget.
-    for recent in (True, False):
-        groups = {}
-        for packet in ordered:
-            if (candidate_key(packet, cutoff)[0] <= 1) == recent:
-                groups.setdefault(packet.universe.symbol, []).append(packet)
-        while groups and len(selected) < limit:
-            for symbol in sorted(groups, key=lambda key:candidate_key(groups[key][0], cutoff)):
-                selected.append(groups[symbol].pop(0))
-                if not groups[symbol]:
-                    del groups[symbol]
-                if len(selected) == limit:
-                    break
+def pending_lifecycle(packets, cutoff):
+    """Observed admission eligibility distinguishes expiry from pre-existing history."""
+    result={'current':0,'expired_unscreened':0,'historical_other':0,'by_symbol':{}}
+    for packet in packets:
+        if current_candidate(packet,cutoff):
+            state='current'
+        elif current_candidate(packet,packet.cutoff) and packet.evidence[0].published_at<cutoff:
+            state='expired_unscreened'
+        else:
+            state='historical_other'
+        result[state]+=1
+        row=result['by_symbol'].setdefault(packet.universe.symbol,
+            {'current':0,'expired_unscreened':0,'historical_other':0})
+        row[state]+=1
+    return result
+
+
+def candidate_signal(packet):
+    """Replayable triage clues only; never a materiality or truth verdict."""
+    receipt=packet.evidence[0]
+    text=' '.join((e.title or '')+' '+(e.excerpt or '') for e in packet.evidence).casefold()
+    if re.search(r'\b(?:bankrupt\w*|chapter\s+(?:11|7)|restatement|delist\w*|trading halt|'
+                 r'shares?\s+(?:halted|suspended)|subpoena|(?:regulator\w*|sec|doj).{0,40}probe|complete response letter|deficiency notice|'
+                 r'short seller.{0,40}(?:alleg\w*|report)|accounting fraud|'
+                 r'(?:plant|factory|facility).{0,30}(?:explosion|fire|halt\w* production)|'
+                 r'(?:cuts?|lowers?|withdraws?|suspends?)\s+(?:[\w-]+\s+){0,2}(?:outlook|forecast|guidance)|'
+                 r'(?:ceo|cfo|auditor|chief executive).{0,50}(?:resign\w*|depart\w*)|'
+                 r'terminat\w*.{0,30}(?:contract|agreement)|(?:contract|agreement).{0,30}terminat\w*|'
+                 r'guidance withdrawn|withdraw\w* guidance|regulator\w*.*(?:suspend\w*|halt\w*)|'
+                 r'(?:fda|nrc|sec|doj).*?(?:reject\w*|suspend\w*|halt\w*|paus\w*|charg\w*))\b|'
+                 r'破产|重述|退市|停牌|(?:撤回|下调).{0,4}(?:指引|预期|展望)|'
+                 r'(?:首席执行官|审计师|财务总监).{0,8}(?:离职|辞职)|合同终止|'
+                 r'监管.{0,8}(?:暂停|禁止|立案)',text):
+        return 2
+    routine_date=bool(re.search(r'\b(?:earnings (?:date|call date)|sets? earnings|announces? earnings date)\b',text))
+    if ((receipt.provider=='sec_edgar' and receipt.evidence_type=='sec_filing')
+            or re.search(r'\b(?:guidance|investigation|acquir\w*|merger|recall)\b|'
+            r'盈利预警|业绩预告|正式调查|收购|合并|召回',text)):
+        return 1
+    if not routine_date and re.search(r'\b(?:earnings|misses\s+(?:q[1-4]\s+)?(?:estimates|expectations))\b',text):
+        return 1
+    return 0
+
+
+def select_candidates(packets, cutoff, limit, *, holding_symbols=None):
+    """Four bounded lanes prevent one priority rule from consuming all capacity.
+
+    Holding -> fresh signal/new arrival -> deadline -> nonholding, then fill.
+    A clue promotes investigation, never declares materiality. Every unselected
+    receipt remains pending; finite capacity cannot promise complete coverage.
+    """
+    if limit<=0:
+        return []
+    current=[p for p in packets if current_candidate(p,cutoff)]
+    holding=lambda p:(p.universe.symbol in holding_symbols if holding_symbols is not None
+                      else p.universe.state=='HOLDING')
+    deadline=lambda p:(p.evidence[0].published_at,p.event_key)
+    signal=lambda p:(-candidate_signal(p),*deadline(p))
+    fresh=lambda p:(-candidate_signal(p),candidate_key(p,cutoff))
+    selected=[]
+    keys=set();symbols=set()
+    def take(pool,key):
+        if len(selected)>=limit:
+            return
+        remaining=[p for p in pool if p.event_key not in keys]
+        distinct=[p for p in remaining if p.universe.symbol not in symbols]
+        # One issuer cannot take a second slot while an unoffered issuer waits.
+        if distinct:
+            remaining=distinct
+        elif any(p.event_key not in keys and p.universe.symbol not in symbols for p in current):
+            return
+        if remaining:
+            packet=min(remaining,key=key)
+            selected.append(packet);keys.add(packet.event_key);symbols.add(packet.universe.symbol)
+    take([p for p in current if holding(p)],signal)
+    take([p for p in current if cutoff-p.evidence[0].published_at<=timedelta(hours=24)],fresh)
+    take(current,deadline)
+    take([p for p in current if not holding(p)],signal)
+    while len(selected)<min(limit,len(current)):
+        previous=len(selected)
+        take(current,signal)
+        if len(selected)==previous:
+            break
     return selected
+
+
+def selection_projection(packets, batch, cutoff, limit):
+    """Counts describe candidate triage, never model success or actual importance."""
+    current=[p for p in packets if current_candidate(p,cutoff)]
+    return {'policy':'HOLDING_FRESH_DEADLINE_NONHOLDING_V1',
+        'materiality_status':'UNVERIFIED_UNTIL_SEMANTIC_SCREEN',
+        'current_candidates':len(current),'offered_candidates':len(batch),
+        'deferred_current':len(current)-len(batch),'request_limit':1,'event_limit':limit,
+        'candidate_reduction_ratio':str(1-len(batch)/len(current)) if current else '0',
+        'reduction_meaning':'Deferred this round, not proven noise or safely discarded',
+        'offered':[{'event_key':p.event_key,'evidence_id':p.evidence[0].evidence_id,
+            'signal_hint':candidate_signal(p),'publication_to_offer_seconds':
+                int((cutoff-p.evidence[0].published_at).total_seconds())} for p in batch]}
 
 
 def scan_outcome(report):

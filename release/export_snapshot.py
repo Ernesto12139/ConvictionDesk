@@ -8,11 +8,16 @@ import hashlib
 import json
 import re
 import subprocess
+import tomllib
 from pathlib import Path, PurePosixPath
 import xml.etree.ElementTree as ET
+import zlib
 
 TEXT_TYPES = {'.py', '.js', '.cjs', '.css', '.html', '.svg', '.json', '.toml', '.md', '.txt',
               '.yml', '.yaml', '.example', ''}
+PNG_SIGNATURE = bytes.fromhex('89504e470d0a1a0a')
+PNG_CHUNKS = {b'IHDR', b'PLTE', b'IDAT', b'IEND', b'sRGB', b'gAMA', b'pHYs'}
+PNG_MAX_BYTES = 1_000_000
 RULES = {
     'private_key': r'-----BEGIN [A-Z ]*PRIVATE KEY-----',
     'api_key': r'\bsk-[A-Za-z0-9_-]{20,}',
@@ -36,8 +41,44 @@ def safe_path(name):
             and not any(p.lower() == '.git' for p in path.parts))
 
 
+def scan_png(name, data):
+    """Accept only metadata-free PNG screenshots under docs/assets/."""
+    if not name.startswith('docs/assets/'):
+        return ['PNG outside docs/assets']
+    if len(data) > PNG_MAX_BYTES or not data.startswith(PNG_SIGNATURE):
+        return ['oversized or invalid PNG']
+    at, kinds = len(PNG_SIGNATURE), []
+    while at < len(data):
+        if at + 12 > len(data):
+            return ['truncated PNG chunk']
+        size = int.from_bytes(data[at:at+4], 'big')
+        kind, body = data[at+4:at+8], data[at+8:at+8+size]
+        crc = data[at+8+size:at+12+size]
+        if len(body) != size or len(crc) != 4 or zlib.crc32(kind+body).to_bytes(4, 'big') != crc:
+            return ['corrupt PNG chunk']
+        if kind not in PNG_CHUNKS:
+            return ['PNG metadata or unapproved chunk']
+        if kind == b'IHDR':
+            if size != 13:
+                return ['invalid PNG header']
+            width,height=int.from_bytes(body[:4],'big'),int.from_bytes(body[4:8],'big')
+            if not (0<width<=4096 and 0<height<=4096 and width*height<=8_000_000):
+                return ['PNG dimensions exceed screenshot bounds']
+            if body[8] != 8 or body[9] not in {2,6} or body[10:12] != b'\0\0' or body[12] not in {0,1}:
+                return ['unsupported screenshot PNG encoding']
+        if kind == b'IEND' and size != 0:
+            return ['invalid PNG end']
+        kinds.append(kind)
+        at += 12 + size
+    if not kinds or kinds[0] != b'IHDR' or kinds.count(b'IHDR') != 1 or b'IDAT' not in kinds or kinds[-1] != b'IEND' or kinds.count(b'IEND') != 1:
+        return ['malformed PNG structure']
+    return []
+
+
 def scan(name, data, private_terms=()):
     errors = []
+    if safe_path(name) and PurePosixPath(name).suffix.lower() == '.png':
+        return scan_png(name, data)
     if not safe_path(name) or PurePosixPath(name).suffix.lower() not in TEXT_TYPES:
         return ['unapproved path or file type']
     if any(p.startswith('.env') and p != '.env.example' for p in PurePosixPath(name).parts):
@@ -98,7 +139,9 @@ def export(source, sha, target, private_terms=()):
         path = target/name
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(data)
-    manifest = {'upstream_source_sha': sha, 'allowlist': 'explicit paths and mappings v0.8.1',
+    version_entry=next((entry for entry in files if entry[0]=='pyproject.toml'),None)
+    version=tomllib.loads(version_entry[1].decode()).get('project',{}).get('version') if version_entry else None
+    manifest = {'upstream_source_sha': sha,'source_version':version,'allowlist': 'explicit paths and mappings',
                 'files': [row for _, _, row in files], 'privacy_scan': 'PASS',
                 'history': 'No Git history/configuration/refs exported',
                 'verification': 'Local source candidate; publication and remote CI are separate gates'}

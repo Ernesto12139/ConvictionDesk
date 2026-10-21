@@ -102,6 +102,14 @@ async def build(request, store, market, news, sec, judge, clock=system_utc_now,
                 from .investment_context import ReportedFact
                 try:
                     for m in i.structured_data["metrics"]:
+                        if not isinstance(m,dict):
+                            raise ValueError('invalid financial metric shape')
+                        # Original v0.9 summaries mixed shares with USD facts.
+                        # Keep those bytes intact and skip only that separate
+                        # quantity type; malformed monetary facts still reject
+                        # the source. New summaries use share_facts instead.
+                        if m.get('metric')=='shares_outstanding' and m.get('unit')=='shares':
+                            continue
                         fact = ReportedFact(metric=m["metric"],value=m["value"],unit=m["unit"],
                             start=m.get("start"),end=m["end"],accession=m["accession_number"],
                             accepted_at=m["available_at"],evidence_id=i.evidence_id)

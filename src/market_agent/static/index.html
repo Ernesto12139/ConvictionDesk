@@ -72,6 +72,7 @@
           </div>
           <p id="attention-status" class="status-line" role="status" aria-live="polite"></p>
           <p id="attention-summary" class="small muted" aria-live="polite"></p>
+          <p><button id="attention-continue" type="button" hidden>继续筛选已保存的近期材料</button></p>
           <div id="attention-queue" aria-busy="true"><p class="muted">正在读取已保存的关注事项…</p></div>
           <details id="attention-audit" class="attention-disclosure"><summary>查看覆盖范围与扫描记录</summary><p id="attention-coverage" class="attention-coverage" aria-live="polite"></p><div id="attention-scan-details"></div></details>
           <dialog id="attention-detail" class="attention-detail" aria-labelledby="attention-detail-title">
@@ -121,6 +122,7 @@
           <form id="desk-followup-form" class="desk-followup">
             <label for="desk-followup">下一轮想核查什么？</label>
             <textarea id="desk-followup" name="followup" autocomplete="off" rows="3" maxlength="1200" required placeholder="例如：下次财报优先看什么…"></textarea>
+            <label id="desk-followup-profile-label" for="desk-followup-model-profile" hidden>下一轮研究方式<select id="desk-followup-model-profile" aria-label="下一轮研究方式"><option value="">沿用本轮研究方式</option></select></label>
             <p class="small desk-fee-note">提交前会确认模型费用；旧版本保留。</p>
             <div class="desk-followup-actions"><button id="desk-continue" class="primary" type="submit">确认继续研究</button><button id="desk-earnings" type="button">拟定财报追问</button></div>
           </form>

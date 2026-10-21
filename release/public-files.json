@@ -434,5 +434,221 @@
   {
     "source": "release/assets/convictiondesk-fast-deep-light.svg",
     "path": "docs/assets/convictiondesk-fast-deep-light.svg"
+  },
+  {
+    "source": "src/market_agent/valuation.py",
+    "path": "src/market_agent/valuation.py"
+  },
+  {
+    "source": "evals/v09_intelligence.py",
+    "path": "evals/v09_intelligence.py"
+  },
+  {
+    "source": "tests/test_valuation.py",
+    "path": "tests/test_valuation.py"
+  },
+  {
+    "source": "tests/test_attention_current_window.py",
+    "path": "tests/test_attention_current_window.py"
+  },
+  {
+    "source": "tests/test_v09_intelligence.py",
+    "path": "tests/test_v09_intelligence.py"
+  },
+  {
+    "source": "evals/fixtures/research_agent/v09-8f-valuation-task.json",
+    "path": "evals/fixtures/research_agent/v09-8f-valuation-task.json"
+  },
+  {
+    "source": "tests/test_attention_continuation.py",
+    "path": "tests/test_attention_continuation.py"
+  },
+  {
+    "source": "scripts/check_attention_continuation_browser.cjs",
+    "path": "scripts/check_attention_continuation_browser.cjs"
+  },
+  {
+    "source": "scripts/check_current_event_research_browser.cjs",
+    "path": "scripts/check_current_event_research_browser.cjs"
+  },
+  {
+    "source": "src/market_agent/capital_reference.py",
+    "path": "src/market_agent/capital_reference.py"
+  },
+  {
+    "source": "tests/test_capital_reference.py",
+    "path": "tests/test_capital_reference.py"
+  },
+  {
+    "source": "docs/research-agent/LOCAL_CAPITAL_REFERENCE.md",
+    "path": "docs/research-agent/LOCAL_CAPITAL_REFERENCE.md"
+  },
+  {
+    "source": "tests/test_attention_priority.py",
+    "path": "tests/test_attention_priority.py"
+  },
+  {
+    "source": "scripts/check_capital_reference_browser.cjs",
+    "path": "scripts/check_capital_reference_browser.cjs"
+  },
+  {
+    "source": "src/market_agent/dated_valuation.py",
+    "path": "src/market_agent/dated_valuation.py"
+  },
+  {
+    "source": "tests/test_dated_valuation.py",
+    "path": "tests/test_dated_valuation.py"
+  },
+  {
+    "source": "docs/research-agent/DATED_USER_VALUATION.md",
+    "path": "docs/research-agent/DATED_USER_VALUATION.md"
+  },
+  {
+    "source": "scripts/check_dated_valuation_browser.cjs",
+    "path": "scripts/check_dated_valuation_browser.cjs"
+  },
+  {
+    "source": "src/market_agent/attention_preselection.py",
+    "path": "src/market_agent/attention_preselection.py"
+  },
+  {
+    "source": "tests/test_attention_preselection.py",
+    "path": "tests/test_attention_preselection.py"
+  },
+  {
+    "source": "docs/research-agent/TODAY_CANDIDATE_EVENTS.md",
+    "path": "docs/research-agent/TODAY_CANDIDATE_EVENTS.md"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/v09_dualpath_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/v09_dualpath_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/v09_dualpath_r2_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/v09_dualpath_r2_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/v09_dualpath_r3_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/v09_dualpath_r3_retained_compatibility.json"
+  },
+  {
+    "source": "evals/closure_journey.py",
+    "path": "evals/closure_journey.py"
+  },
+  {
+    "source": "tests/test_closure_journey.py",
+    "path": "tests/test_closure_journey.py"
+  },
+  {
+    "source": "tests/test_closure_scenario.py",
+    "path": "tests/test_closure_scenario.py"
+  },
+  {
+    "source": "scripts/check_closure_browser.cjs",
+    "path": "scripts/check_closure_browser.cjs"
+  },
+  {
+    "source": "docs/research-agent/V09_PRODUCT_CLOSURE.md",
+    "path": "docs/research-agent/V09_PRODUCT_CLOSURE.md"
+  },
+  {
+    "source": "release/V09_RELEASE_NOTES_DRAFT.md",
+    "path": "release/V09_RELEASE_NOTES_DRAFT.md"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json"
+  },
+  {
+    "source": "evals/run_product_delta_scorecard.py",
+    "path": "evals/run_product_delta_scorecard.py"
+  },
+  {
+    "source": "tests/test_product_delta_scorecard.py",
+    "path": "tests/test_product_delta_scorecard.py"
+  },
+  {
+    "source": "src/market_agent/portfolio_whatif.py",
+    "path": "src/market_agent/portfolio_whatif.py"
+  },
+  {
+    "source": "tests/test_portfolio_whatif.py",
+    "path": "tests/test_portfolio_whatif.py"
+  },
+  {
+    "source": "docs/research-agent/ACCOUNT_WHATIF.md",
+    "path": "docs/research-agent/ACCOUNT_WHATIF.md"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/overnight_account_whatif_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/overnight_account_whatif_retained_compatibility.json"
+  },
+  {
+    "source": "src/market_agent/technical_zones.py",
+    "path": "src/market_agent/technical_zones.py"
+  },
+  {
+    "source": "src/market_agent/demo_assets/technical-example-v1.json",
+    "path": "src/market_agent/demo_assets/technical-example-v1.json"
+  },
+  {
+    "source": "tests/test_technical_zones.py",
+    "path": "tests/test_technical_zones.py"
+  },
+  {
+    "source": "tests/test_serve_entrypoint.py",
+    "path": "tests/test_serve_entrypoint.py"
+  },
+  {
+    "source": "docs/research-agent/TECHNICAL_CONDITIONS.md",
+    "path": "docs/research-agent/TECHNICAL_CONDITIONS.md"
+  },
+  {
+    "source": "scripts/build_technical_example.py",
+    "path": "scripts/build_technical_example.py"
+  },
+  {
+    "source": "release/assets/convictiondesk-decision-dark.png",
+    "path": "docs/assets/convictiondesk-decision-dark.png"
+  },
+  {
+    "source": "release/assets/convictiondesk-decision-light.png",
+    "path": "docs/assets/convictiondesk-decision-light.png"
+  },
+  {
+    "source": "release/assets/convictiondesk-journey-dark.png",
+    "path": "docs/assets/convictiondesk-journey-dark.png"
+  },
+  {
+    "source": "release/assets/convictiondesk-journey-light.png",
+    "path": "docs/assets/convictiondesk-journey-light.png"
+  },
+  {
+    "source": "release/assets/convictiondesk-mobile.png",
+    "path": "docs/assets/convictiondesk-mobile.png"
+  },
+  {
+    "source": "release/assets/convictiondesk-records-dark.png",
+    "path": "docs/assets/convictiondesk-records-dark.png"
+  },
+  {
+    "source": "release/assets/convictiondesk-records-light.png",
+    "path": "docs/assets/convictiondesk-records-light.png"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/second_overnight_technical_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/second_overnight_technical_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/owner_ux_t1_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/owner_ux_t1_retained_compatibility.json"
+  },
+  {
+    "source": "release/assets/convictiondesk-whatif-light.png",
+    "path": "docs/assets/convictiondesk-whatif-light.png"
+  },
+  {
+    "source": "release/assets/convictiondesk-whatif-dark.png",
+    "path": "docs/assets/convictiondesk-whatif-dark.png"
   }
 ]

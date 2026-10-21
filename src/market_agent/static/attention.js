@@ -8,7 +8,7 @@
   const priorities = {HIGH:"高优先级",MEDIUM:"值得复核",VERIFY:"待核实"};
   let busy = false;
   let universeEntries = [];
-  let scanScope=null, pendingEvidence=0;
+  let scanScope=null, pendingEvidence=0, screenLimit=null, currentPending=0;
   let activeScan = sessionStorage.getItem("mia-attention-scan");
   const jsonOptions = value => ({method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(value)});
   const displayZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
@@ -145,6 +145,7 @@
     const timing=item.screen.urgency==="NOW"?"优先核查":item.screen.urgency==="SOON"?"近期核查":"核查时机待判断";
     article.append(el("p",`${direction[item.screen.direction]} · ${timing} · 报道发布 ${publication(item.packet.evidence[0])} · ${session(row.freshness)}`,"small muted attention-time"));
     if(event?.grouped) article.append(el("p",`同一研究事件 · ${receipts.length} 条原始证据；合并依据可展开查看。`,"small"));
+    if(item.screening_lineage?.candidate_repost_unit)article.append(el("p",`转载候选共同筛选 · ${item.screening_lineage.candidate_repost_unit.member_event_keys.length} 篇原文全部保留。相似性不是同事件或事实确认，新披露仍须单独核查。`,"small"));
     const actions=el("div",null,"attention-actions");
     // Two separate controls: resume only reads the saved deep job (GET);
     // start/restart is the sole POST and is always an explicit, confirmed action.
@@ -267,8 +268,17 @@
     const queue=$("attention-queue");queue.replaceChildren();queue.setAttribute("aria-busy","false");
     const report=data.latest_scan?.report;
     const scope=data.scan_scope;
-    scanScope=scope;pendingEvidence=data.pending_events || 0;
+    scanScope=scope;pendingEvidence=data.pending_events || 0;screenLimit=data.screen_batch_limit;
+    const lifecycle=data.pending_lifecycle;
+    currentPending=lifecycle?.current || 0;
+    const continueButton=$("attention-continue");
+    continueButton.hidden=publicDemo || currentPending===0;
+    continueButton.disabled=busy || !!activeScan;
+    continueButton.textContent=`继续筛选近期材料（${currentPending}）`;
     const scopeLimited=report?.symbols_not_checked>0;
+    const currentWindow=Number.isInteger(report?.pending_current_events);
+    const savedOnly=report?.scan_mode==="SAVED_CURRENT_ONLY";
+    const windowDone=currentWindow && (report.symbols>0 || savedOnly) && report.current_batch_result==="COMPLETED_NO_MATERIAL_EVENTS";
     const failed=data.latest_scan && ["FAILED","INTERRUPTED","RUNNING"].includes(data.latest_scan.status);
     const incomplete=data.pending_events>0 || report?.coverage_incomplete ||
       failed;
@@ -277,9 +287,12 @@
       `已筛选 ${coverage.screened_records} 条新闻记录，形成 ${coverage.unresolved_events} 项未复核研究事件；此处显示其中前 ${coverage.shown_events} 项。`+
       (data.pending_events?`还有 ${data.pending_events} 条待筛，未筛选材料可能改变顺序。`:"")+
       "仅对已筛选集合排序，不是整个研究范围的全局 Top-5。" : "仅显示已筛选且待复核的研究事件，覆盖范围见扫描记录。";
+    if(lifecycle)$("attention-coverage").textContent+=` 当前已保存近七天候选待筛 ${lifecycle.current} 条；曾合格但过期未筛 ${lifecycle.expired_unscreened} 条；其他早前及时间不合格材料 ${lifecycle.historical_other} 条保留。历史积压不自动占用本轮模型名额。`;
+    else if(currentWindow)$("attention-coverage").textContent+=` 本次记录：近七天候选待筛 ${report.pending_current_events} 条，早前及不合格时间材料 ${report.pending_historical_events} 条保留；历史积压不自动占用本轮模型名额。`;
     const symbols=[...new Set(data.items.map(row=>row.item.symbol))];
     $("attention-summary").textContent=data.items.length ?
       `当前显示 ${data.items.length} 项 · ${symbols.join(" / ")}`+(incomplete||scopeLimited?" · 覆盖仍有缺口":" · 查看扫描覆盖") : "先建立研究范围，再检查相关变化。";
+    if(lifecycle?.expired_unscreened)$("attention-summary").textContent+=` ${lifecycle.expired_unscreened} 条近期材料已过期未筛；不代表没有重要变化，也不会重新标为今日消息。`;
     if (data.items.length) {
       const extra=el("div",null,"attention-rows");
       data.items.forEach((row,index)=>index<3?queue.append(renderItem(row)):extra.append(compactRow(row)));
@@ -289,8 +302,8 @@
       const empty=el("div",null,"attention-empty");
       const scopeOnly=scopeLimited && !failed && !data.pending_events &&
         report.errors?.every(error=>error.code==="SYMBOL_BATCH_LIMIT");
-      empty.append(el("h3",scopeOnly?"本批没有新增需要优先处理的变化。":incomplete?"部分证据尚待核查。":scope?.active_symbols===0 || report?.symbols===0?"研究范围还没有标的。":report?"没有新增需要优先处理的变化。":"尚未运行关注扫描。"),
-        el("p",scopeOnly?"这是本批检查结果，不代表全部研究范围都没有变化。":incomplete?"本次核查未完整结束。已获取的证据会保留，下次刷新可继续处理。":
+      empty.append(el("h3",windowDone?"本批近期材料未发现新的重要事件。":scopeOnly?"本批没有新增需要优先处理的变化。":incomplete?"部分证据尚待核查。":scope?.active_symbols===0 || report?.symbols===0?"研究范围还没有标的。":report?"没有新增需要优先处理的变化。":"尚未运行关注扫描。"),
+        el("p",windowDone?(savedOnly?"这只是已保存近期材料的筛选结果；本次没有获取新来源，不能说明市场没有新变化。":"这是本次已检索批次和已保存近期材料的结果；未检索标的与历史积压仍是覆盖缺口。"):scopeOnly?"这是本批检查结果，不代表全部研究范围都没有变化。":incomplete?"本次核查未完整结束。已获取的证据会保留；刷新优先检查近期变化，历史材料不会自动清空。":
           scope?.active_symbols===0 || report?.symbols===0?"建立持仓，或在研究范围中加入观察与候选标的。":report?"已复核的事项不会反复打扰你；没有新变化也是有效结果。":"点击「刷新今日关注」开始检查。持仓自动纳入研究范围，无需归档持仓。","muted"));
       queue.append(empty);
     }
@@ -304,8 +317,10 @@
     }
     const screenError=report?.errors?.find(error=>error.stage==='screen' && !['PENDING_BACKLOG','PENDING_EVIDENCE_RETAINED'].includes(error.code));
     if(data.scan_result_status==='PROVIDER_UNAVAILABLE')status('本轮来源暂时不可用；未形成新的重要事件判断。已保存证据仍可查看。');
-    else if(screenError)status(`已保存来源，但本轮筛选${screenError.code==='timeout' ? '超时' : '未通过验证'}；还有 ${data.pending_events || 0} 条待筛。刷新可继续，当前排序不完整。`);
+    else if(screenError)status(`已保存来源，但本轮筛选${screenError.code==='timeout' ? '超时' : '未通过验证'}；还有 ${data.pending_events || 0} 条待筛。可确认费用后继续筛选，当前排序不完整。`);
+    else if(savedOnly)status(`本次筛选 ${report.screened} 个候选事件单元，覆盖 ${report.screened_article_receipts ?? report.screened} 篇已保存原文；近期仍待筛 ${currentPending} 条。未获取新来源，全范围仍为 PARTIAL。`);
     else if(data.scan_result_status==='COMPLETED_NO_MATERIAL_EVENTS')status('本轮扫描完成，未发现新的重要事件。');
+    else if(windowDone)status(`本批近期候选已核查，未发现新的重要事件；全范围仍为 PARTIAL。保留 ${report.pending_historical_events} 条早前及时间不合格材料，不自动付费筛选。`);
     else if (scopeLimited && !failed && !data.pending_events && report.errors?.every(error=>error.code==="SYMBOL_BATCH_LIMIT")) {
       status(`本次已检查 ${report.symbols} / ${report.universe_symbols} 个标的。`+
         (report.batch_remaining?`本轮还有 ${report.batch_remaining} 个，点击「继续扫描剩余标的」。`:"本轮批次已结束；下次刷新从研究范围开头检查新变化。"));
@@ -321,6 +336,16 @@
     const successful=data.latest_successful_scan?.report;
     audit.append(el("p",successful ? "最近完整成功扫描 · "+stamp(successful.frozen_cutoff || successful.query_cutoff) : "尚无完整成功扫描记录。","small muted"));
     if(report) audit.append(el("p",`最近扫描尝试 · ${stamp(report.frozen_cutoff || report.query_cutoff)} · ${data.latest_scan.status}`,"small muted"));
+    if(savedOnly)audit.append(el("p","本次仅使用已保存的近期来源；新闻 Provider 请求 0 次，没有推进来源抓取游标。","small"));
+    if(report?.candidate_selection){
+      const selection=report.candidate_selection;
+      audit.append(el("p",`候选预选：持仓、新鲜线索、临期与非持仓分配名额，再按标的轮转。本轮 ${selection.current_candidates} 篇近期报道提供 ${selection.offered_candidates} 个语义筛选单元，覆盖 ${selection.offered_article_receipts ?? selection.offered_candidates} 篇原文，另 ${selection.deferred_current} 篇延后保留；上限 ${selection.event_limit} 个单元。关键词和来源只是待复核线索，不代表已验证重大事件。`,"small"));
+      if(selection.clustering){const c=selection.clustering;audit.append(el("p",`保守转载候选聚类：${c.raw_articles} 篇原文 → ${c.candidate_event_units} 个候选单元；本轮候选中可避免 ${c.same_round_redundant_slots_avoided} 个重复筛选名额。全部来源、发布时间和 Evidence ID 保留；不同数字、主体、披露阶段或修订保持分开。相似性不证明同一事件。`,"small"));audit.append(el("p",`候选上下文上限 ${selection.candidate_context_byte_limit} 字节，完整模型上下文仍受原有上限约束；${selection.context_deferred_units.length} 个单元因字节容量本轮延后。更多原文可能增加输入 Token，不承诺单轮费用下降。`,"small muted"));}
+      audit.append(el("p","持续流入超过筛选容量时仍可能过期漏筛；本轮缩减仅代表延后，未证明其余材料无价值。每次确认只运行一个有界批次，不自动追加调用。","small muted"));
+    }
+    if(lifecycle)for(const [symbol,row]of Object.entries(lifecycle.by_symbol)){
+      if(row.expired_unscreened)audit.append(el("p",`${symbol}：${row.expired_unscreened} 条曾合格近期材料过期未筛，排序覆盖仍有缺口。`,"small"));
+    }
     if(data.freshness?.as_of) audit.append(el("p","列表读取时点 · "+stamp(data.freshness.as_of)+"；读取列表不会刷新来源。","small muted"));
     audit.append(el("p","当前来源：公司新闻。扫描按需触发，采用七天迟到新闻重叠窗口；不覆盖全市场或全部披露。","small muted"));
     if(scope) audit.append(el("p",`研究范围 ${scope.active_symbols} 个；每次最多检查 ${scope.symbol_limit} 个，下一批 ${scope.next_batch_symbols} 个。批次位置已保存，重启后可继续；持仓无需归档。`,"small muted"));
@@ -331,6 +356,11 @@
       if(unchecked.length)audit.append(el("p","当前范围中本次未检索："+unchecked.join(" / "),"small muted"));
     }
     const sourceGaps=(report?.errors || []).filter(e=>e.symbol);
+    if(report?.symbol_coverage){
+      const entries=el("ul"), labels={COMPLETE_WINDOW:"本次来源窗口完整",PARTIAL_SOURCE:"来源窗口不完整",PROVIDER_UNAVAILABLE:"本次来源不可用",NOT_FETCHED_IN_THIS_SCAN:"本次未检索"};
+      Object.entries(report.symbol_coverage).forEach(([symbol,row])=>entries.append(el("li",`${symbol} · ${labels[row.status] || "状态未核实"}${row.until?` · 截止 ${stamp(row.until)}`:""}`,"small")));
+      audit.append(disclosure("逐标的来源范围",entries));
+    }
     if(sourceGaps.length)audit.append(el("p","来源覆盖缺口："+sourceGaps.map(e=>`${e.symbol} · ${e.code}`).join("；"),"small"));
     if(report?.model_events?.length)audit.append(el("p",`最近扫描记录了 ${report.model_events.length} 次模型阶段；实际费用以 Provider 账单为准，读取缓存不会重新调用模型。`,"small muted"));
     audit.append(el("p","手动刷新会检索公司新闻，并可能调用付费模型筛选已保存材料。新扫描先确认费用；查看已有扫描进度只读取保存状态。不会自动清空待筛队列或无限重试。","small muted"));
@@ -378,14 +408,16 @@
     const [queue,universe]=await Promise.all([api("/api/attention/queue"),api("/api/research-universe")]);
     renderUniverse(universe);renderQueue(queue);
   }
-  $("attention-scan").addEventListener("click",async()=>{
-    if(busy)return;busy=true;$("attention-scan").disabled=true;
+  async function runScan(savedOnly=false){
+    if(busy)return;busy=true;$("attention-scan").disabled=true;$("attention-continue").disabled=true;
     try {
       if (!activeScan) {
-        const confirmed=await miaConfirmCost({title:"刷新今日关注？",body:"将检索公司新闻，并可能调用付费模型筛选材料。仅处理有界批次，部分完成时保留已取得的证据；不会自动重试。数据 Provider 也可能按你的套餐计费。",confirmLabel:"确认扫描",facts:[["本次范围",scanScope ? `${scanScope.next_batch_symbols} / ${scanScope.active_symbols} 个标的` : "以服务端研究范围为准"],["待筛材料",`${pendingEvidence} 条；每轮最多筛选 4 条`],["费用","模型和数据费用以你配置的 Provider 为准，当前未提供精确报价"]]});
+        if(scanScope?.active_symbols===0){status("研究范围还没有标的；请先加入观察或候选标的。");return;}
+        if(savedOnly && currentPending===0){status("当前没有已保存且仍在近期窗口内的待筛材料；历史积压保持不变。");return;}
+        const confirmed=await miaConfirmCost({title:savedOnly?"继续筛选已保存材料？":"刷新今日关注？",body:savedOnly?"不获取新闻、不推进来源游标；只筛选已保存且仍在近七天窗口内的候选。可能调用付费模型，最多一个有界批次，不自动重试。过期材料保持原样，不当作今日消息。":"将检索公司新闻，并可能调用付费模型筛选近七天候选。历史积压保留，不自动填充模型名额。仅处理有界批次，不会自动重试。数据 Provider 也可能按你的套餐计费。",confirmLabel:savedOnly?"确认筛选":"确认扫描",facts:[["本次范围",savedOnly?`${currentPending} 条已保存近期候选；新闻请求 0 次`:scanScope ? `${scanScope.next_batch_symbols} / ${scanScope.active_symbols} 个标的` : "以服务端研究范围为准"],["全部保留待筛",`${pendingEvidence} 条；${Number.isInteger(screenLimit)?`每轮最多筛选 ${screenLimit} 个候选事件单元；全部原文保留，上下文有界`:"筛选上限以服务端配置为准"}`],["费用",savedOnly?"可能产生模型费用；本次不请求新闻 Provider。未提供精确模型报价。":"模型和数据费用以你配置的 Provider 为准，当前未提供精确报价"]]});
         if(!confirmed)return;
-        status("正在获取新公司新闻并核查重要变化…");
-        const job=await api("/api/attention/scan",{method:"POST"});
+        status(savedOnly?"正在筛选已保存近期材料，不获取新来源…":"正在获取新公司新闻并核查重要变化…");
+        const job=await api(savedOnly?"/api/attention/continue":"/api/attention/scan",{method:"POST"});
         activeScan=job.scan_id;sessionStorage.setItem("mia-attention-scan",activeScan);
       }
       else status("正在读取已保存的扫描进度 · 不重新提交扫描…");
@@ -399,9 +431,11 @@
         status("上次扫描记录未找到。请点击「刷新今日关注」重新开始；没有自动重发扫描请求。");
       } else status(errorText(error));
     }
-    finally {busy=false;$("attention-scan").disabled=false;
+    finally {busy=false;$("attention-scan").disabled=false;$("attention-continue").disabled=!!activeScan || currentPending===0;
       if(activeScan) $("attention-scan").textContent="继续查看扫描";}
-  });
+  }
+  $("attention-scan").addEventListener("click",()=>runScan());
+  $("attention-continue").addEventListener("click",()=>runScan(true));
   $("universe-form").addEventListener("submit",async event=>{
     event.preventDefault();const button=event.currentTarget.querySelector("button");button.disabled=true;
     try {

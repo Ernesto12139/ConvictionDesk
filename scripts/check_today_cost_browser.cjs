@@ -1,5 +1,5 @@
 'use strict';
-// Isolated OWNER copy only. All POSTs are intercepted and never reach the server.
+// Isolated synthetic/copy only. All POSTs are intercepted and never reach the server.
 const fs=require('node:fs'),path=require('node:path');
 const [base,output,moduleFile]=process.argv.slice(2),url=new URL(base);
 if(url.hostname!=='127.0.0.1'||url.port==='8000')throw Error('Isolated copy required');
@@ -30,7 +30,8 @@ const check=(v,k)=>{if(!v)throw Error(k);checks.push(k);};
    await page.waitForFunction(()=>document.querySelector('#attention-status').textContent.includes('PARTIAL'));
    await page.locator('#attention-audit > summary').click();
    const audit=await page.locator('#attention-scan-details').innerText();
-   check(audit.includes('本次已检索')&&audit.includes('本次未检索')&&audit.includes('尚无完整成功扫描'),`actual_scope_cache_and_absent_success_${width}`);
+   check(audit.includes('本次已检索')&&(!original.latest_scan.report.symbols_not_checked||audit.includes('本次未检索'))&&audit.includes('尚无完整成功扫描'),`actual_scope_cache_and_absent_success_${width}`);
+   if(Number.isInteger(original.latest_scan.report.pending_current_events))check((await page.locator('#attention-coverage').innerText()).includes('历史积压不自动占用本轮模型名额'),`current_history_boundary_${width}`);
    for(const exit of ['cancel','escape','enter']){
     const before=posts.length;await page.locator('#attention-scan').click();await page.locator('#mia-cost-dialog').waitFor();
     check((await page.locator('#mia-cost-body').innerText()).includes('付费模型'),`paid_model_disclosed_${exit}_${width}`);

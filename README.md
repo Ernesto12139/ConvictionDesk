@@ -1,131 +1,61 @@
 <h1 align="center">ConvictionDesk</h1>
 
 <p align="center">
-  <strong>Evidence-grounded US equity research and decision agent</strong><br>
-  From market evidence to a clear investment decision.
+  <strong>Know what changed. Understand what matters. Decide what to do with your portfolio.</strong>
+</p>
+
+<p align="center">
+  A local, open-source decision desk for people who hold or follow US stocks.<br>
+  It ties each new event to the positions you hold and the reason you own them, then returns an evidence-cited <b>ADD · HOLD · REDUCE · EXIT</b> call, or says <b>UNDETERMINED</b>.
 </p>
 
 <p align="center">
   <a href="https://github.com/Ernesto12139/ConvictionDesk/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Ernesto12139/ConvictionDesk/actions/workflows/ci.yml/badge.svg"></a>
   <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-27745F">
-  <img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-27745F">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-27745F"></a>
 </p>
 
-ConvictionDesk is a local research workbench for people who hold or follow US stocks.
-Saved research retains its evidence and revision history. On manual refresh it screens changes for the
-companies you own or track. Research checks evidence against a frozen position and,
-when explicitly confirmed, your investment thesis, then proposes a conditional direction: **ADD**, **HOLD**,
-**REDUCE** or **EXIT**. The answer includes the evidence, the strongest argument against
-it, and what would make it change its mind.
-
-Authoritative financial calculations use deterministic Python `Decimal`. Material research
-claims cite dated evidence; citation validation does not prove investment correctness. When the evidence is too thin, the answer is **UNDETERMINED**. It never
-falls back to a default HOLD.
+<p align="center">
+  <a href="#try-it-without-api-keys">Try it without API keys</a> ·
+  <a href="#the-journey">The journey</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#run-it-on-your-own-portfolio">Live setup</a> ·
+  <a href="#release-status">Release status</a>
+</p>
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-evidence-to-action-dark.svg">
-    <img alt="Diagram. An unconfigured prompt can omit holding context, a time cutoff, arithmetic checks and a saved revision. ConvictionDesk goes through six steps: new market event, qualified evidence, thesis relevance, material change, action direction, and what would change my mind. Thin evidence branches to UNDETERMINED. Every result is saved as an immutable revision." src="docs/assets/convictiondesk-evidence-to-action-light.svg" width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-journey-dark.png">
+    <img alt="Three real screenshots of the keyless public replay. 1 Today: two fictional companies, XMPL and XGRD, each with a headline, why it matters, the next thing to verify, and Fast or Deep buttons. 2 Decision: a saved XMPL research record reading HOLD, with the reason, linked evidence and the thesis change compared with the Fast pass. 3 Evidence: the sources behind the decision, numbered and labelled as user premise, historical background or material available in this round." src="docs/assets/convictiondesk-journey-light.png" width="100%">
   </picture>
 </p>
+<p align="center"><sub>Real screenshots of the keyless replay that ships with this repository. Companies, filings, prices and accounts are fictional; judgments are scripted replay text, not live model output.</sub></p>
 
-## What it does
+## What it answers
 
-| | |
+| Your question | What ConvictionDesk does |
 |---|---|
-| **Today** | Manually scans company news for the companies in your research universe, removes duplicates and stale items, screens what is material, and ranks it. If the scan cannot finish, it says **PARTIAL** and shows what it covered. |
-| **Research** | Takes one event or one question, binds it to a frozen snapshot of your holdings and an account scope, and investigates with typed tools (portfolio, end-of-day price, company news, SEC filings and XBRL). |
-| **Decision** | Returns a typed Action Decision: a direction, a status (`SUPPORTED`, `PROVISIONAL`, `UNDETERMINED`, `NOT_APPLICABLE`), evidence strength, a **thesis delta** (what this evidence changed about your reason to own), counterevidence and change conditions. |
-| **Record** | Saves every result as an immutable, hash-checked revision. You can reopen it, compare rounds and trace each claim to its source. |
+| **What changed for my holdings?** | **Today** scans company news for your research universe, removes duplicates and stale stories, screens for materiality and ranks what is left. A scan that can't cover everything says **PARTIAL** and shows what it covered. |
+| **Why does it matter, and what evidence counts?** | **Research** binds one event or question to a frozen snapshot of your holdings and account scope, then gathers typed evidence: portfolio, end-of-day price, company news, SEC filings and XBRL. |
+| **Does it change my thesis?** | Each result carries a **thesis delta**: what this evidence changed about your reason to own, the strongest counterevidence, and what would change the call. |
+| **Should I consider changing my position?** | A typed **Action**: `ADD` / `HOLD` / `REDUCE` / `EXIT` with status `SUPPORTED`, `PROVISIONAL`, `UNDETERMINED` or `NOT_APPLICABLE`. Thin evidence is `UNDETERMINED`, never a default HOLD. HOLD, REDUCE and EXIT require that you actually hold the stock. |
+| **What would happen if I did?** | A saved Action opens a **single-account What-if**: explicit buy/sell shares, hypothetical fill and fees → cash, shares, NAV, weights and concentration. `Decimal` separates existing-share repricing from trade impact (fees). Missing marks stay unknown. No orders or saved holdings/research changes. |
+| **Where should I watch price conditions?** | A synthetic OHLCV example demonstrates qualified daily SMA/ATR/range zones and invalidations with a reproducible receipt. Real provider OHLCV and technical quality remain **LIVE_DATA_NOT_VERIFIED**; these are not targets or automatic actions. |
 
-### What the workbench makes explicit
+## Try it without API keys
 
-| Common risk in an unconfigured one-off prompt | ConvictionDesk safeguard |
-|---|---|
-| Doesn't know what you hold | Each task is bound to a frozen portfolio snapshot. HOLD, REDUCE and EXIT are only allowed when you actually hold the stock. |
-| Mixes facts and opinion | Statements are typed as fact, user assertion, AI draft or unknown. They cite evidence IDs that must exist in the task. |
-| Can quietly use later information | Each task has a point-in-time cutoff. Sources published after it are rejected before anything is saved. |
-| Does arithmetic in the model | Portfolio and SEC quarter math use Python `Decimal`. Model output that introduces new numbers is rejected. |
-| Always has an answer | An evidence-backed direction may be `PROVISIONAL`; lack of a basis remains unknown. Insufficient evidence is `UNDETERMINED`. |
-| Is gone when the chat ends | Every result is a revision you can reopen and audit. |
+The packaged replay runs the full Today → Fast / Deep → Action → Evidence → Records journey on fictional data. It makes **no model or market-data calls**, ignores any keys in your environment and refuses every write. Python 3.12+ is required.
 
-## Architecture
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-architecture-dark.svg">
-    <img alt="Layered architecture. 1 Sources: company news (Finnhub), SEC EDGAR filings and XBRL, end-of-day prices (Massive), portfolio snapshot. 2 Typed evidence and point-in-time: evidence identity, cutoff, freshness and session, deduplication. 3 Deterministic finance in Decimal: portfolio analytics, SEC quarters, numeric guard. 4 Attention and orchestration: Today scan, research task, model profiles. 5 Fast or Deep decision with citation validation. 6 Action and thesis delta. 7 Decision record: immutable revisions, reopen and audit, keyless replay. Dashed planned boxes: 13F and Form 4, live EV and multiples with scenarios, cross-provider BYOK." src="docs/assets/convictiondesk-architecture-light.svg" width="100%">
-  </picture>
-</p>
-
-ConvictionDesk is one Python service (FastAPI, Pydantic v2, `httpx`, stdlib `sqlite3`)
-with a dependency-free HTML/CSS/JS console. No agent framework, vector database or
-message queue is involved. Models are used for bounded screening, research planning and synthesis. Research output
-may cite only the evidence supplied by the typed tool pipeline. Dashed boxes in
-the diagram are planned work, not features.
-
-## Fast and Deep
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-fast-deep-dark.svg">
-    <img alt="Fast versus Deep. Both start from a ranked Today item or a question with the same holding, account scope and time cutoff, and both end in the same typed Action Decision. Fast: bounded context of up to 8 sources and 12 KB, one judgment with up to 3,072 output tokens and a 45 second limit, core direction. Deep: wider context of up to 18 sources and 24 KB, names the most material gap and runs one targeted news or SEC check, adds up to four SEC quarters normalized in Decimal, judges with up to 8,192 output tokens and a 90 second limit, and reports NEW_EVIDENCE or NO_NEW_EVIDENCE. Valuation is planned." src="docs/assets/convictiondesk-fast-deep-light.svg" width="100%">
-  </picture>
-</p>
-
-| | Fast | Deep |
-|---|---|---|
-| Typical question | "Does this news change anything?" | "Should I act before the next report?" |
-| Evidence | Up to 8 qualified sources (12 KB) | Up to 18 qualified sources (24 KB) |
-| Extra work | None | Names the most material evidence gap and runs one targeted news or SEC check; adds up to four SEC quarters |
-| Model budget | ≤ 3,072 output tokens, 45 s | ≤ 8,192 output tokens, 90 s |
-| Result | Same typed Action Decision | Same, plus whether the extra check found new evidence |
-
-Deep looks further. It has **not** been shown to judge better than Fast. If its extra
-check finds nothing, it reports `NO_NEW_EVIDENCE` instead of implying a gain.
-
-## Evidence, time and records
-
-- **Point in time.** Each task has a cutoff. Publication time, retrieval time, the
-  financial period and the price session are kept as separate fields.
-- **Freshness.** Today classifies publication freshness by the New York calendar date, not an inferred trading session. An older story is not shown as
-  today's news.
-- **Unknown stays unknown.** A missing price or quarter is shown as unknown, never as
-  zero or as a guess.
-- **Immutable history.** Revisions are hash-checked in SQLite. Schema upgrades keep
-  the original bytes.
-
-## Models and data providers
-
-| Role | Provider | Configured by | Status |
-|---|---|---|---|
-| Fast / Deep research | OpenAI Responses, `gpt-6.1-sol` (server profiles `sol-fast`, `sol-deep`) | `OPENAI_API_KEY` | Verified scoped server profiles; model availability depends on your account |
-| Company news (Today) | Finnhub | `FINNHUB_API_KEY` | Implemented |
-| End-of-day prices | Massive | `MASSIVE_API_KEY` | Implemented; closing prices, not real-time quotes |
-| Filings and XBRL | SEC EDGAR | `SEC_USER_AGENT` (your contact, as SEC requests) | Implemented |
-| Other OpenAI-compatible models | e.g. DeepSeek | `LLM_PROVIDER`, `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL` | Experimental: a single general research path **without** the Fast/Deep profiles |
-
-An LLM key alone does not enable complete live research. Today requires company-news
-access; qualified closing-price references require market-data access; SEC retrieval
-requires a contact user-agent and reachable official endpoints. Missing providers
-remain unknown or unavailable; they do not become synthetic facts.
-
-Keys are read only from the server's environment. `.env` files are not loaded, and
-keys are never entered in or returned to the browser. Each provider's terms apply to
-your use. The packaged preview uses fictional data; live responses stay in local storage and remain subject to provider terms.
-
-## Install
-
-Requires Python 3.12 or newer.
+This source candidate adds the decision-first research page, account What-if and synthetic technical calculations; the currently published **v0.8.1 does not**. The shared keyless replay is read-only: it shows saved records but does **not** run What-if or technical calculations (the What-if screenshot below comes from a local copy of the same fictional data). Candidate installation and public publication are separate gates.
 
 **macOS / Linux**
 
 ```bash
 git clone https://github.com/Ernesto12139/ConvictionDesk.git
 cd ConvictionDesk
-python3 -m venv .venv
-source .venv/bin/activate
+python3 -m venv .venv && source .venv/bin/activate
 pip install .
+python -m market_agent.serve
 ```
 
 **Windows (PowerShell)**
@@ -135,22 +65,121 @@ git clone https://github.com/Ernesto12139/ConvictionDesk.git
 cd ConvictionDesk
 python -m venv .venv
 .venv\Scripts\python.exe -m pip install .
+.venv\Scripts\python.exe -m market_agent.serve
 ```
 
-## Your first research workflow
+Open **http://127.0.0.1:8080/**, pick an item under *今日关注* (Today) and choose **Fast** or **Deep**. Then open *查看依据* (Evidence) and *研究记录* (Records).
 
-Set the keys in the same shell, then start the local service. On Windows use
-`.venv\Scripts\python.exe` in place of `python` below (activation is optional).
-Use an installed Python 3.12+ interpreter (`python --version`). macOS/Linux shell commands are documented and covered by the
-Linux CI workflow; local verification was performed on Windows.
+- **Port 8080 taken?** Pick another: `PORT=8091 python -m market_agent.serve`, or `$env:PORT = "8091"` in PowerShell.
+- **Network exposure.** The native preview listens on `127.0.0.1`. Docker explicitly uses `HOST=0.0.0.0` inside its container and publishes to localhost:
+  `docker build -t convictiondesk . && docker run --rm -p 127.0.0.1:8080:8080 convictiondesk`
+- The preview entrypoint refuses to start if your shell still has `MIA_RUNTIME_MODE=OWNER`; clear it first. If a previous dataset version is refused, point `MIA_DEMO_DIR` at a new folder.
+
+## The journey
+
+**1 · Today.** A manual, cost-confirmed scan of your universe. Each item shows why it matters, what to verify next and when it was published by New York calendar date. Older stories are never relabelled as today's.
+
+**2 · Fast or Deep.** Fast answers *"does this change anything?"* within a tight budget. Deep answers *"should I act before the next report?"*: it names the most material evidence gap and runs **one** targeted news or SEC check. Deep can continue the **same** saved Fast task as its next round, so the record stays one line of reasoning.
+
+**3 · Action and thesis delta.** The first screen answers in one place: direction and status, up to four distinct reasons, the strongest counterevidence, what would change the call and the thesis change. Each statement appears once; when several points rest on the same source, the page says so instead of counting it twice. The next check to run is spelled out, on a phone directly under the conclusion.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-decision-dark.png">
+    <img alt="A saved Deep research record for fictional company XMPL. Header with the question, round number, research cutoff in UTC and a note that this historical revision is read-only. The decision reads HOLD with the reason and evidence links, followed by why, and the thesis change versus the Fast pass. A side panel shows the next priority check." src="docs/assets/convictiondesk-decision-light.png" width="100%">
+  </picture>
+</p>
+
+**4 · Evidence.** Every material claim cites an evidence ID that must exist in the task. Sources are labelled as user premise, historical background or material available in that round, with publication time and type.
+
+**5 · Account What-if.** Pick the account that holds the stock (its shares and cash show before you type), enter a hypothetical fill and see shares, cash, NAV and weight before → after. The trade itself (fees only), repricing of shares you already hold against an optional reference price, and modeled profit/loss are reported separately, in exact `Decimal`. Missing prices stay unknown; overselling is refused; nothing is ordered or saved and the original Action is unchanged.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-whatif-dark.png">
+    <img alt="The single-account What-if on fictional XMPL. The synthetic account holds 40 shares and 30,000 USD cash. Buying 10 shares at a hypothetical 61.40 with a 1 USD fee shows shares 40 to 50, cash 30,000 to 29,385, NAV 32,456 to 32,455 and weight 7.57% to 9.46%; trade itself minus 1 USD, repricing of the existing 40 shares against a 58 reference plus 136 USD, total plus 135 USD, modeled unrealized P&L 375 USD; the original HOLD is unchanged." src="docs/assets/convictiondesk-whatif-light.png" width="100%">
+  </picture>
+</p>
+
+**6 · Records.** Each result is an immutable, hash-checked revision. Reopen it when the next event arrives, compare rounds and see exactly what was known at the cutoff.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-records-dark.png">
+    <img alt="The research workspace home in the keyless replay. Below the Today items, a section titled Continue your last research lists three saved records for fictional companies XGRD and XMPL, each marked research complete and saved, with round number and cutoff time." src="docs/assets/convictiondesk-records-light.png" width="100%">
+  </picture>
+</p>
+
+<details>
+<summary>On a phone</summary>
+<p align="center"><img alt="Four 390-pixel-wide screenshots of the keyless replay: Today in light theme, the first screen of the XMPL decision (action, next check and first reasons) in light and dark themes, and the evidence list in dark theme." src="docs/assets/convictiondesk-mobile.png" width="100%"></p>
+</details>
+
+## Why not just ask a chatbot?
+
+A general assistant can write a fluent paragraph about any stock. ConvictionDesk is built so the answer is about *your* position, uses only what was known at the time and gets the numbers right.
+
+| | One-off stock chat | ConvictionDesk |
+|---|---|---|
+| **Your positions** | Whatever you paste in | Bound to a frozen portfolio snapshot per task; position-dependent actions only for stocks you hold |
+| **Time** | Can quietly use later information | A point-in-time cutoff per task; later sources are rejected before anything is saved |
+| **Evidence** | Facts and opinion blended | Statements typed as fact, user assertion, AI draft or unknown; citations must resolve to evidence in the task |
+| **Numbers** | Arithmetic done by the model | Portfolio, SEC-quarter and TTM math in Python `Decimal`; model output that introduces new numbers is rejected; missing values stay unknown, never zero |
+| **Continuity** | Gone when the chat ends | Immutable revisions you can reopen, continue and audit |
+
+## How it works
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-architecture-dark.svg">
+    <img alt="Layered architecture. 1 Sources: company news (Finnhub), SEC EDGAR filings and XBRL, end-of-day prices (Massive), portfolio snapshot. 2 Typed evidence and point-in-time: evidence identity, cutoff, freshness and session, deduplication. 3 Deterministic finance in Decimal: portfolio analytics, SEC quarters, numeric guard. 4 Attention and orchestration: Today scan, research task, model profiles. 5 Fast or Deep decision with citation validation. 6 Action and thesis delta. 7 Decision record: immutable revisions, reopen and audit, keyless replay. Dashed planned boxes: 13F and Form 4, live EV and multiples with scenarios, cross-provider BYOK." src="docs/assets/convictiondesk-architecture-light.svg" width="100%">
+  </picture>
+</p>
+
+One Python service (FastAPI, Pydantic v2, `httpx`, stdlib `sqlite3`) and a dependency-free HTML/CSS/JS console. No agent framework, vector database or queue. Models do bounded screening, planning and synthesis. They may cite only evidence that the typed tool pipeline supplied, and they never do authoritative arithmetic. Dashed boxes are planned work.
+
+- **Point in time.** Publication time, retrieval time, financial period and price session are separate fields, checked against the task cutoff.
+- **Deterministic finance.** SEC quarter / YTD normalization in `Decimal`, including derived Q4 flows. EPS is never derived by subtraction. Historical TTM revenue, net income and operating cash flow keep unit, currency, period, as-of time, source and status, and feed Deep as cited inputs.
+- **Unknown stays unknown.** Capitalization, P/E, P/S and unaligned TTM EPS stay unknown without complete share-class and corporate-action qualification.
+- **Immutable history.** Revisions are hash-checked in SQLite; schema upgrades keep the original bytes.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-fast-deep-dark.svg">
+    <img alt="Fast versus Deep. Both start from a ranked Today item or a question with the same holding, account scope and time cutoff, and both end in the same typed Action Decision. Fast: up to 8 sources and 12 KB, one judgment, up to 3,072 output tokens and 45 seconds. Deep: up to 18 sources and 24 KB, names the most material gap and runs one targeted news or SEC check, adds up to four SEC quarters in Decimal, up to 8,192 output tokens and 90 seconds, reports NEW_EVIDENCE or NO_NEW_EVIDENCE." src="docs/assets/convictiondesk-fast-deep-light.svg" width="100%">
+  </picture>
+</p>
+
+| | **Fast** | **Deep** |
+|---|---|---|
+| Ask it | "Does this news change anything for me?" | "Should I act before the next report?" |
+| Reads | Up to 8 qualified sources (12 KB) | Up to 18 qualified sources (24 KB), up to four SEC quarters and historical TTM |
+| Extra work | None, one judgment | One targeted news or SEC check on the most material gap |
+| Model budget | ≤ 3,072 output tokens, 45 s | ≤ 8,192 output tokens, 90 s |
+| Returns | Typed Action Decision | The same, plus `NEW_EVIDENCE` or `NO_NEW_EVIDENCE` |
+
+Deep looks further. It is not claimed to judge better, and when its check finds nothing new it says so.
+
+## Run it on your own portfolio
+
+Live research needs **four kinds of configuration**, because each part of the answer comes from a different source. A missing provider makes that part unavailable or unknown; it is never filled with synthetic facts.
+
+| Powers | Provider | Variable | Cost and limits |
+|---|---|---|---|
+| Fast / Deep research, Today screening | OpenAI Responses, `gpt-6.1-sol` (server profiles `sol-fast`, `sol-deep`) | `OPENAI_API_KEY` | Pay-per-token on your account; model availability depends on your account |
+| Company news for Today | [Finnhub](https://finnhub.io/) | `FINNHUB_API_KEY` | A free personal-use tier exists; check current limits and terms |
+| End-of-day prices | [Massive](https://massive.com/pricing) | `MASSIVE_API_KEY` | Free *Stocks Basic*: end-of-day data, 5 calls/minute; paid tiers lift limits. Closing prices, not real-time quotes |
+| Filings and XBRL | [SEC EDGAR](https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data) | `SEC_USER_AGENT` | Free; requires your name and contact email; automated access capped at 10 requests/second |
+
+Other OpenAI-compatible models (`LLM_PROVIDER`, `LLM_BASE_URL`, `LLM_API_KEY`, `LLM_MODEL`) run a single experimental research path **without** the Fast/Deep profiles.
 
 ```bash
 # macOS / Linux
 export MIA_RUNTIME_MODE=OWNER
 export OPENAI_MODEL=gpt-6.1-sol
-export OPENAI_API_KEY=...        # Fast / Deep research
-export FINNHUB_API_KEY=...       # Today news
-export MASSIVE_API_KEY=...       # end-of-day prices
+export OPENAI_API_KEY=...
+export FINNHUB_API_KEY=...
+export MASSIVE_API_KEY=...
 export SEC_USER_AGENT="Your Name you@example.com"
 python -m uvicorn market_agent.main:app --host 127.0.0.1 --port 8000
 ```
@@ -166,106 +195,75 @@ $env:SEC_USER_AGENT = "Your Name you@example.com"
 .venv\Scripts\python.exe -m uvicorn market_agent.main:app --host 127.0.0.1 --port 8000
 ```
 
-Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/), then:
+Open **http://127.0.0.1:8000/**, add your portfolio under *我的组合* (CSV import) or a watch list, then refresh Today. Every scan, new research, follow-up and Deep round shows a **cost confirmation first**; cancel sends nothing. A completed Fast task can continue as Deep in the same record. Saved Today receipts can be screened again in one confirmed batch without refetching news.
 
-1. **Add your portfolio** under *我的组合* (CSV import), or add tickers to your
-   research universe as a watch list.
-2. **Refresh Today.** A new scan first asks for cost confirmation, then may call your news provider and
-   research model. Cancel sends no request; observing an existing scan only reads its status.
-3. **Open one event** with **Fast** for a quick direction, or **Deep** when you are
-   deciding before earnings. New research, follow-ups and Deep checks show a cost
-   confirmation first.
-4. **Read the decision** top-down: direction and status, why, the strongest
-   counterevidence, and the conditions that would change it. Open **Evidence** for
-   every source with its type and publication time.
-5. **Come back later.** The result is saved as a revision under *研究记录*.
+**Keys and data stay local.** Keys are read only from the server's environment (`.env` files are not loaded) and are never entered into or returned to the browser. Data lives in `data/market_agent.db` (`MIA_DB_PATH` moves it). The live service has **no authentication**, so keep it on `127.0.0.1`.
 
-Data is stored in `data/market_agent.db` (set `MIA_DB_PATH` to move it). The local
-service has no authentication, so keep it on `127.0.0.1`. The interface is currently
-in Simplified Chinese.
+## Release status
 
-## Offline preview, no keys
+This table describes the source candidate, not a published v0.9 release. Public v0.8.1 stays unchanged.
 
-To look around before configuring anything, run the keyless synthetic replay. It makes
-no model or market-data calls, ignores any keys in the environment and refuses every
-write. All companies (XMPL, XGRD), headlines, filings, prices and accounts are
-fictional, and the judgments are scripted text that demonstrates the pipeline, not
-model reasoning quality.
+| Status | Capability |
+|---|---|
+| ✅ Verified (scoped) | Typed ADD / HOLD / REDUCE / EXIT with status, evidence strength, thesis delta, counterevidence, change conditions and holding applicability |
+| ✅ Verified (scoped) | Fast / Deep budgets, context limits and tool permissions |
+| ✅ Verified (scoped) | Evidence-ID and point-in-time validation: invalid citations and later sources are rejected |
+| ✅ Verified (scoped) | SEC monetary quarter / YTD normalization in `Decimal`, derived Q4 flows; EPS never derived by subtraction |
+| ✅ Verified (scoped) | Today states: complete, no material events, partial, provider unavailable; cost confirmation before live work |
+| ✅ Verified (scoped) | Keyless synthetic replay: Today → Fast / Deep → Action → Evidence → Records, zero model and data calls |
+| 🧩 Implemented, synthetic/frozen verification | Same-task Fast → Deep continuation |
+| 🧩 Implemented, synthetic/frozen verification | Historical TTM in Deep's cited context and the research page; per-symbol Today coverage; current batch vs. older pending receipts |
+| 🧩 Implemented, synthetic/frozen verification | Local price-scenario receipt from user-supplied dated prices; refuses known share-class or corporate-action conflicts; never updates the saved Action |
+| 🧩 Implemented, synthetic verification; new independent QA pending | Decision-first research page (one brief, same-source disclosure, mobile next step) and single-account share-delta What-if: holding-account default, fees, missing prices, cash/oversell/class guards, trade vs repricing vs modeled P&L, exact plain decimals |
+| 🧩 Implemented, synthetic verification; new independent QA pending | Regular-session OHLCV qualification → SMA20 / simple ATR14 / 10-session candidate bands → explicit hypothetical account preview; real data not admitted |
+| 🧪 Experimental | Live Today scans, live research and CSV portfolio import with your own keys; other OpenAI-compatible models |
 
-```bash
-MIA_RUNTIME_MODE=PUBLIC_DEMO python -m market_agent.serve
-# open http://127.0.0.1:8080/
-```
+*Verified (scoped)* means covered by the deterministic and synthetic checks below, not universal live coverage. ConvictionDesk makes **no accuracy, return or backtest claim**; the quality of live screening and direction is not benchmarked.
 
-After Local Research in PowerShell, set `$env:MIA_RUNTIME_MODE = "PUBLIC_DEMO"`
-and run `.venv\Scripts\python.exe -m market_agent.serve` (port 8080). A fresh
-shell also defaults this entrypoint to preview mode. Use a new `MIA_DEMO_DIR` if
-a previous dataset version is refused; preserve old directories.
+**Known limits:** end-of-day prices only; a full watch-list Today scan can end PARTIAL under provider limits, and large saved queues can exceed one batch; no live adapter yet qualifies share classes and corporate actions, so live valuation multiples stay unknown; no broker integration or trade execution; interface in Simplified Chinese.
 
-Docker runs the same preview:
-`docker build -t convictiondesk . && docker run -p 127.0.0.1:8080:8080 convictiondesk`.
+### Roadmap
 
-<details>
-<summary>For contributors: run the tests</summary>
+Planned, not in this release:
+
+- **Portfolio-wide changes and decision delta**: connect multiple accounts and events; single-account hypothetical fills are already implemented above.
+- **Qualified live technical inputs**: licensed OHLCV, historical vintages, complete split/halt coverage; synthetic zones are not live signals.
+- **Live valuation**: market cap, EV and multiples with qualified share data; Bull / Base / Bear scenarios.
+- **Ownership signals**: 13F institutional holdings, Form 4 insider transactions.
+- **Bring your own model**: cross-provider keys with Fast / Deep profiles.
+- **English and Traditional Chinese interface.**
+
+## Testing and CI
+
+Every push and tag runs the [CI workflow](.github/workflows/ci.yml):
+
+- the deterministic test suite on Ubuntu and Windows (decision contracts, citation and point-in-time rejection, `Decimal` finance, Today states, replay integrity);
+- a keyless **HTTP journey** and a **Playwright browser journey** of the replay: all guest writes denied, zero model calls;
+- a **read-only Docker preview** smoke test as a non-root user with all capabilities dropped;
+- a **public-history audit** of authorship, refs and release identity.
 
 ```bash
 pip install ".[test]"
 python -m pytest -q
+python -m market_agent.serve &        # keyless replay on :8080
 python scripts/smoke_public_demo.py --base http://127.0.0.1:8080
 ```
 
-</details>
+These checks prove the pipeline behaves as specified. They are not evidence of investment performance.
 
-## Status and limitations
+## Releases and contributing
 
-**Verified** below refers to the scoped deterministic contracts and synthetic
-journeys, not universal live coverage, investment quality or Owner acceptance.
-Public CI and release status are reported separately by GitHub. **Experimental** means implemented but not verified on live data by the public
-release.
+This repository is an independently initialized source release. Development happens in a private engineering repository; each release is an allowlisted export of one verified upstream commit, recorded in [`release/RELEASE_MANIFEST.json`](release/RELEASE_MANIFEST.json). Later releases extend the same public history. The project uses AI-assisted development; public commits and releases are maintained under the repository owner's identity.
 
-| Status | Capability |
-|---|---|
-| Verified | Typed ADD / HOLD / REDUCE / EXIT decision with status, evidence strength, thesis delta, counterevidence and change conditions; holding applicability |
-| Verified | Fast / Deep budgets, context limits and tool permissions |
-| Verified | Evidence-ID and point-in-time validation: invalid citations and later sources are rejected |
-| Verified | SEC quarter / YTD normalization in `Decimal`, derived Q4, up to four quarters |
-| Verified | Today states: complete, no material events, partial, provider unavailable |
-| Verified | Keyless synthetic preview: Today → Fast / Deep → Action Decision, zero model and data calls |
-| Experimental | Live Today scans, live research and portfolio import with your own keys |
-| Experimental | Quality of materiality screening and of the direction. **No accuracy or return claim.** |
-| Planned | Live market cap, EV and multiples; cash-flow valuation and Bull / Base / Bear scenarios |
-| Planned | 13F institutional holdings, Form 4 insider transactions |
-| Planned | Cross-provider bring-your-own-key with Fast / Deep profiles |
-| Planned | English and Traditional Chinese interface |
-
-Known limits:
-
-- Prices are end-of-day closes, not real-time quotes.
-- A Today scan of a full watch list is not yet shown to complete reliably. Large
-  universes can end as PARTIAL under provider limits.
-  - Research quality has not been benchmarked against general-purpose assistants.
-- No broker integration and no trade execution.
-
-**ConvictionDesk is a research tool, not investment advice.**
-
-## Releases
-
-This repository is an independently initialized source release, with no inherited Git history. Development happens in a private engineering
-repository, and each release is an allowlisted export of one verified upstream commit,
-recorded in [`release/RELEASE_MANIFEST.json`](release/RELEASE_MANIFEST.json).
-This project uses AI-assisted development; public Git commits and releases are
-maintained under the repository owner's identity. Issues and
-suggestions are welcome; code changes are applied upstream and arrive in the next
-release.
+Issues, bug reports and product feedback are welcome. Accepted changes are applied upstream and arrive in the next release.
 
 | Version | Highlights |
 |---|---|
-| v0.8.1 | Saved research opens completely; execution details move behind *执行记录与诊断*; README and diagrams |
+| Source candidate — not published | Decision-first research page, same-task Fast → Deep, historical TTM, dated price scenarios, account What-if, synthetic OHLCV zones, Today coverage and refreshed screenshots |
+| v0.8.1 | Saved research opens completely; execution details behind *执行记录与诊断*; README and diagrams |
 
 ## License
 
-[MIT](LICENSE) © 2026 Ernesto12139. The license covers this repository's code.
-Dependencies are installed from PyPI under their own licenses (FastAPI, Pydantic,
-Starlette, Uvicorn, HTTPX, tzdata and their dependencies), and none are vendored.
-External data providers remain governed by their own terms. The diagrams in
-`docs/assets/` are original to this project and are covered by the same license.
+[MIT](LICENSE) © 2026 Ernesto12139. The license covers this repository's code, the original diagrams in `docs/assets/` and the replay screenshots, which show only fictional data. Dependencies are installed from PyPI under their own licenses and none are vendored. Data from Finnhub, Massive, SEC EDGAR and model providers remains subject to their terms.
+
+**ConvictionDesk is a research tool, not investment advice.**

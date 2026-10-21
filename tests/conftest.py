@@ -6,7 +6,8 @@ from uuid import uuid4
 
 # Module-level app creation must never load Owner protected files/configuration.
 for _optional_key in ('MIA_RESEARCH_MCP','MIA_LONGBRIDGE_CREDENTIALS',
-        'LONGBRIDGE_MCP_ACCESS_TOKEN','LONGBRIDGE_AGENT_AUTH_CODE','MIA_SEC_RETRIEVAL','MIA_EMBEDDING_MODEL_DIR'):
+        'LONGBRIDGE_MCP_ACCESS_TOKEN','LONGBRIDGE_AGENT_AUTH_CODE','MIA_SEC_RETRIEVAL','MIA_EMBEDDING_MODEL_DIR',
+        'MIA_CAPITAL_REFERENCE_MODE','MIA_CAPITAL_REFERENCE_DIR'):
     os.environ.pop(_optional_key,None)
 
 # create_app is also instantiated at main-module import. Focused pytest invocations

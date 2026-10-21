@@ -23,7 +23,10 @@ jobs:
       - run: python -m pip install ".[test]"
       - run: python -m pytest -q
       - name: Audit public history and identity
-        run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com
+        run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com --expected-root 555ca4fbc531e61bf0fdc33d5022fec38dece11b
+      - name: Bind tagged build to its release commit
+        if: startsWith(github.ref, 'refs/tags/')
+        run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com --release-tag "${{ github.ref_name }}"
   journey:
     runs-on: ubuntu-latest
     timeout-minutes: 15

@@ -24,7 +24,8 @@ def packet(tmp_path):
 
 def independent(tmp_path, report, **changes):
     verdict = {'status': 'ACCEPTED', 'reviewer': 'independent-reviewer',
-               'run_id': report['run_id'], 'private_source_sha': report['private_source_sha']}
+               'run_id': report['run_id'], 'private_source_sha': report['private_source_sha'],
+               'source_lf_sha256': report['source_lf_sha256']}
     verdict.update(changes)
     path = tmp_path / 'independent.json'
     path.write_text(json.dumps(verdict), encoding='utf-8')
@@ -50,7 +51,8 @@ def test_candidate_does_not_imply_independent_release_cutover_or_publication(tmp
 
 
 @pytest.mark.parametrize('change', [dict(status='BLOCKED'), dict(private_source_sha='c'*40),
-                                  dict(run_id='old-run'), dict(reviewer='writer')])
+                                  dict(run_id='old-run'), dict(reviewer='writer'),
+                                  dict(source_lf_sha256='c'*64), dict(source_lf_sha256=None)])
 def test_independent_block_stale_sha_run_or_self_review_rejects(tmp_path, change):
     report = packet(tmp_path)
     independent(tmp_path, report, **change)
@@ -63,3 +65,16 @@ def test_changed_or_absent_artifact_rejects(tmp_path):
     assert any('hash mismatch' in e for e in gate.check(report, 'CANDIDATE_READY', tmp_path))
     (tmp_path / 'journeys.json').unlink()
     assert any('does not exist' in e for e in gate.check(report, 'CANDIDATE_READY', tmp_path))
+
+
+def test_reviewer_source_digest_alias_must_match_and_conflicting_alias_rejects(tmp_path):
+    report=packet(tmp_path)
+    independent(tmp_path,report,source_digest='c'*64)
+    assert gate.check(report,'INDEPENDENT_QA_ACCEPTED',tmp_path)
+    independent(tmp_path,report,source_digest=report['source_lf_sha256'])
+    assert gate.check(report,'INDEPENDENT_QA_ACCEPTED',tmp_path)==[]
+    path=tmp_path/'independent.json'
+    verdict=json.loads(path.read_text());verdict.pop('source_lf_sha256')
+    path.write_text(json.dumps(verdict))
+    report['independent_qa']['sha256']=hashlib.sha256(path.read_bytes()).hexdigest()
+    assert gate.check(report,'INDEPENDENT_QA_ACCEPTED',tmp_path)==[]

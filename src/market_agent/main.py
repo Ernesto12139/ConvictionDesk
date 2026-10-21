@@ -123,15 +123,16 @@ def create_app(db_path: str | Path = "data/market_agent.db",
         semantic_judge=semantic_judge,
         comparison_semantic_judge=comparison_semantic_judge,
     )
-    app = FastAPI(title="ConvictionDesk", version="0.8.1")
+    app = FastAPI(title="ConvictionDesk", version="0.9.0.dev0")
     from .research_api import register_research
     if (model_profiles is None and not explicit_test_provider and llm_client is None
             and environment.get('LLM_PROVIDER','openai')=='openai'
             and environment.get('OPENAI_MODEL','gpt-6.1-sol')=='gpt-6.1-sol'):
         from .model_profiles import ModelProfiles
         model_profiles = ModelProfiles(environment)
+    from .capital_reference import LocalCapitalReference
     register_research(app, agent,reference_provider=research_reference,decision_component=research_decision_component,
-        model_profiles=model_profiles)
+        model_profiles=model_profiles,local_capital_reference=LocalCapitalReference.from_environment(environment))
     from .attention import AttentionService, GPTAttentionScreen, GPTAttentionDeep
     from .attention_api import register_attention
     register_attention(app,AttentionService(store,news_provider,

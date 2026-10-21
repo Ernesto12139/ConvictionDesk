@@ -215,6 +215,7 @@ class SECEDGARProvider:
         self.www_base_url = www_base_url.rstrip("/")
         self.data_base_url = data_base_url.rstrip("/")
         self._ciks = {}
+        self._listing_identity = {}
         self._filings = {}
         self.retriever = retriever
 
@@ -320,6 +321,15 @@ class SECEDGARProvider:
                 if type(cik) not in (int, str) or isinstance(cik, bool) or not str(cik).isdigit():
                     break
                 self._ciks[symbol] = str(cik).zfill(10)
+                # Retain issuer identity from the already requested SEC map.
+                # This is a retrieval-time listing snapshot, not a claim that
+                # different classes have equivalent economic rights/prices.
+                tickers=sorted({str(r.get('ticker','')).upper() for r in raw.values()
+                    if isinstance(r,dict) and str(r.get('cik_str','')).isdigit()
+                    and int(r['cik_str'])==int(cik) and r.get('ticker')})
+                self._listing_identity[self._ciks[symbol]]={'cik':self._ciks[symbol],
+                    'tickers':tickers,'observed_at':utc(self.clock()).isoformat(),
+                    'source_uri':f'{self.www_base_url}/files/company_tickers.json'}
                 return self._ciks[symbol]
         raise ProviderError("not_found", f"SEC CIK not found for {symbol}")
 
@@ -425,16 +435,21 @@ class SECEDGARProvider:
         for metric in sorted(metrics, key=lambda m: (m["end"], m["available_at"]), reverse=True):
             latest.setdefault(metric["metric"], metric)
         metrics = list(latest.values())
-        if not metrics:
+        # Reuse the already fetched CompanyFacts response; no extra request.
+        from .financial_series import common_shares
+        shares = common_shares(raw,list(filings.values()),cutoff)
+        if not metrics and not shares:
             return []
-        payload = {"symbol": symbol, "metrics": metrics, "limitations":
-                   ["报告期间可能不同，不能混算利润率、增长率或估值倍数。", "不构造 TTM、预测或目标价。"]}
+        payload = {"symbol": symbol, "metrics": metrics,"share_facts":[shares] if shares else [],"limitations":
+                   ["报告期间可能不同，不能混算利润率、增长率或估值倍数。", "本来源是报告事实；兼容季度的 TTM 由独立 Python 投影计算，不构造预测或目标价。"]}
+        if cik in self._listing_identity:
+            payload['issuer_listing_identity']=self._listing_identity[cik]
         digest = _hash(payload)
         summary = EvidenceItem(evidence_id="E"+digest[7:23], evidence_type="sec_filing", provider=self.name,
             symbol=symbol, title="SEC XBRL · 报告财务事实", source_uri=url,
-            source_record_id=f"companyfacts:{cik}", published_at=max(datetime.fromisoformat(m["available_at"]) for m in metrics),
+            source_record_id=f"companyfacts:{cik}", published_at=max(datetime.fromisoformat(m["available_at"]) for m in [*metrics,*([shares] if shares else [])]),
             retrieved_at=utc(self.clock()), content_hash=digest,
-            excerpt="；".join(f"{m['metric']} {m['value']} USD ({m['start'] or ''} / {m['end']})" for m in metrics),
+            excerpt="；".join(f"{m['metric']} {m['value']} {m['unit']} ({m['start'] or ''} / {m['end']})" for m in metrics),
             structured_data=payload)
         from .financial_series import quarterly_series
         result = [summary]

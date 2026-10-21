@@ -60,6 +60,7 @@
     $("desk-continue").disabled=running || sending;
     $("desk-earnings").disabled=running || sending || !task?.focus_symbol;
     $("desk-followup").disabled=running || sending;
+    $("desk-followup-model-profile").disabled=running || sending;
     $("desk-retry").disabled=running || sending;
     $("desk-retry-options").hidden=task?.status!=="FAILED" || historicalView;
     $("desk-next-draft").disabled=running || sending;
@@ -93,7 +94,7 @@
     if(target){target.open=true;target.focus({preventScroll:true});target.scrollIntoView({block:"start",behavior:"instant"});}
   }
   const freshnessLabels={CURRENT:"本轮可用材料",STALE:"较旧材料",HISTORICAL:"历史背景",NOT_VERIFIED:"用户前提 · 未核实",UNKNOWN:"时效待核查",FUTURE:"晚于研究截止时间"};
-  const sourceKinds={news:"公司新闻",sec_filing:"公司披露",market_data:"行情",calculation:"持仓计算",portfolio_snapshot:"持仓快照",thesis:"历史投资逻辑",semantic_judgment:"研究背景"};
+  const sourceKinds={news:"公司新闻",sec_filing:"公司披露",market_data:"行情",calculation:"确定性计算",portfolio_snapshot:"持仓快照",thesis:"历史投资逻辑",semantic_judgment:"研究背景"};
   const sourceTitle=e=>e.title && !["AI_DRAFT",e.evidence_type].includes(e.title) ? e.title : sourceKinds[e.evidence_type]||"研究来源";
   function sourceChip(source){
     const chip=node("span",freshnessLabels[source.freshness]||"时效待核查","desk-fresh");chip.dataset.freshness=source.freshness||"UNKNOWN";return chip;
@@ -113,20 +114,61 @@
     const match=text.match(/^.*?[。！？](?:[”」])?/s);
     return match ? match[0] : text;
   }
+  // Citation honesty: buttons name the saved source index, and a repeat of an
+  // already cited source says so instead of reading as new independent support.
+  let cited=new Set();
+  const sourceIndex=id=>active.sources.findIndex(source=>source.evidence.evidence_id===id)+1;
+  function sourceLabel(ids){
+    const repeat=ids.every(id=>cited.has(id));ids.forEach(id=>cited.add(id));
+    return `${repeat ? "同一来源" : "来源"} ${ids.map(id=>`[${sourceIndex(id) || "?"}]`).join("")}`;
+  }
   function overview(title, statement, preserveFull=false) {
     const section=node("section",null,"desk-memo-section desk-overview");section.append(node("h3",title));
     if(!statement){section.append(node("p","本轮没有合格材料。","muted"));return section;}
     section.append(node("p",preserveFull ? statement.text : firstSentence(statement.text),"desk-statement"));
-    if(statement.evidence_ids.length){const button=node("button",`依据 ${statement.evidence_ids.length} 条`,"desk-source-button");button.type="button";
+    if(statement.evidence_ids.length){const button=node("button",sourceLabel(statement.evidence_ids),"desk-source-button");button.type="button";
       button.addEventListener("click",()=>openEvidence(statement.evidence_ids,button));section.append(button);}
     if(!preserveFull && firstSentence(statement.text)!==statement.text){const details=node("details",null,"desk-full-statement");details.append(node("summary","完整说明与限定条件"),citation(statement));section.append(details);}
     return section;
+  }
+  // Decision brief (Design Contract v0.3 §3C): up to four distinct drivers,
+  // the strongest counterevidence, the change condition and the thesis delta,
+  // each shown once. Saved statements are selected, never rewritten or padded.
+  function decisionBrief(task) {
+    const normalize=text=>text.replace(/[\s，。；、：！？,.!?:;]/g, "");
+    const seen=[normalize(task.assessment.core_judgment.text)], fresh=statement=>{
+      const text=statement && normalize(statement.text);
+      if(!text || seen.includes(text))return false;
+      seen.push(text);return true;
+    };
+    const selected=[];
+    for(const statement of [...task.assessment.key_reasons,...task.assessment.support]) {
+      if(fresh(statement))selected.push(statement);
+      if(selected.length===4)break;
+    }
+    const brief=node("div",null,"desk-brief");brief.setAttribute("role","group");brief.setAttribute("aria-label","判断要点");
+    const drivers=group("决策依据",selected);drivers.classList.add("desk-decision-drivers","desk-brief-item");drivers.dataset.brief="why";
+    if(selected.length && selected.length<3)drivers.querySelector("h3").append(node("span",`仅 ${selected.length} 条独立依据`,"desk-brief-count"));
+    brief.append(drivers);
+    const counter=task.assessment.counterevidence[0], change=task.assessment.action_conditions[0], thesis=task.assessment.action?.thesis_delta;
+    for(const [title,statement,kind] of [["最强反证",counter,"counter"],["改变判断的条件",change,"change"],["投资逻辑变化",thesis,"thesis"]]){
+      if(kind==="thesis" && !fresh(statement))continue;
+      if(kind!=="thesis")fresh(statement);
+      const item=overview(title,statement,true);item.classList.add("desk-brief-item");item.dataset.brief=kind;brief.append(item);
+    }
+    // Count distinct saved sources behind the brief; one source is shown as one.
+    const ids=new Set([...selected,counter,change,thesis].filter(Boolean).flatMap(s=>s.evidence_ids));
+    if(ids.size){const note=node("p",null,"desk-source-tally small");
+      note.textContent=ids.size===1 ? `以上要点均引用同一来源 [${sourceIndex([...ids][0])}]；本轮共保存 ${task.sources.length} 条资料。` : `以上要点引用 ${ids.size} 个不同来源；本轮共保存 ${task.sources.length} 条资料。`;
+      brief.append(note);}
+    return brief;
   }
   function citation(statement) {
     const p=node("p",statement.text,"desk-statement");
     for(const id of statement.evidence_ids) {
       const index=active.sources.findIndex(source=>source.evidence.evidence_id===id);
       const source=active.sources[index];
+      cited.add(id);
       const button=node("button",`[${index+1}]`,"desk-citation");button.type="button";
       button.title=`${source?.evidence.title || id} · ${identity[statement.identity]}`;
       button.setAttribute("aria-label",`查看来源 ${index+1}：${source?.evidence.title || id}`);
@@ -197,6 +239,283 @@
     }
     wrap.append(table);section.append(wrap);return section;
   }
+  // Display a Decimal string exactly, by string shifting only: exponent form,
+  // negative zero and insignificant trailing zeros never reach the reader.
+  const exactDecimal=value=>{
+    if(value==null)return "未知";
+    const raw=String(value).trim(), parts=raw.match(/^([+-]?)(\d*)(?:\.(\d*))?(?:[eE]([+-]?\d+))?$/);
+    if(!parts || !(parts[2] || parts[3]))return raw;
+    let digits=(parts[2] || "")+(parts[3] || ""), point=(parts[2] || "").length+Number(parts[4] || 0);
+    if(point<=0){digits="0".repeat(1-point)+digits;point=1;}
+    if(point>digits.length)digits+="0".repeat(point-digits.length);
+    const whole=digits.slice(0,point).replace(/^0+(?=\d)/,""), fraction=digits.slice(point).replace(/0+$/,"");
+    const sign=parts[1]==="-" && /[1-9]/.test(whole+fraction) ? "-" : "";
+    return sign+whole.replace(/\B(?=(\d{3})+(?!\d))/g,",")+(fraction ? "."+fraction : "");
+  };
+  async function whatifSection(task,section){
+    const tags=node("p",null,"desk-whatif-tags");
+    for(const text of ["假设价格 · 非实际行情","不下单 · 不写入持仓","原研究方向不变"])tags.append(node("span",text));
+    section.append(node("h3","单账户调仓预演"),tags);
+    if(publicReplay){section.append(node("p","公开历史回放不提供账户模拟。"));return;}
+    let context;
+    try{context=await readApi(`/api/research/tasks/${encodeURIComponent(task.task_id)}/what-if?revision=${task.revision}`);}
+    catch(_){section.append(node("p","本轮没有可匹配的已保存 Action 与持仓快照，暂不能预演。","small"));return;}
+    section.append(node("p",`持仓快照 ${localZone(context.snapshot_as_of)} · 研究截止 ${localZone(context.research_cutoff)}`,"small muted"));
+    const form=node("form",null,"desk-whatif-form"),result=node("section");result.setAttribute("aria-live","polite");
+    const field=(label,input)=>{const wrap=node("label",label);wrap.append(input);form.append(wrap);return input;};
+    const input=(value="")=>{const el=node("input");el.type="text";el.inputMode="decimal";el.required=true;el.value=value;return el;};
+    const account=field("模拟账户",node("select"));
+    // Default to the account that actually holds the researched symbol, and say
+    // what each account holds, so a zero-share account is never a silent default.
+    const held=a=>a.positions.find(p=>p.symbol===task.focus_symbol)?.shares;
+    context.accounts.forEach(a=>{const option=node("option",`${a.name} · ${held(a) ? `持有 ${exactDecimal(held(a))} 股` : `未持有 ${task.focus_symbol}`}`);option.value=a.account_id;account.append(option);});
+    // One holder: preselect it. Several holders: the reader must choose.
+    const holders=context.accounts.filter(held);
+    if(holders.length===1)account.value=holders[0].account_id;
+    else if(holders.length>1){const pick=node("option",`选择账户 · ${holders.length} 个账户持有 ${task.focus_symbol}`);pick.value="";pick.disabled=true;account.prepend(pick);account.value="";account.required=true;}
+    const side=field("增减方向",node("select"));
+    [["BUY","增加股数"],["SELL","减少股数"]].forEach(([v,t])=>{const option=node("option",t);option.value=v;side.append(option);});
+    const shares=field("增减股数（正数）",input()),price=field(`${task.focus_symbol} 假设成交价 · USD/股`,input()),fee=field("交易费用 · USD",input("0"));
+    const referenceMark=field("比较基准价（选填，假设 USD/股，非实际行情）",input());referenceMark.required=false;
+    section.addEventListener("technical-price-selected",event=>{
+      price.value=event.detail.price;referenceMark.value=event.detail.reference;
+      form.dispatchEvent(new Event("input",{bubbles:true}));
+      section.scrollIntoView({behavior:"smooth",block:"start"});price.focus();
+    });
+    const advanced=node("details",null,"desk-whatif-advanced");advanced.append(node("summary","费用、其他持仓计价与资本假设"));form.append(advanced);
+    const day=field("假设情景日期",node("input"));day.type="date";day.required=true;day.value=context.snapshot_as_of.slice(0,10);day.min=day.value;
+    const other=node("fieldset"),marks=new Map();form.append(other);
+    const accountScope=node("p",null,"desk-account-scope");form.prepend(accountScope);
+    const renderMarks=()=>{marks.clear();other.replaceChildren(node("legend","其他持仓的假设计价（选填）"));
+      const current=context.accounts.find(a=>a.account_id===account.value);
+      if(!current){accountScope.replaceChildren(node("span",`请先选择账户；多个账户持有 ${task.focus_symbol}`));return;}
+      accountScope.replaceChildren(node("strong",current.name),node("span",`${task.focus_symbol} ${exactDecimal(held(current) || "0")} 股`),node("span",`现金 ${exactDecimal(current.cash)} USD`),node("span","仅此账户"));
+      other.append(node("p","缺少其他持仓价格时，账户净值、权重与集中度保持未知。","small"));
+      current.positions.filter(p=>p.symbol!==task.focus_symbol).forEach(p=>{const wrap=node("label",`${p.symbol} · ${p.shares} 股 · 假设计价 USD/股`),value=input();value.required=false;wrap.append(value);other.append(wrap);marks.set(p.symbol,value);});
+    };account.addEventListener("change",renderMarks);renderMarks();
+    const attest=node("input");attest.type="checkbox";attest.required=true;
+    const attestation=node("label","确认采用自定假设价格，且快照后无拆股、换股或股类变化（未独立核实）。");attestation.prepend(attest);form.append(attestation);
+    advanced.append(node("p","仅 USD 现金账户；支持10位小数碎股，不接受科学计数法。费用不模拟券商结算舍入。平均成本损益不是税务核算；HHI 为股票权重平方和，分母为账户 NAV（含现金），不是股票内部归一化 HHI。","small muted"));
+    for(const element of [fee.parentElement,referenceMark.parentElement,day.parentElement,other])advanced.append(element);
+    const submit=node("button","预览组合变化");submit.type="submit";form.append(submit,result);section.append(form);
+    form.addEventListener("invalid",event=>{const drawer=event.target.closest("details");if(drawer)drawer.open=true;},true);
+    let inputVersion=0;
+    const changed=()=>{inputVersion++;result.replaceChildren();};
+    form.addEventListener("input",changed);form.addEventListener("change",changed);
+    const refusals={OVERSELL_NOT_ALLOWED:"减少股数超过该账户持股。",INSUFFICIENT_CASH_INCLUDING_FEES:"该账户现金不足以支付成交额和费用。",KNOWN_CAPITAL_OR_SHARE_CLASS_CONFLICT:"已有资料显示股类或资本结构冲突，不能在未调和的口径上模拟。",POSITIVE_SHARES_AND_PRICES_REQUIRED:"股数与所有填写的价格必须大于零。"};
+    form.addEventListener("submit",async event=>{event.preventDefault();if(submit.disabled)return;
+      const payload={revision:task.revision,account_id:account.value,symbol:task.focus_symbol,side:side.value,shares:shares.value.trim(),fill_price:price.value.trim(),reference_mark:referenceMark.value.trim() || null,fee:fee.value.trim(),currency:"USD",scenario_date:day.value,unchanged_share_basis_attested:attest.checked,other_prices:Object.fromEntries([...marks].filter(([,v])=>v.value.trim()).map(([s,v])=>[s,v.value.trim()]))};
+      const submittedVersion=inputVersion;submit.disabled=true;result.replaceChildren(node("p","正在计算假设调仓影响。"));
+      try{const value=await api(`/api/research/tasks/${encodeURIComponent(task.task_id)}/what-if`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+        if(submittedVersion!==inputVersion){result.replaceChildren(node("p","输入已改变，请重新预览。"));return;}
+        if(value.task_id!==task.task_id || value.revision!==task.revision)throw Error("模拟版本不匹配");
+        result.replaceChildren(node("h4",`${context.accounts.find(a=>a.account_id===value.input.account_id)?.name || value.input.account_id} · 单账户预演`));
+        result.classList.add("desk-whatif-result");
+        const rows=[["股数","shares"],["账户现金 · USD","cash"],["账户净值 · USD","nav"],["标的权重","focus_weight"]];
+        const list=node("dl",null,"desk-valuation-list desk-whatif-deltas");rows.forEach(([label,key])=>{const cell=node("div"),format=v=>v==null?"未知":key.includes("weight")?percent(v):exactDecimal(v);cell.append(node("dt",label),node("dd",`${format(value.before[key])} → ${format(value.after[key])}`));list.append(cell);});result.append(list);
+        // Three separately labelled effects: the trade itself, repricing of the
+        // existing position against the optional reference, and modeled P&L.
+        const usd=v=>`${exactDecimal(v)} USD`, split=node("dl",null,"desk-whatif-split");split.setAttribute("aria-label","影响拆分");
+        const effects=[["交易本身",usd(value.trade_nav_delta),"同一假设价格成交，净资产只因费用变化"],
+          ["既有持仓重估",value.market_repricing_delta==null ? "未计算" : usd(value.market_repricing_delta),value.market_repricing_delta==null ? "填写比较基准价后单独计算" : `原 ${exactDecimal(value.before.shares)} 股：比较基准价 → 假设成交价`]];
+        if(value.total_nav_delta!=null)effects.push(["合计净资产变化",usd(value.total_nav_delta),"交易本身 + 既有持仓重估"]);
+        effects.push(["情景损益",value.modeled_realized_pnl==null ? `未实现 ${usd(value.modeled_unrealized_pnl_after)}` : `已实现 ${usd(value.modeled_realized_pnl)} · 未实现 ${usd(value.modeled_unrealized_pnl_after)}`,"相对总成本基础，平均成本口径"]);
+        for(const [label,amount,note] of effects){const cell=node("div");cell.append(node("dt",label),node("dd",amount),node("small",note));split.append(cell);}
+        result.append(split);
+        const accounting=node("div");accounting.append(node("p",`最大单一持仓权重 ${percent(value.before.largest_weight)} → ${percent(value.after.largest_weight)}；股票集中度 HHI（账户 NAV 分母） ${value.before.hhi_nav==null?"未知":Number(value.before.hhi_nav).toFixed(4)} → ${value.after.hhi_nav==null?"未知":Number(value.after.hhi_nav).toFixed(4)}`,"small"));accounting.append(node("p",`现金变化 ${usd(value.cash_delta)}；费用 ${usd(value.input.fee)}；成交金额 ${usd(value.gross_value)}；模拟前总成本基础 ${usd(value.focus_cost_before)}；模拟后总成本基础 ${usd(value.focus_cost_after)}。`,"small"));
+        const missing=[...new Set([...value.before.missing_price_symbols,...value.after.missing_price_symbols])];if(missing.length)result.append(node("p",`未计价持仓：${missing.join("、")}。未知值没有按零处理。`,"small"));
+        result.append(node("p",`原研究方向 ${value.original_action} 不变 · 未下单、未保存到持仓或研究历史`,"small muted"));
+        const detail=node("details");detail.append(node("summary","成本、集中度与完整计算回执"),accounting,node("pre",JSON.stringify(value,null,2)));result.append(detail);
+      }catch(error){const code=typeof error.detail==="string"?error.detail:error.message;result.replaceChildren(node("p",refusals[code] || (error.status===422?"输入未通过检查：请使用普通十进制正数、最多10位小数；确认日期、费用及账户范围，再重新预览。":"暂时无法读取计算结果。请先刷新已保存研究，再重试本地预览；无需重新研究，也不会下单。"),"desk-error"));}
+      finally{submit.disabled=false;}
+    });
+  }
+
+  function technicalSection(task,section,whatif){
+    section.append(node("h3","有来源的技术区间"),node("p","尚无获准的真实 OHLCV 数据接入。可用自有合成行情复核算法，或提交同格式的合成输入；不会把它当作真实标的价格。","small"));
+    if(publicReplay){section.append(node("p","公开只读回放不计算新的技术区间。","small"));return;}
+    const details=node("details");details.append(node("summary","复核 OHLCV 与算法（仅合成示例）"));
+    const form=node("form",null,"desk-technical-form"),load=node("button","载入虚构 OHLCV 示例");load.type="button";
+    const label=node("label","带来源、时间与复权口径的 OHLCV JSON"),data=node("textarea");data.rows=6;data.required=true;data.spellcheck=false;label.append(data);
+    const submit=node("button","计算候选技术区间 · 无模型费用");submit.type="submit";
+    const result=node("section");result.setAttribute("aria-live","polite");form.append(load,label,submit,result);details.append(form);section.append(details);
+    let version=0;data.addEventListener("input",()=>{version++;result.replaceChildren();});
+    load.addEventListener("click",async()=>{load.disabled=true;try{const value=await readApi(`/api/research/tasks/${encodeURIComponent(task.task_id)}/technical-example?revision=${task.revision}`);data.value=JSON.stringify(value.series,null,2);data.dispatchEvent(new Event("input"));}catch(_){result.replaceChildren(node("p","示例暂不能读取，请刷新已保存研究后重试。","desk-error"));}finally{load.disabled=false;}});
+    const errors={PRICE_DISCONTINUITY_REQUIRES_RECONCILIATION:"价格出现至少15%的跨日跳变；可能是重大新闻或公司行动。请核查来源与复权口径，不能仅凭无拆股标签生成区间。",REAL_SOURCE_RIGHTS_ADAPTER_NOT_ADMITTED:"真实数据尚未获准接入：需要使用权与历史版本证明，当前不计算真实技术价位。",STALE_OR_FUTURE_SERIES:"行情窗口不是研究截止点最近一个已完成交易日，请更换日期合格的完整序列。",MISSING_TRADING_SESSION:"缺少交易日 K 线，请补齐；不会用插值伪造。",SPLIT_BASIS_UNRECONCILED:"拆股口径未知或发生变化，请先调和完整 OHLCV，当前拒绝计算。",AT_LEAST_21_COMPLETED_BARS_REQUIRED:"至少需要21根连续的已完成 regular-session K线。",INCOMPLETE_OR_POST_CUTOFF_BAR:"存在未完成、晚于截止点或来源时间不匹配的 K线，请核对时点。",HALT_STATUS_UNQUALIFIED:"停牌状态未明确，不生成技术区间。",SAVED_EVIDENCE_CAPITAL_CONFLICT:"已保存证据包含股类或资本行动冲突，先核查口径。"};
+    form.addEventListener("submit",async event=>{event.preventDefault();if(submit.disabled)return;let series;
+      try{if(data.value.length>200000)throw Error();series=JSON.parse(data.value);}catch(_){result.replaceChildren(node("p","请输入有效且不超过200KB的 JSON。价格请用十进制字符串。","desk-error"));return;}
+      const submitted=version;submit.disabled=true;result.replaceChildren(node("p","正在核查来源、交易日与计算区间。"));
+      try{const value=await api(`/api/research/tasks/${encodeURIComponent(task.task_id)}/technical-zones`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({revision:task.revision,series})});
+        if(submitted!==version){result.replaceChildren(node("p","输入已改变，请重新计算。"));return;}
+        if(value.status!=="AVAILABLE_SYNTHETIC"){result.replaceChildren(node("p",errors[value.reason] || `当前输入不合格（${value.reason}）。请核查时段、复权、股类及完整 OHLCV，再计算。`,"desk-error"));return;}
+        result.replaceChildren(node("h4","合成教学区间 · LIVE_DATA_NOT_VERIFIED"),node("p",`原研究方向 ${value.original_action} 不变。算法区间不是目标价或买卖指令。最后交易日 ${value.last_session}；完成下一交易日 K线后须重算。`,"small"));
+        result.append(node("p",`SMA20 ${money(value.sma20)}；简单均值 ATR14 约 ${money(value.atr14)}。支撑从10日最低价向上0.5 ATR，压力从最高价向下0.5 ATR。复权口径：${value.series.adjustment}；仅常规时段。`,"small"));
+        for(const [key,title] of [["support","候选支撑观察区"],["resistance","候选压力观察区"]]){const zone=value.zones[key];result.append(node("p",`${title}：${exactDecimal(zone[0])}～${exactDecimal(zone[1])} USD`));}
+        result.append(node("p",`失效条件：收盘低于 ${exactDecimal(value.zones.support[0])} 或高于 ${exactDecimal(value.zones.resistance[1])}、下一根已完成 K线、拆股或停牌变化。它们触发重新核查，不自动改变 Action。`,"small"));
+        const choose=node("button","将合成支撑区上沿用于账户假设（不会成交）");choose.type="button";choose.addEventListener("click",()=>{if(!whatif.querySelector('.desk-whatif-form')){result.append(node("p","没有可用的账户快照，先选择带持仓快照的已保存研究。","desk-error"));return;}whatif.dispatchEvent(new CustomEvent("technical-price-selected",{detail:{price:value.zones.support[1],reference:value.last_close}}));});result.append(choose);
+        const receipt=node("details");receipt.append(node("summary","来源、算法参数与完整可复算回执"),node("pre",JSON.stringify(value,null,2)));result.append(receipt);
+      }catch(_){result.replaceChildren(node("p","未能计算：请核对 JSON 字段、正数 OHLC、整数成交量及日期；若服务暂不可用，刷新本轮后重试。不会重新研究或下单。","desk-error"));}finally{submit.disabled=false;}
+    });
+  }
+
+  async function valuationSection(task,section){
+    try{
+      const report=await readApi(`/api/research/tasks/${encodeURIComponent(task.task_id)}/valuation?revision=${task.revision}`);
+      if(!section.isConnected || active?.task_id!==task.task_id || active?.revision!==task.revision)return;
+      if(report.task_id!==task.task_id || report.revision!==task.revision || Date.parse(report.cutoff)!==Date.parse(task.cutoff))throw Error("valuation_revision_mismatch");
+      section.replaceChildren(node("summary","估值、财务与价格情景"));
+      section.append(node("p","按本轮已保存来源计算；打开报告不会获取新价格或重新研究。参考倍数不等于便宜、合理价值或目标价。","small muted"));
+      const reference=report.local_capital_reference;
+      if(reference?.status==="AVAILABLE"){
+        const referenceSection=node("section",null,"desk-provider-reference");
+        referenceSection.setAttribute("aria-label","Provider 报告参考市值");
+        referenceSection.append(node("h4","Provider 报告参考市值"),node("p",`${exactDecimal(reference.value)} USD`,"desk-valuation-number"));
+        referenceSection.append(node("p",`Massive · 观察于 ${localZone(reference.observed_at)}；字段生效时点未知。来源报告参考，未独立计算，不是实时市值。`,"small"));
+        referenceSection.append(node("p","单独读取的本地快照，观察时间不晚于本轮截止点；不属于原研究的冻结证据。仅供个人查看，未发送给模型、未用于下方市值或倍数计算，不改变原结论。","small muted"));
+        if(report.metrics.market_cap_reference?.value!=null)referenceSection.append(node("p","来源报告值与下方本系统计算值属于不同资格层级；价格、股数时点和股类口径尚未逐项调和，两者不可互换。","small"));
+        const metadata=node("details",null,"desk-provider-meta");metadata.append(node("summary","来源、日期与股类限制"));
+        const close=reference.regular_close_reference;
+        metadata.append(node("p",`SOURCE_REPORTED_REFERENCE · 原字段 ${reference.raw_field} · USD · Provider 口径：最近收盘价 × 加权等价股数。多股类经济权益、增发、回购、转换和拆股对齐未独立核实。`,"small"));
+        metadata.append(node("p",`市值所用价格与股数日期未知。另存常规收盘 ${exactDecimal(close.value)} USD/股 · ${close.price_as_of} · 未复权；不能证明它是该市值的价格输入。盘后价未用于此显示。`,"small"));
+        for(const [label,uri,id]of [["市值原始来源",reference.source_uri,reference.source_id],["常规收盘来源",close.source_uri,close.source_id]]){
+          const link=node("a",label);link.href=uri;link.target="_blank";link.rel="noopener noreferrer";
+          metadata.append(link,node("p",id,"small muted"));
+        }
+        referenceSection.append(metadata);section.append(referenceSection);
+      }else if(reference){
+        section.append(node("p",reference.status==="STALE"?"本地 Provider 快照已超过七天，未作为本轮近期参考展示；需另行取得合格新来源，打开本页不会自动刷新。":reference.reason==="NOT_OBSERVED_AT_RESEARCH_CUTOFF"?"本地 Provider 参考取得时间晚于本轮截止点，未并入历史研究。":"本地 Provider 参考不可用或完整性核查失败；未以缓存、零或模型猜测补齐。","small muted"));
+      }
+      const price=report.price_reference,shares=report.shares_reference;
+      const sessions={COMPLETED_CLOSE:"日终收盘",REGULAR:"常规交易",PRE_MARKET:"盘前",POST_MARKET:"盘后",OVERNIGHT:"隔夜",UNKNOWN:"时段未核实"};
+      section.append(node("p",price?`价格参考 ${exactDecimal(price.value)} USD/股 · ${localZone(price.as_of)} · ${sessions[price.session] || "时段未核实"}；feed delay 未核实，不称为实时。`:"价格参考未知：本轮没有符合期间、币种与时点要求的来源。","small"));
+      section.append(node("p",shares?`报告普通股 ${exactDecimal(shares.value)} 股 · 报告时点 ${shares.end} · 披露 ${localZone(shares.available_at)}。这是有日期的报告数，不等于实时流通股本。`:"报告股数未知；不使用加权平均股数代替当前普通股，也不猜测市值。","small"));
+      section.append(node("p",report.capital_basis_status==="VERIFIED_NO_CHANGE"?"来源记录已核查所覆盖期间的拆股、报告股数变化与股类口径；市值和倍数仍是带日期的参考。":"拆股、报告股数变化或股类口径未核实：本系统计算的市值与适用倍数保持未知。亏损或零分母仍明确为不适用。","small muted"));
+      if(report.ttm_period)section.append(node("p",`历史 TTM 期间 ${report.ttm_period.start} — ${report.ttm_period.end}；不是公司预测。`,"small muted"));
+      const names={ttm_revenue:"TTM 营收",ttm_net_income:"TTM 净利润",ttm_operating_cash_flow:"TTM 经营现金流",ttm_diluted_eps:"TTM 摊薄 EPS",market_cap_reference:"报告股数市值参考",pe_ttm:"TTM 市盈率参考",price_sales_ttm:"TTM 市销率参考",enterprise_value:"企业价值 EV"};
+      const hasValues=Object.values(report.metrics).some(row=>row.value!=null || row.data_status==="NOT_MEANINGFUL");
+      const list=node("dl",null,"desk-valuation-list");
+      for(const [key,label]of Object.entries(names)){
+        const row=report.metrics[key];if(!row)continue;
+        const cell=node("div"),status=row.data_status || row.status;
+        cell.append(node("dt",label));
+        const value=status==="NOT_MEANINGFUL"?"不适用 · NOT_MEANINGFUL":row.value==null?"未知 · UNKNOWN":`${row.display_approximate?"约 ":""}${exactDecimal(row.display_value ?? row.value)} ${row.unit==="multiple"?"倍":row.unit==="USD/shares"?"USD/股":row.unit}`;
+        cell.append(node("dd",value,"desk-valuation-number"));
+        const detail=node("details",null,"desk-valuation-meta");detail.append(node("summary","期间、时点与来源"));
+        detail.append(node("p",`${status} · 币种 ${row.currency || "不适用"} · 可用时点 ${localZone(row.as_of)}`,"small muted"));
+        if(row.display_approximate)detail.append(node("p",`完整计算值：${row.value} ${row.unit}；上方仅对展示精度取近似。`,"small"));
+        if(row.period)detail.append(node("p",Object.entries(row.period).map(([key,value])=>`${({start:"期间起",end:"期间止",price_as_of:"价格时点",shares_reported_end:"股数报告时点"})[key] || key} ${value}`).join(" · "),"small"));
+        const reasons={QUALIFIED_TOTAL_DEBT_AND_ALIGNED_CASH_NOT_AVAILABLE:"缺少有资格且时点对齐的债务与现金，EV 保持未知。",NONPOSITIVE_DENOMINATOR:"利润或分母非正，不适用该估值倍数。",QUALIFIED_ALIGNED_INPUTS_REQUIRED:"缺少有资格且时点可比的输入。",QUALIFIED_PRICE_AND_SHARES_REQUIRED:"缺少合格价格或报告普通股数。",FOUR_CONTIGUOUS_QUALIFIED_QUARTERS_REQUIRED:"缺少四个连续且有来源的兼容季度。",INCOMPATIBLE_CONCEPT_OR_RESTATEMENT_BASIS:"概念、期间或报告版本不兼容，不能混算。"};
+        if(reasons[row.reason])detail.append(node("p",reasons[row.reason],"small"));
+        if(row.reason==="CAPITAL_BASIS_UNVERIFIED")detail.append(node("p","缺少完整的公司行动与股本口径核查，不能把不同口径的价格、股数或 EPS 混算。","small"));
+        const ids=(row.source_id || row.evidence_ids || []).filter(id=>task.sources.some(s=>s.evidence.evidence_id===id));
+        if(ids.length){const button=node("button","查看计算依据","desk-source-button");button.type="button";button.addEventListener("click",()=>openEvidence(ids,button));detail.append(button);}
+        else detail.append(node("p","缺失输入没有可引用的数值；不会以零或模型猜测补齐。","small muted"));
+        cell.append(detail);list.append(cell);
+      }
+      if(hasValues)section.append(list);
+      else{const gaps=node("details");gaps.append(node("summary","本轮估值缺口"),list);section.append(node("p","本轮尚无可计算的合格 TTM／估值输入。判断仍须保留这个缺口。"),gaps);}
+      if(!publicReplay)datedPriceForm(task,report,section);
+    }catch{
+      if(!section.isConnected)return;
+      section.replaceChildren(node("summary","估值、财务与价格情景"),node("p","估值依据暂不可读取；原研究和引用仍可查看。读取失败不代表数值为零。","small"));
+    }
+  }
+  function datedPriceForm(task,frozen,section){
+    const entry=node("details",null,"desk-dated-price"),form=node("form",null,"desk-dated-form");
+    entry.append(node("summary","使用指定日期价格评估"));
+    form.append(node("p","只在本页用日期化 SEC 普通股数与 TTM 做确定性计算，不调用模型、不修改原研究。收据离开页面后不保存。用户观察不等于系统核实行情。","small muted"));
+    const fields=node("div",null,"desk-price-fields");
+    const field=(text,control)=>{const label=node("label",text);label.append(control);fields.append(label);return control;};
+    const select=options=>{const s=node("select");for(const [value,text]of options){const o=node("option",text);o.value=value;s.append(o);}return s;};
+    const kind=field("价格身份",select([["USER_SUPPLIED_SCENARIO","我设定的假设情景价"],["USER_SUPPLIED_OBSERVATION","我声称观察到的价格 · 未核实"]]));
+    const price=node("input");price.type="text";price.inputMode="decimal";price.required=true;price.maxLength=26;price.placeholder="例如 12.50";price.autocomplete="off";
+    field(`${task.focus_symbol || "标的"} · USD/股`,price);
+    const day=node("input");day.type="date";day.required=true;
+    day.value=frozen.price_reference?.session_date || "";
+    day.max=new Intl.DateTimeFormat("en-CA",{timeZone:"America/New_York",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date(task.cutoff));
+    field("价格日期 · 美东日期",day);
+    const session=field("观察时段",select([["COMPLETED_CLOSE","该日未复权收盘"],["REGULAR","未复权常规时段"]]));
+    const note=node("input");note.type="text";note.required=true;note.maxLength=400;note.placeholder="说明自有观察或情景设定的来源";field("来源说明",note);
+    const comparisonPrice=node("input");comparisonPrice.type="text";comparisonPrice.inputMode="decimal";comparisonPrice.maxLength=26;comparisonPrice.autocomplete="off";
+    comparisonPrice.placeholder="可选，例如 12.50；仅自己设定的假设";
+    field("对照假设价 · USD/股（可选）",comparisonPrice);
+    form.append(fields);
+    form.append(node("p","对照价必须是你自行设定的假设，不是复制的 Provider 报价。两价使用同一日期、股数和 TTM；差异只说明价格敏感度，不表示市场涨跌或收益。","small muted"));
+    const checkbox=(text,required)=>{const label=node("label",null,"desk-price-condition"),input=node("input");input.type="checkbox";input.required=required;label.append(input,node("span",text));form.append(label);return input;};
+    const rights=checkbox("我有权将此自有输入用于本地派生计算；不是从仅限展示或禁止派生的 Provider 复制价格。系统未独立核实该授权。",true);
+    form.append(node("p","以下是影响结果的关键假设，未由系统确认。已知股类或公司行动冲突时，即使勾选仍会拒绝计算。","small"));
+    const continuity=checkbox("假设从 SEC 股数有效日至价格日，拆股、反拆股、股票股息、增发、回购和转换均未改变此股数口径。",true);
+    const classes=checkbox("假设全部报告普通股可按输入股票类别的价格计价，经济权益等价；不是仅凭一类股价推算未调和的多股类。",true);
+    const income=checkbox("额外假设合并 TTM 净利润可全部归属普通股权益，无优先股或非控股扣减；否则不输出权益值／净利润倍数。",false);
+    form.append(node("p",`仅使用本轮截止点 ${localZone(task.cutoff)} 已公开的来源；晚于截止点的价格须在新的分析上下文评估。参考市销率不含债务／现金调整；此处不生成目标价或自动 ADD。`,"small muted"));
+    const submit=node("button","仅本地计算 · 无模型费用");submit.type="submit";
+    const result=node("section",null,"desk-dated-result");result.setAttribute("aria-live","polite");
+    form.append(submit,result);entry.append(form);section.append(entry);
+    const mode=()=>{session.disabled=kind.value==="USER_SUPPLIED_SCENARIO";};kind.addEventListener("change",mode);mode();
+    form.addEventListener("submit",async event=>{
+      event.preventDefault();if(submit.disabled)return;
+      const observed=kind.value==="USER_SUPPLIED_OBSERVATION";
+      const payload={revision:task.revision,symbol:task.focus_symbol,price:price.value.trim(),comparison_price:comparisonPrice.value.trim() || null,currency:"USD",price_date:day.value,
+        session:observed?session.value:"HYPOTHETICAL",adjustment_basis:"UNADJUSTED",kind:kind.value,
+        source_basis:observed?"OWN_OBSERVATION":"HYPOTHETICAL",source_note:note.value,
+        local_calculation_rights_attested:rights.checked,assumptions:{unchanged_since_share_date:continuity.checked,
+          entire_common_equity_at_input_class_price:classes.checked,consolidated_income_available_to_common:income.checked}};
+      submit.disabled=true;result.replaceChildren(node("p","正在本地检查来源与计算。","small"));
+      try{
+        const value=await api(`/api/research/tasks/${encodeURIComponent(task.task_id)}/dated-valuation`,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+        if(!entry.isConnected || active?.task_id!==task.task_id || active?.revision!==task.revision)return;
+        const report=value.report;
+        if(report.task_id!==task.task_id || report.revision!==task.revision || Date.parse(report.research_cutoff)!==Date.parse(task.cutoff))throw Error("receipt_context_mismatch");
+        result.replaceChildren(node("h4",report.qualification_status==="UNAVAILABLE"?"本次输入无法形成参考估值":report.qualification_status==="CONDITIONAL_REFERENCE"?"条件参考 · 用户观察尚未核实":"假设情景 · 非实际行情"));
+        const reasonLabels={TASK_INSTRUMENT_OR_REVISION_MISMATCH:"标的或研究版本不匹配。",COMPLETED_RESEARCH_REQUIRED:"需要已完成的研究版本。",PRICE_AFTER_RESEARCH_CUTOFF_CREATE_NEW_CONTEXT:"价格晚于研究截止点；请使用新的分析上下文，不能并入旧判断。",DATE_ONLY_OBSERVATION_REQUIRES_PRIOR_MARKET_DATE:"只有日期无法证明当日观察早于研究截止时刻，请使用此前交易日。",OBSERVATION_NON_WEEKDAY:"该观察日期不是工作日；系统不把它当作交易收盘。",SHARE_DATE_MUST_PRECEDE_PRICE_WITHIN_100_DAYS:"SEC 股数日期须不晚于价格日，且相隔最多 100 天。",SHARE_FILING_NOT_PUBLIC_BY_PRICE_DATE:"该股数在价格日尚未公开。",DATE_ONLY_PRICE_VS_FILING_TIME_AMBIGUOUS:"同日披露与日期级价格的先后不明。",SEC_COMMON_SHARE_CONCEPT_AND_ACCESSION_REQUIRED:"缺少合格普通股概念或 SEC accession；不用加权平均摊薄股数。",SEC_SHARE_SOURCE_INTEGRITY:"SEC 股数来源校验失败。",QUALIFIED_DATED_SEC_COMMON_SHARES_REQUIRED:"本研究没有合格的日期化 SEC 普通股数。",KNOWN_CAPITAL_BASIS_CONFLICT:"已有来源显示资本口径冲突。",MULTI_CLASS_OR_INSTRUMENT_SCOPE_UNRECONCILED:"多股类或股票身份尚未调和，不能用单一价格推算。",KNOWN_CAPITAL_ACTION_OR_CLASS_CONFLICT:"已有公司行动或股类冲突，用户假设不能覆盖它。",EXPLICIT_CAPITAL_CONTINUITY_AND_CLASS_ASSUMPTIONS_REQUIRED:"须明确接受资本连续性与股类计价假设。",LOCAL_DERIVATION_RIGHTS_NOT_ATTESTED:"尚未确认本地计算使用权。",DISPLAY_ONLY_PROVIDER_NOT_ADMITTED_FOR_DERIVATION:"仅供展示的 Provider 数据不能复制到此处绕过派生许可。",SERVER_VERIFIED_PROVIDER_DERIVATION_RIGHTS_REQUIRED:"第三方自动行情须先由服务端核实派生计算权限。"};
+        Object.assign(reasonLabels,{OBSERVATION_CALENDAR_COVERAGE_UNAVAILABLE:"该年份不在已核对的交易日历范围，不能将观察日期当作已验证交易日。可另用明确的假设情景。",OBSERVATION_PUBLISHED_MARKET_CLOSURE:"该日期是已公布的全日休市日，不能作为常规交易观察。",SEC_COMMON_SHARE_COUNT_INVALID:"普通股总数不是有效的正整数或超出数值边界，不能据此计算。",SHARE_DATE_MUST_PRECEDE_PRICE_WITHIN_120_DAYS:"股数须不晚于价格日；最多 100 天可作条件参考，101—120 天仅作旧股数假设情景；超出则拒绝。"});
+        for(const code of report.rejected_inputs)result.append(node("p",reasonLabels[code] || `输入资格未满足：${code}`,"small"));
+        const qualificationLabels={MISSING_POINT_IN_TIME_SINGLE_LISTING_IDENTITY:"没有在价格日前确认的单一上市身份，结果降级为假设情景；勾选股类假设不能提升资格。",SHARES_OLDER_THAN_100_DAYS_SCENARIO_ONLY:"股数距价格日已超过 100 天，仅展示 120 天以内的旧股数假设，不是当前参考股本。"};
+        for(const code of report.qualification_notes || [])result.append(node("p",qualificationLabels[code] || code,"small desk-price-assumptions"));
+        if(observed && report.qualification_status==="ILLUSTRATIVE_SCENARIO")result.append(node("p","输入仍是你声称观察到的价格，未独立核实；这里降级的是股本估值资格，不表示市场事实得到确认。","small"));
+        if(report.qualification_status!=="UNAVAILABLE"){
+          result.append(node("p","结果仅在以下未核实条件成立时适用：股本自报告日未变化，全部普通股与输入股类经济等价。它不是已确认的当前市值。","desk-price-assumptions"));
+          if(report.assumptions.consolidated_income_available_to_common)result.append(node("p","权益值／净利润还假设合并净利润全部归属普通股；不等同于 Provider 标准 P/E。","small"));
+          const list=node("dl",null,"desk-valuation-list");
+          for(const [key,label]of [["reference_equity_value","参考普通股权益值"],["reference_ps","参考权益值／TTM 营收"],["reference_pe","参考权益值／TTM 净利润"]]){
+            const metric=report.metrics[key],cell=node("div");
+            cell.append(node("dt",label),node("dd",metric.status==="NOT_MEANINGFUL"?"不适用 · NOT_MEANINGFUL":metric.value==null?"未知 · UNKNOWN":`${metric.display_approximate?"约 ":""}${exactDecimal(metric.display_value ?? metric.value)} ${metric.unit==="multiple"?"倍":"USD"}`,"desk-valuation-number"));
+            if(metric.reason==="COMMON_INCOME_ATTRIBUTION_NOT_ESTABLISHED")cell.append(node("p","净利润归属普通股的口径未确立。","small"));
+            if(metric.reason==="QUALIFIED_ALIGNED_TTM_REQUIRED")cell.append(node("p","缺少在价格日已公开、期间对齐且足够近期的 TTM。","small"));
+            list.append(cell);
+          }
+          result.append(list);
+          const difference=report.scenario_difference;
+          if(difference?.status==="ILLUSTRATIVE_SCENARIO"){
+            const delta=node("section",null,"desk-price-difference");
+            delta.append(node("h4","只改变价格，哪些结果会变？"),node("p",`自定对照假设价 ${exactDecimal(difference.comparison_price)} → 本次输入 ${exactDecimal(difference.input_price)} USD/股；输入差异约 ${exactDecimal(difference.price_delta_percent_display)}%。这是同一日期的敏感度比较，不是实际市场变化。`,"small"));
+            const values=node("dl",null,"desk-valuation-list");
+            for(const [key,label]of [["reference_equity_value","普通股权益值差异"],["reference_ps","权益值／营收倍数差异"],["reference_pe","权益值／净利润倍数差异"]]){
+              const row=difference.metrics[key],cell=node("div"),unit=row.unit==="USD"?"USD":"倍";
+              cell.append(node("dt",label),node("dd",row.delta==null?"未知／不适用":`${row.delta_display_approximate?"约 ":""}${exactDecimal(row.delta_display_value)} ${unit}`,"desk-valuation-number"));
+              if(row.comparison_value!=null)cell.append(node("p",`对照值 ${row.comparison_display_approximate?"约 ":""}${exactDecimal(row.comparison_display_value)} ${unit}；完整精度见收据。`,"small muted"));
+              values.append(cell);
+            }
+            delta.append(values,node("p","未改变：已保存的经营事实、TTM、股本假设、投资逻辑和持仓。价格更低不会确认需求、回款或消除反证。","small"));result.append(delta);
+          }
+        }
+        result.append(node("p",`价格日 ${report.price_as_of} · 股数有效日 ${report.shares_as_of || "未知"} · 披露 ${localZone(report.filing_available_at)} · ${report.currency}。`,"small"));
+        if(report.ttm_period)result.append(node("p",`TTM ${report.ttm_period.start} — ${report.ttm_period.end}；计算时点 ${localZone(report.evaluated_at)}。`,"small muted"));
+        result.append(node("p","原研究的 Thesis／Action 保持不变，尚未消费这份输入或计算。需结合经营事实、最强反证、改变判断条件与持仓适用性另行判断；单一倍数不触发操作。未发送给 Deep。","small"));
+        if(task.assessment){
+          const linked=node("details",null,"desk-price-action-link");linked.append(node("summary","回到这条研究的操作依据"));
+          linked.append(node("p",`原方向 ${task.action_decision?.decision_action || "UNDETERMINED"} · ${task.action_decision?.decision_status || "未记录"}；本次价格计算没有重新评估该方向。`,"small"));
+          if(task.assessment.action)linked.append(overview("原投资逻辑变化",task.assessment.action.thesis_delta));
+          linked.append(overview("仍须面对的反证",task.assessment.counterevidence[0]),overview("能改变判断的新事实",task.assessment.action_conditions[0]));result.append(linked);
+        }
+        const ids=report.source_ids.filter(id=>task.sources.some(s=>s.evidence.evidence_id===id));
+        if(ids.length){const sources=node("button","查看 SEC 股数及财务来源","desk-source-button");sources.type="button";sources.addEventListener("click",()=>openEvidence(ids,sources));result.append(sources);}
+        const receipt=node("details");receipt.append(node("summary","本地价格与计算收据 · 完整数值、假设和校验"),node("p",`原研究第 ${report.revision} 轮未改变；收据未写入保存历史，未进入模型证据。`,"small muted"),node("pre",JSON.stringify(value,null,2)));result.append(receipt);
+      }catch{if(entry.isConnected)result.replaceChildren(node("p","本次计算未完成。请检查十进制价格、日期和来源选择；原研究与记录未改变，也没有提交模型请求。","small desk-error"));}
+      finally{submit.disabled=false;}
+    });
+    form.addEventListener("input",()=>{if(result.children.length && !submit.disabled)result.replaceChildren(node("p","输入已改变，请重新计算；原研究保持不变。","small"));});
+  }
   function leadingReasonIndex(task) {
     const reasons=task.assessment.key_reasons;
     const company=reasons.findIndex(statement=>["VERIFIED_FACT","AI_DRAFT"].includes(statement.identity) &&
@@ -234,7 +553,7 @@
   function render(task, historical=false) {
     const key=[task.task_id,task.revision,task.status,task.updated_at,historical,
       task.progress.length,task.tool_calls.length,task.model_events.length,task.sources.length].join(":");
-    if(active?.task_id!==task.task_id || active?.revision!==task.revision){$("desk-evidence-dialog").close();sourceKey=null;readingReturn=null;observedSince=Date.now();}
+    if(active?.task_id!==task.task_id || active?.revision!==task.revision){$("desk-evidence-dialog").close();sourceKey=null;readingReturn=null;observedSince=Date.now();$("desk-followup-model-profile").value="";}
     active=task;
     historicalView=historical;
     buttons(task);
@@ -255,13 +574,14 @@
     const mobile=document.querySelector(".desk-mobile-action");
     mobile.textContent=historical ? "历史版本 · 只读查看" : {RUNNING:"查看研究进度",FAILED:"查看恢复与重试选项",NEEDS_INPUT:"补充研究问题",COMPLETE:"查看下一步核查"}[task.status];
     mobile.href=task.status==="RUNNING" ? "#desk-waiting" : "#desk-action-panel";
+    mobile.hidden=task.status==="COMPLETE";
     $("desk-task-details").textContent=`任务 ${task.task_id} · 截止 ${stamp(task.cutoff)} · 更新 ${stamp(task.updated_at)} · ${task.account_id ? "账户 "+task.account_id : "全部账户"} · 持仓 ${task.snapshot_id || "尚无快照"}`;
     const progressText=task.status==="COMPLETE" ? "研究完成，结果已保存。" : task.status==="FAILED" ? "本轮研究未完成；任务和来源已保留。" : task.status==="NEEDS_INPUT" ? "补充问题后可继续同一任务。" : task.progress.at(-1)||"研究问题已保存。";
     if($("desk-progress").textContent!==progressText)$("desk-progress").textContent=progressText;
     $("desk-progress").classList.toggle("sr-only",task.status!=="RUNNING");
     $("desk-result").setAttribute("aria-busy",String(task.status==="RUNNING"));
     renderWaiting(task);
-    const result=$("desk-result");result.replaceChildren();let accountDetails=null;
+    const result=$("desk-result");result.replaceChildren();let accountDetails=null;cited=new Set();
     $("desk-next-action").replaceChildren();$("desk-next-draft").hidden=true;
     $("desk-read-saved").textContent="重新读取保存状态 · 不调用模型";
     $("desk-action-hint").textContent=historical ? "历史版本只读。回到最新一轮后可继续研究。" : "沿用这次的账户与持仓快照；更换范围请开始新研究。";
@@ -276,12 +596,19 @@
       const action=task.action_decision, actionLabels={ADD:"ADD · 倾向加仓",HOLD:"HOLD · 倾向持有",REDUCE:"REDUCE · 倾向减持",EXIT:"EXIT · 倾向退出"};
       const actionHeading=action ? actionLabels[action.decision_action] || (action.decision_status==="NOT_APPLICABLE" ? "该操作不适用" : "方向未形成 · 证据不足") : null;
       const core=overview(task.objective==="EARNINGS_CHECK" ? "财报研究重点" : actionHeading || dispositions[task.assessment.disposition]||"核心判断",task.assessment.core_judgment,true);core.classList.add("desk-core");
-      if(action)core.append(node("p",action.applicability_note || (action.decision_status==="SUPPORTED" ? "证据支持的研究方向" : action.decision_status==="PROVISIONAL" ? "暂定研究方向 · 新事实可能改变判断" : "尚无适用且有依据的操作方向"),"small desk-core-note"));
-      if(!action)core.append(node("p","这是基于所列资料的条件研究判断，尚待你确认。","small desk-core-note"));result.append(core);
-      result.append(overview("为什么这样判断",leadingReason(task),true));
-      if(task.assessment.action)result.append(overview("投资逻辑变化",task.assessment.action.thesis_delta));
-      const gain=researchGain(task);if(gain)result.append(gain);
-      if(task.assessment.investigation_effect){const effect=overview("深入研究补查带来的变化",task.assessment.investigation_effect,true);effect.append(node("p",{CHANGED:"方向因新证据改变",UNCHANGED:"方向未变：新证据让风险更具体",UNRESOLVED:"关键问题仍未解决"}[task.assessment.judgment_change] || "方向变化未记录","small desk-core-note"));result.append(effect);}
+      if(action)core.append(node("p",action.applicability_note || (action.decision_status==="SUPPORTED" ? "证据支持的研究方向" : action.decision_status==="PROVISIONAL" ? "暂定 · PROVISIONAL" : "尚无适用且有依据的操作方向"),"small desk-core-note"));
+      if(action){core.querySelector(".desk-statement")?.remove();core.querySelector(".desk-source-button")?.remove();cited=new Set();}
+      if(!action)core.append(node("p","这是基于所列资料的条件研究判断，尚待你确认。","small desk-core-note"));
+      // Narrow screens: the next check sits under the conclusion instead of ~5
+      // screens below; the side panel copy is hidden there by CSS, not duplicated.
+      const nextCheck=task.assessment.next_checks[0];
+      if(nextCheck){const jump=node("div",null,"desk-core-next");jump.append(node("h4","下一步优先核查"),node("p",firstSentence(nextCheck.text)));
+        const go=node("a","拟定核查或继续研究");go.href="#desk-action-panel";jump.append(go);core.append(jump);}
+      result.append(core,decisionBrief(task));
+      if(task.status==="COMPLETE")result.append(timeStrip(task));
+      const gain=researchGain(task);
+      if(task.assessment.investigation_effect){const effect=overview("深入研究补查带来的变化",task.assessment.investigation_effect,true);effect.classList.add("desk-gain-effect");effect.append(node("p",{CHANGED:"方向因新证据改变",UNCHANGED:"方向未变：新证据让风险更具体",UNRESOLVED:"关键问题仍未解决"}[task.assessment.judgment_change] || "方向变化未记录","small desk-core-note"));if(gain)gain.append(effect);else result.append(effect);}
+      if(gain)result.append(gain);
       if(task.objective!=="EARNINGS_CHECK"){
         const p=task.portfolio_context, metrics=node("dl",null,"desk-key-metrics");
         const values=[["用户情景价 · 未核实",money(task.premise.user_price),"你提供的前提，未独立核实"],["最近合格收盘参考",money(task.premise.completed_close),closeTiming(task).label],
@@ -297,7 +624,7 @@
       const marketSource=task.sources.find(source=>source.evidence.evidence_id===task.premise.completed_close_evidence_id);
       const snapshotSource=task.sources.find(source=>source.evidence.evidence_type==="portfolio_snapshot");
       const section=node("details",null,"desk-financial-context");section.id="desk-account-details";
-      section.append(node("summary","账户、持仓与完整计算口径"),node("p",`账户：${p.account_names?.join("、") || p.account_id || "全部账户"} · 真实持仓快照 · ${p.valuation_status === "complete" ? "全部持仓已定价" : "部分持仓缺少合格价格"}`,"small muted"));
+      section.append(node("summary","账户、持仓与完整计算口径"),node("p",`账户：${p.account_names?.join("、") || p.account_id || "全部账户"} · 绑定持仓快照 · ${p.valuation_status === "complete" ? "全部持仓已定价" : "部分持仓缺少合格价格"}`,"small muted"));
       const rows=[["已有持仓",p.position ? p.position.quantity+" 股" : "没有该标的持仓"],
         ["平均持仓成本",money(p.position?.average_cost)],["该持仓总成本",money(p.position?.cost_basis)],
         ["账户现金（快照）",money(p.cash)],["最近收盘参考价",money(p.position?.price)],
@@ -322,29 +649,32 @@
       // Append after the readable memo, not before its supporting evidence.
       accountDetails=section;
     }
+    // Everything auditable stays one click away in a single reference list:
+    // full report, boundaries, valuation, quarters, technical, account basis.
+    const fold=(title,hint,content,cls="")=>{const box=node("details",null,("desk-fold "+cls).trim());const summary=node("summary");summary.append(node("span",title,"desk-fold-title"));if(hint)summary.append(node("span",hint,"desk-fold-hint"));box.append(summary);if(content)box.append(content);return box;};
+    const reference=node("section",null,"desk-reference");reference.setAttribute("aria-label","依据、计算与完整报告");reference.append(node("h3","依据、计算与完整报告"));
     if(task.status==="COMPLETE" && task.assessment) {
-      const memo=node("article",null,"desk-memo");
-
       const premise=node("div",null,"desk-premise");
-      premise.append(node("p",`你的价格前提：${money(task.premise.user_price)} · 未核实`),
-        node("p",`最近可用交易日收盘价：${money(task.premise.completed_close)} · ${closeTiming(task).label}`),
-        node("p",task.premise.explanation,"small muted"));memo.append(premise);
-      const comparison=node("div",null,"desk-evidence-comparison");
-      comparison.append(overview("主要支持",task.assessment.support[0]),overview("最强反证与风险",task.assessment.counterevidence[0],true));memo.append(comparison);
-      memo.append(overview("什么事实会改变判断",task.assessment.action_conditions[0],true));
-      if(task.limitations.length){const gaps=node("section",null,"desk-material-gaps");gaps.append(node("h3","判断的证据边界"),node("p","这些缺口限制了相应结论；未核实的经营变化、估值或市场因素不作为本轮确认依据。","small"));task.limitations.slice(0,2).forEach(text=>gaps.append(node("p",text.replace(/^MARKET_REGIME_NOT_VERIFIED：/,""),"small")));memo.append(gaps);}
-      const details=node("details",null,"desk-report-details");details.append(node("summary","完整研究报告与资料限制"),group("原始核心判断",[task.assessment.core_judgment]),premise.cloneNode(true),group("全部支持",task.assessment.support),group("全部反证",task.assessment.counterevidence),group("全部行动条件",task.assessment.action_conditions));
+      premise.append(node("p",task.premise.explanation,"small muted"));
+      const details=node("details",null,"desk-report-details desk-fold");details.append(node("summary","完整研究报告"),group("原始核心判断",[task.assessment.core_judgment]),premise.cloneNode(true),group("全部支持",task.assessment.support),group("全部反证",task.assessment.counterevidence),group("全部行动条件",task.assessment.action_conditions));
+      if(task.assessment.action)details.append(group("投资逻辑变化",[task.assessment.action.thesis_delta]));
       details.append(group("全部理由",task.assessment.key_reasons),group("全部下一步核查",task.assessment.next_checks));
-      if(task.limitations.length) details.append(group("资料限制",task.limitations.map(text=>({text:text.replace(/^MARKET_REGIME_NOT_VERIFIED：/,""),identity:"UNKNOWN",evidence_ids:[]}))));
-      memo.append(details);
-      result.append(memo);
+      reference.append(details);
+      // Limitations are stated once, here, instead of repeated beside each block.
+      const limits=[...new Set(task.limitations.map(text=>text.replace(/^MARKET_REGIME_NOT_VERIFIED：/,"")))];
+      if(limits.length){const list=node("ul",null,"desk-boundary-list");limits.forEach(text=>list.append(node("li",text)));reference.append(fold("本轮边界",`${limits.length} 项`,list,"desk-boundary"));}
     }
-    // Decision, reasons and counterevidence precede financial detail.
-    const financials=task.status==="COMPLETE" ? financialHistory(task) : null;if(financials)result.append(financials);
-    const metricBand=result.querySelector(":scope > .desk-key-metrics");if(metricBand)result.append(metricBand);
-    const personal=result.querySelector(":scope > .desk-personal-context");if(personal)result.append(personal);
-    if(accountDetails)result.append(accountDetails);
-    if(task.status==="COMPLETE")result.append(timeStrip(task));
+    if(task.status==="COMPLETE"){
+      const valuation=node("details",null,"desk-memo-section desk-valuation desk-fold");valuation.append(node("summary","估值、财务与价格情景"));valuation.setAttribute("aria-label","本轮估值与财务依据");
+      valuation.append(node("h3","估值与财务依据"),node("p","正在读取本轮冻结来源；不会刷新价格。","small muted"));reference.append(valuation);
+      void valuationSection(task,valuation);
+      const financials=financialHistory(task);if(financials)reference.append(fold("最近已披露季度","确定性财务",financials));
+      if(task.action_decision){const technical=node("details",null,"desk-memo-section desk-technical desk-fold");technical.append(node("summary","技术条件 · 当前仅合成行情"));const whatif=node("section",null,"desk-memo-section desk-whatif");whatif.setAttribute("aria-label","单账户调仓预演");result.append(whatif);reference.append(technical);void whatifSection(task,whatif);technicalSection(task,technical,whatif);}
+    }
+    const metricBand=result.querySelector(":scope > .desk-key-metrics");if(metricBand && accountDetails)accountDetails.append(metricBand);
+    const personal=result.querySelector(":scope > .desk-personal-context");if(personal && accountDetails)accountDetails.append(personal);
+    if(accountDetails){accountDetails.classList.add("desk-fold");reference.append(accountDetails);}
+    if(reference.childElementCount>1)result.append(reference);
     $("desk-trace").replaceChildren();
     $("desk-trace").append(researchDepth(task));
     const progress=node("ol",null,"desk-observed-steps");task.progress.forEach(text=>progress.append(node("li",text)));$("desk-trace").append(progress);
@@ -446,7 +776,9 @@
     }
     if(generation===viewGeneration)observationLost("本次观察已结束，任务状态以重新读取为准；不会自动重试研究。");
   }
-  async function openTask(taskId, revision="") {
+  // A direct link or reload opens the record where the page starts: no scroll
+  // jump past the identity banner and no focus ring. In-app navigation moves.
+  async function openTask(taskId, revision="", initial=false) {
     clearAttentionDraft();
     const generation=++viewGeneration;
     $("desk-observation").hidden=true;
@@ -456,7 +788,7 @@
       const target=new URL(location.href);target.searchParams.set("research_task",taskId);
       if(revision)target.searchParams.set("revision",revision);else target.searchParams.delete("revision");
       if(target.href!==location.href)history.pushState(null,"",target);
-      render(task,!!revision);$("desk-task").focus({preventScroll:true});$("desk-task").scrollIntoView({block:"start",behavior:motion()});
+      render(task,!!revision);if(!initial){$("desk-task").focus({preventScroll:true});$("desk-task").scrollIntoView({block:"start",behavior:motion()});}
       void historyOptions(task,generation);
       if(!revision && task.status==="RUNNING")void watch(taskId,generation);
     }catch(error){if(generation===viewGeneration){if(active)observationLost("任务暂时无法读取，仍保留上次观察的版本。请重新读取进度。");else $("desk-request-status").textContent="任务暂时无法读取，请刷新最近研究；没有重新提交。";}}
@@ -467,7 +799,11 @@
     sending=true;buttons(active);$("desk-submit").disabled=true;
     const generation=++viewGeneration;
     const request={question};
-    if(followup && active)request.task_id=active.task_id;
+    if(followup && active){
+      request.task_id=active.task_id;
+      const profile=$("desk-followup-model-profile"),option=profile.selectedOptions[0];
+      if(profile.value){request.model_profile_id=profile.value;request.mode=option.dataset.mode;}
+    }
     else {
       if($('desk-model-profile')?.value)request.model_profile_id=$('desk-model-profile').value;
       if(state.snapshot)request.snapshot_id=state.snapshot.snapshot_id;
@@ -500,7 +836,7 @@
   const scopeLabel=()=>$("desk-account").selectedOptions[0]?.textContent || "全部账户";
   const confirmNew=()=>miaConfirmCost({title:"开始这项研究？",body:"创建研究任务，读取持仓、核查资料并由模型形成判断。",confirmLabel:"确认开始研究",
     facts:[["持仓范围",scopeLabel()],...(attentionDraft?[["关联事项",`${attentionDraft.symbol} 的关注事项`]]:[])]});
-  const confirmFollowup=()=>miaConfirmCost({title:`继续研究 · 第 ${(active?.revision||0)+1} 轮`,body:"创建新版本并重新核查资料；之前的版本保留。",confirmLabel:"确认继续研究",
+  const confirmFollowup=()=>miaConfirmCost({title:`继续研究 · 第 ${(active?.revision||0)+1} 轮`,body:`${$("desk-followup-model-profile").selectedOptions[0]?.textContent || "沿用本轮研究方式"}。创建新版本并重新核查资料；之前的版本保留。`,confirmLabel:"确认继续研究",
     facts:[["持仓范围",active?.account_id ? "所选账户 · 原持仓快照" : "全部账户 · 原持仓快照"]]});
   const confirmRetry=()=>miaConfirmCost({title:"重新研究同一问题？",body:"保留同一任务和旧版本，重新核查资料和价格；旧行情不会作为新事实。",confirmLabel:"确认重新研究"});
   // A confirmation covers only the task revision shown in the dialog; if navigation
@@ -576,11 +912,14 @@
   accountOptions();recent();
   if(!publicReplay)readApi('/api/research/model-profiles').then(data=>{
     const select=$('desk-model-profile');select.replaceChildren();
+    const followup=$('desk-followup-model-profile');
     for(const profile of data.profiles || [])if(profile.available){
       const option=node('option',`${profile.mode==='FAST' ? '快速判断' : '深入研究'} · ${profile.model}`);
-      option.value=profile.profile_id;option.selected=profile.mode==='DEEP';select.append(option);
+      option.value=profile.profile_id;option.dataset.mode=profile.mode;
+      followup.append(option.cloneNode(true));option.selected=profile.mode==='DEEP';select.append(option);
     }
     $('desk-profile-label').hidden=!select.options.length;
+    $('desk-followup-profile-label').hidden=!select.options.length;
   }).catch(()=>{$('desk-profile-label').hidden=true;});
   applyNavigation();
   if(publicReplay){
@@ -609,5 +948,5 @@
     $("desk-elapsed").textContent=`${valid ? "已等待" : "本次查看"} ${Math.floor(seconds/60)}分${seconds%60}秒`;
   },1000);
   const params=new URL(location.href).searchParams;
-  if(params.has("research_task"))void openTask(params.get("research_task"),params.get("revision")||"");
+  if(params.has("research_task"))void openTask(params.get("research_task"),params.get("revision")||"",true);
 })();

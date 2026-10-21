@@ -53,15 +53,20 @@ const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
     await page.locator('#desk-recent .desk-recent-task').nth(index).click();
     await page.locator('.desk-core').waitFor();
     check(await page.locator('#desk-observation').isHidden(),prefix+'_no_false_read_failure');
-    check((await page.locator('.desk-core').innerText()).includes(task.assessment.core_judgment.text),prefix+'_complete_core_judgment');
-    check(await page.locator('#desk-result h3').filter({hasText:'为什么这样判断'}).count()===1,prefix+'_decision_reason_rendered');
+    // D-083: with a saved Action the conclusion card shows the direction; the
+    // original core judgment is kept once, in the full report (one click).
+    if(!task.action_decision)check((await page.locator('.desk-core').innerText()).includes(task.assessment.core_judgment.text),prefix+'_complete_core_judgment');
+    check(await page.locator('#desk-result .desk-decision-drivers').count()===1&&await page.locator('#desk-result [data-brief="counter"]').count()===1,prefix+'_decision_brief_rendered');
     const full=page.locator('.desk-report-details');await full.locator('summary').click();
     check(await full.evaluate(e=>e.open),prefix+'_full_report_expanded');
     const text=await full.innerText();
+    check(text.includes(task.assessment.core_judgment.text),prefix+'_complete_core_judgment_in_report');
     for(const field of ['key_reasons','support','counterevidence','action_conditions','next_checks']){
      check(task.assessment[field].every(s=>text.includes(s.text)),prefix+'_all_'+field+'_visible');
     }
-    check(await page.locator('#desk-next-action').innerText().then(t=>t.includes(task.assessment.next_checks[0].text)),prefix+'_next_check_rendered');
+    // Wide: side panel. Narrow: the first sentence sits under the conclusion.
+    const nextText=task.assessment.next_checks[0].text,nextFirst=(nextText.match(/^.*?[。！？](?:[”」])?/s)||[nextText])[0];
+    check(await page.locator('#desk-next-action').innerText().then(t=>t.includes(nextText))||await page.locator('.desk-core-next').innerText().then(t=>t.includes(nextFirst)).catch(()=>false),prefix+'_next_check_rendered');
     const cite=full.locator('.desk-citation').first();await cite.click();
     check(await page.locator('#desk-evidence-dialog').evaluate(e=>e.open),prefix+'_citation_opens_evidence');
     check(await page.locator('#desk-source-list > details[open]').count()>0,prefix+'_cited_receipt_expanded');

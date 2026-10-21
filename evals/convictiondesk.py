@@ -52,6 +52,18 @@ class Model:
         if request.purpose == 'research.intent':
             return request.response_model(objective='REVIEW_THESIS',focus_symbol=request.facts['explicit_literals']['symbols'][0],
                 clarification=None,sec_query='operating performance cash guidance',use_news=True,use_sec=True)
+        if request.purpose == 'attention_deep_v1':
+            # This request contains an AttentionItem, not ResearchTask sources.
+            from market_agent.attention import DeepOutput
+            facts = request.facts
+            return DeepOutput(what_changed=facts['what_changed'],
+                why_it_matters=facts['screen']['rationale'], thesis_impact='UNKNOWN',
+                owner_attention='SOON', next_step='REVIEW', next_check={
+                    'text':'合成深入核查：对照原始披露，核查经营变化与现金兑现条件。',
+                    'evidence_ids':[e['evidence_id'] for e in facts['packet']['evidence']]})
+        if request.purpose not in {'research.assess', 'research.reassess'}:
+            from market_agent.llm import LLMError
+            raise LLMError('configuration', 'Unsupported synthetic request purpose')
         sources = [row for row in request.facts['sources'] if row['identity']=='VERIFIED_FACT'
                    and row['evidence']['evidence_type'] in {'news','sec_filing'}]
         symbol = request.facts['symbol']

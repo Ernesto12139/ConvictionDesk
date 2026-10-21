@@ -55,6 +55,12 @@ def register_attention(app,service):
         launch(service.scan(scan_id,cutoff,entries))
         return {'scan_id':scan_id,'status':'RUNNING'}
 
+    @app.post('/api/attention/continue',status_code=202)
+    async def continue_current():
+        scan_id,cutoff,entries=service.begin()
+        launch(service.scan(scan_id,cutoff,entries,fetch_sources=False))
+        return {'scan_id':scan_id,'status':'RUNNING','scan_mode':'SAVED_CURRENT_ONLY'}
+
     @app.get('/api/attention/scans/{scan_id}')
     def scan_status(scan_id:str):
         return research.report(scan_id)
@@ -75,11 +81,16 @@ def register_attention(app,service):
             successful=db.execute("SELECT scan_id FROM attention_scans WHERE status='COMPLETED' ORDER BY started_at DESC,rowid DESC LIMIT 1").fetchone()
             counts=db.execute('SELECT symbol,COUNT(*) FROM attention_events WHERE screen IS NULL GROUP BY symbol').fetchall()
             screened_counts=db.execute('SELECT symbol,COUNT(*) FROM attention_events WHERE screen IS NOT NULL GROUP BY symbol').fetchall()
+            pending_rows=db.execute('SELECT symbol,payload,payload_hash FROM attention_events WHERE screen IS NULL').fetchall()
         pending=sum(count for symbol,count in counts if symbol in active)
         inactive=sum(count for symbol,count in counts if symbol not in active)
         latest_scan = research.report(latest[0]) if latest else None
         latest_successful = research.report(successful[0]) if successful else None
         from .attention_selection import scan_outcome
+        from .attention_selection import pending_lifecycle
+        from .attention import EventPacket
+        lifecycle=pending_lifecycle([EventPacket.model_validate(research.checked(payload,digest))
+            for symbol,payload,digest in pending_rows if symbol in active],now)
         coverage = {'ranking_set': 'SCREENED_UNRESOLVED_RESEARCH_EVENTS',
             'screened_records': sum(count for symbol,count in screened_counts if symbol in active),
             'unresolved_events': len(units), 'shown_events': len(rows),
@@ -93,8 +104,10 @@ def register_attention(app,service):
                 'latest_scan':latest_scan,'latest_successful_scan':latest_successful,
                 'scan_result_status':scan_outcome(latest_scan.get('report') if latest_scan else None),
                 'pending_events':pending,'coverage':coverage,
+                'pending_lifecycle':lifecycle,
                 'inactive_pending_events':inactive,
                 'scan_scope':service.scan_scope(entries),
+                'screen_batch_limit':service.screen_batch_size,
                 'jev_mode':'DEFERRED','ranking_scope':'Research attention only; cost exposure is not current market weight'}
 
     @app.get('/api/attention/items/{item_id}')

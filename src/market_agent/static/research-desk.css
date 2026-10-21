@@ -37,6 +37,15 @@ textarea { caret-color: #176d60; }
 .desk-question-title { font-size: 16px; line-height: 1.7; padding: 8px 0 14px; margin: 0; color: var(--muted); }
 .desk-memo { max-width: 960px; }
 .desk-memo-section { margin: 28px 0; }
+.desk-valuation-list { margin:16px 0; }
+.desk-valuation-list > div { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.4fr); gap:4px 16px; padding:12px 0; border-bottom:1px solid var(--line); }
+.desk-valuation-list dt { font-size:14px; }
+.desk-valuation-number { margin:0; text-align:right; overflow-wrap:anywhere; font-variant-numeric:tabular-nums; font-size:15px; }
+.desk-valuation-meta,.desk-provider-meta { grid-column:1/-1; font-size:13px; color:var(--muted); }
+.desk-provider-reference { padding:14px 0; border-bottom:1px solid var(--line); overflow-wrap:anywhere; }
+.desk-provider-reference h4 { margin:0 0 8px; font-size:14px; }
+.desk-provider-reference > .desk-valuation-number { text-align:left; font-size:18px; }
+.desk-valuation-meta summary,.desk-provider-meta summary { cursor:pointer; width:fit-content; padding:8px 0; }
 .desk-memo-section h3 { font-size: 17px; margin: 0 0 10px; }
 .desk-memo > .desk-memo-section:first-child .desk-statement { font-size: 22px; line-height: 1.7; font-weight: 550; }
 .desk-statement { max-width: 72ch; font-size: 16px; line-height: 1.85; margin: 10px 0 18px; }
@@ -379,3 +388,39 @@ body[data-desk-view="task"] .rail nav a[href="#research-history"] { color:#fff; 
   .desk-evidence-heading h2 { font-size:17px; }.desk-evidence-dialog { padding:16px; }
   #universe,#portfolio-disclosure,#desk-legacy { padding:18px; }.desk-waiting { padding:22px 18px; }
 }
+.desk-dated-price { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 12px; }
+.desk-dated-form { margin-top: 12px; }
+.desk-price-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px; }
+.desk-price-fields label { display: grid; gap: 6px; min-width: 0; }
+.desk-price-fields input, .desk-price-fields select { width: 100%; min-width: 0; box-sizing: border-box; }
+.desk-followup select { display: block; width: 100%; min-width: 0; margin-top: 6px; }
+#desk-followup-profile-label { display: block; margin-top: 12px; }
+#desk-followup-profile-label[hidden] { display: none; }
+.desk-price-condition { display: flex; align-items: flex-start; gap: 10px; margin: 12px 0; font-size: 13px; line-height: 1.6; }
+.desk-price-condition input { flex: 0 0 auto; margin-top: 5px; width: 16px; }
+.desk-dated-result { margin-top: 16px; }
+.desk-price-difference .desk-valuation-list > div > p { grid-column: 1 / -1; margin: 0; }
+.desk-dated-result pre { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; font-size: 12px; }
+.desk-price-assumptions { border-left: 3px solid var(--line); padding-left: 12px; }
+@media (max-width: 600px) {
+  .desk-price-fields { grid-template-columns: minmax(0, 1fr); }
+  body:has(.desk-dated-price[open]) .desk-mobile-action { display: none; }
+}
+.desk-whatif-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.desk-whatif-form label { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.desk-whatif-form input, .desk-whatif-form select { min-width: 0; width: 100%; box-sizing: border-box; }
+.desk-whatif-form > fieldset, .desk-whatif-form > p, .desk-whatif-form > section,
+.desk-whatif-form > label:has(input[type="checkbox"]) { grid-column: 1 / -1; min-width: 0; }
+.desk-whatif-form label:has(input[type="checkbox"]) { flex-direction: row; align-items: flex-start; }
+.desk-whatif-form input[type="checkbox"] { width: auto; flex-shrink: 0; margin-top: 5px; }
+.desk-whatif-form fieldset { border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+.desk-whatif-form dd, .desk-whatif-form pre { overflow-wrap: anywhere; white-space: pre-wrap; }
+.desk-whatif-form pre { font-size: 12px; }
+@media (max-width: 600px) {
+  .desk-whatif-form { grid-template-columns: minmax(0, 1fr); }
+  body:has(.desk-whatif-form) .desk-mobile-action { display: none; }
+}
+.desk-technical-form { display: grid; gap: 16px; margin-top: 16px; min-width: 0; }
+.desk-technical-form label { display: grid; gap: 8px; min-width: 0; }
+.desk-technical-form textarea { width: 100%; min-width: 0; box-sizing: border-box; font-family: monospace; }
+.desk-technical-form pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; }

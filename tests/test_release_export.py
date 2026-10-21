@@ -58,6 +58,21 @@ def test_path_escape_or_git_metadata_is_never_exportable(path):
     assert not exporter.safe_path(path)
 
 
+def test_manifest_version_is_taken_from_the_fixed_exported_pyproject(tmp_path):
+    root,_=repo(tmp_path)
+    (root/'pyproject.toml').write_text('[project]\nversion = "0.9.0.dev0"\n')
+    entries=json.loads((root/'release/public-files.json').read_text())
+    entries.append({'source':'pyproject.toml','path':'pyproject.toml'})
+    (root/'release/public-files.json').write_text(json.dumps(entries))
+    git(root,'add','pyproject.toml','release/public-files.json')
+    git(root,'commit','-m','test: synthetic development version')
+    sha=git(root,'rev-parse','HEAD')
+    (root/'pyproject.toml').write_text('[project]\nversion = "9.9.9"\n')
+    manifest=exporter.export(root,sha,tmp_path/'fixed-version')
+    assert manifest['source_version']=='0.9.0.dev0'
+    assert manifest['upstream_source_sha']==sha
+
+
 def test_secrets_private_paths_and_active_svg_are_rejected():
     assert exporter.scan('app.py', ('token="'+'sk-'+'a'*32+'"').encode())
     assert exporter.scan('settings.txt', ('/home/'+'synthetic-owner/private').encode())
@@ -85,3 +100,53 @@ def test_nonowner_author_wrong_ancestry_and_release_creator_reject(tmp_path):
     assert auditor.audit(root, EMAIL, forbidden_ancestors=[sha])['status'] == 'FAIL'
     release = {'author': {'login':'not-owner'}, 'tag_name':'v0.8.1', 'draft':False}
     assert 'release creator is not Owner' in auditor.audit(root, EMAIL, release=release)['errors']
+
+
+def test_next_release_extends_same_root_and_preserves_old_annotated_tag(tmp_path):
+    root,sha=repo(tmp_path)
+    git(root,'tag','-a','v0.8.1','-m','Synthetic stable release')
+    pinned=git(root,'rev-parse','v0.8.1')
+    git(root,'commit','--allow-empty','-m','test: next fixed source snapshot')
+    git(root,'tag','-a','v0.9.0','-m','Synthetic next release')
+    release={'author':{'login':'Ernesto12139'},'tag_name':'v0.9.0','draft':False,'prerelease':False}
+    result=auditor.audit(root,EMAIL,expected_root=sha,release=release,protected_tags={'v0.8.1':pinned})
+    assert result['status']=='PASS',result['errors']
+    assert result['commits']==2 and result['root']==sha and result['release_creator_verified']
+    assert git(root,'rev-parse','v0.8.1^{commit}')==sha
+    assert auditor.audit(root,EMAIL,expected_root='f'*40)['status']=='FAIL'
+
+
+def test_lightweight_and_nonowner_tags_are_rejected(tmp_path):
+    root,_=repo(tmp_path)
+    git(root,'tag','v0.9.0')
+    assert auditor.audit(root,EMAIL)['status']=='FAIL'
+    git(root,'-c','user.name=Not Owner','tag','-a','v1.0.0','-m','Synthetic wrong tagger')
+    assert any('tagger identity' in e for e in auditor.audit(root,EMAIL)['errors'])
+
+
+def test_same_commit_retag_still_violates_protected_annotation(tmp_path):
+    root,_=repo(tmp_path)
+    git(root,'tag','-a','v0.8.1','-m','Original synthetic annotation')
+    pinned=git(root,'rev-parse','v0.8.1')
+    git(root,'tag','-f','-a','v0.8.1','-m','Changed synthetic annotation')
+    result=auditor.audit(root,EMAIL,protected_tags={'v0.8.1':pinned})
+    assert 'protected release tag changed or missing: v0.8.1' in result['errors']
+
+
+def png(*chunks):
+    import zlib
+    body = b''.join(len(d).to_bytes(4, 'big')+k+d+zlib.crc32(k+d).to_bytes(4, 'big') for k, d in chunks)
+    return bytes.fromhex('89504e470d0a1a0a')+body
+
+
+def test_only_metadata_free_pngs_under_docs_assets_are_exportable():
+    ihdr = (b'IHDR', (1).to_bytes(4, 'big')*2+bytes([8, 2, 0, 0, 0]))
+    idat, iend = (b'IDAT', b'x\x9cc\xf8\x0f\x00\x01\x01\x01\x00'), (b'IEND', b'')
+    clean = png(ihdr, idat, iend)
+    assert exporter.scan('docs/assets/shot.png', clean) == []
+    assert exporter.scan('src/shot.png', clean)
+    assert exporter.scan('docs/assets/shot.png', png(ihdr, (b'tEXt', b'Author\x00x'), idat, iend))
+    assert exporter.scan('docs/assets/shot.png', png(ihdr, (b'eXIf', b'MM'), idat, iend))
+    assert exporter.scan('docs/assets/shot.png', clean[:-1]+bytes([clean[-1] ^ 1]))
+    assert exporter.scan('docs/assets/shot.png', clean+b'\0'*exporter.PNG_MAX_BYTES)
+    assert exporter.scan('docs/assets/shot.jpg', b'\xff\xd8\xff')
