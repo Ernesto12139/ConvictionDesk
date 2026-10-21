@@ -123,7 +123,7 @@ def create_app(db_path: str | Path = "data/market_agent.db",
         semantic_judge=semantic_judge,
         comparison_semantic_judge=comparison_semantic_judge,
     )
-    app = FastAPI(title="ConvictionDesk", version="0.9.0.dev0")
+    app = FastAPI(title="ConvictionDesk", version="0.9.0")
     from .research_api import register_research
     if (model_profiles is None and not explicit_test_provider and llm_client is None
             and environment.get('LLM_PROVIDER','openai')=='openai'

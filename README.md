@@ -46,7 +46,7 @@
 
 The packaged replay runs the full Today → Fast / Deep → Action → Evidence → Records journey on fictional data. It makes **no model or market-data calls**, ignores any keys in your environment and refuses every write. Python 3.12+ is required.
 
-This source candidate adds the decision-first research page, account What-if and synthetic technical calculations; the currently published **v0.8.1 does not**. The shared keyless replay is read-only: it shows saved records but does **not** run What-if or technical calculations (the What-if screenshot below comes from a local copy of the same fictional data). Candidate installation and public publication are separate gates.
+v0.9.0 adds the decision-first research page, account What-if and synthetic technical calculations. The shared keyless replay is read-only: it shows saved records but does **not** run What-if or technical calculations (the What-if screenshot below comes from a local copy of the same fictional data).
 
 **macOS / Linux**
 
@@ -201,7 +201,7 @@ Open **http://127.0.0.1:8000/**, add your portfolio under *我的组合* (CSV im
 
 ## Release status
 
-This table describes the source candidate, not a published v0.9 release. Public v0.8.1 stays unchanged.
+v0.9.0 is a **limited beta**: each row states how far it is verified. Release notes: [`release/V09_RELEASE_NOTES.md`](release/V09_RELEASE_NOTES.md).
 
 | Status | Capability |
 |---|---|
@@ -259,7 +259,7 @@ Issues, bug reports and product feedback are welcome. Accepted changes are appli
 
 | Version | Highlights |
 |---|---|
-| Source candidate — not published | Decision-first research page, same-task Fast → Deep, historical TTM, dated price scenarios, account What-if, synthetic OHLCV zones, Today coverage and refreshed screenshots |
+| v0.9.0 (limited beta) | Decision-first research page, same-task Fast → Deep, historical TTM, dated price scenarios, account What-if, synthetic OHLCV zones, Today coverage and refreshed screenshots |
 | v0.8.1 | Saved research opens completely; execution details behind *执行记录与诊断*; README and diagrams |
 
 ## License

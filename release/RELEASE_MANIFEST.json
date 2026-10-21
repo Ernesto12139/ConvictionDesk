@@ -1,6 +1,6 @@
 {
-  "upstream_source_sha": "34716bfce3c6f53e95b5fe997afdd3c17d4e9f1b",
-  "source_version": "0.9.0.dev0",
+  "upstream_source_sha": "bb0825d1d260c504cef2382301824bccab94a233",
+  "source_version": "0.9.0",
   "allowlist": "explicit paths and mappings",
   "files": [
     {
@@ -54,8 +54,8 @@
     {
       "path": "pyproject.toml",
       "source": "pyproject.toml",
-      "git_blob": "ca59fc404055b49cff6b3ff655c14ef33a29d808",
-      "sha256": "4448cfa741cb88355158270f529ab03f3c1696d3173cfc6f21a2f9665bbd0760"
+      "git_blob": "d091d3bdb0da0b6a8a336005e3a599c91a297f66",
+      "sha256": "e1fbd5a676c64d4c55f1d554df9f615366f0917fd49b37d7f3b0c6222b58aac1"
     },
     {
       "path": "release/ASSET_PROVENANCE.md",
@@ -78,8 +78,8 @@
     {
       "path": "release/public-files.json",
       "source": "release/public-files.json",
-      "git_blob": "daae30cb47ad525b698564224b47f87e13448d9d",
-      "sha256": "f3a153645c843caffc476880481c48e00f631597780c77bfbfff11b66cdbce9d"
+      "git_blob": "fb482a526cbc75aa03e4f98b282e026ab2dcce29",
+      "sha256": "82f1a4d9ccdfb2f4c95714cd07b5996204e55436a09f21c34f853ac0740e5c48"
     },
     {
       "path": "scripts/build_public_demo_dataset.py",
@@ -288,8 +288,8 @@
     {
       "path": "src/market_agent/main.py",
       "source": "src/market_agent/main.py",
-      "git_blob": "349abf46ac281a2efbd13dd7c23102e57dcceb05",
-      "sha256": "4a183c8f0ab15a0a93d73507e82ed22ba03c4e45a53c000cbfc7473fd88692b8"
+      "git_blob": "3a7195d0ffa7591293343f226776a116c236f010",
+      "sha256": "a8164b75ff2a645d1dd7fde6296512795bf32ff5b6026dd762833bf00b951f09"
     },
     {
       "path": "src/market_agent/market_evidence.py",
@@ -600,8 +600,8 @@
     {
       "path": "README.md",
       "source": "release/PUBLIC_README.md",
-      "git_blob": "d34349eadbaed6d8c26727bab184388e002e1d3a",
-      "sha256": "1893044c350b11b1dfff692cfcb3427107cf460c3d58ae69007a732bf4bd79bf"
+      "git_blob": "68dec92b93ae18382801c13346de2f541d54e7d3",
+      "sha256": "d2f3cfbff80c944e686a42eff7af7133fe03c41ecbeb8b90b2abecfc9c4820d6"
     },
     {
       "path": ".github/workflows/ci.yml",
@@ -832,10 +832,10 @@
       "sha256": "8bb4a720b40981a7b8fe1ec945535b5710c35e1fed4d2a0065b90dec6f732209"
     },
     {
-      "path": "release/V09_RELEASE_NOTES_DRAFT.md",
-      "source": "release/V09_RELEASE_NOTES_DRAFT.md",
-      "git_blob": "04f60690a1294d4df3b49179e70bb5d1d0277b97",
-      "sha256": "eb98e0fbc0f1926043c67563886297f2f45357f894b5484b966b4400081b6842"
+      "path": "release/V09_RELEASE_NOTES.md",
+      "source": "release/V09_RELEASE_NOTES.md",
+      "git_blob": "61ddb5edff19501240f078dc42f3db8ea5bb0ba5",
+      "sha256": "7b906ffcae4196290bb25eecc00faed70429d6f8927771608d4295e6dafbcd3e"
     },
     {
       "path": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json",

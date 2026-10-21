@@ -552,8 +552,8 @@
     "path": "docs/research-agent/V09_PRODUCT_CLOSURE.md"
   },
   {
-    "source": "release/V09_RELEASE_NOTES_DRAFT.md",
-    "path": "release/V09_RELEASE_NOTES_DRAFT.md"
+    "source": "release/V09_RELEASE_NOTES.md",
+    "path": "release/V09_RELEASE_NOTES.md"
   },
   {
     "source": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json",
