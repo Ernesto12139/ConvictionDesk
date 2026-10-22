@@ -150,3 +150,29 @@ def test_only_metadata_free_pngs_under_docs_assets_are_exportable():
     assert exporter.scan('docs/assets/shot.png', clean[:-1]+bytes([clean[-1] ^ 1]))
     assert exporter.scan('docs/assets/shot.png', clean+b'\0'*exporter.PNG_MAX_BYTES)
     assert exporter.scan('docs/assets/shot.jpg', b'\xff\xd8\xff')
+
+
+def test_open_development_branches_are_allowed_but_still_audited(tmp_path):
+    root, sha = repo(tmp_path)
+    git(root, 'update-ref', 'refs/remotes/origin/docs/presentation-002', 'HEAD')
+    git(root, 'update-ref', 'refs/remotes/origin/codex/fix-annotated-release-ci', 'HEAD')
+    assert auditor.audit(root, EMAIL, expected_root=sha)['status'] == 'PASS'
+    # Commits reachable only from a development branch keep the identity/trailer audit.
+    git(root, 'checkout', '-q', '-b', 'scratch')
+    git(root, 'commit', '--allow-empty', '-m', 'docs: synthetic' + chr(10) * 2 + 'Co-Authored-By: automated assistant')
+    git(root, 'update-ref', 'refs/remotes/origin/docs/bad-trailer', 'HEAD')
+    git(root, 'checkout', '-q', '-')
+    git(root, 'branch', '-D', 'scratch')
+    assert any('forbidden commit trailer' in e for e in auditor.audit(root, EMAIL)['errors'])
+
+
+def test_unknown_branch_namespaces_and_shapes_still_reject(tmp_path):
+    root, sha = repo(tmp_path)
+    for ref in ('refs/remotes/origin/release/v0.9.0', 'refs/remotes/origin/private-history',
+                'refs/remotes/origin/docs/a/b', 'refs/remotes/upstream/docs/x', 'refs/heads/docs/x',
+                'refs/remotes/origin/docs/'):
+        if ref.endswith('/'):
+            continue
+        git(root, 'update-ref', ref, 'HEAD')
+        assert 'unexpected branch/tag/ref' in auditor.audit(root, EMAIL)['errors'], ref
+        git(root, 'update-ref', '-d', ref)

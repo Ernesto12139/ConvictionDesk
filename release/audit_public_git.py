@@ -8,6 +8,9 @@ from pathlib import Path
 PUBLIC_ROOT = '555ca4fbc531e61bf0fdc33d5022fec38dece11b'
 V081_TAG_OBJECT = '4f5a3f17d2d83536040a2e9737bd15385980141f'
 RELEASE_TAG = re.compile(r'v(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)')
+# Open development/PR branches as fetched by CI checkout. Only these prefixes, one path
+# segment, never tags or other namespaces; every commit they reach is still audited below.
+DEV_BRANCH = re.compile(r'refs/remotes/origin/(?:docs|fix|feat|chore|test|codex)/[A-Za-z0-9][A-Za-z0-9._-]{0,99}')
 FORBIDDEN_MESSAGE = re.compile(r'^Co-Authored-By:|Generated with (?:Claude Code|Codex)|Claude-Session',re.I|re.M)
 
 
@@ -33,7 +36,7 @@ def audit(root, email, *, expected_root=None, release=None, forbidden_ancestors=
     refs = git(root, 'for-each-ref', '--format=%(refname)').splitlines()
     branch_refs={'refs/heads/main','refs/remotes/origin/main','refs/remotes/origin/HEAD'}
     tags=[ref.removeprefix('refs/tags/') for ref in refs if ref.startswith('refs/tags/')]
-    if any(ref not in branch_refs and not (ref.startswith('refs/tags/') and
+    if any(ref not in branch_refs and not DEV_BRANCH.fullmatch(ref) and not (ref.startswith('refs/tags/') and
             RELEASE_TAG.fullmatch(ref.removeprefix('refs/tags/'))) for ref in refs):
         errors.append('unexpected branch/tag/ref')
     ancestry=set(git(root,'rev-list','HEAD').splitlines())

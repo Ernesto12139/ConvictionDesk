@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "9d9db7b0c55047dc96e0826d3a0ed5dd030ecb61",
+  "upstream_source_sha": "e67987719a9ab9b87a5ff8c3fd2abc51cf0199f4",
   "source_version": "0.9.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -66,8 +66,8 @@
     {
       "path": "release/audit_public_git.py",
       "source": "release/audit_public_git.py",
-      "git_blob": "7f686ae049968b312fc12637da498317d2af59b7",
-      "sha256": "85152c260dc9d0e5ce0d572ef76b32d12bb601f7b32e566bec105401ebbd0498"
+      "git_blob": "813d54e723d4a3e92ae21ca27f1c42cd40c3aa11",
+      "sha256": "d60abf2e481fde06613e6c1e1ca0b9989f63f7b36642b122e1c89bb2d8ce0b22"
     },
     {
       "path": "release/export_snapshot.py",
@@ -588,8 +588,8 @@
     {
       "path": "tests/test_release_export.py",
       "source": "tests/test_release_export.py",
-      "git_blob": "53890d07c645327ff339d186eec60847840ca0ff",
-      "sha256": "89f7b7eaa9da72c9e15a3f0f34b472a32405b1bc4f647ed9e4d7ddaa9cbf2132"
+      "git_blob": "fef4e33c74a93cbb721afc9cb89e1c750c0d99ff",
+      "sha256": "f83633df7de353100f80eef984ff66fa1042fbcae881cee0d87821f0f65c3608"
     },
     {
       "path": "tests/test_sec_earnings.py",
