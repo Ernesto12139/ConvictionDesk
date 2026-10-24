@@ -78,8 +78,9 @@
     {
       "path": "release/public-files.json",
       "source": "release/public-files.json",
-      "git_blob": "4faca7782c5a5c0c76d9e02a1eaf4a9c55af57b9",
-      "sha256": "b7977a7bb7802585cc43a1c8e129c3f98dbe09be3b34d9aa04055398d51b42ab"
+      "git_blob": "3dfd3f3d0048a7a7838697e6e954b249277b4bac",
+      "sha256": "a1dd002ca371a435bad36324e84f193271250aa6a5a756e0974fd8c05df667c3",
+      "source_sha": "06e994f96b21a504ad43f4bed13276c24ecfb833"
     },
     {
       "path": "scripts/build_public_demo_dataset.py",
@@ -600,8 +601,10 @@
     },
     {
       "path": "README.md",
-      "source": "public-only increment documentation",
-      "sha256": "fef0898975ec240eeb00fab4f7b334a7d3337efdca216ae2e68e5e4304b4f227"
+      "source": "README.md",
+      "sha256": "3b27212f4e84df7f78a1d5cca5df5363ae4d849c103238e33843070929f7d65f",
+      "git_blob": "d7240d9b172e313dafcee51a28a265d6d5040f25",
+      "source_sha": "06e994f96b21a504ad43f4bed13276c24ecfb833"
     },
     {
       "path": ".github/workflows/ci.yml",
