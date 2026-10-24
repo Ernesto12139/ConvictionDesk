@@ -1,0 +1,434 @@
+{
+ "schema_version": "ivs-sec-capture-v1",
+ "captured_at": "2026-10-24T15:18:42.990912+00:00",
+ "source": "SEC_EDGAR_SUBMISSIONS",
+ "source_uri": "https://data.sec.gov/submissions/CIK0000100885.json",
+ "ticker_map_uri": "https://www.sec.gov/files/company_tickers.json",
+ "issuer": {
+  "symbol": "UNP",
+  "cik": "0000100885",
+  "name": "UNION PACIFIC CORP",
+  "tickers": [
+   "UNP"
+  ]
+ },
+ "mapping": {
+  "source_uri": "https://www.sec.gov/files/company_tickers.json",
+  "observed_at": "2026-10-24T15:18:42.990925+00:00"
+ },
+ "row_count_total": 1000,
+ "rows": [
+  {
+   "accession": "0000100885-26-000321",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-10-22T23:45:41.000Z",
+   "filing_date": "2026-10-22",
+   "primary_document": "unp-20260930.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:e322498e9504fd1b28c80d68261977b6c009e2fd66e59fc49cb2c253d7321280"
+  },
+  {
+   "accession": "0000100885-26-000319",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-10-22T15:46:52.000Z",
+   "filing_date": "2026-10-22",
+   "primary_document": "unp-20261022.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:ea49eb116feaef21ce7f8e50d463b0e059be704d5720d5a6fee1139fc0e4ad72"
+  },
+  {
+   "accession": "0000100885-26-000314",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-20T19:14:34.000Z",
+   "filing_date": "2026-10-20",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:719fc1c0e57a2e1c37d5bf0847ad5062d96ede642d6b8cb9ca27ff1a6ba5fc3f"
+  },
+  {
+   "accession": "0000100885-26-000313",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-20T19:14:26.000Z",
+   "filing_date": "2026-10-20",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:9f7577edd7859732168060b197eb2064e4fd94163eb1f6e2555bf5d9e905b5e6"
+  },
+  {
+   "accession": "0000100885-26-000312",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-20T19:14:18.000Z",
+   "filing_date": "2026-10-20",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:d08439dda58da2dc20f6d497086f7044f589f135669ff6284391b2f19fb939e7"
+  },
+  {
+   "accession": "0000100885-26-000305",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-10-16T17:01:58.000Z",
+   "filing_date": "2026-10-16",
+   "primary_document": "unp-20261016.htm",
+   "items": [
+    "5.02",
+    "7.01",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:5bd72a32d458d430f6814ba579d0ff1ecdc626de701fed959cc7a5d0b9b9bbc8"
+  },
+  {
+   "accession": "0000100885-26-000292",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:45:33.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:c1f93c4300adab38b280b849a3a7b471ed0651f676c4c4c35e63257295d24147"
+  },
+  {
+   "accession": "0000100885-26-000291",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:45:26.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:998855e59573b058ce52f205f1d938d11e887e8a979391362aefeae369b249a5"
+  },
+  {
+   "accession": "0000100885-26-000290",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:45:18.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:b23bf324ba438a4738e4abf76133dee1f81ba87c90d34c3f2aa8e360805baeda"
+  },
+  {
+   "accession": "0000100885-26-000289",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:45:10.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:9271248959b37c90f7c1b53ccc1207372a996913320d59310583970b4379a70d"
+  },
+  {
+   "accession": "0000100885-26-000288",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:45:02.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:7eeac2e083cc1ab8f7f9e38a06735278ba8f3ae7faff54ca0b99f24b0be636c9"
+  },
+  {
+   "accession": "0000100885-26-000287",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:44:52.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:554ebc5025620f9e756089c812752068eb95dbba16176ddc02ac4ab5c00d7beb"
+  },
+  {
+   "accession": "0000100885-26-000286",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:44:42.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:254a9ebd00af0c330c4ae3f387d1f52eeaedd1411aebe855bb7bbf5007d687c6"
+  },
+  {
+   "accession": "0000100885-26-000285",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:44:33.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:418c99e6fcfa4447b1ebfb8567d260f7b266686e239863d05b5f6864276fab77"
+  },
+  {
+   "accession": "0000100885-26-000284",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:44:24.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:61a5ec3f6615156872f57788d0aaa3d73933d8af334d4c27bda6bafe31821fd9"
+  },
+  {
+   "accession": "0000100885-26-000283",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-02T02:44:14.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:359c8092908762b37890cb51109df35c8c1ca28e39b46f885d68fe7113b7ed8e"
+  },
+  {
+   "accession": "0000100885-26-000272",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T22:11:34.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:4fd422b3e9edca5a1c9d0081686e11cc58818ba3514d27edc4502aa631753f6a"
+  },
+  {
+   "accession": "0000100885-26-000271",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T22:11:25.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:c139bcf60fca16ef6f1b678f96086ec88c08702c42eac51210404bb5a2ab4bb4"
+  },
+  {
+   "accession": "0000100885-26-000270",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T22:11:16.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:b3eb8c7efea4ac44a9c4a034da02b130ccbe27390d1beb6d2d94b6e764b7e9bd"
+  },
+  {
+   "accession": "0000100885-26-000269",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T22:11:07.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:5cd81bfe82cd20283cad80db903e6998ca45fd65e137ebda7923b7492811b835"
+  },
+  {
+   "accession": "0000100885-26-000268",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T22:10:58.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:08331882dc051ef3b98bf4737a482622847ecdc8f51098db10b3ef057fe76a31"
+  },
+  {
+   "accession": "0000100885-26-000262",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-05T02:53:11.000Z",
+   "filing_date": "2026-09-04",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:59eed311fb2a68bad213e6eb505570785a1e485f4b05d1081318aba734967e48"
+  },
+  {
+   "accession": "0000100885-26-000260",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T23:30:11.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:5c1c0506168e6801288aa6ed203871c51d52bc00f780c536743f030ed051c06a"
+  },
+  {
+   "accession": "0000100885-26-000259",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T23:30:04.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:1ac34ad7601f62dc3a0da31bc430211a6c11ca6a7f21e9c576b103448488600c"
+  },
+  {
+   "accession": "0000100885-26-000258",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T23:29:54.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:dee186f070f9a374aa17716a0fa9a49749ac33ba7659b9e07b6829e00660c155"
+  },
+  {
+   "accession": "0000100885-26-000257",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T23:29:46.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:d800ef0a1be300fed5fc878854f4f4eb9ea090418d12d4d7f9869f9b8eb0d784"
+  },
+  {
+   "accession": "0000100885-26-000256",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T23:29:39.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:e80007072c0d08f6636e595aa58278070a2d6a0c945f4332a05a54700e082e0a"
+  },
+  {
+   "accession": "0000100885-26-000250",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-07-23T23:48:16.000Z",
+   "filing_date": "2026-07-23",
+   "primary_document": "unp-20260630.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:d85ee76ecf6bc3af0929408046f188d63abe5acd795e995ba3ad2f2ea797e57b"
+  },
+  {
+   "accession": "0000100885-26-000249",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-07-23T15:46:39.000Z",
+   "filing_date": "2026-07-23",
+   "primary_document": "unp-20260723.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:ce96aa6d488b2a9ff8fee02696ff1fd9e54ec248d98db7da31fd7e875a67f123"
+  },
+  {
+   "accession": "0000100885-26-000239",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-14T00:27:03.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:699343fbc233bd3886ec20a56a8bfa5650e4c3bfb71de0a265112bd7b6e8ff7a"
+  },
+  {
+   "accession": "0000100885-26-000238",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-14T00:26:55.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:9c1fe29c568185b4e272eabb7fd95cf8957d3fb8433ee0880650b1002be95990"
+  },
+  {
+   "accession": "0000100885-26-000237",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-14T00:26:48.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:bdd6160521d5d265c7168c840e9f78e93ac78d0fd5c915b9a7a41e8437fa9304"
+  },
+  {
+   "accession": "0000100885-26-000236",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-14T00:26:41.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:1fd5c0d49971e00634c8b4da0c34991d381c3d752e0d64cfb4f6f48ce5603a68"
+  },
+  {
+   "accession": "0000100885-26-000235",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-14T00:26:32.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:a10422c6383104f0749c1d798b53d89c9f8b22ee520652ce65990c09ac2b6671"
+  },
+  {
+   "accession": "0000100885-26-000229",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T20:41:17.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:c5d4cd3fcee208ca1b189b992c9ef9f03ff7a3c7498f4fd77e5072a9374c2025"
+  },
+  {
+   "accession": "0000100885-26-000228",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T20:41:07.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:14955bedfaedbaecc6d6b30b04864af3de76263c2093f176eaa646d72f779aa8"
+  },
+  {
+   "accession": "0000100885-26-000227",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T20:40:57.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:de88453c8ae67f741f721b9113b71a9d2d67eb5c95a46107c6714e4876d82fa1"
+  },
+  {
+   "accession": "0000100885-26-000226",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T20:40:47.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:11f9e3da0d39f8827057e898f09510ae8157291f79ef325a4b366224c220eb15"
+  },
+  {
+   "accession": "0000100885-26-000225",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T20:40:40.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:5135800f3f99a8a24317fd5048e83f58504c6a934d1536b31bcb824f4828c6bf"
+  },
+  {
+   "accession": "0000100885-26-000224",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T20:40:31.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:bc13c03a9a04a555e10a1c2e69b7b0d0f133609a974eaad58e6fc4def035aca0"
+  }
+ ],
+ "rights": "SEC public filing metadata; no document body captured.",
+ "raw_metadata_hash": "sha256:b02241338c8aa873eab4f022d80c7c7dbcaaf9e524273003c16af92b89ab58f4"
+}

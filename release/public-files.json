@@ -706,5 +706,41 @@
   {
     "source": "release/assets/convictiondesk-product-dark.png",
     "path": "docs/assets/convictiondesk-product-dark.png"
+  },
+  {
+    "source": "src/market_agent/sec_filings.py",
+    "path": "src/market_agent/sec_filings.py"
+  },
+  {
+    "source": "tests/test_ivs_sec_provider.py",
+    "path": "tests/test_ivs_sec_provider.py"
+  },
+  {
+    "source": "tests/test_sec_filings.py",
+    "path": "tests/test_sec_filings.py"
+  },
+  {
+    "source": "evals/fixtures/ivs_sec/UNP.json",
+    "path": "evals/fixtures/ivs_sec/UNP.json"
+  },
+  {
+    "source": "evals/fixtures/ivs_sec/KR.json",
+    "path": "evals/fixtures/ivs_sec/KR.json"
+  },
+  {
+    "source": "evals/fixtures/ivs_sec/DOW.json",
+    "path": "evals/fixtures/ivs_sec/DOW.json"
+  },
+  {
+    "source": "scripts/sec_evidence_demo.py",
+    "path": "scripts/sec_evidence_demo.py"
+  },
+  {
+    "source": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
+    "path": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json"
+  },
+  {
+    "source": "src/market_agent/tool_deadline.py",
+    "path": "src/market_agent/tool_deadline.py"
   }
 ]

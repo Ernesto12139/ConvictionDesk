@@ -1,0 +1,446 @@
+{
+ "schema_version": "ivs-sec-capture-v1",
+ "captured_at": "2026-10-24T15:18:55.851342+00:00",
+ "source": "SEC_EDGAR_SUBMISSIONS",
+ "source_uri": "https://data.sec.gov/submissions/CIK0000056873.json",
+ "ticker_map_uri": "https://www.sec.gov/files/company_tickers.json",
+ "issuer": {
+  "symbol": "KR",
+  "cik": "0000056873",
+  "name": "KROGER CO",
+  "tickers": [
+   "KR"
+  ]
+ },
+ "mapping": {
+  "source_uri": "https://www.sec.gov/files/company_tickers.json",
+  "observed_at": "2026-10-24T15:18:55.851363+00:00"
+ },
+ "row_count_total": 1004,
+ "rows": [
+  {
+   "accession": "0001104659-26-117103",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-10-20T14:56:00.000Z",
+   "filing_date": "2026-10-20",
+   "primary_document": "tm2627753d1_8k.htm",
+   "items": [
+    "7.01",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:f6c34deadab3faf9444289653105f78fd155bd4e292b44211933f1596e33b3c1"
+  },
+  {
+   "accession": "0001104659-26-113599",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-10-05T18:55:07.000Z",
+   "filing_date": "2026-10-05",
+   "primary_document": "tm2626754d1_8k.htm",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:31b5244588f73aea716c2eac8ef55abf1f89ab8bbc3f849f9f91dfddbbd9dd88"
+  },
+  {
+   "accession": "0001104659-26-111923",
+   "form": "424B5",
+   "base_form": "424B5",
+   "acceptance": "2026-09-30T00:06:14.000Z",
+   "filing_date": "2026-09-29",
+   "primary_document": "tm2625941-2_424b5.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:0f7bf96cdfe8e936302ba56b3f48d96b0d8e600cfc59e78d0188ca6ebee4fa8e"
+  },
+  {
+   "accession": "0001104659-26-111397",
+   "form": "FWP",
+   "base_form": "FWP",
+   "acceptance": "2026-09-29T00:42:20.000Z",
+   "filing_date": "2026-09-28",
+   "primary_document": "tm2625941d3_fwp.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:7fec2529b900947bad1bb6e127796cc45a5a17b2d774dc006e21105a4de27959"
+  },
+  {
+   "accession": "0002143852-26-000005",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-28T18:22:55.000Z",
+   "filing_date": "2026-09-28",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:0e25a018576590db9dd81f50ad3acffe7da089a5617e0fa5f3bebf4d0c5a17b7"
+  },
+  {
+   "accession": "0002074644-26-000008",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-28T18:20:58.000Z",
+   "filing_date": "2026-09-28",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:b7ede8bcc7a336cd5038e810d97a34eb1eff36add1d78968afe2b265a396c748"
+  },
+  {
+   "accession": "0002079332-26-000004",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-28T18:18:09.000Z",
+   "filing_date": "2026-09-28",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:a5bdcb6467c6cfd0ec4db866449aee75f1d9753c5873fb15d8c93f64747fe473"
+  },
+  {
+   "accession": "0001104659-26-111205",
+   "form": "424B5",
+   "base_form": "424B5",
+   "acceptance": "2026-09-28T16:52:28.000Z",
+   "filing_date": "2026-09-28",
+   "primary_document": "tm2625941-1_424b5.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:99dec6462caedd4f10bf742572e71dad64276266633662d5af557141ff4b8074"
+  },
+  {
+   "accession": "0001676766-26-000006",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-21T21:14:47.000Z",
+   "filing_date": "2026-09-21",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:b273f1c0fd6640f3575f37709b2d1b34fa452f02570e5e39e513e6d4f64cd61b"
+  },
+  {
+   "accession": "0001104659-26-108926",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-09-19T00:02:58.000Z",
+   "filing_date": "2026-09-18",
+   "primary_document": "kr-20260815x10q.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:adbd9856905392c5e71c98713ba3bb28cd1be37235305fad093831dca500534e"
+  },
+  {
+   "accession": "0002154844-26-000004",
+   "form": "3",
+   "base_form": "3",
+   "acceptance": "2026-09-18T21:38:07.000Z",
+   "filing_date": "2026-09-18",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:de35cc846c832b6aae152ddc394c13c0cb1343d21b66c1efac6cd67d2ee83f28"
+  },
+  {
+   "accession": "0002151717-26-000002",
+   "form": "3",
+   "base_form": "3",
+   "acceptance": "2026-09-18T21:33:10.000Z",
+   "filing_date": "2026-09-18",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:7ef6f24b06dcaa031e66500496a35db747853e0b927f09d78cfad7aa31065094"
+  },
+  {
+   "accession": "0001104659-26-106941",
+   "form": "8-K/A",
+   "base_form": "8-K",
+   "acceptance": "2026-09-11T18:05:48.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "tm2625060d2_8ka.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:745220c03e978b6b07f3ab3fdf2e8c88bf58fb23fa1684584600d8497e09cfc5"
+  },
+  {
+   "accession": "0001104659-26-106890",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-09-11T14:59:48.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "tm2625060d1_8k.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:8bd8b20734fdce0be2846c8cc00bf800c79a12584d939ea0202e26f2175dda05"
+  },
+  {
+   "accession": "0001104659-26-104763",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-09-03T00:48:38.000Z",
+   "filing_date": "2026-09-02",
+   "primary_document": "tm2624577d1_8k.htm",
+   "items": [
+    "5.02",
+    "7.01",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:6e8a63d52398bf3d9a8f17a2daa5566dae629edab1f5205d9bc95deb7c38fe7e"
+  },
+  {
+   "accession": "0001193125-26-379748",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-02T20:35:40.000Z",
+   "filing_date": "2026-09-02",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:e52efc529dfa3889724099911021c26ff3e4ee167c313df09611637ba20575e6"
+  },
+  {
+   "accession": "0001193125-26-379738",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-02T20:33:34.000Z",
+   "filing_date": "2026-09-02",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:34a71b66902168c762b21b44f7c66260d35f1d786dcbbb8a45947c5ba9592f16"
+  },
+  {
+   "accession": "0001193125-26-379732",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-02T20:30:53.000Z",
+   "filing_date": "2026-09-02",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:690c68f43edd000ab99cebcfb3f12a382de61606a640540172a196af6ea0f834"
+  },
+  {
+   "accession": "0001193125-26-379721",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-02T20:27:05.000Z",
+   "filing_date": "2026-09-02",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:19bf0fd743ea01d8f0662583db3178c673f5a5a150773ec615c09d4d07d04fe0"
+  },
+  {
+   "accession": "0001586651-26-000002",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T21:02:36.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:d5a0fa81a1c64bba3d637d80f3af30ef0fea58624d755349697e038508508928"
+  },
+  {
+   "accession": "0001402419-26-000007",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T21:00:33.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:a260586d32f6035c3bf684e5303a0286098eb1244a4172381794709ebe71485b"
+  },
+  {
+   "accession": "0001691983-26-000003",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T20:58:04.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:09775fff32106360a068d10e381763fa4b648e0d08676f46e4578f769942a923"
+  },
+  {
+   "accession": "0001180656-26-000008",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T20:51:53.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:1bc20335a4ca9683609ee9d40ae53f46fffd6f0382a6bf2107d04748659e0181"
+  },
+  {
+   "accession": "0001180671-26-000002",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T20:49:06.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:1e9a009ec319dbf734b9551333b7e5de4ad6589d80ac55dc9fe4570cd8623426"
+  },
+  {
+   "accession": "0001660111-26-000006",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T20:40:36.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:b1de84ba2fd314d71a73a93a951531e6bbe69a28024bc6c455713923c4ef2ad8"
+  },
+  {
+   "accession": "0001392133-26-000008",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T20:33:13.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:a44cad37f27390ce8479ca8859898883d30655b4cd465ce311d1c064fcdc18fe"
+  },
+  {
+   "accession": "0001842503-26-000002",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T20:27:55.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:dcdfe2d1ffdea4f3b549b27f8d4d383a20a50fe9246fbddbb8bad51549a9b998"
+  },
+  {
+   "accession": "0001626845-26-000007",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T20:24:07.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:f375330ac7f24f438b419093c58548003318dda3b6948d2fb9f6468e80d09c1c"
+  },
+  {
+   "accession": "0001703359-26-000006",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-16T20:21:19.000Z",
+   "filing_date": "2026-07-16",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:5b99dd4af93f82f2fcc3e5d1d782655fb76340facc0f933f72698ece1103b90e"
+  },
+  {
+   "accession": "0001694418-26-000008",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-15T22:28:01.000Z",
+   "filing_date": "2026-07-15",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:2b65835c44f75cc42a474036c795ff2163cbab1677d476d66366c207f6790efe"
+  },
+  {
+   "accession": "0002074644-26-000006",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-14T18:56:51.000Z",
+   "filing_date": "2026-07-14",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:acf9ae555a37479eb1db3023727a13ba962da37fa52c23a47ca9e847f26abb25"
+  },
+  {
+   "accession": "0002014240-26-000006",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-14T18:54:41.000Z",
+   "filing_date": "2026-07-14",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:7fe36789fafe4dfe43d485413d716ec22fb398a0a89c0b15fbd805d9a3c83186"
+  },
+  {
+   "accession": "0002143852-26-000003",
+   "form": "3",
+   "base_form": "3",
+   "acceptance": "2026-07-09T00:36:28.000Z",
+   "filing_date": "2026-07-08",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:0350cfa7744fc8a753b96df99287090f8783d79d66d1d34e05c571f2d6083d68"
+  },
+  {
+   "accession": "0001104659-26-079552",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-07-01T15:09:12.000Z",
+   "filing_date": "2026-07-01",
+   "primary_document": "tm2619434d1_8k.htm",
+   "items": [
+    "8.01"
+   ],
+   "raw_metadata_hash": "sha256:401d96602715c1c3af7f14adf23364cdb05d0c72b1980f3094aa462dddade4d7"
+  },
+  {
+   "accession": "0001104659-26-079352",
+   "form": "S-8",
+   "base_form": "S-8",
+   "acceptance": "2026-07-01T00:38:49.000Z",
+   "filing_date": "2026-06-30",
+   "primary_document": "tm2619293d1_s8.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:713a15db1cf071648e04a875b4155a10be52a9b7663c6787ccdbcb11429b256d"
+  },
+  {
+   "accession": "0001104659-26-078682",
+   "form": "11-K",
+   "base_form": "11-K",
+   "acceptance": "2026-06-29T19:49:32.000Z",
+   "filing_date": "2026-06-29",
+   "primary_document": "kr-20251231x11k.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:c481f8fb801cff5c906e2e3a00dc9d72bd6811f0f64f54c5b4bf126941f2b63a"
+  },
+  {
+   "accession": "0001104659-26-078272",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-06-27T00:15:26.000Z",
+   "filing_date": "2026-06-26",
+   "primary_document": "tm2619103d1_8k.htm",
+   "items": [
+    "5.02",
+    "5.07",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:81b1cd4a8b0a4f9e761da93f0d5b57a33e517451359eca3897567aa3b6a40f48"
+  },
+  {
+   "accession": "0001104659-26-078236",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-06-27T00:02:43.000Z",
+   "filing_date": "2026-06-26",
+   "primary_document": "kr-20260523x10q.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:d9d444986c69307e70c4ba7f9ca2851bfad9f608f9e135fc70e1da4a26062a4d"
+  },
+  {
+   "accession": "0001104659-26-078196",
+   "form": "11-K",
+   "base_form": "11-K",
+   "acceptance": "2026-06-26T23:26:40.000Z",
+   "filing_date": "2026-06-26",
+   "primary_document": "kr-20251231x11k.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:b3e8e01ebc73476f3d3fc0a4c83e65a4908cde5e42d4ecc646238dcb5e8162ed"
+  },
+  {
+   "accession": "0001392133-26-000006",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-06-26T19:02:57.000Z",
+   "filing_date": "2026-06-26",
+   "primary_document": "xslF345X06/ownership.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:7211b5ccc468c54bf218cef805b05a9550255319ef0efbbcff468b2493ff2f0d"
+  }
+ ],
+ "rights": "SEC public filing metadata; no document body captured.",
+ "raw_metadata_hash": "sha256:39d69de37022d5aee6dfae422541c04a3143770ff1094266f9386d01fb10c967"
+}

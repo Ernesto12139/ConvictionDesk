@@ -1,0 +1,444 @@
+{
+ "schema_version": "ivs-sec-capture-v1",
+ "captured_at": "2026-10-24T15:18:48.992057+00:00",
+ "source": "SEC_EDGAR_SUBMISSIONS",
+ "source_uri": "https://data.sec.gov/submissions/CIK0001751788.json",
+ "ticker_map_uri": "https://www.sec.gov/files/company_tickers.json",
+ "issuer": {
+  "symbol": "DOW",
+  "cik": "0001751788",
+  "name": "DOW INC.",
+  "tickers": [
+   "DOW"
+  ]
+ },
+ "mapping": {
+  "source_uri": "https://www.sec.gov/files/company_tickers.json",
+  "observed_at": "2026-10-24T15:18:48.992079+00:00"
+ },
+ "row_count_total": 665,
+ "rows": [
+  {
+   "accession": "0001751788-26-000162",
+   "form": "3",
+   "base_form": "3",
+   "acceptance": "2026-10-24T00:30:36.000Z",
+   "filing_date": "2026-10-23",
+   "primary_document": "xslF345X06/wk-form3_1792787433.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:ebd37196f55009e4c2640a2549e253cfc97e03dbea139e39318a40172cb96198"
+  },
+  {
+   "accession": "0001751788-26-000160",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-10-23T15:44:54.000Z",
+   "filing_date": "2026-10-23",
+   "primary_document": "dow-20260930.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:a338b31ebe74ce9319381f03d990cacaf13cd0f5cc877969adb6959ce87da753"
+  },
+  {
+   "accession": "0001751788-26-000155",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-10-22T14:57:56.000Z",
+   "filing_date": "2026-10-22",
+   "primary_document": "dow-20261022.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:e84c0a8003f1b2e076cb4af2b2fc3e6b216007f0f0ecdadb8f78cc9047e853b4"
+  },
+  {
+   "accession": "0001959173-26-006852",
+   "form": "144",
+   "base_form": "144",
+   "acceptance": "2026-09-10T21:45:12.000Z",
+   "filing_date": "2026-09-10",
+   "primary_document": "xsl144X01/primary_doc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:c7d6463df469a8c79e9b53f8faae3690beb1bbe0b455ec3cb59a6ada53f837f5"
+  },
+  {
+   "accession": "0001751788-26-000152",
+   "form": "3",
+   "base_form": "3",
+   "acceptance": "2026-08-15T00:18:35.000Z",
+   "filing_date": "2026-08-14",
+   "primary_document": "xslF345X06/wk-form3_1786738712.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:f9187832ec20c937db39876b80c5ad4dbe7c74760855f84e415db59c2015d2e8"
+  },
+  {
+   "accession": "0000093751-26-000452",
+   "form": "SCHEDULE 13G",
+   "base_form": "SCHEDULE 13G",
+   "acceptance": "2026-08-07T17:25:04.000Z",
+   "filing_date": "2026-08-07",
+   "primary_document": "xslSCHEDULE_13G_X02/primary_doc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:f480d3ea1d687316ca067efaf4a6bc1422387af4f0f1c84586a0986fe295f048"
+  },
+  {
+   "accession": "0001751788-26-000147",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-07-24T15:41:52.000Z",
+   "filing_date": "2026-07-24",
+   "primary_document": "dow-20260630.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:abf801f8e6eee1cd57b00d6fe088ddd5fb1fde903e23010e866b83aa72dce53a"
+  },
+  {
+   "accession": "0001751788-26-000144",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-07-23T14:59:27.000Z",
+   "filing_date": "2026-07-23",
+   "primary_document": "dow-20260723.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:5cd00b1d40a8cf8148149dd07016a6f1d0b94401ca7ccc6f60b4f8be913a2953"
+  },
+  {
+   "accession": "0001193125-26-300937",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-07-11T00:19:44.000Z",
+   "filing_date": "2026-07-10",
+   "primary_document": "d166478d8k.htm",
+   "items": [
+    "8.01",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:1aeed9e4dd37040119726917a254d3792097634c5326008876c8a730d97db976"
+  },
+  {
+   "accession": "0001193125-26-300936",
+   "form": "424B5",
+   "base_form": "424B5",
+   "acceptance": "2026-07-11T00:18:30.000Z",
+   "filing_date": "2026-07-10",
+   "primary_document": "d154928d424b5.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:15835f940f9307c8bdab9e9475ba273f587d3f726210320ff067651d685812e0"
+  },
+  {
+   "accession": "0001751788-26-000141",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-07T00:17:59.000Z",
+   "filing_date": "2026-07-06",
+   "primary_document": "xslF345X06/wk-form4_1783369076.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:3c931d23bd2798a5f22170f36a86c2b6760c0a3855824e326eb928156856d896"
+  },
+  {
+   "accession": "0001193125-26-296205",
+   "form": "8-K/A",
+   "base_form": "8-K",
+   "acceptance": "2026-07-07T00:15:19.000Z",
+   "filing_date": "2026-07-06",
+   "primary_document": "d26391d8ka.htm",
+   "items": [
+    "5.02"
+   ],
+   "raw_metadata_hash": "sha256:56e271fc4e709d6621ba9f357a2187424a5a059d36172bbd09bbf399184defb1"
+  },
+  {
+   "accession": "0001751788-26-000138",
+   "form": "11-K",
+   "base_form": "11-K",
+   "acceptance": "2026-06-16T15:08:23.000Z",
+   "filing_date": "2026-06-16",
+   "primary_document": "dow-20251231.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:678400328eff6b7aa93be7d021fde5aafb74f795b2e17bd303d8bf98bd74258a"
+  },
+  {
+   "accession": "0001193125-26-232692",
+   "form": "SD",
+   "base_form": "SD",
+   "acceptance": "2026-05-21T00:30:02.000Z",
+   "filing_date": "2026-05-20",
+   "primary_document": "d100441dsd.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:0e5cd5ee418bf193544241ae9b6530aa58e9130e6e9c469864fc95c9230511f6"
+  },
+  {
+   "accession": "0001490029-26-000003",
+   "form": "4/A",
+   "base_form": "4",
+   "acceptance": "2026-05-02T00:14:06.000Z",
+   "filing_date": "2026-05-01",
+   "primary_document": "xslF345X06/wk-form4a_1777666443.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:95c98c4089a29c257f70d30918f7bd6672ae510b33eb5f953ebe6506714f548c"
+  },
+  {
+   "accession": "0002100119-26-000391",
+   "form": "SCHEDULE 13G",
+   "base_form": "SCHEDULE 13G",
+   "acceptance": "2026-04-30T02:11:17.000Z",
+   "filing_date": "2026-04-29",
+   "primary_document": "xslSCHEDULE_13G_X02/primary_doc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:db197d9c857210b8fcebeac65babc5d4cd6216a6258b218e641e88a3cde35a83"
+  },
+  {
+   "accession": "0001193125-26-177296",
+   "form": "S-8",
+   "base_form": "S-8",
+   "acceptance": "2026-04-25T00:15:32.000Z",
+   "filing_date": "2026-04-24",
+   "primary_document": "d58473ds8.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:e81de57fb6b47d69ee7309b0c082e5fa962b7b50b872396a57b19acd70801793"
+  },
+  {
+   "accession": "0001751788-26-000134",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-04-24T15:30:32.000Z",
+   "filing_date": "2026-04-24",
+   "primary_document": "dow-20260331.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:c22d089869f7fccd28fd28fe0f6947e515fe93652553f70b84d63270c8f8d94d"
+  },
+  {
+   "accession": "0001751788-26-000131",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-04-23T14:58:21.000Z",
+   "filing_date": "2026-04-23",
+   "primary_document": "dow-20260423.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:24a8384e36df39f1217b088c70bbf9635cfcff8c294f8b5abaf2c685ff5b0a63"
+  },
+  {
+   "accession": "0001193125-26-153769",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-04-14T14:35:07.000Z",
+   "filing_date": "2026-04-14",
+   "primary_document": "d103960d8k.htm",
+   "items": [
+    "5.02",
+    "5.07",
+    "7.01",
+    "8.01",
+    "9.01"
+   ],
+   "raw_metadata_hash": "sha256:3361f961bc3e82744d86967f0748cbbc10c3e513830a120f9287bd97debbadb4"
+  },
+  {
+   "accession": "0001751788-26-000128",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:58.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114235.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:369f8d329eb2dd2d47d98f526e60b3fd1ef112255a626f45a57cd956eabdef43"
+  },
+  {
+   "accession": "0001751788-26-000127",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:51.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114228.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:700f5eb6691a64483f61608ffc1a154e67bcdeb15aee0d0c6ef3fdcf4136e6c3"
+  },
+  {
+   "accession": "0001751788-26-000126",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:44.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114220.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:49ea34b4d34a186596bec60a442d410bd9063811d86196027ad78176d52175ea"
+  },
+  {
+   "accession": "0001751788-26-000125",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:36.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114214.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:e0cb38073f51d216896c4094e49f133027478d0d3f37f1ddd8b1102f8d82d4d5"
+  },
+  {
+   "accession": "0001751788-26-000124",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:28.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114206.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:a175cebc2cef19fb63c785cddc31a74b7372a2d4583cbb2a5aa320d9642118c2"
+  },
+  {
+   "accession": "0001751788-26-000123",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:22.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114199.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:e84a7d8d0ae03a505141b9b4757a26fdffcd6bd263e70666d6177a339879afde"
+  },
+  {
+   "accession": "0001751788-26-000122",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:16.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114193.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:cffe0192e3a08bc21925225407a46f2014c43063b20679039e3fb963fa2bbbfb"
+  },
+  {
+   "accession": "0001751788-26-000121",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:10.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114187.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:5a835a902dff5a75a708e031d765839f2537f38bbe18a0a22d4a761ad2e945b8"
+  },
+  {
+   "accession": "0001751788-26-000120",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:03:03.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114181.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:666423ae7c4fa196b5ebff7b735740e50da993c45b8ca3b3a4d310dbde86c91f"
+  },
+  {
+   "accession": "0001751788-26-000119",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:02:57.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114174.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:9c6800bb66692e8d4a967af127cef356413a805eb39e26d5eb920c65f475ff10"
+  },
+  {
+   "accession": "0001751788-26-000118",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-04-14T01:02:48.000Z",
+   "filing_date": "2026-04-13",
+   "primary_document": "xslF345X06/wk-form4_1776114166.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:8599d29446bf3f6cd01404c3597bad4628349229abd9ff7de1fd35453190a265"
+  },
+  {
+   "accession": "0000102909-26-001151",
+   "form": "SCHEDULE 13G/A",
+   "base_form": "SCHEDULE 13G",
+   "acceptance": "2026-03-27T02:04:49.000Z",
+   "filing_date": "2026-03-26",
+   "primary_document": "xslSCHEDULE_13G_X02/primary_doc.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:be4dd873beeb7604e9d8d33fe928b213c84c0849e9cb32c0ece661cde43a37e5"
+  },
+  {
+   "accession": "0001193125-26-114037",
+   "form": "DEFA14A",
+   "base_form": "DEFA14A",
+   "acceptance": "2026-03-19T00:20:34.000Z",
+   "filing_date": "2026-03-18",
+   "primary_document": "dow_2026_proxy_-_supplem.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:61f5d04aa8ea0c99296ecf78b254c5dea9445b343fbc53aa14aad334fc7a360a"
+  },
+  {
+   "accession": "0001193125-26-110874",
+   "form": "DEFA14A",
+   "base_form": "DEFA14A",
+   "acceptance": "2026-03-18T00:20:25.000Z",
+   "filing_date": "2026-03-17",
+   "primary_document": "dow_2026_proxy_-_reminde.htm",
+   "items": [],
+   "raw_metadata_hash": "sha256:17ac9db4c2c65c2c1e928b087cde87f223bf224617701dc53968825529cf7775"
+  },
+  {
+   "accession": "0001751788-26-000095",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-03-03T03:17:03.000Z",
+   "filing_date": "2026-03-02",
+   "primary_document": "xslF345X05/wk-form4_1772489820.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:c440526a2b2527cc177c17ca55a88e1a414d27c91d6efc9645a753d42c75988e"
+  },
+  {
+   "accession": "0001751788-26-000094",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-03-03T03:16:53.000Z",
+   "filing_date": "2026-03-02",
+   "primary_document": "xslF345X05/wk-form4_1772489810.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:1e3f0ba7ca96a022682a239f88ca751d7a3a44ee9505cb3fc53ef125b6e9fd4f"
+  },
+  {
+   "accession": "0001751788-26-000093",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-03-03T03:16:41.000Z",
+   "filing_date": "2026-03-02",
+   "primary_document": "xslF345X05/wk-form4_1772489798.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:872c7a018a5826a0f4a8b08e556e007bee5767b54c795d590f0f802b7cd31d56"
+  },
+  {
+   "accession": "0001751788-26-000092",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-03-03T03:16:29.000Z",
+   "filing_date": "2026-03-02",
+   "primary_document": "xslF345X05/wk-form4_1772489786.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:da0e82e16c73ca4459622e8aefb44cb3471155aa296733f38d960c74d80e6952"
+  },
+  {
+   "accession": "0001751788-26-000091",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-03-03T03:16:17.000Z",
+   "filing_date": "2026-03-02",
+   "primary_document": "xslF345X05/wk-form4_1772489773.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:213494d7e39670e11a609e956f0211e25804adff1c402b249cb9b765680445b8"
+  },
+  {
+   "accession": "0001751788-26-000090",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-03-03T03:16:10.000Z",
+   "filing_date": "2026-03-02",
+   "primary_document": "xslF345X05/wk-form4_1772489767.xml",
+   "items": [],
+   "raw_metadata_hash": "sha256:d8d9236b20c1c6a932a7bc617838de9ed10ca9224faae01a9c2b979ea83c486d"
+  }
+ ],
+ "rights": "SEC public filing metadata; no document body captured.",
+ "raw_metadata_hash": "sha256:0740d85c24f79f01b1bf3393c2e01a012a751698d1c74f01e62367c0408c46fb"
+}

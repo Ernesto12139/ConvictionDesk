@@ -1,0 +1,64 @@
+{
+  "schema_version": "public-sec-increment-v1",
+  "upstream_source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946",
+  "public_parent": "8ce23e18ec4d876c87623a4d07e5850f3f5dda33",
+  "export_method": "explicit regular blobs; no private Git history",
+  "privacy_scan": "PASS",
+  "scope": "SEC_METADATA_PROJECTION_ONLY_NOT_PRIVATE_UI",
+  "files": [
+    {
+      "source": "src/market_agent/sec.py",
+      "path": "src/market_agent/sec.py",
+      "git_blob": "0986897547dc0829ea74b527e1453a2915f0b546",
+      "sha256": "fcc19b7666873304bf456650598ba3379d729cc7d337ff7c8ec0bdfc11e6d786"
+    },
+    {
+      "source": "src/market_agent/sec_filings.py",
+      "path": "src/market_agent/sec_filings.py",
+      "git_blob": "ee9cf99bc34a1d6f68bc1ade1c2b1dd1e9d449a0",
+      "sha256": "a334dbc1551d531bb120e8b7a981cd7f0a004bb305b3616bbe4728d9cf4023d4"
+    },
+    {
+      "source": "tests/test_ivs_sec_provider.py",
+      "path": "tests/test_ivs_sec_provider.py",
+      "git_blob": "9bc6ac053ac458337c6237b38d367a7bcc041017",
+      "sha256": "7595d757a2612cde557b1b82e755b8abea2c7a984a7239b31dffa77e5c3cfb9e"
+    },
+    {
+      "source": "tests/test_sec_filings.py",
+      "path": "tests/test_sec_filings.py",
+      "git_blob": "ad1210746fad618cb72476f54fc3eda87ede8828",
+      "sha256": "686b42bb01a50d210ea3469e9b9801746bc8a18bd6ac382c363016396c553c2a"
+    },
+    {
+      "source": "evals/fixtures/ivs_sec/UNP.json",
+      "path": "evals/fixtures/ivs_sec/UNP.json",
+      "git_blob": "872f90d73bce8ce29bd6875e4310cc9a1725dc64",
+      "sha256": "8c1ffa7744c1287b27c7170b204dbb806615c89b27626efa5d40c26487fcff7b"
+    },
+    {
+      "source": "evals/fixtures/ivs_sec/KR.json",
+      "path": "evals/fixtures/ivs_sec/KR.json",
+      "git_blob": "70f500d0c88ba6db359b1820f5b1cbb706879b0b",
+      "sha256": "58fbab5e54fd55523faacb253390909fe00975c9b330556b316131cab8820284"
+    },
+    {
+      "source": "evals/fixtures/ivs_sec/DOW.json",
+      "path": "evals/fixtures/ivs_sec/DOW.json",
+      "git_blob": "bd3d1009288db198104532a2bd00e7e7ab4fb02d",
+      "sha256": "5a3ba3e7833872ea3a50ae3b5bf90e854749b9d69ffe9ce1a69f56b09b7149d3"
+    },
+    {
+      "path": "scripts/sec_evidence_demo.py",
+      "source": "public-only reproducible adapter",
+      "sha256": "bb7bbb8ad0c8f9e38e0f8059fb6f78f2ed346258c50c95057eb32ddacb6a38b0"
+    },
+    {
+      "source": "src/market_agent/tool_deadline.py",
+      "path": "src/market_agent/tool_deadline.py",
+      "git_blob": "3f3457f1d963d7c99bb7729812a6eb4969f7b7ea",
+      "sha256": "14676a46395b8e69b96705e93fbf9f8cba60a185fe53406dd19d5907d2a4d0ce",
+      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+    }
+  ]
+}
