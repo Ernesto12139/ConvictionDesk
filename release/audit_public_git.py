@@ -1,5 +1,6 @@
 """Fail closed on non-Owner public authors, trailers, ancestry, refs or release creator."""
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -18,6 +19,40 @@ def git(root, *args):
     return subprocess.check_output(['git', '-c', 'core.fsmonitor=false', '-C', str(root), *args]).decode('utf-8').strip()
 
 
+def pinned_signed_service_merge(root, sha, identities):
+    """Only an exact source-bound service-signed object has an identity witness.
+
+    This is not a GitHub-name exception. Unlisted commits, different authors,
+    parents, trees or signatures remain rejected. Witness changes require review
+    like changes to the auditor itself; CI never fetches keys or authorizations.
+    """
+    witness_path = Path(__file__).with_name('verified_service_merges.json')
+    if not witness_path.is_file():
+        return False
+    record = json.loads(witness_path.read_text(encoding='utf-8')).get(sha)
+    if not record or record.get('verification_status') != 'GITHUB_API_VERIFIED':
+        return False
+    identity_digest=hashlib.sha256('\0'.join(identities).encode()).hexdigest()
+    if identity_digest != record['identities_sha256']:
+        return False
+    if git(root,'show','-s','--format=%T',sha) != record['tree']:
+        return False
+    if git(root,'show','-s','--format=%P',sha).split() != [record['parent']]:
+        return False
+    lines = git(root,'cat-file','-p',sha).splitlines()
+    signature=[]
+    for index,line in enumerate(lines):
+        if line.startswith('gpgsig '):
+            signature.append(line[len('gpgsig '):])
+            for following in lines[index+1:]:
+                if not following.startswith(' '):
+                    break
+                signature.append(following[1:])
+            break
+    digest=hashlib.sha256('\n'.join(signature).strip().encode()).hexdigest()
+    return bool(signature) and digest == record['signature_sha256']
+
+
 def audit(root, email, *, expected_root=None, release=None, forbidden_ancestors=(),
           release_tag=None, protected_tags=None):
     errors = []
@@ -25,10 +60,14 @@ def audit(root, email, *, expected_root=None, release=None, forbidden_ancestors=
     roots = git(root, 'rev-list', '--max-parents=0', '--all').splitlines()
     if len(roots) != 1 or expected_root and roots != [expected_root]:
         errors.append('expected exactly one new root commit')
+    witnessed_service_commits=[]
     for sha in commits:
         fields = git(root, 'show', '-s', '--format=%an%x00%ae%x00%cn%x00%ce%x00%B', sha).split('\x00')
         if fields[:4] != ['Ernesto12139', email, 'Ernesto12139', email]:
-            errors.append('author/committer identity: '+sha)
+            if fields[:2] == ['Ernesto12139', email] and pinned_signed_service_merge(root,sha,fields[:4]):
+                witnessed_service_commits.append(sha)
+            else:
+                errors.append('author/committer identity: '+sha)
         if FORBIDDEN_MESSAGE.search(fields[4]):
             errors.append('forbidden commit trailer/message: '+sha)
     if set(commits) & set(forbidden_ancestors):
@@ -70,6 +109,8 @@ def audit(root, email, *, expected_root=None, release=None, forbidden_ancestors=
     return {'status': 'FAIL' if errors else 'PASS', 'errors': errors, 'commits': len(commits),
             'root': roots[0] if len(roots)==1 else None, 'head': git(root, 'rev-parse', 'HEAD'),
             'author': 'Ernesto12139', 'committer': 'Ernesto12139', 'email': email,
+            'committer_policy':'OWNER_OR_EXACT_SOURCE_BOUND_SIGNED_SERVICE_OBJECT',
+            'witnessed_service_commits':witnessed_service_commits,
             'coauthor_audit': 'REJECT_ALL_COAUTHOR_TRAILERS', 'refs': refs,
             'audited_release_tag':expected_tag,'protected_tags':protected_tags or {},
             'release_creator_verified': release is not None and not errors}

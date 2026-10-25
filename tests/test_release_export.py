@@ -176,3 +176,41 @@ def test_unknown_branch_namespaces_and_shapes_still_reject(tmp_path):
         git(root, 'update-ref', ref, 'HEAD')
         assert 'unexpected branch/tag/ref' in auditor.audit(root, EMAIL)['errors'], ref
         git(root, 'update-ref', '-d', ref)
+
+
+SERVICE_SHA = 'c83cbecd8b0a5d0a622ac95fed1b13453ed24bfc'
+def published_service_identities():
+    return git(ROOT,'show','-s','--format=%an%x00%ae%x00%cn%x00%ce',SERVICE_SHA).split('\x00')
+
+
+def require_real_service_object():
+    result = subprocess.run(['git','cat-file','-e',SERVICE_SHA+'^{commit}'],cwd=ROOT,capture_output=True)
+    if result.returncode:
+        pytest.skip('Published signature object absent from an exported non-Git snapshot')
+
+
+def test_exact_published_signed_squash_has_a_source_bound_witness():
+    require_real_service_object()
+    assert auditor.pinned_signed_service_merge(ROOT,SERVICE_SHA,published_service_identities())
+
+
+@pytest.mark.parametrize('field,value', [('tree','0'*40),('signature_sha256','0'*64)])
+def test_altered_witness_cannot_accept_the_published_object(tmp_path,monkeypatch,field,value):
+    require_real_service_object()
+    records=json.loads((ROOT/'release/verified_service_merges.json').read_text())
+    records[SERVICE_SHA][field]=value
+    (tmp_path/'verified_service_merges.json').write_text(json.dumps(records))
+    monkeypatch.setattr(auditor,'__file__',str(tmp_path/'audit_public_git.py'))
+    assert not auditor.pinned_signed_service_merge(ROOT,SERVICE_SHA,published_service_identities())
+
+
+def test_copying_github_committer_name_does_not_bypass_owner_identity(tmp_path):
+    require_real_service_object()
+    root,first=repo(tmp_path)
+    git(root,'-c','user.name=GitHub','-c','user.email='+published_service_identities()[3],'commit',
+        '--allow-empty','--author=Ernesto12139 <'+EMAIL+'>','-m','test: synthetic forged service identity')
+    forged=git(root,'rev-parse','HEAD')
+    assert forged != SERVICE_SHA
+    result=auditor.audit(root,EMAIL,expected_root=first)
+    assert 'author/committer identity: '+forged in result['errors']
+    assert result['witnessed_service_commits']==[]

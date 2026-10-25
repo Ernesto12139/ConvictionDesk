@@ -766,5 +766,9 @@
   {
     "source": "evals/fixtures/sec_acceptance_dst_anchors.json",
     "path": "evals/fixtures/sec_acceptance_dst_anchors.json"
+  },
+  {
+    "source": "release/verified_service_merges.json",
+    "path": "release/verified_service_merges.json"
   }
 ]

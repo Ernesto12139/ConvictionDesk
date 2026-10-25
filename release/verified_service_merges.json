@@ -1,0 +1,14 @@
+{
+  "c83cbecd8b0a5d0a622ac95fed1b13453ed24bfc": {
+    "verification_status": "GITHUB_API_VERIFIED",
+    "parent": "8ce23e18ec4d876c87623a4d07e5850f3f5dda33",
+    "tree": "816d04f30f487bc5c5237bbcd1cd01c2c8c115d9",
+    "signature_sha256": "0052f1704b86b72f34477d54f985b02c255bd1fc4cf0e1c6d8061af70b65bc4b",
+    "verification_source": "https://api.github.com/repos/Ernesto12139/ConvictionDesk/git/commits/c83cbecd8b0a5d0a622ac95fed1b13453ed24bfc",
+    "reviewed_source_sha": "f6192aa712804e27f73154a07f5c3a43adbd713b",
+    "scope": "One immutable GitHub-signed Owner-authored squash; not a blanket service identity exemption",
+    "identities_sha256": "91a5cb7e65f66dcde1025d01cef2a415ab5e98bed64923184826a29c75cf46e7",
+    "owner_author": "Ernesto12139",
+    "service_committer": "GitHub"
+  }
+}
