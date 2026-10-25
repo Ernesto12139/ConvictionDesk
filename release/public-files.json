@@ -396,43 +396,43 @@
     "path": "tests/test_sec_earnings.py"
   },
   {
-    "source": "release/PUBLIC_README.md",
+    "source": "README.md",
     "path": "README.md"
   },
   {
-    "source": "release/PUBLIC_CI.yml",
+    "source": ".github/workflows/ci.yml",
     "path": ".github/workflows/ci.yml"
   },
   {
-    "source": "release/LICENSE",
+    "source": "LICENSE",
     "path": "LICENSE"
   },
   {
-    "source": "release/PUBLIC_GITIGNORE",
+    "source": ".gitignore",
     "path": ".gitignore"
   },
   {
-    "source": "release/assets/convictiondesk-architecture-dark.svg",
+    "source": "docs/assets/convictiondesk-architecture-dark.svg",
     "path": "docs/assets/convictiondesk-architecture-dark.svg"
   },
   {
-    "source": "release/assets/convictiondesk-architecture-light.svg",
+    "source": "docs/assets/convictiondesk-architecture-light.svg",
     "path": "docs/assets/convictiondesk-architecture-light.svg"
   },
   {
-    "source": "release/assets/convictiondesk-evidence-to-action-dark.svg",
+    "source": "docs/assets/convictiondesk-evidence-to-action-dark.svg",
     "path": "docs/assets/convictiondesk-evidence-to-action-dark.svg"
   },
   {
-    "source": "release/assets/convictiondesk-evidence-to-action-light.svg",
+    "source": "docs/assets/convictiondesk-evidence-to-action-light.svg",
     "path": "docs/assets/convictiondesk-evidence-to-action-light.svg"
   },
   {
-    "source": "release/assets/convictiondesk-fast-deep-dark.svg",
+    "source": "docs/assets/convictiondesk-fast-deep-dark.svg",
     "path": "docs/assets/convictiondesk-fast-deep-dark.svg"
   },
   {
-    "source": "release/assets/convictiondesk-fast-deep-light.svg",
+    "source": "docs/assets/convictiondesk-fast-deep-light.svg",
     "path": "docs/assets/convictiondesk-fast-deep-light.svg"
   },
   {
@@ -608,31 +608,31 @@
     "path": "scripts/build_technical_example.py"
   },
   {
-    "source": "release/assets/convictiondesk-decision-dark.png",
+    "source": "docs/assets/convictiondesk-decision-dark.png",
     "path": "docs/assets/convictiondesk-decision-dark.png"
   },
   {
-    "source": "release/assets/convictiondesk-decision-light.png",
+    "source": "docs/assets/convictiondesk-decision-light.png",
     "path": "docs/assets/convictiondesk-decision-light.png"
   },
   {
-    "source": "release/assets/convictiondesk-journey-dark.png",
+    "source": "docs/assets/convictiondesk-journey-dark.png",
     "path": "docs/assets/convictiondesk-journey-dark.png"
   },
   {
-    "source": "release/assets/convictiondesk-journey-light.png",
+    "source": "docs/assets/convictiondesk-journey-light.png",
     "path": "docs/assets/convictiondesk-journey-light.png"
   },
   {
-    "source": "release/assets/convictiondesk-mobile.png",
+    "source": "docs/assets/convictiondesk-mobile.png",
     "path": "docs/assets/convictiondesk-mobile.png"
   },
   {
-    "source": "release/assets/convictiondesk-records-dark.png",
+    "source": "docs/assets/convictiondesk-records-dark.png",
     "path": "docs/assets/convictiondesk-records-dark.png"
   },
   {
-    "source": "release/assets/convictiondesk-records-light.png",
+    "source": "docs/assets/convictiondesk-records-light.png",
     "path": "docs/assets/convictiondesk-records-light.png"
   },
   {
@@ -644,67 +644,67 @@
     "path": "evals/fixtures/attention_calibration/owner_ux_t1_retained_compatibility.json"
   },
   {
-    "source": "release/assets/convictiondesk-whatif-light.png",
+    "source": "docs/assets/convictiondesk-whatif-light.png",
     "path": "docs/assets/convictiondesk-whatif-light.png"
   },
   {
-    "source": "release/assets/convictiondesk-whatif-dark.png",
+    "source": "docs/assets/convictiondesk-whatif-dark.png",
     "path": "docs/assets/convictiondesk-whatif-dark.png"
   },
   {
-    "source": "release/public-docs/README.md",
+    "source": "docs/README.md",
     "path": "docs/README.md"
   },
   {
-    "source": "release/public-docs/getting-started.md",
+    "source": "docs/getting-started.md",
     "path": "docs/getting-started.md"
   },
   {
-    "source": "release/public-docs/architecture.md",
+    "source": "docs/architecture.md",
     "path": "docs/architecture.md"
   },
   {
-    "source": "release/public-docs/data-sources.md",
+    "source": "docs/data-sources.md",
     "path": "docs/data-sources.md"
   },
   {
-    "source": "release/public-docs/verification.md",
+    "source": "docs/verification.md",
     "path": "docs/verification.md"
   },
   {
-    "source": "release/public-docs/showcase.md",
+    "source": "docs/showcase.md",
     "path": "docs/showcase.md"
   },
   {
-    "source": "release/PUBLIC_CONTRIBUTING.md",
+    "source": "CONTRIBUTING.md",
     "path": "CONTRIBUTING.md"
   },
   {
-    "source": "release/PUBLIC_CHANGELOG.md",
+    "source": "CHANGELOG.md",
     "path": "CHANGELOG.md"
   },
   {
-    "source": "release/assets/convictiondesk-hero-light.svg",
+    "source": "docs/assets/convictiondesk-hero-light.svg",
     "path": "docs/assets/convictiondesk-hero-light.svg"
   },
   {
-    "source": "release/assets/convictiondesk-hero-dark.svg",
+    "source": "docs/assets/convictiondesk-hero-dark.svg",
     "path": "docs/assets/convictiondesk-hero-dark.svg"
   },
   {
-    "source": "release/assets/convictiondesk-loop-light.svg",
+    "source": "docs/assets/convictiondesk-loop-light.svg",
     "path": "docs/assets/convictiondesk-loop-light.svg"
   },
   {
-    "source": "release/assets/convictiondesk-loop-dark.svg",
+    "source": "docs/assets/convictiondesk-loop-dark.svg",
     "path": "docs/assets/convictiondesk-loop-dark.svg"
   },
   {
-    "source": "release/assets/convictiondesk-product-light.png",
+    "source": "docs/assets/convictiondesk-product-light.png",
     "path": "docs/assets/convictiondesk-product-light.png"
   },
   {
-    "source": "release/assets/convictiondesk-product-dark.png",
+    "source": "docs/assets/convictiondesk-product-dark.png",
     "path": "docs/assets/convictiondesk-product-dark.png"
   },
   {
