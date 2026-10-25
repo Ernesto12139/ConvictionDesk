@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "bb656b23d801b0c825a34ebe651531373c700a4f",
+  "upstream_source_sha": "a4d2f490e0452247c0a393374e0ae0b86fd4b8b0",
   "source_version": "0.9.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -66,8 +66,8 @@
     {
       "path": "release/audit_public_git.py",
       "source": "release/audit_public_git.py",
-      "git_blob": "813d54e723d4a3e92ae21ca27f1c42cd40c3aa11",
-      "sha256": "d60abf2e481fde06613e6c1e1ca0b9989f63f7b36642b122e1c89bb2d8ce0b22"
+      "git_blob": "f2f0b22ac3a4d4c77628f251cd6c90b1a67cdfea",
+      "sha256": "71573d9266445f5e57361c098370c1882b9fb647a21a323a9cec4630b100a3e2"
     },
     {
       "path": "release/export_snapshot.py",
@@ -78,8 +78,8 @@
     {
       "path": "release/public-files.json",
       "source": "release/public-files.json",
-      "git_blob": "49758db796a6ed5734cc51dccbebace9713619e4",
-      "sha256": "17cb4f74b056d66ade6b8192c9329f06de946119ce6212cc3718afa8f38f7fe0"
+      "git_blob": "5fd0b8d09adcc9d5561d73ec104fb034652bad12",
+      "sha256": "c97c839a5d20d88320bec9d32ac420437bdc88b28f3125f8f441d7a4d0fdc777"
     },
     {
       "path": "scripts/build_public_demo_dataset.py",
@@ -588,8 +588,8 @@
     {
       "path": "tests/test_release_export.py",
       "source": "tests/test_release_export.py",
-      "git_blob": "fef4e33c74a93cbb721afc9cb89e1c750c0d99ff",
-      "sha256": "f83633df7de353100f80eef984ff66fa1042fbcae881cee0d87821f0f65c3608"
+      "git_blob": "6eeb4aa003646e0d682a75f829fc6bbd4af63f54",
+      "sha256": "6fbc6f20cd344c7f34b13d79592b839b9b97700650c6fdc081afd9e79d2e5cdc"
     },
     {
       "path": "tests/test_sec_earnings.py",
@@ -1154,6 +1154,12 @@
       "source": "evals/fixtures/sec_acceptance_dst_anchors.json",
       "git_blob": "5ee043676d16b39b583cd15c9bf37644d62d65a4",
       "sha256": "dd42170dc93e8d47c63fac8885789256468a1a59cad531002392570664767cac"
+    },
+    {
+      "path": "release/verified_service_merges.json",
+      "source": "release/verified_service_merges.json",
+      "git_blob": "59407042e38e5775d869ab4631ec762503ff9e91",
+      "sha256": "0621f3880349cfa93f982e1975863ae8316d437e25ac196c7605385de0381688"
     }
   ],
   "privacy_scan": "PASS",
