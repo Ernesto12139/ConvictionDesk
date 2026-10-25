@@ -1,0 +1,881 @@
+{
+ "schema_version": "ivs-sec-capture-v1",
+ "captured_at": "2026-10-24T15:18:42.990912+00:00",
+ "source": "SEC_EDGAR_SUBMISSIONS",
+ "source_uri": "https://data.sec.gov/submissions/CIK0000100885.json",
+ "ticker_map_uri": "https://www.sec.gov/files/company_tickers.json",
+ "issuer": {
+  "symbol": "UNP",
+  "cik": "0000100885",
+  "name": "UNION PACIFIC CORP",
+  "tickers": [
+   "UNP"
+  ]
+ },
+ "mapping": {
+  "source_uri": "https://www.sec.gov/files/company_tickers.json",
+  "observed_at": "2026-10-24T15:18:42.990925+00:00"
+ },
+ "rights": "SEC public filing metadata; no document body captured.",
+ "raw_metadata_hash": "sha256:7a762467ba2ccd32094097b66d353c34ce595be0b7614b3b29ea047581fb368c",
+ "row_count_total": 1000,
+ "rows": [
+  {
+   "accession": "0000100885-26-000321",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-10-22T19:45:41.000Z",
+   "filing_date": "2026-10-22",
+   "primary_document": "unp-20260930.htm",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-22T19:45:41.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:45eb2bdae76e14aca5c6ea52afe966ff14aa7216d3ee1932b97acabf01d10eba",
+   "verified_edgar_accepted_at_utc": "2026-10-22T19:45:41+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-22 15:45:41",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000321/0000100885-26-000321-index.htm",
+    "source_sha256": "sha256:17bea408abb9c484f7c865b0b21e5465f4a74c2e934545faaf754f94b8753cd0",
+    "observed_at": "2026-10-25T11:56:44.021214+00:00",
+    "source_metadata_hash": "sha256:45eb2bdae76e14aca5c6ea52afe966ff14aa7216d3ee1932b97acabf01d10eba"
+   }
+  },
+  {
+   "accession": "0000100885-26-000319",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-10-22T11:46:52.000Z",
+   "filing_date": "2026-10-22",
+   "primary_document": "unp-20261022.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_submission_acceptance": "2026-10-22T11:46:52.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:f996279616658f971630793bb3c54d04019c486fdbb29d30a421c7eb9aefa0f4",
+   "verified_edgar_accepted_at_utc": "2026-10-22T11:46:52+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-22 07:46:52",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000319/0000100885-26-000319-index.htm",
+    "source_sha256": "sha256:190a993402e8df385b64d1e01cdb581c39e5d3891576884e3cb0659047c4327f",
+    "observed_at": "2026-10-25T11:56:44.065642+00:00",
+    "source_metadata_hash": "sha256:f996279616658f971630793bb3c54d04019c486fdbb29d30a421c7eb9aefa0f4"
+   }
+  },
+  {
+   "accession": "0000100885-26-000314",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-20T15:14:34.000Z",
+   "filing_date": "2026-10-20",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-20T15:14:34.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:c7083e1d1341f5df0a738002b68d14d5cc19915d5a50645737ac9da42887b71b",
+   "verified_edgar_accepted_at_utc": "2026-10-20T15:14:34+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-20 11:14:34",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000314/0000100885-26-000314-index.htm",
+    "source_sha256": "sha256:505a8c6c816074b04eae0271bde98e749a5413b7d4af85fbe02bb06a4418e8a5",
+    "observed_at": "2026-10-25T11:56:44.417444+00:00",
+    "source_metadata_hash": "sha256:c7083e1d1341f5df0a738002b68d14d5cc19915d5a50645737ac9da42887b71b"
+   }
+  },
+  {
+   "accession": "0000100885-26-000313",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-20T15:14:26.000Z",
+   "filing_date": "2026-10-20",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-20T15:14:26.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:dd56509508362f7f7d1b69e32b02dc04ed672917cd4621d51bbf779616bc0823",
+   "verified_edgar_accepted_at_utc": "2026-10-20T15:14:26+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-20 11:14:26",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000313/0000100885-26-000313-index.htm",
+    "source_sha256": "sha256:31bbb87b5837542e1d416a7a3c87c61b52620c6f2c31991af511ccab8e571a9e",
+    "observed_at": "2026-10-25T11:56:44.784398+00:00",
+    "source_metadata_hash": "sha256:dd56509508362f7f7d1b69e32b02dc04ed672917cd4621d51bbf779616bc0823"
+   }
+  },
+  {
+   "accession": "0000100885-26-000312",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-20T15:14:18.000Z",
+   "filing_date": "2026-10-20",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-20T15:14:18.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:3b1d6d1187c5f40f0fe70900f17bc044939c7b36f0be13c02fd82cd8f0af3285",
+   "verified_edgar_accepted_at_utc": "2026-10-20T15:14:18+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-20 11:14:18",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000312/0000100885-26-000312-index.htm",
+    "source_sha256": "sha256:8fbe8db16ea57ea75309d367644bfb83030c971c4ae7b695dc0d45bbb70f88ab",
+    "observed_at": "2026-10-25T11:56:45.143968+00:00",
+    "source_metadata_hash": "sha256:3b1d6d1187c5f40f0fe70900f17bc044939c7b36f0be13c02fd82cd8f0af3285"
+   }
+  },
+  {
+   "accession": "0000100885-26-000305",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-10-16T13:01:58.000Z",
+   "filing_date": "2026-10-16",
+   "primary_document": "unp-20261016.htm",
+   "items": [
+    "5.02",
+    "7.01",
+    "9.01"
+   ],
+   "raw_submission_acceptance": "2026-10-16T13:01:58.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:bb7c387c33b8a2e1b2944efcf1ae1d58d1b804d9cd82cd957555caf13ec5fc87",
+   "verified_edgar_accepted_at_utc": "2026-10-16T13:01:58+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-16 09:01:58",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000305/0000100885-26-000305-index.htm",
+    "source_sha256": "sha256:94392cf950eebf2829641ee789f1daef3305764025308e497b243a58f592ea2a",
+    "observed_at": "2026-10-25T11:56:45.481313+00:00",
+    "source_metadata_hash": "sha256:bb7c387c33b8a2e1b2944efcf1ae1d58d1b804d9cd82cd957555caf13ec5fc87"
+   }
+  },
+  {
+   "accession": "0000100885-26-000292",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:45:33.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:45:33.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:dee43c7a6316e3a3f29da451fd5627d175b4bdb22f72a69f2d7474a487c10c2e",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:45:33+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:45:33",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000292/0000100885-26-000292-index.htm",
+    "source_sha256": "sha256:9058abb3bf5b3f0f2e9220224cb23c692e656a3edf781e10091b0d86084f9fba",
+    "observed_at": "2026-10-25T11:56:45.815960+00:00",
+    "source_metadata_hash": "sha256:dee43c7a6316e3a3f29da451fd5627d175b4bdb22f72a69f2d7474a487c10c2e"
+   }
+  },
+  {
+   "accession": "0000100885-26-000291",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:45:26.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:45:26.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:362bffda1820a92e623429477aa2b39981618827be1c7d4370f5da970fac95db",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:45:26+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:45:26",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000291/0000100885-26-000291-index.htm",
+    "source_sha256": "sha256:2b813a37915de7a001a3e81388b622ef3e2bfd826324646a58364d2c5e62bead",
+    "observed_at": "2026-10-25T11:56:46.184503+00:00",
+    "source_metadata_hash": "sha256:362bffda1820a92e623429477aa2b39981618827be1c7d4370f5da970fac95db"
+   }
+  },
+  {
+   "accession": "0000100885-26-000290",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:45:18.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:45:18.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:0de6fabbdc93e4a0ae5be84e26571477ff049fb1b39635f4f7ba59daad16ffaa",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:45:18+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:45:18",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000290/0000100885-26-000290-index.htm",
+    "source_sha256": "sha256:44ef989f162bffe97f91dea2d230baaf813f59c889ad6e8d2479f27aa6d0f68d",
+    "observed_at": "2026-10-25T11:56:46.517278+00:00",
+    "source_metadata_hash": "sha256:0de6fabbdc93e4a0ae5be84e26571477ff049fb1b39635f4f7ba59daad16ffaa"
+   }
+  },
+  {
+   "accession": "0000100885-26-000289",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:45:10.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:45:10.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:7131831ea8cdf72d0411ec61a22937ec62976bac44fa579c729f72b776b066fb",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:45:10+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:45:10",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000289/0000100885-26-000289-index.htm",
+    "source_sha256": "sha256:52ce9b32463f1fd8f94a85f52cfcc72995558f9ced825d25fdf40f1a7fa5277d",
+    "observed_at": "2026-10-25T11:56:46.866744+00:00",
+    "source_metadata_hash": "sha256:7131831ea8cdf72d0411ec61a22937ec62976bac44fa579c729f72b776b066fb"
+   }
+  },
+  {
+   "accession": "0000100885-26-000288",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:45:02.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:45:02.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:42567c93cb50d99a48524cf7e374346a9d6fb3a610d1dd342694d15474aa537f",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:45:02+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:45:02",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000288/0000100885-26-000288-index.htm",
+    "source_sha256": "sha256:b5b44b6c4ce9d00f0966d5915eeb650f78bb37978b2b03ca4bda2be67000b397",
+    "observed_at": "2026-10-25T11:56:47.224031+00:00",
+    "source_metadata_hash": "sha256:42567c93cb50d99a48524cf7e374346a9d6fb3a610d1dd342694d15474aa537f"
+   }
+  },
+  {
+   "accession": "0000100885-26-000287",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:44:52.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:44:52.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:cf8474f282d0b448806ab981899981b59ed5056d9523ad80b8be7ca552aaef33",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:44:52+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:44:52",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000287/0000100885-26-000287-index.htm",
+    "source_sha256": "sha256:7c7622830632f5f8c5e1b853675a5f42d54d2f793194e96a8d575ab3a5040662",
+    "observed_at": "2026-10-25T11:56:47.569110+00:00",
+    "source_metadata_hash": "sha256:cf8474f282d0b448806ab981899981b59ed5056d9523ad80b8be7ca552aaef33"
+   }
+  },
+  {
+   "accession": "0000100885-26-000286",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:44:42.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:44:42.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:91a24b71ce1ceef4059b0bb2e837e5e912438ec75a93ebaf2774f532b8c80eab",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:44:42+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:44:42",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000286/0000100885-26-000286-index.htm",
+    "source_sha256": "sha256:ce3da2b64d1c0757e6554cec204477adb61ca12a151ce91420c040b9f81da793",
+    "observed_at": "2026-10-25T11:56:47.948736+00:00",
+    "source_metadata_hash": "sha256:91a24b71ce1ceef4059b0bb2e837e5e912438ec75a93ebaf2774f532b8c80eab"
+   }
+  },
+  {
+   "accession": "0000100885-26-000285",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:44:33.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:44:33.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:5bd1af84914bef7ec68a5379fa2cc2fa297b7c83da5ad30fe5fad68df34a2105",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:44:33+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:44:33",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000285/0000100885-26-000285-index.htm",
+    "source_sha256": "sha256:4e4b2ec48b13f3032c93768051531175cffdf062a217d4955769d85c0dc2b87c",
+    "observed_at": "2026-10-25T11:56:48.345622+00:00",
+    "source_metadata_hash": "sha256:5bd1af84914bef7ec68a5379fa2cc2fa297b7c83da5ad30fe5fad68df34a2105"
+   }
+  },
+  {
+   "accession": "0000100885-26-000284",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:44:24.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:44:24.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:87d46bb0da10f2d9309cc4d5f31552a4a32a210f21f1ead220d87c902739873e",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:44:24+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:44:24",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000284/0000100885-26-000284-index.htm",
+    "source_sha256": "sha256:c04c9e94a97f0aa8803837678093abd4811aa3d76af809731d7516cad5d62fba",
+    "observed_at": "2026-10-25T11:56:48.632480+00:00",
+    "source_metadata_hash": "sha256:87d46bb0da10f2d9309cc4d5f31552a4a32a210f21f1ead220d87c902739873e"
+   }
+  },
+  {
+   "accession": "0000100885-26-000283",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-10-01T22:44:14.000Z",
+   "filing_date": "2026-10-01",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-10-01T22:44:14.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:fcb781ef8ed8fc597d7e227b16a7857ad46c3ece172b00cb0b1ff69dadfab45b",
+   "verified_edgar_accepted_at_utc": "2026-10-01T22:44:14+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-10-01 18:44:14",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000283/0000100885-26-000283-index.htm",
+    "source_sha256": "sha256:70ab5f93c0963cd78fc852845f727589e872b27f9508ac1ed5d45718b12902ef",
+    "observed_at": "2026-10-25T11:56:48.976629+00:00",
+    "source_metadata_hash": "sha256:fcb781ef8ed8fc597d7e227b16a7857ad46c3ece172b00cb0b1ff69dadfab45b"
+   }
+  },
+  {
+   "accession": "0000100885-26-000272",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T18:11:34.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-09-11T18:11:34.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:1406bc200617e22c58ab0c9f81907efe3fa043926b227cf4b34dae9764c53674",
+   "verified_edgar_accepted_at_utc": "2026-09-11T18:11:34+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-09-11 14:11:34",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000272/0000100885-26-000272-index.htm",
+    "source_sha256": "sha256:96af7b7406d7c04f0f070ed67e4b04586c01f41ce7e098a98845869c4a1f5754",
+    "observed_at": "2026-10-25T11:56:49.396136+00:00",
+    "source_metadata_hash": "sha256:1406bc200617e22c58ab0c9f81907efe3fa043926b227cf4b34dae9764c53674"
+   }
+  },
+  {
+   "accession": "0000100885-26-000271",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T18:11:25.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-09-11T18:11:25.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:b7efa0bfb76409be8dfe0c64a8c865f8f090044323cad000590dd58e4f9942c6",
+   "verified_edgar_accepted_at_utc": "2026-09-11T18:11:25+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-09-11 14:11:25",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000271/0000100885-26-000271-index.htm",
+    "source_sha256": "sha256:7f11b925877bf59662d815d41ff624bab60140bc3ff00db1032edb86824d15d7",
+    "observed_at": "2026-10-25T11:56:49.700140+00:00",
+    "source_metadata_hash": "sha256:b7efa0bfb76409be8dfe0c64a8c865f8f090044323cad000590dd58e4f9942c6"
+   }
+  },
+  {
+   "accession": "0000100885-26-000270",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T18:11:16.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-09-11T18:11:16.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:1b0191b9bbfe5cab9cf6b22a99da5ec18026d2c48b740921c4ea4a87040e1cce",
+   "verified_edgar_accepted_at_utc": "2026-09-11T18:11:16+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-09-11 14:11:16",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000270/0000100885-26-000270-index.htm",
+    "source_sha256": "sha256:67fb4fa9b799a3eccc28de4fb6bac4ade1ff886cbccc5601a705b4bb669da294",
+    "observed_at": "2026-10-25T11:56:50.056766+00:00",
+    "source_metadata_hash": "sha256:1b0191b9bbfe5cab9cf6b22a99da5ec18026d2c48b740921c4ea4a87040e1cce"
+   }
+  },
+  {
+   "accession": "0000100885-26-000269",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T18:11:07.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-09-11T18:11:07.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:ccac2cc3bf5f40b4822c636d1897eb29585dd6180438bfb28a6922d61a9a0c1a",
+   "verified_edgar_accepted_at_utc": "2026-09-11T18:11:07+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-09-11 14:11:07",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000269/0000100885-26-000269-index.htm",
+    "source_sha256": "sha256:e2cfebb4f3ecab22b2538095be957eed4ee72945ba1e5ef8a057e053861597a7",
+    "observed_at": "2026-10-25T11:56:50.373527+00:00",
+    "source_metadata_hash": "sha256:ccac2cc3bf5f40b4822c636d1897eb29585dd6180438bfb28a6922d61a9a0c1a"
+   }
+  },
+  {
+   "accession": "0000100885-26-000268",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-11T18:10:58.000Z",
+   "filing_date": "2026-09-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-09-11T18:10:58.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:0aa14c60ec12eedbd7c59d2f3dfa587528a9e7413ea212fbd1d90db3bfbea280",
+   "verified_edgar_accepted_at_utc": "2026-09-11T18:10:58+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-09-11 14:10:58",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000268/0000100885-26-000268-index.htm",
+    "source_sha256": "sha256:f4b0ae6cb3abc017205bc306dc059b4d44a1e56c6abcfd2553b0244a4eea39ba",
+    "observed_at": "2026-10-25T11:56:50.725373+00:00",
+    "source_metadata_hash": "sha256:0aa14c60ec12eedbd7c59d2f3dfa587528a9e7413ea212fbd1d90db3bfbea280"
+   }
+  },
+  {
+   "accession": "0000100885-26-000262",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-09-04T22:53:11.000Z",
+   "filing_date": "2026-09-04",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-09-04T22:53:11.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:b65b5247da8fe15643123b1c94a6d06bd7cf87f6257e1a684353ba93c852e8df",
+   "verified_edgar_accepted_at_utc": "2026-09-04T22:53:11+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-09-04 18:53:11",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000262/0000100885-26-000262-index.htm",
+    "source_sha256": "sha256:30d2b4959064a85111dc45d2d0dab400d9329dd650175f9f2cd317ea2647b2bb",
+    "observed_at": "2026-10-25T11:56:51.085883+00:00",
+    "source_metadata_hash": "sha256:b65b5247da8fe15643123b1c94a6d06bd7cf87f6257e1a684353ba93c852e8df"
+   }
+  },
+  {
+   "accession": "0000100885-26-000260",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T19:30:11.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-08-11T19:30:11.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:50b1d0ae96bb479225c6828a35f35228e205f800c16dfe00d5aa606f2d0ff273",
+   "verified_edgar_accepted_at_utc": "2026-08-11T19:30:11+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-08-11 15:30:11",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000260/0000100885-26-000260-index.htm",
+    "source_sha256": "sha256:ca73b8a408fd8dcff55cc0cd631274b4e3e0838f834e2ced6f5cd576739b6566",
+    "observed_at": "2026-10-25T11:56:51.420918+00:00",
+    "source_metadata_hash": "sha256:50b1d0ae96bb479225c6828a35f35228e205f800c16dfe00d5aa606f2d0ff273"
+   }
+  },
+  {
+   "accession": "0000100885-26-000259",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T19:30:04.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-08-11T19:30:04.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:3f1894da41841f8f812ddec1d9ff60c81b6d342f67a6d98ce77a21a4559801eb",
+   "verified_edgar_accepted_at_utc": "2026-08-11T19:30:04+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-08-11 15:30:04",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000259/0000100885-26-000259-index.htm",
+    "source_sha256": "sha256:2d3ea8eb85f01319c3cd666835eeee3d41c463f0dc49d3413615e3c94604883e",
+    "observed_at": "2026-10-25T11:56:51.789560+00:00",
+    "source_metadata_hash": "sha256:3f1894da41841f8f812ddec1d9ff60c81b6d342f67a6d98ce77a21a4559801eb"
+   }
+  },
+  {
+   "accession": "0000100885-26-000258",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T19:29:54.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-08-11T19:29:54.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:08e46257df4bce86d9395e127226ea4f29db25103b715fad017878dd3e741579",
+   "verified_edgar_accepted_at_utc": "2026-08-11T19:29:54+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-08-11 15:29:54",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000258/0000100885-26-000258-index.htm",
+    "source_sha256": "sha256:e0270ded7f3832dd7fb70952928425c1b14694fac832e0a54efa1945e8b94f3f",
+    "observed_at": "2026-10-25T11:56:52.173216+00:00",
+    "source_metadata_hash": "sha256:08e46257df4bce86d9395e127226ea4f29db25103b715fad017878dd3e741579"
+   }
+  },
+  {
+   "accession": "0000100885-26-000257",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T19:29:46.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-08-11T19:29:46.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:5af6c71ef2fba970aac4092235afca7b0f7dd0f65bcaab0a99e1fdc0ba26fccd",
+   "verified_edgar_accepted_at_utc": "2026-08-11T19:29:46+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-08-11 15:29:46",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000257/0000100885-26-000257-index.htm",
+    "source_sha256": "sha256:d9fd88ca78dde37d62245c640488e4cf191e00f976991db5818e88789211f204",
+    "observed_at": "2026-10-25T11:56:52.476747+00:00",
+    "source_metadata_hash": "sha256:5af6c71ef2fba970aac4092235afca7b0f7dd0f65bcaab0a99e1fdc0ba26fccd"
+   }
+  },
+  {
+   "accession": "0000100885-26-000256",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-08-11T19:29:39.000Z",
+   "filing_date": "2026-08-11",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-08-11T19:29:39.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:8af7b95fb7522f2f8ada4e0e453b248efa9cb228cb3566b81092daaa5dab3825",
+   "verified_edgar_accepted_at_utc": "2026-08-11T19:29:39+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-08-11 15:29:39",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000256/0000100885-26-000256-index.htm",
+    "source_sha256": "sha256:c4677ffa1010e36d0e8bb45bb3a8a26476719e5b761ea158e165f0a6998a8d7b",
+    "observed_at": "2026-10-25T11:56:52.829123+00:00",
+    "source_metadata_hash": "sha256:8af7b95fb7522f2f8ada4e0e453b248efa9cb228cb3566b81092daaa5dab3825"
+   }
+  },
+  {
+   "accession": "0000100885-26-000250",
+   "form": "10-Q",
+   "base_form": "10-Q",
+   "acceptance": "2026-07-23T19:48:16.000Z",
+   "filing_date": "2026-07-23",
+   "primary_document": "unp-20260630.htm",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-23T19:48:16.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:c2ada53e8791e8763a581302182b0df2936b35d04beb61ac227fa1a44164589d",
+   "verified_edgar_accepted_at_utc": "2026-07-23T19:48:16+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-23 15:48:16",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000250/0000100885-26-000250-index.htm",
+    "source_sha256": "sha256:e4c4031a98d4985fe5c3dbe8d9e8db47ca8873870a3b0ec9fc04a45e8b54a540",
+    "observed_at": "2026-10-25T11:56:53.215828+00:00",
+    "source_metadata_hash": "sha256:c2ada53e8791e8763a581302182b0df2936b35d04beb61ac227fa1a44164589d"
+   }
+  },
+  {
+   "accession": "0000100885-26-000249",
+   "form": "8-K",
+   "base_form": "8-K",
+   "acceptance": "2026-07-23T11:46:39.000Z",
+   "filing_date": "2026-07-23",
+   "primary_document": "unp-20260723.htm",
+   "items": [
+    "2.02",
+    "9.01"
+   ],
+   "raw_submission_acceptance": "2026-07-23T11:46:39.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:70e4ecf37a2d9a8da1e874ebf06ab74a0e5f92a24da3203a96e91b59c4e8b01e",
+   "verified_edgar_accepted_at_utc": "2026-07-23T11:46:39+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-23 07:46:39",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000249/0000100885-26-000249-index.htm",
+    "source_sha256": "sha256:ae0bc5e330bcdebccce3c18d7622685117d7f65abe3c82f8ace5fd2916e028ee",
+    "observed_at": "2026-10-25T11:56:53.570015+00:00",
+    "source_metadata_hash": "sha256:70e4ecf37a2d9a8da1e874ebf06ab74a0e5f92a24da3203a96e91b59c4e8b01e"
+   }
+  },
+  {
+   "accession": "0000100885-26-000239",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-13T20:27:03.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-13T20:27:03.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:d2e661f6bf30b7e517b46bdbdc13459dfc32fcf556bb9f63047c59277b826cc9",
+   "verified_edgar_accepted_at_utc": "2026-07-13T20:27:03+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-13 16:27:03",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000239/0000100885-26-000239-index.htm",
+    "source_sha256": "sha256:8f63f67911c5fd256cddab44d9406b1002e55118c6745572d68a13cf2688dc40",
+    "observed_at": "2026-10-25T11:56:53.884825+00:00",
+    "source_metadata_hash": "sha256:d2e661f6bf30b7e517b46bdbdc13459dfc32fcf556bb9f63047c59277b826cc9"
+   }
+  },
+  {
+   "accession": "0000100885-26-000238",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-13T20:26:55.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-13T20:26:55.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:33ca193d1494b074378f31486bc1e1a46fa17f6793ccf303668d9ee10f90c3f7",
+   "verified_edgar_accepted_at_utc": "2026-07-13T20:26:55+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-13 16:26:55",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000238/0000100885-26-000238-index.htm",
+    "source_sha256": "sha256:9d324d2f961448389b013b4984d857307eba7f9cb2efbe572aeaf7c86e703309",
+    "observed_at": "2026-10-25T11:56:54.225015+00:00",
+    "source_metadata_hash": "sha256:33ca193d1494b074378f31486bc1e1a46fa17f6793ccf303668d9ee10f90c3f7"
+   }
+  },
+  {
+   "accession": "0000100885-26-000237",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-13T20:26:48.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-13T20:26:48.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:170beaaf7b00a585dd37ee4456502fcf3b642eab0c669bd99c43865eb92cb90c",
+   "verified_edgar_accepted_at_utc": "2026-07-13T20:26:48+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-13 16:26:48",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000237/0000100885-26-000237-index.htm",
+    "source_sha256": "sha256:da0aacd1b5348527eec82d09ea610ef92d6a4ee35c7c70b4a3f8b58ecad0527b",
+    "observed_at": "2026-10-25T11:56:54.581485+00:00",
+    "source_metadata_hash": "sha256:170beaaf7b00a585dd37ee4456502fcf3b642eab0c669bd99c43865eb92cb90c"
+   }
+  },
+  {
+   "accession": "0000100885-26-000236",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-13T20:26:41.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-13T20:26:41.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:80e9e09284081362b2be2a14d0a895b29a6cde456cd06b073380248b97c49d8e",
+   "verified_edgar_accepted_at_utc": "2026-07-13T20:26:41+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-13 16:26:41",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000236/0000100885-26-000236-index.htm",
+    "source_sha256": "sha256:84a93209f0f85903647150a6210528ecf29946a6a2c7837f3d441fea8da6ebf3",
+    "observed_at": "2026-10-25T11:56:54.938423+00:00",
+    "source_metadata_hash": "sha256:80e9e09284081362b2be2a14d0a895b29a6cde456cd06b073380248b97c49d8e"
+   }
+  },
+  {
+   "accession": "0000100885-26-000235",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-13T20:26:32.000Z",
+   "filing_date": "2026-07-13",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-13T20:26:32.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:4b8a3fb890250bc8e21267a2e7b2b4b3856778cf68c49fb001f0a4fd04f48f42",
+   "verified_edgar_accepted_at_utc": "2026-07-13T20:26:32+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-13 16:26:32",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000235/0000100885-26-000235-index.htm",
+    "source_sha256": "sha256:f51347b84fe80100d575cf30800a84080b642c7b931bec4d0972bc17550aab2e",
+    "observed_at": "2026-10-25T11:56:55.294948+00:00",
+    "source_metadata_hash": "sha256:4b8a3fb890250bc8e21267a2e7b2b4b3856778cf68c49fb001f0a4fd04f48f42"
+   }
+  },
+  {
+   "accession": "0000100885-26-000229",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T16:41:17.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-02T16:41:17.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:2a25e81da034b3f4e9cd1b2a49c361daa1101a52be43f5413df4bb0c80976db7",
+   "verified_edgar_accepted_at_utc": "2026-07-02T16:41:17+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-02 12:41:17",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000229/0000100885-26-000229-index.htm",
+    "source_sha256": "sha256:b68cd249764110f6838ea961fd1bea69d8e5dd180e1fbd8d285987f9e56d72cc",
+    "observed_at": "2026-10-25T11:56:55.628779+00:00",
+    "source_metadata_hash": "sha256:2a25e81da034b3f4e9cd1b2a49c361daa1101a52be43f5413df4bb0c80976db7"
+   }
+  },
+  {
+   "accession": "0000100885-26-000228",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T16:41:07.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-02T16:41:07.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:1ef514d0f918d968edf1cb203bed386f661ace33ea0557b9cd28e62f37faa261",
+   "verified_edgar_accepted_at_utc": "2026-07-02T16:41:07+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-02 12:41:07",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000228/0000100885-26-000228-index.htm",
+    "source_sha256": "sha256:bf599c137264280376c6d93e5862187b711950112acd821e216b5e28ffbe59bd",
+    "observed_at": "2026-10-25T11:56:56.006169+00:00",
+    "source_metadata_hash": "sha256:1ef514d0f918d968edf1cb203bed386f661ace33ea0557b9cd28e62f37faa261"
+   }
+  },
+  {
+   "accession": "0000100885-26-000227",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T16:40:57.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-02T16:40:57.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:0ef342617b560a90abe54b6d455f894a25d8607b83572b584dd682b8c39433cd",
+   "verified_edgar_accepted_at_utc": "2026-07-02T16:40:57+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-02 12:40:57",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000227/0000100885-26-000227-index.htm",
+    "source_sha256": "sha256:b2c3506ae676d4ecb084dd5ff2757f7a35de95eedb00a1e85ce9808f62dd80ae",
+    "observed_at": "2026-10-25T11:56:56.331641+00:00",
+    "source_metadata_hash": "sha256:0ef342617b560a90abe54b6d455f894a25d8607b83572b584dd682b8c39433cd"
+   }
+  },
+  {
+   "accession": "0000100885-26-000226",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T16:40:47.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-02T16:40:47.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:6ed22150178cb5a1f3ff7965181971a5eef08f7ce02fc8dc44f91744ad53c7fb",
+   "verified_edgar_accepted_at_utc": "2026-07-02T16:40:47+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-02 12:40:47",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000226/0000100885-26-000226-index.htm",
+    "source_sha256": "sha256:3c2cc68460d379f433061b1652c592286af61da6d07bbb390419bf3bde47ed82",
+    "observed_at": "2026-10-25T11:56:56.698040+00:00",
+    "source_metadata_hash": "sha256:6ed22150178cb5a1f3ff7965181971a5eef08f7ce02fc8dc44f91744ad53c7fb"
+   }
+  },
+  {
+   "accession": "0000100885-26-000225",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T16:40:40.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-02T16:40:40.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:caac2364f16f2235a88e7b710586d30c1585093877bfc2ff3e1a305285173e72",
+   "verified_edgar_accepted_at_utc": "2026-07-02T16:40:40+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-02 12:40:40",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000225/0000100885-26-000225-index.htm",
+    "source_sha256": "sha256:7bd04782c37b98008b6b76a635169873f95993af14b49506eb25050caea1dc39",
+    "observed_at": "2026-10-25T11:56:57.037749+00:00",
+    "source_metadata_hash": "sha256:caac2364f16f2235a88e7b710586d30c1585093877bfc2ff3e1a305285173e72"
+   }
+  },
+  {
+   "accession": "0000100885-26-000224",
+   "form": "4",
+   "base_form": "4",
+   "acceptance": "2026-07-02T16:40:31.000Z",
+   "filing_date": "2026-07-02",
+   "primary_document": "xslF345X06/edgardoc.xml",
+   "items": [],
+   "raw_submission_acceptance": "2026-07-02T16:40:31.000Z",
+   "acceptance_verified_from": "EDGAR_INDEX_ACCEPTED_ET",
+   "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+   "raw_metadata_hash": "sha256:fbe2be8f596a0b2e8e09a1df23ade82508fb0ac5202892bbc0b00d8d76ab57cb",
+   "verified_edgar_accepted_at_utc": "2026-07-02T16:40:31+00:00",
+   "acceptance_authority": {
+    "accepted_eastern": "2026-07-02 12:40:31",
+    "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000224/0000100885-26-000224-index.htm",
+    "source_sha256": "sha256:330194ab6d9a9fd96ad0fda34529900194b1dedf95edbb6cbb00e025d2de6461",
+    "observed_at": "2026-10-25T11:56:57.420863+00:00",
+    "source_metadata_hash": "sha256:fbe2be8f596a0b2e8e09a1df23ade82508fb0ac5202892bbc0b00d8d76ab57cb"
+   }
+  }
+ ],
+ "time_verification_summary": {
+  "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE": 40,
+  "UNRESOLVED_SUBMISSIONS_DISAGREE": 0,
+  "UNVERIFIED_INDEX_UNAVAILABLE": 0
+ },
+ "time_verification_method": "EDGAR filing-index Accepted (Eastern) converted to UTC via America/New_York; row kept only when the submissions instant matches.",
+ "source_metadata_retrieved_at": "2026-10-25T11:56:57.420863+00:00"
+}

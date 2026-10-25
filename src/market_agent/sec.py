@@ -3,14 +3,16 @@
 import hashlib
 import json
 import re
+import time
 from decimal import Decimal
-from datetime import datetime
+from datetime import date, datetime, time as clock_time, timedelta
 from html.parser import HTMLParser
 from typing import Literal
 from urllib.parse import quote, urljoin, urlsplit
+from zoneinfo import ZoneInfo
 
 import httpx
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .clock import Clock, system_utc_now
 from .domain import EvidenceItem, FrozenModel, utc
@@ -20,6 +22,15 @@ from .provider import ProviderError, SYMBOL
 
 SEC_WWW = "https://www.sec.gov"
 SEC_DATA = "https://data.sec.gov"
+# EDGAR timestamps are Eastern. A date-only row is only knowable after that whole
+# Eastern day has passed, so the declared timezone is part of the PIT contract.
+SEC_TIMEZONE_NAME = "America/New_York"
+SEC_TIMEZONE = ZoneInfo(SEC_TIMEZONE_NAME)
+SUBMISSIONS_TTL = timedelta(seconds=300)
+# Preserve the Owner's conservative <=4/sec public-SEC request policy.
+SEC_MIN_REQUEST_INTERVAL = 0.3
+SEC_RETRY_ATTEMPTS = 2
+SEC_RETRY_DELAY = 0.3
 ACCESSION = re.compile(r"^\d{10}-\d{2}-\d{6}$")
 DOCUMENT_NAME = re.compile(r"^[A-Za-z0-9_.-]+$")
 ITEM_HEADING = re.compile(r"^item\s+\d+[a-z]?\.?\s*", re.IGNORECASE)
@@ -90,6 +101,181 @@ class SECSearchResult(BaseModel):
     retrieval_mode: Literal['FTS5','HYBRID'] = 'FTS5'
     retrieval_fallback: str | None = None
     retrieval_model: str | None = None
+
+
+class SecIssuerIdentity(FrozenModel):
+    """Who SEC says this symbol is, and when we were told."""
+
+    symbol: str
+    cik: str
+    name: str | None = None
+    tickers: list[str] = Field(default_factory=list)
+    mapping_source_uri: str
+    mapping_observed_at: datetime
+
+
+class SecFilingRow(FrozenModel):
+    """One disclosure, normalized for point-in-time use. No impact is inferred."""
+
+    accession: str
+    form: str
+    base_form: str
+    is_amendment: bool
+    items: list[str]
+    accepted_at: datetime | None
+    time_precision: Literal["SECOND", "DATE", "UNKNOWN"]
+    filing_date: date | None
+    available_at: datetime | None
+    source_url: str | None
+    raw_metadata_hash: str
+    raw_submission_acceptance: str | None = None
+    verified_edgar_accepted_at_utc: datetime | None = None
+    verification_status: str | None = None
+    verification_source_uri: str | None = None
+    verification_source_hash: str | None = None
+    verification_observed_at: datetime | None = None
+
+
+class SecExcludedRow(FrozenModel):
+    accession: str
+    form: str
+    reason: str
+
+
+class SecRecentFilings(FrozenModel):
+    schema_version: Literal["ivs-sec-provider-v1"] = "ivs-sec-provider-v1"
+    issuer: SecIssuerIdentity
+    rows: list[SecFilingRow]
+    excluded: list[SecExcludedRow]
+    as_of: datetime
+    retrieved_at: datetime
+    source: Literal["SEC_EDGAR_SUBMISSIONS"] = "SEC_EDGAR_SUBMISSIONS"
+    source_uri: str
+    from_cache: bool
+    limitations: list[str] = Field(default_factory=list)
+
+
+def normalize_acceptance(value: object) -> tuple[datetime | None, str]:
+    """Acceptance instant plus its precision. Never invents a midnight.
+
+    SEC returns `2026-10-22T15:46:52.000Z` for modern filings, but the column can
+    be a bare date or empty. A date is not an instant: it yields DATE precision and
+    no accepted_at, so no caller can mistake it for an intraday moment. A naive
+    datetime is rejected rather than assumed to be UTC.
+    """
+    if value is None:
+        return None, "UNKNOWN"
+    if isinstance(value, datetime):
+        if value.tzinfo is None or value.utcoffset() is None:
+            raise ValueError("acceptance datetime has no timezone")
+        return utc(value), "SECOND"
+    if isinstance(value, date):
+        return None, "DATE"
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None, "UNKNOWN"
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", text):
+            return None, "DATE"
+        try:
+            parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
+        except ValueError:
+            return None, "UNKNOWN"
+        if parsed.tzinfo is None or parsed.utcoffset() is None:
+            raise ValueError("acceptance datetime has no timezone")
+        return utc(parsed), "SECOND"
+    return None, "UNKNOWN"
+
+
+def parse_filing_date(value: object) -> date | None:
+    """`filingDate` is its own column and is never sliced out of an instant."""
+    if value is None:
+        return None
+    if isinstance(value, datetime):
+        return utc(value).date() if value.tzinfo else value.date()
+    if isinstance(value, date):
+        return value
+    if isinstance(value, str):
+        text = value.strip()
+        if not text:
+            return None
+        try:
+            return date.fromisoformat(text[:10])
+        except ValueError:
+            return None
+    return None
+
+
+def eligibility_bound(
+    accepted_at: datetime | None,
+    precision: str,
+    filing_date: date | None,
+    *,
+    timezone: ZoneInfo | None = SEC_TIMEZONE,
+) -> datetime | None:
+    """Earliest instant this disclosure may be treated as knowable.
+
+    A second-precision acceptance is the instant itself. A date-only row becomes
+    eligible only once the entire declared day has passed, because SEC publishes
+    the date and not the moment. Without a declared timezone the bound is unknown
+    and the caller must fail closed.
+    """
+    if precision == "SECOND" and accepted_at is not None:
+        return utc(accepted_at)
+    if precision == "DATE" and filing_date is not None and timezone is not None:
+        following = filing_date + timedelta(days=1)
+        return utc(datetime.combine(following, clock_time.min, tzinfo=timezone))
+    return None
+
+
+def start_of_disclosed_day(filing_date: date, *, timezone: ZoneInfo | None = SEC_TIMEZONE) -> datetime | None:
+    """Conservative earliest instant of a date-only disclosure, for strict cutoffs."""
+    if filing_date is None or timezone is None:
+        return None
+    return utc(datetime.combine(filing_date, clock_time.min, tzinfo=timezone))
+
+
+def filing_source_url(
+    www_base: str, cik: str, accession: str, primary_document: object
+) -> str | None:
+    """A SEC Archives URL bound to this CIK and accession, or nothing.
+
+    The document name is validated against SEC's own filename charset, so a
+    traversal or a foreign host cannot be introduced through filing metadata.
+    """
+    if not isinstance(cik, str) or not re.fullmatch(r"\d{10}", cik):
+        return None
+    if not isinstance(accession, str) or not ACCESSION.fullmatch(accession):
+        return None
+    base = (www_base or "").rstrip("/")
+    parts = urlsplit(base)
+    if parts.scheme not in {"https", "http"} or not parts.netloc or parts.query or parts.fragment:
+        return None
+    directory = f"{base}/Archives/edgar/data/{int(cik)}/{accession.replace('-', '')}"
+    if isinstance(primary_document, str) and DOCUMENT_NAME.fullmatch(primary_document):
+        return f"{directory}/{primary_document}"
+    return f"{directory}/"
+
+
+def filing_metadata_hash(
+    *, accession: str, form: str, acceptance: object, filing_date: object,
+    items: object, primary_document: object,
+) -> str:
+    """Stable hash of the public metadata a capture and a live read must agree on."""
+    return _hash({
+        "accession": accession, "form": form,
+        "accepted": acceptance if isinstance(acceptance, str) else None,
+        "filed": str(filing_date) if filing_date else None,
+        "items": items, "primary": primary_document,
+    })
+
+
+def _items_list(value: object) -> list[str]:
+    if value is None:
+        return []
+    if isinstance(value, (list, tuple)):
+        return [str(code).strip() for code in value if str(code).strip()]
+    return [code.strip() for code in str(value).split(",") if code.strip()]
 
 
 class _FilingTextParser(HTMLParser):
@@ -202,6 +388,8 @@ class SECEDGARProvider:
         www_base_url: str = SEC_WWW,
         data_base_url: str = SEC_DATA,
         retriever=None,
+        min_request_interval: float = SEC_MIN_REQUEST_INTERVAL,
+        retry_delay: float = SEC_RETRY_DELAY,
     ):
         self.store = store
         configured_user_agent = user_agent.strip()
@@ -210,14 +398,21 @@ class SECEDGARProvider:
             if configured_user_agent and "@" in configured_user_agent and " " not in configured_user_agent
             else configured_user_agent
         )
-        self.client = client or httpx.Client(timeout=20, follow_redirects=True)
+        self.client = client or httpx.Client(timeout=20, follow_redirects=False)
         self.clock = clock or system_utc_now
         self.www_base_url = www_base_url.rstrip("/")
         self.data_base_url = data_base_url.rstrip("/")
         self._ciks = {}
         self._listing_identity = {}
         self._filings = {}
+        self._submissions = {}
         self.retriever = retriever
+        # Fair access is a rate contract, not a suggestion: keep a floor between
+        # requests and let tests disable it rather than patch time.
+        self.min_request_interval = max(0.0, float(min_request_interval))
+        self.retry_delay = max(0.0, float(retry_delay))
+        self._last_request_at = None
+        self._public_access_stopped = None
 
     def search(
         self,
@@ -288,14 +483,31 @@ class SECEDGARProvider:
     def _headers(self) -> dict[str, str]:
         return {"User-Agent": self.user_agent, "Accept-Encoding": "gzip, deflate"}
 
+    def _throttle(self) -> None:
+        if self.min_request_interval <= 0:
+            return
+        if self._last_request_at is not None:
+            wait = self.min_request_interval - (time.monotonic() - self._last_request_at)
+            if wait > 0:
+                time.sleep(wait)
+        self._last_request_at = time.monotonic()
+
     def _request(self, url: str) -> httpx.Response:
+        from .tool_deadline import check_tool_deadline, provider_get
+        if self._public_access_stopped:
+            raise ProviderError(self._public_access_stopped, 'SEC access stopped for this provider session')
+        self._throttle()
         try:
-            response = self.client.get(url, headers=self._headers())
+            response = provider_get(self.client, url, headers=self._headers(), follow_redirects=False)
+            check_tool_deadline()
         except httpx.TimeoutException:
             raise ProviderError("timeout", "SEC request timed out") from None
         except httpx.RequestError:
             raise ProviderError("transport", "SEC transport failure") from None
-        if response.status_code == 429 or response.status_code >= 500:
+        if response.status_code in (403, 429):
+            self._public_access_stopped = 'rate_limited' if response.status_code == 429 else 'access_denied'
+            raise ProviderError(self._public_access_stopped, 'SEC access stopped for this provider session')
+        if response.status_code >= 500:
             raise ProviderError("retryable", f"SEC unavailable ({response.status_code})")
         if response.status_code in (400, 404, 422):
             raise ProviderError("invalid_input", f"SEC rejected request ({response.status_code})")
@@ -309,10 +521,23 @@ class SECEDGARProvider:
         except ValueError as exc:
             raise ProviderError("invalid_data", "SEC returned malformed JSON") from exc
 
+    def _json_with_retry(self, url: str, *, attempts: int = SEC_RETRY_ATTEMPTS) -> object:
+        """Retry only transient failures. Malformed data is an answer, not a hiccup."""
+        attempt = 0
+        while True:
+            try:
+                return self._json(url)
+            except ProviderError as exc:
+                attempt += 1
+                if exc.code not in {"retryable", "timeout"} or attempt >= max(1, attempts):
+                    raise
+                if self.retry_delay:
+                    time.sleep(self.retry_delay * attempt)
+
     def _resolve_cik(self, symbol: str) -> str:
         if symbol in self._ciks:
             return self._ciks[symbol]
-        raw = self._json(f"{self.www_base_url}/files/company_tickers.json")
+        raw = self._json_with_retry(f"{self.www_base_url}/files/company_tickers.json")
         if not isinstance(raw, dict):
             raise ProviderError("invalid_data", "SEC ticker data is invalid")
         for record in raw.values():
@@ -333,10 +558,20 @@ class SECEDGARProvider:
                 return self._ciks[symbol]
         raise ProviderError("not_found", f"SEC CIK not found for {symbol}")
 
-    def _recent_filings(self, cik: str) -> list[dict]:
-        if cik in self._filings and (utc(self.clock()) - self._filings[cik][0]).total_seconds() < 300:
-            return [dict(row) for row in self._filings[cik][1]]
-        raw = self._json(f"{self.data_base_url}/submissions/CIK{cik}.json")
+    def _submissions_payload(self, cik: str) -> dict:
+        """One bounded read of SEC submissions, cached briefly and content-hashed.
+
+        The hash covers the public metadata columns actually consumed, so a capture
+        can be replayed and compared without storing any document body.
+        """
+        now = utc(self.clock())
+        cached = self._submissions.get(cik)
+        if cached is not None and (now - cached["fetched_at"]).total_seconds() < SUBMISSIONS_TTL.total_seconds():
+            return {**cached, "from_cache": True}
+        url = f"{self.data_base_url}/submissions/CIK{cik}.json"
+        raw = self._json_with_retry(url)
+        if not isinstance(raw, dict):
+            raise ProviderError("invalid_data", "SEC submissions data is invalid")
         try:
             recent = raw["filings"]["recent"]
             columns = {
@@ -347,36 +582,141 @@ class SECEDGARProvider:
             raise ProviderError("invalid_data", "SEC submissions data is invalid") from exc
         if any(not isinstance(values, list) for values in columns.values()):
             raise ProviderError("invalid_data", "SEC submissions columns are invalid")
-        lengths = {len(values) for values in columns.values()}
-        if len(lengths) != 1:
+        if len({len(values) for values in columns.values()}) != 1:
             raise ProviderError("invalid_data", "SEC submissions columns are invalid")
+        count = len(columns["form"])
+        items = recent.get("items", [""] * count)
+        if (not isinstance(items, list) or len(items) != count
+                or any(not isinstance(value, str) for value in items)):
+            raise ProviderError("invalid_data", "SEC item metadata is invalid")
+        filing_dates = recent.get("filingDate")
+        if not isinstance(filing_dates, list) or len(filing_dates) != count:
+            # A missing filingDate is not a reason to reject the filing; it is a
+            # reason not to claim a filing date. It is never sliced from a timestamp.
+            filing_dates = [None] * count
         rows = []
-        items = recent.get('items', [''] * len(columns['form']))
-        if not isinstance(items,list) or len(items)!=len(columns['form']) or any(not isinstance(x,str) for x in items):
-            raise ProviderError('invalid_data','SEC item metadata is invalid')
-        for accession, form, accepted, primary, item in zip(
-            columns["accessionNumber"], columns["form"],
-            columns["acceptanceDateTime"], columns["primaryDocument"], items, strict=True,
+        seen: set[str] = set()
+        for accession, form, accepted, primary, item, filed in zip(
+            columns["accessionNumber"], columns["form"], columns["acceptanceDateTime"],
+            columns["primaryDocument"], items, filing_dates, strict=True,
         ):
             if not isinstance(accession, str) or not ACCESSION.fullmatch(accession):
                 raise ProviderError("invalid_data", "SEC accession number is invalid")
-            if not isinstance(form, str) or not isinstance(primary, str):
-                raise ProviderError("invalid_data", "SEC filing metadata is invalid")
-            if not isinstance(accepted, str):
-                raise ProviderError("invalid_data", "SEC acceptance timestamp is invalid")
+            if accession in seen:
+                # One accession is one disclosure. A repeated row is the same filing,
+                # never a second event and never additional corroboration.
+                continue
+            seen.add(accession)
+            if not isinstance(form, str) or not form.strip():
+                raise ProviderError("invalid_data", "SEC form is invalid")
             try:
-                filed_at = utc(datetime.fromisoformat(accepted.replace("Z", "+00:00")))
+                accepted_at, precision = normalize_acceptance(accepted)
             except ValueError as exc:
                 raise ProviderError("invalid_data", "SEC acceptance timestamp is invalid") from exc
+            filing_date = parse_filing_date(filed)
             rows.append({
-                "accession_number": accession,
-                "form": form,
-                "filed_at": filed_at,
-                "primary_document": primary,
-                "items": item,
+                "accession": accession,
+                "form": form.strip(),
+                "base_form": form.split("/")[0].strip(),
+                "is_amendment": form.strip().endswith("/A"),
+                "items": _items_list(item),
+                "accepted_at": accepted_at,
+                "time_precision": precision,
+                "filing_date": filing_date,
+                "available_at": eligibility_bound(accepted_at, precision, filing_date),
+                "primary_document": primary if isinstance(primary, str) else None,
+                "raw_metadata_hash": filing_metadata_hash(
+                    accession=accession, form=form, acceptance=accepted,
+                    filing_date=filing_date, items=item, primary_document=primary),
+            })
+        payload = {
+            "fetched_at": now,
+            "name": raw.get("name") if isinstance(raw.get("name"), str) else None,
+            "rows": rows,
+            "url": url,
+            "raw_hash": _hash({"cik": cik, "rows": [row["raw_metadata_hash"] for row in rows]}),
+            "from_cache": False,
+        }
+        self._submissions[cik] = payload
+        return payload
+
+    def _recent_filings(self, cik: str) -> list[dict]:
+        """Legacy shape kept compatible for the existing search/fundamentals callers.
+
+        `filed_at` is the conservative eligibility instant: a date-only row uses the
+        end of its declared day instead of a fabricated midnight, and a row whose
+        time cannot be established at all is omitted rather than guessed.
+        """
+        rows = []
+        for row in self._submissions_payload(cik)["rows"]:
+            available = row["available_at"] or row["accepted_at"]
+            if available is None or not row["primary_document"]:
+                continue
+            rows.append({
+                "accession_number": row["accession"],
+                "form": row["form"],
+                "filed_at": available,
+                "primary_document": row["primary_document"],
+                "items": ",".join(row["items"]),
             })
         self._filings[cik] = (utc(self.clock()), rows)
         return [dict(row) for row in rows]
+
+    def recent_filings(self, symbol: str, *, as_of: datetime) -> SecRecentFilings:
+        """Public, point-in-time read of one issuer's recent filings.
+
+        The Today projection uses only this method: no underscore access, no document
+        download, no model call. A disclosure cannot appear before it was knowable,
+        and rows excluded by that rule are reported instead of silently dropped.
+        """
+        if not isinstance(symbol, str) or not SYMBOL.fullmatch(symbol):
+            raise ProviderError("invalid_input", "symbol is not a valid US ticker")
+        cutoff = utc(as_of)
+        cik = self._resolve_cik(symbol)
+        payload = self._submissions_payload(cik)
+        identity = self._listing_identity.get(cik) or {}
+        observed = identity.get("observed_at")
+        issuer = SecIssuerIdentity(
+            symbol=symbol, cik=cik, name=payload["name"],
+            tickers=list(identity.get("tickers") or [symbol]),
+            mapping_source_uri=identity.get("source_uri")
+            or f"{self.www_base_url}/files/company_tickers.json",
+            mapping_observed_at=utc(datetime.fromisoformat(observed)) if observed else payload["fetched_at"],
+        )
+        rows, excluded = [], []
+        for row in payload["rows"]:
+            available = row["available_at"]
+            if available is None:
+                excluded.append(SecExcludedRow(accession=row["accession"], form=row["form"],
+                                               reason="TIME_PRECISION_UNKNOWN"))
+                continue
+            if available > cutoff:
+                excluded.append(SecExcludedRow(accession=row["accession"], form=row["form"],
+                                               reason="AFTER_AS_OF"))
+                continue
+            rows.append(SecFilingRow(
+                accession=row["accession"], form=row["form"], base_form=row["base_form"],
+                is_amendment=row["is_amendment"], items=row["items"],
+                accepted_at=row["accepted_at"], time_precision=row["time_precision"],
+                filing_date=row["filing_date"], available_at=available,
+                source_url=filing_source_url(self.www_base_url, cik, row["accession"],
+                                             row["primary_document"]),
+                raw_metadata_hash=row["raw_metadata_hash"],
+            ))
+        rows.sort(key=lambda row: (-row.available_at.timestamp(), row.accession))
+        limitations = [
+            "SEC submissions returns the issuer's most recent filings, not its full history.",
+            "Per-issuer metadata only; no full-market or sector coverage is implied.",
+            "No document body is downloaded and no item code is treated as an impact estimate.",
+        ]
+        if excluded:
+            limitations.append(
+                f"{len(excluded)} filing row(s) excluded by point-in-time or time-precision rules.")
+        return SecRecentFilings(
+            issuer=issuer, rows=rows, excluded=excluded, as_of=cutoff,
+            retrieved_at=payload["fetched_at"], source_uri=payload["url"],
+            from_cache=payload["from_cache"], limitations=limitations,
+        )
 
     def fast_search(self, symbol, query, forms, as_of, limit=2):
         return self.search(symbol,query,forms,as_of,limit,document_limit=1)

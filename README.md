@@ -154,3 +154,35 @@ Issues, bug reports and product feedback are welcome — see [CONTRIBUTING.md](C
 [MIT](LICENSE) © 2026 Ernesto12139. Covers the code, the original diagrams in `docs/assets/` and the replay screenshots, which show only fictional data. Data from news, price, SEC and model providers remains subject to their own terms.
 
 **ConvictionDesk is a research tool, not investment advice.**
+
+
+## Reproduce real SEC filing metadata offline
+
+This increment adds a runnable SEC metadata projection alongside the existing
+fictional UI replay. After the installation steps above, run:
+
+```sh
+python scripts/sec_evidence_demo.py
+python -m pytest tests/test_ivs_sec_provider.py tests/test_sec_filings.py -q
+```
+
+The captured public EDGAR metadata covers UNP, KR and DOW, frozen on 2026-10-24.
+The command prints filing identities, original SEC links, timestamp precision,
+point-in-time eligibility and per-symbol coverage. UNP/KR holdings and the DOW
+watch scope are synthetic examples. No account quantities, model calls, network
+calls, news bodies or investment judgments are included. Item codes suggest
+questions to check; they do not prove investment impact. The full SEC-to-Thesis
+research UI is still a private candidate and is not advertised as public here.
+
+Each captured acceptance instant is checked against SEC's own Eastern acceptance
+clock in the EDGAR filing index, converted to UTC with the calendar rather than a
+fixed offset. `acceptance` holds the verified instant, `raw_submission_acceptance`
+keeps SEC's submissions string verbatim, and `time_verification` records the outcome.
+A row whose time cannot be independently confirmed is stored without an instant and
+excluded from the projection, so no second-precision claim or point-in-time
+eligibility is derived from an ambiguous timestamp.
+
+Authority URL, response hash and verification read time are retained beside each
+verified instant. The fixed 2026-10-24 capture selection was reconciled later;
+`source_metadata_retrieved_at` and row verification times disclose those later reads.
+Legacy unverified instants cannot establish second-precision eligibility.
