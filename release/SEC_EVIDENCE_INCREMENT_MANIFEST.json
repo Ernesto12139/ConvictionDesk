@@ -1,6 +1,6 @@
 {
   "schema_version": "public-sec-increment-v1",
-  "upstream_source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946",
+  "upstream_source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b",
   "public_parent": "8ce23e18ec4d876c87623a4d07e5850f3f5dda33",
   "export_method": "explicit regular blobs; no private Git history",
   "privacy_scan": "PASS",
@@ -9,56 +9,115 @@
     {
       "source": "src/market_agent/sec.py",
       "path": "src/market_agent/sec.py",
-      "git_blob": "0986897547dc0829ea74b527e1453a2915f0b546",
-      "sha256": "fcc19b7666873304bf456650598ba3379d729cc7d337ff7c8ec0bdfc11e6d786"
+      "git_blob": "1955ea9d9ef47c3fbdd4b38395cda8a675ad10b2",
+      "sha256": "fe6c871bfd1ea74b2d6a55af47dfc2cfcf675566df8a848264e1f2da04aa1f27",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
     },
     {
       "source": "src/market_agent/sec_filings.py",
       "path": "src/market_agent/sec_filings.py",
-      "git_blob": "ee9cf99bc34a1d6f68bc1ade1c2b1dd1e9d449a0",
-      "sha256": "a334dbc1551d531bb120e8b7a981cd7f0a004bb305b3616bbe4728d9cf4023d4"
+      "git_blob": "15a47f11b20a263a658a3177a03bca8c24274773",
+      "sha256": "d239d20bb6ebd340829a403faf56d89ddbd19fccfa85b1876962fabbb0bfc765",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
     },
     {
       "source": "tests/test_ivs_sec_provider.py",
       "path": "tests/test_ivs_sec_provider.py",
       "git_blob": "9bc6ac053ac458337c6237b38d367a7bcc041017",
-      "sha256": "7595d757a2612cde557b1b82e755b8abea2c7a984a7239b31dffa77e5c3cfb9e"
+      "sha256": "7595d757a2612cde557b1b82e755b8abea2c7a984a7239b31dffa77e5c3cfb9e",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
     },
     {
       "source": "tests/test_sec_filings.py",
       "path": "tests/test_sec_filings.py",
-      "git_blob": "ad1210746fad618cb72476f54fc3eda87ede8828",
-      "sha256": "686b42bb01a50d210ea3469e9b9801746bc8a18bd6ac382c363016396c553c2a"
+      "git_blob": "4789ff14b579d53ba58fa60f481855c6a2c96700",
+      "sha256": "b587f65d13a50205d7def7b500b23e6b30c40b8d0ac56a840dc5b0e6e122bd57",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
     },
     {
       "source": "evals/fixtures/ivs_sec/UNP.json",
       "path": "evals/fixtures/ivs_sec/UNP.json",
-      "git_blob": "872f90d73bce8ce29bd6875e4310cc9a1725dc64",
-      "sha256": "8c1ffa7744c1287b27c7170b204dbb806615c89b27626efa5d40c26487fcff7b"
+      "git_blob": "98d7070219aba49f7bf66282c25dbc7d6dd86338",
+      "sha256": "6272b1884a4624aca3c02bce8bb5c3c51393f2f4ff5261da6e0dc9a7c96d4084",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
     },
     {
       "source": "evals/fixtures/ivs_sec/KR.json",
       "path": "evals/fixtures/ivs_sec/KR.json",
-      "git_blob": "70f500d0c88ba6db359b1820f5b1cbb706879b0b",
-      "sha256": "58fbab5e54fd55523faacb253390909fe00975c9b330556b316131cab8820284"
+      "git_blob": "dc8a0a3251617dbdc654db9c757b82e02ee3de0e",
+      "sha256": "e70079ca8c95d4754594174fd0471ba13abc7f6416dc514a392fa18823b72ce1",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
     },
     {
       "source": "evals/fixtures/ivs_sec/DOW.json",
       "path": "evals/fixtures/ivs_sec/DOW.json",
-      "git_blob": "bd3d1009288db198104532a2bd00e7e7ab4fb02d",
-      "sha256": "5a3ba3e7833872ea3a50ae3b5bf90e854749b9d69ffe9ce1a69f56b09b7149d3"
+      "git_blob": "db02936f9ea0f9cde3dc47afa105878542edcd9a",
+      "sha256": "ff29835f6fd831c80a09552899cf9a297a2a6adeffbacb8ea12533df826ff0f3",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
     },
     {
       "path": "scripts/sec_evidence_demo.py",
       "source": "public-only reproducible adapter",
-      "sha256": "bb7bbb8ad0c8f9e38e0f8059fb6f78f2ed346258c50c95057eb32ddacb6a38b0"
+      "sha256": "bb7bbb8ad0c8f9e38e0f8059fb6f78f2ed346258c50c95057eb32ddacb6a38b0",
+      "git_blob": "4e3c068d89549eeb2fe1f77f377999ecad084a0d",
+      "source_sha": null
     },
     {
       "source": "src/market_agent/tool_deadline.py",
       "path": "src/market_agent/tool_deadline.py",
       "git_blob": "3f3457f1d963d7c99bb7729812a6eb4969f7b7ea",
       "sha256": "14676a46395b8e69b96705e93fbf9f8cba60a185fe53406dd19d5907d2a4d0ce",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
+    },
+    {
+      "source": "public-only documentation",
+      "path": "README.md",
+      "git_blob": "183ff7ecc6d611061a14bd131f2923d196c55ccd",
+      "sha256": "7a4689d299add23f3ada39f3a4b990138a20a7b741029cf2ba5179484d3c3263",
+      "source_sha": null
+    },
+    {
+      "source": "scripts/verify_sec_capture.py",
+      "path": "scripts/verify_sec_capture.py",
+      "git_blob": "13f2c387125b8b74925ed259c54b9e04ea891dbd",
+      "sha256": "a4724c42decaafddfe18fb3dea7bc73241fbd2b310b29d6729532944ed283d5e",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
+    },
+    {
+      "source": "tests/test_sec_time_verification.py",
+      "path": "tests/test_sec_time_verification.py",
+      "git_blob": "ed1f44b7aad65ac827ab6675a2ad18d90711410f",
+      "sha256": "cdedf8e43a8c3a6b0ab946c47cb1a41c9d26eaa25d9aa2e68ba6c97434c623d2",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
+    },
+    {
+      "source": "tests/test_sec_amendment_freshness.py",
+      "path": "tests/test_sec_amendment_freshness.py",
+      "git_blob": "82061eaeb74ec9add9e2e755fc17c1213de4ad95",
+      "sha256": "1c5bc26e08a8f374b1fa9259bb68a7a700d809a92e677f3eb4a3ba3c332bf5e8",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
+    },
+    {
+      "path": "evals/fixtures/sec_acceptance_dst_anchors.json",
+      "source": "evals/fixtures/sec_acceptance_dst_anchors.json",
+      "sha256": "dd42170dc93e8d47c63fac8885789256468a1a59cad531002392570664767cac",
+      "git_blob": "5ee043676d16b39b583cd15c9bf37644d62d65a4",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
+    },
+    {
+      "path": "tests/sec_capture_fixtures.py",
+      "source": "tests/sec_capture_fixtures.py",
+      "sha256": "9012a508138bd3ccb8956e6a89f4f8be668bea5fa165bb1dfba68a137c87af5d",
+      "git_blob": "b57d2a98776f6355cadb5f1728e5719a462fcc4b",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
+    },
+    {
+      "path": "tests/test_sec_authority_receipts.py",
+      "source": "tests/test_sec_authority_receipts.py",
+      "sha256": "db552e7ccd3fe97631ad64c0dc63825a4e6f61848b53d2441ae054f271c432b7",
+      "git_blob": "8c130bc86141e34db8ba3bf1bbf8197da43c0761",
+      "source_sha": "6b061d31e765df79a48a3fb1450e1a779c25708b"
     }
-  ]
+  ],
+  "verification": "SOURCE_RECEIPTS_AND_INDEPENDENT_QODER_REVIEW_REQUIRED_NOT_GRANTED_BY_MANIFEST"
 }

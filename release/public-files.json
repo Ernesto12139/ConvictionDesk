@@ -742,5 +742,29 @@
   {
     "source": "src/market_agent/tool_deadline.py",
     "path": "src/market_agent/tool_deadline.py"
+  },
+  {
+    "source": "scripts/verify_sec_capture.py",
+    "path": "scripts/verify_sec_capture.py"
+  },
+  {
+    "source": "tests/test_sec_time_verification.py",
+    "path": "tests/test_sec_time_verification.py"
+  },
+  {
+    "source": "tests/test_sec_amendment_freshness.py",
+    "path": "tests/test_sec_amendment_freshness.py"
+  },
+  {
+    "source": "tests/sec_capture_fixtures.py",
+    "path": "tests/sec_capture_fixtures.py"
+  },
+  {
+    "source": "tests/test_sec_authority_receipts.py",
+    "path": "tests/test_sec_authority_receipts.py"
+  },
+  {
+    "source": "evals/fixtures/sec_acceptance_dst_anchors.json",
+    "path": "evals/fixtures/sec_acceptance_dst_anchors.json"
   }
 ]

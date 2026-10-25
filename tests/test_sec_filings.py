@@ -30,7 +30,7 @@ CIK = "0000100885"
 
 def capture(rows, *, symbol="AAA", cik=CIK, name="AURORA GRID CORP",
             captured_at=NOW.isoformat()):
-    return {
+    result = {
         "schema_version": CAPTURE_SCHEMA_VERSION,
         "captured_at": captured_at,
         "source_uri": f"https://data.sec.gov/submissions/CIK{cik}.json",
@@ -44,6 +44,9 @@ def capture(rows, *, symbol="AAA", cik=CIK, name="AURORA GRID CORP",
             for accession, form, acceptance, filed, items, primary in rows
         ],
     }
+    from sec_capture_fixtures import verified_test_row
+    result['rows']=[verified_test_row(row,cik) for row in result['rows']]
+    return result
 
 
 def filing(accession, form, acceptance, items, *, filed=None, primary="doc.htm"):

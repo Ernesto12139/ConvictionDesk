@@ -1,0 +1,53 @@
+{
+  "scope": "ADDITIONAL_PUBLIC_SEC_TIME_VERIFICATION_NOT_DEMO_SELECTION",
+  "anchors": [
+    {
+      "symbol": "UNP",
+      "cik": "0000100885",
+      "row": {
+        "accession": "0000100885-26-000070",
+        "form": "4",
+        "base_form": "4",
+        "filing_date": "2026-02-12",
+        "primary_document": "xslF345X05/edgardoc.xml",
+        "items": [],
+        "acceptance": "2026-02-12T23:18:22.000Z",
+        "raw_submission_acceptance": "2026-02-12T23:18:22.000Z",
+        "verified_edgar_accepted_at_utc": "2026-02-12T23:18:22+00:00",
+        "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+        "raw_metadata_hash": "sha256:425349e654bf2d0109d154714af46716b66313a748d2742afc05ec8f2a6c716d",
+        "acceptance_authority": {
+          "source_uri": "https://www.sec.gov/Archives/edgar/data/100885/000010088526000070/0000100885-26-000070-index.htm",
+          "source_sha256": "sha256:eb70b8fe1edc930aae4049138f903d8dbea116d590ae1867668c3abb429242a6",
+          "accepted_eastern": "2026-02-12 18:18:22",
+          "observed_at": "2026-10-25T13:24:40.391465+00:00",
+          "source_metadata_hash": "sha256:425349e654bf2d0109d154714af46716b66313a748d2742afc05ec8f2a6c716d"
+        }
+      }
+    },
+    {
+      "symbol": "KR",
+      "cik": "0000056873",
+      "row": {
+        "accession": "0001193125-26-059549",
+        "form": "3",
+        "base_form": "3",
+        "filing_date": "2026-02-19",
+        "primary_document": "xslF345X02/ownership.xml",
+        "items": [],
+        "acceptance": "2026-02-19T21:37:36.000Z",
+        "raw_submission_acceptance": "2026-02-19T21:37:36.000Z",
+        "verified_edgar_accepted_at_utc": "2026-02-19T21:37:36+00:00",
+        "time_verification": "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE",
+        "raw_metadata_hash": "sha256:1aeda7ad1a6041f02a4535d4b3cf259f6afad554090c9793f66f931102c18e90",
+        "acceptance_authority": {
+          "source_uri": "https://www.sec.gov/Archives/edgar/data/1193125/000119312526059549/0001193125-26-059549-index.htm",
+          "source_sha256": "sha256:a1666c7a292faddb737f1fad07fcbd050623628038d96418e41986933669e27c",
+          "accepted_eastern": "2026-02-19 16:37:36",
+          "observed_at": "2026-10-25T13:24:41.582913+00:00",
+          "source_metadata_hash": "sha256:1aeda7ad1a6041f02a4535d4b3cf259f6afad554090c9793f66f931102c18e90"
+        }
+      }
+    }
+  ]
+}

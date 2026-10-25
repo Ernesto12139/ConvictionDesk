@@ -22,6 +22,7 @@ from __future__ import annotations
 
 import threading
 import time
+import re
 from datetime import date, datetime, timedelta
 from typing import Iterable, Literal, Protocol
 
@@ -132,6 +133,12 @@ class FilingProvenance(FrozenModel):
     raw_metadata_hash: str
     normalization_version: str = NORMALIZATION_VERSION
     capture_identity: str
+    raw_submission_acceptance: str | None = None
+    verified_edgar_accepted_at_utc: datetime | None = None
+    verification_status: str | None = None
+    verification_source_uri: str | None = None
+    verification_source_hash: str | None = None
+    verification_observed_at: datetime | None = None
 
 
 class SymbolCoverage(FrozenModel):
@@ -407,14 +414,20 @@ def _prior_with_overlap(history, row, *, within_days: int | None, include_amendm
     return None
 
 
-def _rank_basis(scope: ScopeRef, band: str, fresh: bool, items: list[str]) -> list[str]:
+def _rank_basis(scope: ScopeRef, band: str, fresh: bool, items: list[str],
+                *, unlinked_amendment: bool = False) -> list[str]:
     basis = [f"SCOPE_{scope.kind}"]
     material = [code for code in items if code in MATERIAL_ITEMS]
     if material:
         basis.append("SEC_ITEM_" + "+".join(material[:2]))
     else:
         basis.append(f"BAND_{band}")
-    basis.append("FIRST_DISCLOSURE" if fresh else "FOLLOW_ON_OR_AMENDMENT")
+    if unlinked_amendment:
+        # An amendment is never a first disclosure. When its original falls outside the
+        # window the link is unknown, but the disclosure identity is still an amendment.
+        basis.append("AMENDMENT_ORIGINAL_OUTSIDE_WINDOW")
+    else:
+        basis.append("FIRST_DISCLOSURE" if fresh else "FOLLOW_ON_OR_AMENDMENT")
     return basis
 
 
@@ -490,6 +503,7 @@ def project(
             bucket["matches"].extend(refs)
 
     filings: list[FilingEvidence] = []
+    unlinked_amendments = 0
     for (cik, accession), bucket in grouped.items():
         issuer, row = bucket["issuer"], bucket["row"]
         known, unknown = normalize_items(row.items)
@@ -506,7 +520,8 @@ def project(
                                         include_amendments=False)
             if prior is not None:
                 follows = _relation(row, prior, basis="SAME_ITEM_WITHIN_FOLLOW_WINDOW")
-        fresh = amends is None and follows is None
+        fresh = (not row.is_amendment) and amends is None and follows is None
+        unlinked_amendment = row.is_amendment and amends is None
         matches: list[ScopeRef] = []
         for ref in bucket["matches"]:
             if ref not in matches:
@@ -527,16 +542,26 @@ def project(
                 retrieved_at=bucket["report"].retrieved_at,
                 raw_metadata_hash=row.raw_metadata_hash,
                 capture_identity=capture,
+                raw_submission_acceptance=row.raw_submission_acceptance,
+                verified_edgar_accepted_at_utc=row.verified_edgar_accepted_at_utc,
+                verification_status=row.verification_status,
+                verification_source_uri=row.verification_source_uri,
+                verification_source_hash=row.verification_source_hash,
+                verification_observed_at=row.verification_observed_at,
             ),
             event_class=event_class, event_label=label,
             review_questions=review_questions(known),
             screening=ScreeningState(),
             ranking=FilingRank(
                 scope_rank=SCOPE_RANK[primary.kind], band=band, band_rank=BAND_RANK[band],
-                fresh_disclosure=fresh, basis=_rank_basis(primary, band, fresh, known),
+                fresh_disclosure=fresh,
+                basis=_rank_basis(primary, band, fresh, known,
+                                  unlinked_amendment=unlinked_amendment),
             ),
             amends=amends, follows=follows,
         ))
+        if unlinked_amendment:
+            unlinked_amendments += 1
 
     # Contract order: available_at descending, then accession. Stable and explainable.
     filings.sort(key=lambda item: (-item.available_at.timestamp(), item.accession))
@@ -567,6 +592,10 @@ def project(
     ]
     if truncated:
         limitations.append(f"标的数量超过上限 {len(symbols)}，其余标的本次未扫描。")
+    if unlinked_amendments:
+        limitations.append(
+            f"{unlinked_amendments} 份修订申报的原始申报不在本次回看窗口内；"
+            "未建立原始申报关联，但这些申报仍按修订身份处理，不算首次披露。")
     if status == "PARTIAL":
         limitations.append("部分标的本次没有取得可用申报列表；结果不是完整的“无新申报”。")
 
@@ -598,6 +627,51 @@ def by_scope(projection: FilingsProjection) -> list[dict]:
 # --- offline replay ----------------------------------------------------------
 
 CAPTURE_SCHEMA_VERSION = "ivs-sec-capture-v1"
+# A capture may declare that a row's acceptance instant was independently checked
+# against SEC's Eastern acceptance clock. Rows that declare a non-verified state are
+# refused rather than trusted, because a `Z` suffix alone does not establish UTC.
+VERIFIED_ACCEPTANCE = "VERIFIED_INDEX_AND_SUBMISSIONS_AGREE"
+
+
+def verified_capture_time(row: dict, issuer_cik: str):
+    """Bind second precision to a separately recorded authority read, not a label.
+
+    Rehashing a shifted capture cannot change the stored index clock or source
+    metadata reconciliation. Legacy date-only replay keeps its conservative bound.
+    """
+    from .sec import filing_metadata_hash, normalize_acceptance
+    accepted, precision = normalize_acceptance(row.get('acceptance'))
+    if precision != 'SECOND':
+        return accepted, precision
+    if row.get('time_verification') != VERIFIED_ACCEPTANCE:
+        raise ValueError('TIME_NOT_INDEPENDENTLY_VERIFIED')
+    proof = row.get('acceptance_authority') or {}
+    accession = row['accession']
+    allowed = {f"https://www.sec.gov/Archives/edgar/data/{int(cik)}/{accession.replace('-','')}/{accession}-index.htm"
+               for cik in (issuer_cik, accession.split('-')[0])}
+    if (proof.get('source_uri') not in allowed
+            or not re.fullmatch(r'sha256:[a-f0-9]{64}', proof.get('source_sha256', ''))):
+        raise ValueError('TIME_NOT_INDEPENDENTLY_VERIFIED')
+    observed = datetime.fromisoformat(proof['observed_at'].replace('Z','+00:00'))
+    if observed.tzinfo is None or observed.utcoffset() is None:
+        raise ValueError('TIME_NOT_INDEPENDENTLY_VERIFIED')
+    wall = datetime.strptime(proof['accepted_eastern'], '%Y-%m-%d %H:%M:%S')
+    eastern = wall.replace(tzinfo=SEC_TIMEZONE)
+    # A repeated or nonexistent DST wall clock cannot establish one instant.
+    if (eastern.utcoffset() != eastern.replace(fold=1).utcoffset()
+            or utc(eastern).astimezone(SEC_TIMEZONE).replace(tzinfo=None) != wall):
+        raise ValueError('TIME_NOT_INDEPENDENTLY_VERIFIED')
+    verified, verified_precision = normalize_acceptance(row.get('verified_edgar_accepted_at_utc'))
+    raw, raw_precision = normalize_acceptance(row.get('raw_submission_acceptance'))
+    source_hash = filing_metadata_hash(accession=accession,form=row['form'],
+        acceptance=row.get('raw_submission_acceptance'),filing_date=row.get('filing_date'),
+        items=','.join(row.get('items') or []),primary_document=row.get('primary_document'))
+    if (verified_precision != 'SECOND' or raw_precision != 'SECOND'
+            or not (accepted == verified == raw == utc(eastern))
+            or observed < verified
+            or not (row.get('raw_metadata_hash') == proof.get('source_metadata_hash') == source_hash)):
+        raise ValueError('TIME_NOT_INDEPENDENTLY_VERIFIED')
+    return verified, 'SECOND'
 
 
 class CapturedFilingsSource:
@@ -636,7 +710,20 @@ class CapturedFilingsSource:
         cutoff = utc(as_of)
         rows, excluded = [], []
         for row in self._capture["rows"]:
-            accepted_at, precision = self._normalize(row.get("acceptance"))
+            # A declared-but-unverified acceptance time is not a fact. Refuse it even
+            # when a string is present, so no caller can read second precision or PIT
+            # eligibility out of an instant the capture itself does not vouch for.
+            verification = row.get("time_verification")
+            if verification is not None and verification != VERIFIED_ACCEPTANCE:
+                excluded.append(SecExcludedRow(accession=row["accession"], form=row["form"],
+                                               reason="TIME_NOT_INDEPENDENTLY_VERIFIED"))
+                continue
+            try:
+                accepted_at, precision = verified_capture_time(row, issuer['cik'])
+            except (ValueError, KeyError, TypeError, OverflowError):
+                excluded.append(SecExcludedRow(accession=row['accession'],form=row['form'],
+                                               reason='TIME_NOT_INDEPENDENTLY_VERIFIED'))
+                continue
             filing_date = self._parse_date(row.get("filing_date"))
             available = self._bound(accepted_at, precision, filing_date)
             if available is None:
@@ -656,10 +743,16 @@ class CapturedFilingsSource:
                 source_url=self._url(self._www, issuer["cik"], row["accession"],
                                      row.get("primary_document")),
                 raw_metadata_hash=row.get("raw_metadata_hash", ""),
+                raw_submission_acceptance=row.get('raw_submission_acceptance'),
+                verified_edgar_accepted_at_utc=accepted_at if precision == 'SECOND' else None,
+                verification_status=row.get('time_verification'),
+                verification_source_uri=(row.get('acceptance_authority') or {}).get('source_uri'),
+                verification_source_hash=(row.get('acceptance_authority') or {}).get('source_sha256'),
+                verification_observed_at=(row.get('acceptance_authority') or {}).get('observed_at'),
             ))
         rows.sort(key=lambda row: (-row.available_at.timestamp(), row.accession))
         mapping = self._capture.get("mapping") or {}
-        retrieved = datetime.fromisoformat(self._capture["captured_at"])
+        retrieved = datetime.fromisoformat(self._capture.get('source_metadata_retrieved_at') or self._capture["captured_at"])
         return SecRecentFilings(
             issuer=SecIssuerIdentity(
                 symbol=symbol, cik=issuer["cik"], name=issuer.get("name"),

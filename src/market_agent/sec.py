@@ -128,6 +128,12 @@ class SecFilingRow(FrozenModel):
     available_at: datetime | None
     source_url: str | None
     raw_metadata_hash: str
+    raw_submission_acceptance: str | None = None
+    verified_edgar_accepted_at_utc: datetime | None = None
+    verification_status: str | None = None
+    verification_source_uri: str | None = None
+    verification_source_hash: str | None = None
+    verification_observed_at: datetime | None = None
 
 
 class SecExcludedRow(FrozenModel):
