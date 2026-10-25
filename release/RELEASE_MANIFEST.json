@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "e67987719a9ab9b87a5ff8c3fd2abc51cf0199f4",
+  "upstream_source_sha": "bb656b23d801b0c825a34ebe651531373c700a4f",
   "source_version": "0.9.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -78,9 +78,8 @@
     {
       "path": "release/public-files.json",
       "source": "release/public-files.json",
-      "git_blob": "3dfd3f3d0048a7a7838697e6e954b249277b4bac",
-      "sha256": "a1dd002ca371a435bad36324e84f193271250aa6a5a756e0974fd8c05df667c3",
-      "source_sha": "06e994f96b21a504ad43f4bed13276c24ecfb833"
+      "git_blob": "49758db796a6ed5734cc51dccbebace9713619e4",
+      "sha256": "17cb4f74b056d66ade6b8192c9329f06de946119ce6212cc3718afa8f38f7fe0"
     },
     {
       "path": "scripts/build_public_demo_dataset.py",
@@ -383,11 +382,10 @@
       "sha256": "f9fe5244485c2c7b98e903e2440607db1bbf5835ba673af965b2cdd7d8afe926"
     },
     {
-      "source": "src/market_agent/sec.py",
       "path": "src/market_agent/sec.py",
-      "git_blob": "0986897547dc0829ea74b527e1453a2915f0b546",
-      "sha256": "fcc19b7666873304bf456650598ba3379d729cc7d337ff7c8ec0bdfc11e6d786",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "source": "src/market_agent/sec.py",
+      "git_blob": "1955ea9d9ef47c3fbdd4b38395cda8a675ad10b2",
+      "sha256": "fe6c871bfd1ea74b2d6a55af47dfc2cfcf675566df8a848264e1f2da04aa1f27"
     },
     {
       "path": "src/market_agent/semantic.py",
@@ -602,61 +600,60 @@
     {
       "path": "README.md",
       "source": "README.md",
-      "sha256": "3b27212f4e84df7f78a1d5cca5df5363ae4d849c103238e33843070929f7d65f",
-      "git_blob": "d7240d9b172e313dafcee51a28a265d6d5040f25",
-      "source_sha": "06e994f96b21a504ad43f4bed13276c24ecfb833"
+      "git_blob": "183ff7ecc6d611061a14bd131f2923d196c55ccd",
+      "sha256": "7a4689d299add23f3ada39f3a4b990138a20a7b741029cf2ba5179484d3c3263"
     },
     {
       "path": ".github/workflows/ci.yml",
-      "source": "release/PUBLIC_CI.yml",
+      "source": ".github/workflows/ci.yml",
       "git_blob": "80c9a87eeb5ef0af106da775a4dd2cda38d8dd99",
       "sha256": "6bdbbdac48422545c76ba22af5dae3ca8dd1425302b74ed49313e0735cb8f60f"
     },
     {
       "path": "LICENSE",
-      "source": "release/LICENSE",
+      "source": "LICENSE",
       "git_blob": "b0119f3bb25ef940c00079de403524251f513872",
       "sha256": "040807eb34a5dfedd5babd455f6701496fd89f38d919ebc52e5f2dd70cb1622a"
     },
     {
       "path": ".gitignore",
-      "source": "release/PUBLIC_GITIGNORE",
+      "source": ".gitignore",
       "git_blob": "615cbd00afd98e78c545fd75fff22709c1cf03c0",
       "sha256": "843559191a043a3f26900a85be776a06a333b42f4ccdc88feb278298c54ae70d"
     },
     {
       "path": "docs/assets/convictiondesk-architecture-dark.svg",
-      "source": "release/assets/convictiondesk-architecture-dark.svg",
+      "source": "docs/assets/convictiondesk-architecture-dark.svg",
       "git_blob": "00a6cf33fd917b8b020c32b2f31166700ea4d9d8",
       "sha256": "c6e9bf6676396726672a797ace194d3253ac3dac8fa9215b8d6a50a43ecae452"
     },
     {
       "path": "docs/assets/convictiondesk-architecture-light.svg",
-      "source": "release/assets/convictiondesk-architecture-light.svg",
+      "source": "docs/assets/convictiondesk-architecture-light.svg",
       "git_blob": "d7441b1cf6306d1186ba1b62fff640af7e1e0976",
       "sha256": "d22524090896f0c6162867e6ac44c1a0b7abd4247b8a91690635b80953f9d4f4"
     },
     {
       "path": "docs/assets/convictiondesk-evidence-to-action-dark.svg",
-      "source": "release/assets/convictiondesk-evidence-to-action-dark.svg",
+      "source": "docs/assets/convictiondesk-evidence-to-action-dark.svg",
       "git_blob": "7c252766d380d97231a3902c1b3507f54847fd5b",
       "sha256": "5f0f53b87c942156db3f844d20c739beda6f19105c7ee50b8a5080205d1cb56f"
     },
     {
       "path": "docs/assets/convictiondesk-evidence-to-action-light.svg",
-      "source": "release/assets/convictiondesk-evidence-to-action-light.svg",
+      "source": "docs/assets/convictiondesk-evidence-to-action-light.svg",
       "git_blob": "691a98f1cdc8f78168740759840e5efa70bfee09",
       "sha256": "209a2b6e7ac832d260b0d6870dc4ea9f4fe060156910deebdc32c937218aa12e"
     },
     {
       "path": "docs/assets/convictiondesk-fast-deep-dark.svg",
-      "source": "release/assets/convictiondesk-fast-deep-dark.svg",
+      "source": "docs/assets/convictiondesk-fast-deep-dark.svg",
       "git_blob": "221b8ca2b67e4f78be9bbc5c02f5f61cc99f4087",
       "sha256": "2e6ea5cac4ae74011c6cc505f944b153379f2c4b7eb51c5c140ee3ebfeee6c18"
     },
     {
       "path": "docs/assets/convictiondesk-fast-deep-light.svg",
-      "source": "release/assets/convictiondesk-fast-deep-light.svg",
+      "source": "docs/assets/convictiondesk-fast-deep-light.svg",
       "git_blob": "4bc9dac44d1c822f487273356ba57f7e1e510714",
       "sha256": "f27bbc9f70a452705bd8207683a1537ff3a19e75ec7da5c678f2d7f383ee5217"
     },
@@ -920,43 +917,43 @@
     },
     {
       "path": "docs/assets/convictiondesk-decision-dark.png",
-      "source": "release/assets/convictiondesk-decision-dark.png",
+      "source": "docs/assets/convictiondesk-decision-dark.png",
       "git_blob": "29b94ec98a040750b859b329bc5e1dcba031449e",
       "sha256": "22e259611fe70b6be04cde8fba74e7f7479f3440814f316040f6087bb570dd7c"
     },
     {
       "path": "docs/assets/convictiondesk-decision-light.png",
-      "source": "release/assets/convictiondesk-decision-light.png",
+      "source": "docs/assets/convictiondesk-decision-light.png",
       "git_blob": "270c151ae8a44ae0a4663ba95a5149c8e764c59c",
       "sha256": "e0b28301c1a9aa00e0a28af72a4f70c91a95e92fe021d2f14541d5815f7d33af"
     },
     {
       "path": "docs/assets/convictiondesk-journey-dark.png",
-      "source": "release/assets/convictiondesk-journey-dark.png",
+      "source": "docs/assets/convictiondesk-journey-dark.png",
       "git_blob": "1bf9d24195473febb7693dcbd9f698efa833d13c",
       "sha256": "9214de160f1d0d0b8d7b2bca04f45e6155848aa227ee67f728693e725815d01e"
     },
     {
       "path": "docs/assets/convictiondesk-journey-light.png",
-      "source": "release/assets/convictiondesk-journey-light.png",
+      "source": "docs/assets/convictiondesk-journey-light.png",
       "git_blob": "e4386018672f07db384db887cdf56c70cd684611",
       "sha256": "b5e33e56f56d01bf45653838f5965b988079abab81f332515d86fe5ab4e6e449"
     },
     {
       "path": "docs/assets/convictiondesk-mobile.png",
-      "source": "release/assets/convictiondesk-mobile.png",
+      "source": "docs/assets/convictiondesk-mobile.png",
       "git_blob": "4e63be92dc63dd143f64225da6e2c1f5d06972d3",
       "sha256": "75a7e269855b7573555fd30d378b4a6a6bc9a283bde064a038a1836d9b81b61b"
     },
     {
       "path": "docs/assets/convictiondesk-records-dark.png",
-      "source": "release/assets/convictiondesk-records-dark.png",
+      "source": "docs/assets/convictiondesk-records-dark.png",
       "git_blob": "d10322c1b2c28d12a0013e23fdb00a61681f3daf",
       "sha256": "a851cdbd9a73dacafb8810ca0b74beb504900cdc2d59e45b0fb1dacabcff19f2"
     },
     {
       "path": "docs/assets/convictiondesk-records-light.png",
-      "source": "release/assets/convictiondesk-records-light.png",
+      "source": "docs/assets/convictiondesk-records-light.png",
       "git_blob": "c7136c34d7798972fb820f73732c2d3d94cb71d6",
       "sha256": "f6353f0d89037402b6a027deb0efc260e8e7ab4b932bd9dead7a7dd16a4a856e"
     },
@@ -974,164 +971,192 @@
     },
     {
       "path": "docs/assets/convictiondesk-whatif-light.png",
-      "source": "release/assets/convictiondesk-whatif-light.png",
+      "source": "docs/assets/convictiondesk-whatif-light.png",
       "git_blob": "11164eb2be751d975966638bb9b0c760e0d94eaa",
       "sha256": "6f45c7af45e4279ed2e65f4fabe4ebad7a861988e455f22ab3975d1038c24329"
     },
     {
       "path": "docs/assets/convictiondesk-whatif-dark.png",
-      "source": "release/assets/convictiondesk-whatif-dark.png",
+      "source": "docs/assets/convictiondesk-whatif-dark.png",
       "git_blob": "4bd6b3ee8158a25e72b45a76de69d18838783a2e",
       "sha256": "18ec22a107548cf057fcad46e05a6a4ac26af3aa823f09bfe39b44161a4f2459"
     },
     {
       "path": "docs/README.md",
-      "source": "release/public-docs/README.md",
+      "source": "docs/README.md",
       "git_blob": "89eb5571278bc63ce97bb9ff98a1445b4eeb7ff8",
       "sha256": "47063a7aa97ab94ce371ac33b1f637ed4ee25c468250aa5454202d1184174166"
     },
     {
       "path": "docs/getting-started.md",
-      "source": "release/public-docs/getting-started.md",
+      "source": "docs/getting-started.md",
       "git_blob": "2c92632b4ac93d856f00bfe67454153dc3458e03",
       "sha256": "73e7d0137e18ce308178a5d1fc0be862514ebe9c6b19cdb374bd0aa4fb4df99b"
     },
     {
       "path": "docs/architecture.md",
-      "source": "release/public-docs/architecture.md",
+      "source": "docs/architecture.md",
       "git_blob": "c6cdd74d060565bcb295a289ca2f3bfe13a5cc7f",
       "sha256": "59cad28888cb091df9e6099b7dd25e5a78904945118081973f32609e640b2f5d"
     },
     {
       "path": "docs/data-sources.md",
-      "source": "release/public-docs/data-sources.md",
+      "source": "docs/data-sources.md",
       "git_blob": "499e788a718b507e719b14ba8c000de7cc5b83f2",
       "sha256": "bba1c272d040cc40ff0d50d0416a5260e427643ebcd75c5792faade5ac0914f2"
     },
     {
       "path": "docs/verification.md",
-      "source": "release/public-docs/verification.md",
+      "source": "docs/verification.md",
       "git_blob": "fcfd51ae9438b435e824725ef86e86e2f9f4197a",
       "sha256": "b518fb10417d7757be512b28b15802f1ae4dddc932516db65a5e17a74e744567"
     },
     {
       "path": "docs/showcase.md",
-      "source": "release/public-docs/showcase.md",
+      "source": "docs/showcase.md",
       "git_blob": "f9c6ee01d92378b1716723c5b66e65f1b16078a1",
       "sha256": "b81c82be279472ce11213697de080a64f069c1ba3e3966c92f51098dda2b532f"
     },
     {
       "path": "CONTRIBUTING.md",
-      "source": "release/PUBLIC_CONTRIBUTING.md",
+      "source": "CONTRIBUTING.md",
       "git_blob": "ee03fb55f113980be35aa430eade67c3ecbff5dd",
       "sha256": "56157f8351c60f05b4d660d7cbe2c3120c9dc376b869c9d6ea687e61410a0f96"
     },
     {
       "path": "CHANGELOG.md",
-      "source": "release/PUBLIC_CHANGELOG.md",
+      "source": "CHANGELOG.md",
       "git_blob": "1fd3615d3157d6b4bb3f2cc230f7798e519bc0dc",
       "sha256": "e4a4bf0387540bf64275193d7867c5099b6454d0f4bf0df399aeb7b7d0318d27"
     },
     {
       "path": "docs/assets/convictiondesk-hero-light.svg",
-      "source": "release/assets/convictiondesk-hero-light.svg",
+      "source": "docs/assets/convictiondesk-hero-light.svg",
       "git_blob": "a843df87f8bf06c456fb7ab96d54c03d935cfd87",
       "sha256": "9d80853b1c720a9d299cb6d313e11a74db0140e0ed6cdb281291f4f0273ffe53"
     },
     {
       "path": "docs/assets/convictiondesk-hero-dark.svg",
-      "source": "release/assets/convictiondesk-hero-dark.svg",
+      "source": "docs/assets/convictiondesk-hero-dark.svg",
       "git_blob": "f39474e804784ce6f94c169acaeb12349f91fd6b",
       "sha256": "7e4cc571e622d9bb6acbf6aa2fb1cde4e51a5e24cda31d580493238b929936d5"
     },
     {
       "path": "docs/assets/convictiondesk-loop-light.svg",
-      "source": "release/assets/convictiondesk-loop-light.svg",
+      "source": "docs/assets/convictiondesk-loop-light.svg",
       "git_blob": "29b56995d78b3aba949560554f47993115bebd12",
       "sha256": "91c4157776c454bf4a6cf0605218b026fc93697539c07cbaabcdbf8d376472fc"
     },
     {
       "path": "docs/assets/convictiondesk-loop-dark.svg",
-      "source": "release/assets/convictiondesk-loop-dark.svg",
+      "source": "docs/assets/convictiondesk-loop-dark.svg",
       "git_blob": "8a3d348cdfeceab6f3f79d5f34c79d6f5708e4a8",
       "sha256": "e4a706f5def9c6c82ee2dcd3e3b27d4dd839b1b51cdc19d669664f001fc23027"
     },
     {
       "path": "docs/assets/convictiondesk-product-light.png",
-      "source": "release/assets/convictiondesk-product-light.png",
+      "source": "docs/assets/convictiondesk-product-light.png",
       "git_blob": "307b4fe1f3fafe803c571f1ddfa5fac6d43231bd",
       "sha256": "602057aad9c3cb424dffb2de9d6e07f1cc1ee740a8bdc3e31df7d6ae47be0f18"
     },
     {
       "path": "docs/assets/convictiondesk-product-dark.png",
-      "source": "release/assets/convictiondesk-product-dark.png",
+      "source": "docs/assets/convictiondesk-product-dark.png",
       "git_blob": "afed20fd2407c06b20afcc2de428e38a745f8c70",
       "sha256": "a04e455cf32881280b72faa55e523bd835ee92a5a89da1b5a40e6212071a86a4"
     },
     {
-      "source": "src/market_agent/sec_filings.py",
       "path": "src/market_agent/sec_filings.py",
-      "git_blob": "ee9cf99bc34a1d6f68bc1ade1c2b1dd1e9d449a0",
-      "sha256": "a334dbc1551d531bb120e8b7a981cd7f0a004bb305b3616bbe4728d9cf4023d4",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "source": "src/market_agent/sec_filings.py",
+      "git_blob": "15a47f11b20a263a658a3177a03bca8c24274773",
+      "sha256": "d239d20bb6ebd340829a403faf56d89ddbd19fccfa85b1876962fabbb0bfc765"
     },
     {
-      "source": "tests/test_ivs_sec_provider.py",
       "path": "tests/test_ivs_sec_provider.py",
+      "source": "tests/test_ivs_sec_provider.py",
       "git_blob": "9bc6ac053ac458337c6237b38d367a7bcc041017",
-      "sha256": "7595d757a2612cde557b1b82e755b8abea2c7a984a7239b31dffa77e5c3cfb9e",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "sha256": "7595d757a2612cde557b1b82e755b8abea2c7a984a7239b31dffa77e5c3cfb9e"
     },
     {
-      "source": "tests/test_sec_filings.py",
       "path": "tests/test_sec_filings.py",
-      "git_blob": "ad1210746fad618cb72476f54fc3eda87ede8828",
-      "sha256": "686b42bb01a50d210ea3469e9b9801746bc8a18bd6ac382c363016396c553c2a",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "source": "tests/test_sec_filings.py",
+      "git_blob": "4789ff14b579d53ba58fa60f481855c6a2c96700",
+      "sha256": "b587f65d13a50205d7def7b500b23e6b30c40b8d0ac56a840dc5b0e6e122bd57"
     },
     {
-      "source": "evals/fixtures/ivs_sec/UNP.json",
       "path": "evals/fixtures/ivs_sec/UNP.json",
-      "git_blob": "872f90d73bce8ce29bd6875e4310cc9a1725dc64",
-      "sha256": "8c1ffa7744c1287b27c7170b204dbb806615c89b27626efa5d40c26487fcff7b",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "source": "evals/fixtures/ivs_sec/UNP.json",
+      "git_blob": "98d7070219aba49f7bf66282c25dbc7d6dd86338",
+      "sha256": "6272b1884a4624aca3c02bce8bb5c3c51393f2f4ff5261da6e0dc9a7c96d4084"
     },
     {
-      "source": "evals/fixtures/ivs_sec/KR.json",
       "path": "evals/fixtures/ivs_sec/KR.json",
-      "git_blob": "70f500d0c88ba6db359b1820f5b1cbb706879b0b",
-      "sha256": "58fbab5e54fd55523faacb253390909fe00975c9b330556b316131cab8820284",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "source": "evals/fixtures/ivs_sec/KR.json",
+      "git_blob": "dc8a0a3251617dbdc654db9c757b82e02ee3de0e",
+      "sha256": "e70079ca8c95d4754594174fd0471ba13abc7f6416dc514a392fa18823b72ce1"
     },
     {
-      "source": "evals/fixtures/ivs_sec/DOW.json",
       "path": "evals/fixtures/ivs_sec/DOW.json",
-      "git_blob": "bd3d1009288db198104532a2bd00e7e7ab4fb02d",
-      "sha256": "5a3ba3e7833872ea3a50ae3b5bf90e854749b9d69ffe9ce1a69f56b09b7149d3",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "source": "evals/fixtures/ivs_sec/DOW.json",
+      "git_blob": "db02936f9ea0f9cde3dc47afa105878542edcd9a",
+      "sha256": "ff29835f6fd831c80a09552899cf9a297a2a6adeffbacb8ea12533df826ff0f3"
     },
     {
       "path": "scripts/sec_evidence_demo.py",
-      "source": "public-only reproducible adapter",
-      "sha256": "bb7bbb8ad0c8f9e38e0f8059fb6f78f2ed346258c50c95057eb32ddacb6a38b0",
-      "source_sha": null
+      "source": "scripts/sec_evidence_demo.py",
+      "git_blob": "4e3c068d89549eeb2fe1f77f377999ecad084a0d",
+      "sha256": "bb7bbb8ad0c8f9e38e0f8059fb6f78f2ed346258c50c95057eb32ddacb6a38b0"
     },
     {
-      "source": "src/market_agent/tool_deadline.py",
+      "path": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
+      "source": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
+      "git_blob": "4ce820ea84bc38c1a198cb2cf053962dd23f062d",
+      "sha256": "ebdc14a4d71691fd6afa6b1ba197a37196107ec9459154ab05cba8fb7e0c75b2"
+    },
+    {
       "path": "src/market_agent/tool_deadline.py",
+      "source": "src/market_agent/tool_deadline.py",
       "git_blob": "3f3457f1d963d7c99bb7729812a6eb4969f7b7ea",
-      "sha256": "14676a46395b8e69b96705e93fbf9f8cba60a185fe53406dd19d5907d2a4d0ce",
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946"
+      "sha256": "14676a46395b8e69b96705e93fbf9f8cba60a185fe53406dd19d5907d2a4d0ce"
+    },
+    {
+      "path": "scripts/verify_sec_capture.py",
+      "source": "scripts/verify_sec_capture.py",
+      "git_blob": "13f2c387125b8b74925ed259c54b9e04ea891dbd",
+      "sha256": "a4724c42decaafddfe18fb3dea7bc73241fbd2b310b29d6729532944ed283d5e"
+    },
+    {
+      "path": "tests/test_sec_time_verification.py",
+      "source": "tests/test_sec_time_verification.py",
+      "git_blob": "ed1f44b7aad65ac827ab6675a2ad18d90711410f",
+      "sha256": "cdedf8e43a8c3a6b0ab946c47cb1a41c9d26eaa25d9aa2e68ba6c97434c623d2"
+    },
+    {
+      "path": "tests/test_sec_amendment_freshness.py",
+      "source": "tests/test_sec_amendment_freshness.py",
+      "git_blob": "82061eaeb74ec9add9e2e755fc17c1213de4ad95",
+      "sha256": "1c5bc26e08a8f374b1fa9259bb68a7a700d809a92e677f3eb4a3ba3c332bf5e8"
+    },
+    {
+      "path": "tests/sec_capture_fixtures.py",
+      "source": "tests/sec_capture_fixtures.py",
+      "git_blob": "b57d2a98776f6355cadb5f1728e5719a462fcc4b",
+      "sha256": "9012a508138bd3ccb8956e6a89f4f8be668bea5fa165bb1dfba68a137c87af5d"
+    },
+    {
+      "path": "tests/test_sec_authority_receipts.py",
+      "source": "tests/test_sec_authority_receipts.py",
+      "git_blob": "8c130bc86141e34db8ba3bf1bbf8197da43c0761",
+      "sha256": "db552e7ccd3fe97631ad64c0dc63825a4e6f61848b53d2441ae054f271c432b7"
+    },
+    {
+      "path": "evals/fixtures/sec_acceptance_dst_anchors.json",
+      "source": "evals/fixtures/sec_acceptance_dst_anchors.json",
+      "git_blob": "5ee043676d16b39b583cd15c9bf37644d62d65a4",
+      "sha256": "dd42170dc93e8d47c63fac8885789256468a1a59cad531002392570664767cac"
     }
   ],
   "privacy_scan": "PASS",
   "history": "No Git history/configuration/refs exported",
-  "verification": "Local source candidate; publication and remote CI are separate gates",
-  "increments": [
-    {
-      "source_sha": "f280b29ecdd01cb9c6922fee4e5cd3171eb26946",
-      "manifest": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
-      "scope": "SEC_METADATA_PROJECTION_ONLY_NOT_PRIVATE_UI"
-    }
-  ]
+  "verification": "Local source candidate; publication and remote CI are separate gates"
 }
