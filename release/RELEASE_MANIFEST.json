@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "754f349864cdd70abb022107ed61c27d89319116",
+  "upstream_source_sha": "bfdc402d133b080f73f9233c0feac13d6c0a5f3f",
   "source_version": "0.10.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -270,8 +270,8 @@
     {
       "path": "docs/verification.md",
       "source": "docs/verification.md",
-      "git_blob": "fcfd51ae9438b435e824725ef86e86e2f9f4197a",
-      "sha256": "b518fb10417d7757be512b28b15802f1ae4dddc932516db65a5e17a74e744567"
+      "git_blob": "92cc7d8de83ddb13dbb25e6dd17862d96ad5e2df",
+      "sha256": "2c28aedef20b31e8d2eaf89b860c8d0d7ddeb7c7546b26d3c8f9d25dd54665e4"
     },
     {
       "path": "evals/__init__.py",
@@ -402,14 +402,14 @@
     {
       "path": "release/ASSET_PROVENANCE.md",
       "source": "release/ASSET_PROVENANCE.md",
-      "git_blob": "ee289de374b82af37be3ff92f54b4f585accc366",
-      "sha256": "470b403370bded92e652a01760975c35f70c7e60f08f273183cf97be1c517b0b"
+      "git_blob": "14fbe43a4bdf69293155b7ef03c5a9432da2b5c3",
+      "sha256": "f99d215e0ba0318d9dda690586e303e9497e7455fdaa8fff85bbc2183302232a"
     },
     {
       "path": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
       "source": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
-      "git_blob": "eb9693bb4eb5a05b4a2876e1e17e2a891a66f215",
-      "sha256": "dbb4ba42a760bb4b781e618a778b1ed14c7c519f185f0ae45867fa6aa8bdf421"
+      "git_blob": "45ac60412ef343ff384d1944584100390fe401cb",
+      "sha256": "67c955f8b8f8e3cb4763ac86c7c8f75c86dd9aaeb68bd8d3d701d4bca5184cec"
     },
     {
       "path": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
@@ -510,8 +510,8 @@
     {
       "path": "scripts/check_saved_research_browser.cjs",
       "source": "scripts/check_saved_research_browser.cjs",
-      "git_blob": "7f07ad437185a541923fe0deecc189f25137f1d7",
-      "sha256": "19c9217f659853aff6ea2b4444c85fe6f2c5e2ed323b2556b99ffa9762074d98"
+      "git_blob": "80fbfb7d96d5ecf1f5e88b4f670d2c08b182b9be",
+      "sha256": "99317773a651bd4cc953c0edbf7aad20d087531123caed356801a5915a9c01a4"
     },
     {
       "path": "scripts/check_today_cost_browser.cjs",
