@@ -918,5 +918,45 @@
   {
     "source": "tests/test_valuation.py",
     "path": "tests/test_valuation.py"
+  },
+  {
+    "source": "docs/assets/convictiondesk-flow-v010-dark.svg",
+    "path": "docs/assets/convictiondesk-flow-v010-dark.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-flow-v010-light.svg",
+    "path": "docs/assets/convictiondesk-flow-v010-light.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-hero-v010-dark.png",
+    "path": "docs/assets/convictiondesk-hero-v010-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-hero-v010-light.png",
+    "path": "docs/assets/convictiondesk-hero-v010-light.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v010-home-1440.png",
+    "path": "docs/assets/convictiondesk-v010-home-1440.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v010-record-1440.png",
+    "path": "docs/assets/convictiondesk-v010-record-1440.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v010-whatif-dark.png",
+    "path": "docs/assets/convictiondesk-v010-whatif-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v010-whatif-light.png",
+    "path": "docs/assets/convictiondesk-v010-whatif-light.png"
+  },
+  {
+    "source": "docs/assets/src/hero_v010.html",
+    "path": "docs/assets/src/hero_v010.html"
+  },
+  {
+    "source": "docs/assets/src/make_flow_v010.py",
+    "path": "docs/assets/src/make_flow_v010.py"
   }
 ]
