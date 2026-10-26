@@ -27,9 +27,18 @@ python -m venv .venv
 .venv\Scripts\python.exe -m market_agent.public_ivs --serve
 ```
 
-Open **http://127.0.0.1:8791/** and follow
-[one decision through](../README.md#see-one-decision-through): filing, prior
-thesis, Fast research, Deep on the same record, then the account What-if.
+Open **http://127.0.0.1:8791/** and follow one UNP filing through:
+
+1. Expand **查看申报前的 Thesis 待核查条件** on a UNP card to see the thesis held
+   before the filing. DOW, a watch-list name, has none, and its card says so.
+2. Choose **研究这份披露 → 开始研究 → 确认开始研究**. Read the evidence, the
+   counterevidence and what would change the call; **查看依据** lists the sources.
+3. Choose **继续为 Deep · 保留同一条记录** and confirm. Round 2 joins the same
+   record; **历史版本** keeps round 1.
+4. In the result's What-if, buy 5 shares at 240 with a 1 USD fee. Under
+   **费用、其他持仓计价与资本假设**, give KR a mark of 58 on 2026-10-24 and confirm
+   the assumption. NAV moves from 12,980 to 12,979 and cash from 10,000 to 8,799.
+   Leave KR blank and NAV stays unknown.
 
 Installing downloads dependencies. Running the workbench makes no model, news or
 market-data request; the only outbound traffic is your own browser opening a
