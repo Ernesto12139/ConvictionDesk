@@ -1,0 +1,33 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  :root { --bg:#EDF1EF; --ink:#1E2A26; --slate:#56665F; --line:#C9D3CE; --green:#27745F; --tag-real:#27745F; --tag-syn:#8A6A1F; --tag-scr:#4E5B8C; --card:#FFFFFF; }
+  body.dark { --bg:#101814; --ink:#E4ECE8; --slate:#9DB0A8; --line:#2C3A34; --green:#62B89B; --tag-real:#62B89B; --tag-syn:#D9B45E; --tag-scr:#9FAEE6; --card:#18221E; }
+  * { box-sizing:border-box; margin:0; }
+  body { width:1600px; height:900px; background:var(--bg); font-family:"Segoe UI Variable Text","Segoe UI",system-ui,sans-serif; color:var(--ink); display:grid; grid-template-columns:400px 1fr; gap:48px; padding:64px 64px 64px 72px; font-variant-numeric:tabular-nums; }
+  .rail { position:relative; display:flex; flex-direction:column; justify-content:center; gap:0; }
+  .stamp:not(:last-child)::after { content:""; position:absolute; left:9px; top:26px; bottom:4px; width:2px; background:var(--line); }
+  .stamp { position:relative; padding:0 0 30px 34px; }
+  .stamp:last-child { padding-bottom:0; }
+  .stamp::before { content:""; position:absolute; left:0; top:6px; width:16px; height:16px; border-radius:50%; background:var(--bg); border:2px solid var(--green); }
+  .stamp.final::before { background:var(--green); }
+  .what { font-size:21px; font-weight:600; letter-spacing:-0.01em; line-height:1.25; }
+  .detail { font-size:15.5px; color:var(--slate); margin-top:5px; line-height:1.4; }
+  .tag { display:inline-block; font-size:13px; font-weight:600; margin-top:8px; padding:2px 9px; border-radius:4px; border:1.5px solid currentColor; }
+  .real { color:var(--tag-real); } .syn { color:var(--tag-syn); } .scr { color:var(--tag-scr); }
+  .window { align-self:center; background:var(--card); border-radius:12px; overflow:hidden; box-shadow:0 1px 0 var(--line), 0 24px 60px -24px rgba(16,40,32,.35); border:1px solid var(--line); }
+  .bar { height:34px; display:flex; align-items:center; gap:8px; padding:0 14px; border-bottom:1px solid var(--line); }
+  .bar i { width:11px; height:11px; border-radius:50%; background:var(--line); display:block; }
+  .bar span { margin-left:14px; font-size:13px; color:var(--slate); }
+  .window img { display:block; width:100%; }
+</style></head>
+<body>
+  <div class="rail">
+    <div class="stamp"><div class="what">SEC 8-K, Item 2.02</div><div class="detail">Accession 0000100885-26-000319<br>Accepted 2026-10-22 11:46:52 UTC</div><span class="tag real">Real public filing</span></div>
+    <div class="stamp"><div class="what">Prior thesis, stored before it</div><div class="detail">Assumptions and invalidation conditions to re-check</div><span class="tag syn">Synthetic</span></div>
+    <div class="stamp"><div class="what">Revision 1 · Fast</div><div class="detail">Evidence, counterevidence, UNDETERMINED<br>Cutoff 2026-10-24 15:18 UTC</div><span class="tag scr">Scripted research</span></div>
+    <div class="stamp"><div class="what">Revision 2 · Deep</div><div class="detail">Same task; revision 1 stays readable</div></div>
+    <div class="stamp final"><div class="what">Account What-if</div><div class="detail">NAV 12,980 → 12,979 USD in Decimal<br>Preview only, no order placed</div></div>
+  </div>
+  <div class="window"><div class="bar"><i></i><i></i><i></i><span>127.0.0.1:8791 · ConvictionDesk v0.10.0</span></div><img src="record-crop.png" alt="research record, cropped from convictiondesk-v010-record-1440.png (x 200-1440)"></div>
+</body></html>

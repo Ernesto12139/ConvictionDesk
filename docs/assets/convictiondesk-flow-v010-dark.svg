@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="380" viewBox="0 0 1600 380" role="img" aria-label="Filing, thesis, research, revision and what-if: the five steps of one ConvictionDesk decision, each with the rule the code enforces.">
+<rect width="1600" height="380" rx="16" fill="#101814"/>
+<text x="46" y="44" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="17" fill="#9DB0A8">One decision, five steps. Under each step: the rule the code enforces.</text>
+<rect x="46" y="70" width="272" height="230" rx="10" fill="#18221E" stroke="#2C3A34" stroke-width="1.5"/>
+<circle cx="80" cy="110" r="15" fill="#62B89B"/>
+<text x="80" y="116" text-anchor="middle" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#18221E">1</text>
+<text x="106" y="117" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="23" font-weight="700" fill="#E4ECE8">Filing</text>
+<text x="68" y="162" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="17" font-style="italic" fill="#E4ECE8">What the company filed</text>
+<line x1="68" y1="182" x2="296" y2="182" stroke="#2C3A34"/>
+<text x="68" y="216" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">Accession, form, items and</text>
+<text x="68" y="242" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">acceptance time, checked</text>
+<text x="68" y="268" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">against SEC's own clock</text>
+<path d="M324 185.0 h26" stroke="#62B89B" stroke-width="2"/>
+<path d="M346 179.0 l8 6 l-8 6" fill="none" stroke="#62B89B" stroke-width="2"/>
+<rect x="358" y="70" width="272" height="230" rx="10" fill="#18221E" stroke="#2C3A34" stroke-width="1.5"/>
+<circle cx="392" cy="110" r="15" fill="#62B89B"/>
+<text x="392" y="116" text-anchor="middle" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#18221E">2</text>
+<text x="418" y="117" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="23" font-weight="700" fill="#E4ECE8">Thesis</text>
+<text x="380" y="162" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="17" font-style="italic" fill="#E4ECE8">Why you own it</text>
+<line x1="380" y1="182" x2="608" y2="182" stroke="#2C3A34"/>
+<text x="380" y="216" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">Only a version stored strictly</text>
+<text x="380" y="242" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">before the filing is used;</text>
+<text x="380" y="268" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">none means none</text>
+<path d="M636 185.0 h26" stroke="#62B89B" stroke-width="2"/>
+<path d="M658 179.0 l8 6 l-8 6" fill="none" stroke="#62B89B" stroke-width="2"/>
+<rect x="670" y="70" width="272" height="230" rx="10" fill="#18221E" stroke="#2C3A34" stroke-width="1.5"/>
+<circle cx="704" cy="110" r="15" fill="#62B89B"/>
+<text x="704" y="116" text-anchor="middle" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#18221E">3</text>
+<text x="730" y="117" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="23" font-weight="700" fill="#E4ECE8">Research</text>
+<text x="692" y="162" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="17" font-style="italic" fill="#E4ECE8">Does this change it?</text>
+<line x1="692" y1="182" x2="920" y2="182" stroke="#2C3A34"/>
+<text x="692" y="216" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">Every claim cites evidence</text>
+<text x="692" y="242" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">in the task; thin evidence</text>
+<text x="692" y="268" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">stays UNDETERMINED</text>
+<path d="M948 185.0 h26" stroke="#62B89B" stroke-width="2"/>
+<path d="M970 179.0 l8 6 l-8 6" fill="none" stroke="#62B89B" stroke-width="2"/>
+<rect x="982" y="70" width="272" height="230" rx="10" fill="#18221E" stroke="#2C3A34" stroke-width="1.5"/>
+<circle cx="1016" cy="110" r="15" fill="#62B89B"/>
+<text x="1016" y="116" text-anchor="middle" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#18221E">4</text>
+<text x="1042" y="117" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="23" font-weight="700" fill="#E4ECE8">Revision</text>
+<text x="1004" y="162" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="17" font-style="italic" fill="#E4ECE8">Continue, don't overwrite</text>
+<line x1="1004" y1="182" x2="1232" y2="182" stroke="#2C3A34"/>
+<text x="1004" y="216" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">Fast and Deep are rounds</text>
+<text x="1004" y="242" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">of one task; saved rounds</text>
+<text x="1004" y="268" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">are immutable</text>
+<path d="M1260 185.0 h26" stroke="#62B89B" stroke-width="2"/>
+<path d="M1282 179.0 l8 6 l-8 6" fill="none" stroke="#62B89B" stroke-width="2"/>
+<rect x="1294" y="70" width="272" height="230" rx="10" fill="#18221E" stroke="#62B89B" stroke-width="2"/>
+<circle cx="1328" cy="110" r="15" fill="#62B89B"/>
+<text x="1328" y="116" text-anchor="middle" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" font-weight="700" fill="#18221E">5</text>
+<text x="1354" y="117" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="23" font-weight="700" fill="#E4ECE8">What-if</text>
+<text x="1316" y="162" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="17" font-style="italic" fill="#E4ECE8">What would it change?</text>
+<line x1="1316" y1="182" x2="1544" y2="182" stroke="#2C3A34"/>
+<text x="1316" y="216" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">Shares, cash, NAV, weight</text>
+<text x="1316" y="242" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">in Python Decimal; missing</text>
+<text x="1316" y="268" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">prices stay unknown</text>
+<text x="46" y="350" font-family="Segoe UI, -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif" font-size="16" fill="#9DB0A8">A follow-up continues the same task as a new round, so the reasoning stays on one record.</text>
+</svg>
