@@ -88,12 +88,28 @@
     "path": "docs/assets/convictiondesk-fast-deep-light.svg"
   },
   {
+    "source": "docs/assets/convictiondesk-flow-v010-dark.svg",
+    "path": "docs/assets/convictiondesk-flow-v010-dark.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-flow-v010-light.svg",
+    "path": "docs/assets/convictiondesk-flow-v010-light.svg"
+  },
+  {
     "source": "docs/assets/convictiondesk-hero-dark.svg",
     "path": "docs/assets/convictiondesk-hero-dark.svg"
   },
   {
     "source": "docs/assets/convictiondesk-hero-light.svg",
     "path": "docs/assets/convictiondesk-hero-light.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-hero-v010-dark.png",
+    "path": "docs/assets/convictiondesk-hero-v010-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-hero-v010-light.png",
+    "path": "docs/assets/convictiondesk-hero-v010-light.png"
   },
   {
     "source": "docs/assets/convictiondesk-journey-dark.png",
@@ -132,12 +148,36 @@
     "path": "docs/assets/convictiondesk-records-light.png"
   },
   {
+    "source": "docs/assets/convictiondesk-v010-home-1440.png",
+    "path": "docs/assets/convictiondesk-v010-home-1440.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v010-record-1440.png",
+    "path": "docs/assets/convictiondesk-v010-record-1440.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v010-whatif-dark.png",
+    "path": "docs/assets/convictiondesk-v010-whatif-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v010-whatif-light.png",
+    "path": "docs/assets/convictiondesk-v010-whatif-light.png"
+  },
+  {
     "source": "docs/assets/convictiondesk-whatif-dark.png",
     "path": "docs/assets/convictiondesk-whatif-dark.png"
   },
   {
     "source": "docs/assets/convictiondesk-whatif-light.png",
     "path": "docs/assets/convictiondesk-whatif-light.png"
+  },
+  {
+    "source": "docs/assets/src/hero_v010.html",
+    "path": "docs/assets/src/hero_v010.html"
+  },
+  {
+    "source": "docs/assets/src/make_flow_v010.py",
+    "path": "docs/assets/src/make_flow_v010.py"
   },
   {
     "source": "docs/data-sources.md",
@@ -236,6 +276,10 @@
     "path": "evals/fixtures/market_eod.json"
   },
   {
+    "source": "evals/fixtures/mia_trace_eval/GLXY.json",
+    "path": "evals/fixtures/mia_trace_eval/GLXY.json"
+  },
+  {
     "source": "evals/fixtures/research_agent/pre-v05-research-task.json",
     "path": "evals/fixtures/research_agent/pre-v05-research-task.json"
   },
@@ -256,6 +300,14 @@
     "path": "evals/run_product_delta_scorecard.py"
   },
   {
+    "source": "evals/run_trace_eval.py",
+    "path": "evals/run_trace_eval.py"
+  },
+  {
+    "source": "evals/trace_eval.py",
+    "path": "evals/trace_eval.py"
+  },
+  {
     "source": "evals/v09_intelligence.py",
     "path": "evals/v09_intelligence.py"
   },
@@ -266,6 +318,10 @@
   {
     "source": "release/ASSET_PROVENANCE.md",
     "path": "release/ASSET_PROVENANCE.md"
+  },
+  {
+    "source": "release/CANDIDATE_SCOPE.md",
+    "path": "release/CANDIDATE_SCOPE.md"
   },
   {
     "source": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
@@ -342,6 +398,10 @@
   {
     "source": "scripts/check_today_cost_browser.cjs",
     "path": "scripts/check_today_cost_browser.cjs"
+  },
+  {
+    "source": "scripts/mia_trace.py",
+    "path": "scripts/mia_trace.py"
   },
   {
     "source": "scripts/sec_evidence_demo.py",
@@ -608,6 +668,10 @@
     "path": "src/market_agent/research_egress.py"
   },
   {
+    "source": "src/market_agent/research_execution_trace.py",
+    "path": "src/market_agent/research_execution_trace.py"
+  },
+  {
     "source": "src/market_agent/research_loop.py",
     "path": "src/market_agent/research_loop.py"
   },
@@ -628,6 +692,10 @@
     "path": "src/market_agent/route_preview.py"
   },
   {
+    "source": "src/market_agent/run_trace.py",
+    "path": "src/market_agent/run_trace.py"
+  },
+  {
     "source": "src/market_agent/runtime_bootstrap.py",
     "path": "src/market_agent/runtime_bootstrap.py"
   },
@@ -642,6 +710,10 @@
   {
     "source": "src/market_agent/runtime_provider_hub.py",
     "path": "src/market_agent/runtime_provider_hub.py"
+  },
+  {
+    "source": "src/market_agent/scripted_research.py",
+    "path": "src/market_agent/scripted_research.py"
   },
   {
     "source": "src/market_agent/sec.py",
@@ -752,6 +824,14 @@
     "path": "src/market_agent/static/today.js"
   },
   {
+    "source": "src/market_agent/static/workbench-mode.css",
+    "path": "src/market_agent/static/workbench-mode.css"
+  },
+  {
+    "source": "src/market_agent/static/workbench-mode.js",
+    "path": "src/market_agent/static/workbench-mode.js"
+  },
+  {
     "source": "src/market_agent/tdb.py",
     "path": "src/market_agent/tdb.py"
   },
@@ -782,6 +862,10 @@
   {
     "source": "src/market_agent/tool_deadline.py",
     "path": "src/market_agent/tool_deadline.py"
+  },
+  {
+    "source": "src/market_agent/unified_workbench.py",
+    "path": "src/market_agent/unified_workbench.py"
   },
   {
     "source": "src/market_agent/valuation.py",
@@ -884,6 +968,18 @@
     "path": "tests/test_release_import_closure.py"
   },
   {
+    "source": "tests/test_research_execution_trace.py",
+    "path": "tests/test_research_execution_trace.py"
+  },
+  {
+    "source": "tests/test_run_trace.py",
+    "path": "tests/test_run_trace.py"
+  },
+  {
+    "source": "tests/test_scripted_research.py",
+    "path": "tests/test_scripted_research.py"
+  },
+  {
     "source": "tests/test_sec_amendment_freshness.py",
     "path": "tests/test_sec_amendment_freshness.py"
   },
@@ -912,51 +1008,19 @@
     "path": "tests/test_technical_zones.py"
   },
   {
+    "source": "tests/test_trace_eval.py",
+    "path": "tests/test_trace_eval.py"
+  },
+  {
+    "source": "tests/test_unified_workbench.py",
+    "path": "tests/test_unified_workbench.py"
+  },
+  {
     "source": "tests/test_v09_intelligence.py",
     "path": "tests/test_v09_intelligence.py"
   },
   {
     "source": "tests/test_valuation.py",
     "path": "tests/test_valuation.py"
-  },
-  {
-    "source": "docs/assets/convictiondesk-flow-v010-dark.svg",
-    "path": "docs/assets/convictiondesk-flow-v010-dark.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-flow-v010-light.svg",
-    "path": "docs/assets/convictiondesk-flow-v010-light.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-hero-v010-dark.png",
-    "path": "docs/assets/convictiondesk-hero-v010-dark.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-hero-v010-light.png",
-    "path": "docs/assets/convictiondesk-hero-v010-light.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-v010-home-1440.png",
-    "path": "docs/assets/convictiondesk-v010-home-1440.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-v010-record-1440.png",
-    "path": "docs/assets/convictiondesk-v010-record-1440.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-v010-whatif-dark.png",
-    "path": "docs/assets/convictiondesk-v010-whatif-dark.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-v010-whatif-light.png",
-    "path": "docs/assets/convictiondesk-v010-whatif-light.png"
-  },
-  {
-    "source": "docs/assets/src/hero_v010.html",
-    "path": "docs/assets/src/hero_v010.html"
-  },
-  {
-    "source": "docs/assets/src/make_flow_v010.py",
-    "path": "docs/assets/src/make_flow_v010.py"
   }
 ]

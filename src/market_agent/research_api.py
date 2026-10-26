@@ -140,7 +140,8 @@ def register_research(app, agent, *, reference_provider=None, decision_component
         from fastapi import HTTPException
         task = service.tasks.revision(task_id, request.revision)
         try:
-            return simulate(task, whatif_snapshot(task), request)
+            operation = lambda: simulate(task, whatif_snapshot(task), request)
+            return service.execution_observer.whatif(task, operation) if service.execution_observer else operation()
         except WhatIfUnavailable as error:
             raise HTTPException(422, str(error)) from None
 

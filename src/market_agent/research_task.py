@@ -640,7 +640,8 @@ class ResearchService:
     STRATEGY_POLICIES = ('BASELINE_ONLY','OPT_IN','ADAPTIVE_DEFAULT')
 
     def __init__(self, agent, *, diagnostic_sink=None, reference_provider=None, decision_component=None,model_profiles=None,
-                 strategy_policy='OPT_IN', answer_contract='LEGACY', evidence_contract=None, egress=None, jev_runtime=None):
+                 strategy_policy='OPT_IN', answer_contract='LEGACY', evidence_contract=None, egress=None, jev_runtime=None,
+                 execution_observer=None):
         if strategy_policy not in self.STRATEGY_POLICIES:
             raise ValueError('MIA_RESEARCH_STRATEGY must be BASELINE_ONLY, OPT_IN or ADAPTIVE_DEFAULT')
         if answer_contract not in {'LEGACY', 'GROUNDED_MEMO'}:
@@ -661,6 +662,7 @@ class ResearchService:
         self.decision_component = decision_component
         self.model_profiles = model_profiles
         self.egress, self.jev_runtime = egress, jev_runtime
+        self.execution_observer = execution_observer
 
     @property
     def answer_contract(self):
@@ -770,6 +772,15 @@ class ResearchService:
         return task, previous, snapshot
 
     async def execute(self, task, previous, snapshot):
+        observer = self.execution_observer
+        recorder = observer.start(task) if observer else None
+        try:
+            return await self._execute(task, previous, snapshot, recorder=recorder)
+        finally:
+            if observer:
+                observer.finish(recorder, self.tasks.get(task.task_id))
+
+    async def _execute(self, task, previous, snapshot, *, recorder=None):
         try:
             llm = self.model_profiles.client(task.model_profile_id) if self.model_profiles else self.agent.llm
         except TDBError as exc:
@@ -846,7 +857,11 @@ class ResearchService:
                 guard_token = active_egress_guard.set((lambda:self.egress.validate_send(task,llm.provider,admission)) if self.egress else None)
                 try:
                     async with asyncio.timeout(min(expires-monotonic(), min(self.MODEL_SECONDS,45) if task.mode=='FAST' else self.MODEL_SECONDS)):
-                        result = schema.model_validate((await llm.complete_structured(request)).model_dump())
+                        from contextlib import nullcontext
+                        observation = (self.execution_observer.model(recorder, llm, purpose, sources, task.cutoff)
+                                       if recorder else nullcontext())
+                        with observation:
+                            result = schema.model_validate((await llm.complete_structured(request)).model_dump())
                 finally:
                     active_egress_guard.reset(guard_token)
                     active_egress.reset(token)
@@ -918,6 +933,12 @@ class ResearchService:
             return assessment, packet, memo
 
         async def tool(name, args, operation, refs=lambda r: [], *, receipt_sources=None):
+            if recorder:
+                return await self.execution_observer.tool(recorder, name, lambda: task,
+                    lambda: execute_tool(name, args, operation, refs, receipt_sources=receipt_sources))
+            return await execute_tool(name, args, operation, refs, receipt_sources=receipt_sources)
+
+        async def execute_tool(name, args, operation, refs=lambda r: [], *, receipt_sources=None):
             nonlocal pending_tool_call, loop_blocked, billing_blocked
             started = self.now()
             if self.egress:

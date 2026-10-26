@@ -1,0 +1,14 @@
+.workbench-mode { padding:1rem; margin:0 0 1rem; border:1px solid var(--border-subtle); border-radius:12px; background:var(--surface-panel); color:var(--text-primary); }
+.workbench-mode p { margin:.5rem 0 0; overflow-wrap:anywhere; }
+.workbench-mode-actions { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.7rem; }
+.workbench-mode-actions button[aria-pressed="true"] { border-color:var(--action); font-weight:700; }
+.workbench-boundary { margin-top:.5rem; font-size:.8rem; }
+@media(max-width:600px) {
+  .workbench-mode { padding:.6rem .75rem; margin-bottom:.7rem; }
+  .workbench-mode > div:first-child > strong { display:none; }
+  .workbench-mode p { margin-top:0; font-size:.8rem; line-height:1.4; }
+  .workbench-mode-actions { margin-top:.4rem; }
+}
+/* Reuse the existing Console's actual theme variables for the inherited IVS panel. */
+body[data-public-ivs="1"] .public-ivs-banner { background:var(--surface-panel); color:var(--text-primary); }
+body[data-public-ivs="1"] .public-ivs-classes li { background:var(--surface-inset); color:var(--text-primary); }

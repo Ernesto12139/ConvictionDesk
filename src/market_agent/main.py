@@ -73,7 +73,8 @@ def create_app(db_path: str | Path = "data/market_agent.db",
                decision_judge=None, quote_provider=None, fast_judge=None,
                attention_screen=None, attention_deep=None, attention_fast_screen=None,
                research_reference=None, research_decision_component=None, sec_retriever=None,
-               environment: Mapping[str, str] | None = None, model_profiles=None) -> FastAPI:
+               environment: Mapping[str, str] | None = None, model_profiles=None,
+               provider_hub=None) -> FastAPI:
     environment = os.environ if environment is None else environment
     app_clock = clock or system_utc_now
     explicit_test_provider = market_fixture is not None or isinstance(market_provider, FixtureMarketProvider)
@@ -153,7 +154,8 @@ def create_app(db_path: str | Path = "data/market_agent.db",
     runtime = None
     if environment.get('MIA_PROVIDER_HUB') == '1' and environment.get('MIA_RUNTIME_MODE') != 'PUBLIC_DEMO':
         from .runtime_bootstrap import configure_runtime
-        runtime = configure_runtime(app, agent, environment)
+        runtime = configure_runtime(app, agent, environment,
+                                    provider_hub=provider_hub, model_profiles=model_profiles)
     if runtime is None:
         # Task mutations are protected with or without the Hub (QA-CONVERGENCE-002 P2-1).
         from .local_api_security import install_task_origin_guard
@@ -325,6 +327,8 @@ def create_app(db_path: str | Path = "data/market_agent.db",
             status["public_demo"] = app.state.public_demo
             if status["synthesis_mode"] == "unconfigured":
                 status["model"] = None
+        if status['synthesis_mode'] == 'unconfigured':
+            status['model'] = None
         return status
 
     @app.get("/api/console/portfolio-overview")
