@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "bfdc402d133b080f73f9233c0feac13d6c0a5f3f",
+  "upstream_source_sha": "9d5d4fd814833a7e28db2a15893bb4281878c7dd",
   "source_version": "0.10.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -408,8 +408,8 @@
     {
       "path": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
       "source": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
-      "git_blob": "45ac60412ef343ff384d1944584100390fe401cb",
-      "sha256": "67c955f8b8f8e3cb4763ac86c7c8f75c86dd9aaeb68bd8d3d701d4bca5184cec"
+      "git_blob": "428f9392ff8644c317c5d98f57f7ef01690ed9eb",
+      "sha256": "02b6fee27ee7d6ada104bba454b7ecbdeac276efbdfd4305b90525ff0c6170b0"
     },
     {
       "path": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
@@ -1308,8 +1308,8 @@
     {
       "path": "tests/test_public_ivs_journey.py",
       "source": "tests/test_public_ivs_journey.py",
-      "git_blob": "b292bda20cdc71da641f2aa572335351f275c749",
-      "sha256": "860be0e14bdccb8c456e6ad03732d7ff3d7bb3f4dc80e1cdb782b4188fb2ca7d"
+      "git_blob": "e9484151f24f06146ba046c7294f326425a3d3b7",
+      "sha256": "04fb58c3dec31e8199e95ebf85871ecf2cb16f6ffe34a0f1ab0300a59fc23535"
     },
     {
       "path": "tests/test_quiet_ui_contract.py",
