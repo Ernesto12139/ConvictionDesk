@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "aa4595d1022297f81d6ffd22be04f3a3aea2bd14",
+  "upstream_source_sha": "bb8db987dd361ae9c90cac22ff8b80710bc9f0d8",
   "source_version": "0.10.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -136,18 +136,6 @@
       "sha256": "f27bbc9f70a452705bd8207683a1537ff3a19e75ec7da5c678f2d7f383ee5217"
     },
     {
-      "path": "docs/assets/convictiondesk-flow-v010-dark.svg",
-      "source": "docs/assets/convictiondesk-flow-v010-dark.svg",
-      "git_blob": "48fc48fbb43c520b93ccd0ec53e62825922e2889",
-      "sha256": "d0c91aaa1ff3c1bdeb6d6d576dd6821096380c08e7859683b62d7faec4398945"
-    },
-    {
-      "path": "docs/assets/convictiondesk-flow-v010-light.svg",
-      "source": "docs/assets/convictiondesk-flow-v010-light.svg",
-      "git_blob": "1545c8ff0d78e8e325bc2439ab158c4803ff10d7",
-      "sha256": "4df6f06976d623cd87410909f2967b4dc63bd060891b1de4f1556029a72f45cf"
-    },
-    {
       "path": "docs/assets/convictiondesk-hero-dark.svg",
       "source": "docs/assets/convictiondesk-hero-dark.svg",
       "git_blob": "f39474e804784ce6f94c169acaeb12349f91fd6b",
@@ -158,18 +146,6 @@
       "source": "docs/assets/convictiondesk-hero-light.svg",
       "git_blob": "a843df87f8bf06c456fb7ab96d54c03d935cfd87",
       "sha256": "9d80853b1c720a9d299cb6d313e11a74db0140e0ed6cdb281291f4f0273ffe53"
-    },
-    {
-      "path": "docs/assets/convictiondesk-hero-v010-dark.png",
-      "source": "docs/assets/convictiondesk-hero-v010-dark.png",
-      "git_blob": "538040b2bb62b4c7df303cd44bb19619f0dbf9e1",
-      "sha256": "616d2f5547d116cfebf0dba6e14e086e488e8c749d90a531e6cd832ca478920e"
-    },
-    {
-      "path": "docs/assets/convictiondesk-hero-v010-light.png",
-      "source": "docs/assets/convictiondesk-hero-v010-light.png",
-      "git_blob": "2201852ea7dbb808a553cf724f5c487b45672bcb",
-      "sha256": "a0d2c212ca598ae35d43fb15139a7c8290dd83e091506d3ad56f42878a139872"
     },
     {
       "path": "docs/assets/convictiondesk-journey-dark.png",
@@ -226,30 +202,6 @@
       "sha256": "f6353f0d89037402b6a027deb0efc260e8e7ab4b932bd9dead7a7dd16a4a856e"
     },
     {
-      "path": "docs/assets/convictiondesk-v010-home-1440.png",
-      "source": "docs/assets/convictiondesk-v010-home-1440.png",
-      "git_blob": "8cabcc8c0aadae54a8ec576c3e9b6c85d539ec93",
-      "sha256": "34a92e704d3ceb2947955e2c8912a5362bef0ca5814b9f262942b0d98291d349"
-    },
-    {
-      "path": "docs/assets/convictiondesk-v010-record-1440.png",
-      "source": "docs/assets/convictiondesk-v010-record-1440.png",
-      "git_blob": "c38cb00c5ff4fa502029b86f165773e53b4d80f9",
-      "sha256": "978ba1b91624e89a7c1dec222f8880042d185747caf956d32be4f865018343c3"
-    },
-    {
-      "path": "docs/assets/convictiondesk-v010-whatif-dark.png",
-      "source": "docs/assets/convictiondesk-v010-whatif-dark.png",
-      "git_blob": "e7758cda164294ed6a26fa2dec6cabc67624167f",
-      "sha256": "71bdddffaa31a3a5fedf36188115228ea82060c1682c24d29c15dbe9f5620090"
-    },
-    {
-      "path": "docs/assets/convictiondesk-v010-whatif-light.png",
-      "source": "docs/assets/convictiondesk-v010-whatif-light.png",
-      "git_blob": "f4bb72c39d3a1c3625b7002e78364e4bb01039f4",
-      "sha256": "5e9859d89d34c693787912f3bb537450d748414d692175065b7d371bd1bf7d4a"
-    },
-    {
       "path": "docs/assets/convictiondesk-whatif-dark.png",
       "source": "docs/assets/convictiondesk-whatif-dark.png",
       "git_blob": "4bd6b3ee8158a25e72b45a76de69d18838783a2e",
@@ -260,18 +212,6 @@
       "source": "docs/assets/convictiondesk-whatif-light.png",
       "git_blob": "11164eb2be751d975966638bb9b0c760e0d94eaa",
       "sha256": "6f45c7af45e4279ed2e65f4fabe4ebad7a861988e455f22ab3975d1038c24329"
-    },
-    {
-      "path": "docs/assets/src/hero_v010.html",
-      "source": "docs/assets/src/hero_v010.html",
-      "git_blob": "389e31f994fa4f87edcdaf5934c9c975e42329db",
-      "sha256": "006b4a3af042722ed17ca6ab6ace2329e8d42b8097f6a5b52b3b6251183dee3f"
-    },
-    {
-      "path": "docs/assets/src/make_flow_v010.py",
-      "source": "docs/assets/src/make_flow_v010.py",
-      "git_blob": "d447123c540738809523792f5ee70476b984d101",
-      "sha256": "50647aed15f51c928b57f8f008e59972f2041b907fd0c8df01512b8ef7eb0153"
     },
     {
       "path": "docs/data-sources.md",
@@ -510,8 +450,8 @@
     {
       "path": "release/public-files.json",
       "source": "release/public-files.json",
-      "git_blob": "7a3f4cbe8595460939a560e04ada8e3819e47c05",
-      "sha256": "28615f372c55a195021308b6ebde968a980ce5f16b9b516eec2d08fb451772b0"
+      "git_blob": "d9969609b835aab5d7d610535fb01de7681092ea",
+      "sha256": "632a8d40307b1e1d9704e6a83fccbf6ad1c503cbd3df946434e464d7d83ba6a5"
     },
     {
       "path": "release/verified_service_merges.json",
@@ -1442,6 +1382,66 @@
       "source": "tests/test_valuation.py",
       "git_blob": "05ca26ec8ff22ebb71c3f5fa17b77b29fb6329c8",
       "sha256": "ce84f34247406b64111bf788595cce7b40798f32b1b3605cc2c208dd8f8f40f5"
+    },
+    {
+      "path": "docs/assets/convictiondesk-flow-v010-dark.svg",
+      "source": "docs/assets/convictiondesk-flow-v010-dark.svg",
+      "git_blob": "48fc48fbb43c520b93ccd0ec53e62825922e2889",
+      "sha256": "d0c91aaa1ff3c1bdeb6d6d576dd6821096380c08e7859683b62d7faec4398945"
+    },
+    {
+      "path": "docs/assets/convictiondesk-flow-v010-light.svg",
+      "source": "docs/assets/convictiondesk-flow-v010-light.svg",
+      "git_blob": "1545c8ff0d78e8e325bc2439ab158c4803ff10d7",
+      "sha256": "4df6f06976d623cd87410909f2967b4dc63bd060891b1de4f1556029a72f45cf"
+    },
+    {
+      "path": "docs/assets/convictiondesk-hero-v010-dark.png",
+      "source": "docs/assets/convictiondesk-hero-v010-dark.png",
+      "git_blob": "538040b2bb62b4c7df303cd44bb19619f0dbf9e1",
+      "sha256": "616d2f5547d116cfebf0dba6e14e086e488e8c749d90a531e6cd832ca478920e"
+    },
+    {
+      "path": "docs/assets/convictiondesk-hero-v010-light.png",
+      "source": "docs/assets/convictiondesk-hero-v010-light.png",
+      "git_blob": "2201852ea7dbb808a553cf724f5c487b45672bcb",
+      "sha256": "a0d2c212ca598ae35d43fb15139a7c8290dd83e091506d3ad56f42878a139872"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v010-home-1440.png",
+      "source": "docs/assets/convictiondesk-v010-home-1440.png",
+      "git_blob": "8cabcc8c0aadae54a8ec576c3e9b6c85d539ec93",
+      "sha256": "34a92e704d3ceb2947955e2c8912a5362bef0ca5814b9f262942b0d98291d349"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v010-record-1440.png",
+      "source": "docs/assets/convictiondesk-v010-record-1440.png",
+      "git_blob": "c38cb00c5ff4fa502029b86f165773e53b4d80f9",
+      "sha256": "978ba1b91624e89a7c1dec222f8880042d185747caf956d32be4f865018343c3"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v010-whatif-dark.png",
+      "source": "docs/assets/convictiondesk-v010-whatif-dark.png",
+      "git_blob": "e7758cda164294ed6a26fa2dec6cabc67624167f",
+      "sha256": "71bdddffaa31a3a5fedf36188115228ea82060c1682c24d29c15dbe9f5620090"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v010-whatif-light.png",
+      "source": "docs/assets/convictiondesk-v010-whatif-light.png",
+      "git_blob": "f4bb72c39d3a1c3625b7002e78364e4bb01039f4",
+      "sha256": "5e9859d89d34c693787912f3bb537450d748414d692175065b7d371bd1bf7d4a"
+    },
+    {
+      "path": "docs/assets/src/hero_v010.html",
+      "source": "docs/assets/src/hero_v010.html",
+      "git_blob": "389e31f994fa4f87edcdaf5934c9c975e42329db",
+      "sha256": "006b4a3af042722ed17ca6ab6ace2329e8d42b8097f6a5b52b3b6251183dee3f"
+    },
+    {
+      "path": "docs/assets/src/make_flow_v010.py",
+      "source": "docs/assets/src/make_flow_v010.py",
+      "git_blob": "d447123c540738809523792f5ee70476b984d101",
+      "sha256": "50647aed15f51c928b57f8f008e59972f2041b907fd0c8df01512b8ef7eb0153"
     }
   ],
   "privacy_scan": "PASS",
