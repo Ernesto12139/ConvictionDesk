@@ -1,0 +1,697 @@
+{
+  "schema_version": "public-ivs-increment-v1",
+  "public_parent": "7511011a58e8d05193849345bcdfa5e89e744de3",
+  "upstream_code_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+  "content_source_commit": "0851c6e0793997016355431b2165dcd8e7146a53",
+  "version": "0.10.0",
+  "scope": "REAL_PUBLIC_SEC_METADATA__SYNTHETIC_SCOPE__SCRIPTED_RESEARCH",
+  "history": "Regular file blobs only; no private objects or ancestry copied",
+  "existing_sec_audit_paths_unchanged": [
+    "src/market_agent/sec.py",
+    "src/market_agent/sec_filings.py",
+    "tests/test_sec_authority_receipts.py",
+    "tests/test_sec_time_verification.py",
+    "tests/test_sec_amendment_freshness.py",
+    "tests/test_sec_filings.py",
+    "tests/test_ivs_sec_provider.py",
+    "release/audit_public_git.py",
+    "release/verified_service_merges.json",
+    "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json"
+  ],
+  "files": [
+    {
+      "path": "src/market_agent/action_decision.py",
+      "upstream_source": "src/market_agent/action_decision.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "6df6d87614605492c868d9f1beaf239010cdc4e6",
+      "public_blob": "6df6d87614605492c868d9f1beaf239010cdc4e6",
+      "sha256": "b3cabbb503e3a109b6d0cc71cf84129f642979c17c82ec8131ac5ca9621a4879",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/attention.py",
+      "upstream_source": "src/market_agent/attention.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "2c3110059442a2f30ec9ac11cace582861903c35",
+      "public_blob": "2c3110059442a2f30ec9ac11cace582861903c35",
+      "sha256": "c80acd7c052f2df4dee45ddc0feece204e19aab56877dee975d87eb1f92cbc62",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/attention_api.py",
+      "upstream_source": "src/market_agent/attention_api.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "5e608b731c55c9c4a43a1f2d4ec835af8eab604e",
+      "public_blob": "5e608b731c55c9c4a43a1f2d4ec835af8eab604e",
+      "sha256": "84605433a49ef078a4efacc26161bb4d7d28b7fe73f30fcfa4df6eb539942510",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/attention_coverage.py",
+      "upstream_source": "src/market_agent/attention_coverage.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "66752f47b17df84f228b7a3ae89d3e641b85347c",
+      "public_blob": "66752f47b17df84f228b7a3ae89d3e641b85347c",
+      "sha256": "251d162aea29e34c79b306b845c7a70c6950a19ab74368c688ce4678be8ae441",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/attention_groups.py",
+      "upstream_source": "src/market_agent/attention_groups.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "a57685ea333f0adcbb9e3cc6f412f5d507afd497",
+      "public_blob": "a57685ea333f0adcbb9e3cc6f412f5d507afd497",
+      "sha256": "37481568120ace93fc2c34958cdcbd8f4c9e54464b23b3bd06c0d7bf2687c2dd",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/attention_jev.py",
+      "upstream_source": "src/market_agent/attention_jev.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "29cc6e789c04cde44df1c44a2b13870a3cadb4c3",
+      "public_blob": "29cc6e789c04cde44df1c44a2b13870a3cadb4c3",
+      "sha256": "b805eb3b5a6959df63dcede62035fe88ce09cc4791690eb410e63a35f87b0e4b",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/attention_radar.py",
+      "upstream_source": "src/market_agent/attention_radar.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "da82a458942b59830164ed981a737e8d79fe781f",
+      "public_blob": "da82a458942b59830164ed981a737e8d79fe781f",
+      "sha256": "f23e024876cc89d9f9ac6dc28ddbccdce6f40bff8b5fe9b5e582d6905599213b",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/call_budget.py",
+      "upstream_source": "src/market_agent/call_budget.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "867795accee6ce269e4e803e7cf2d46da7b80605",
+      "public_blob": "867795accee6ce269e4e803e7cf2d46da7b80605",
+      "sha256": "5cec68bb92a6906e8413e4ce891f6233e941514b8c7aa466d79233c8d21b9f47",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/decision_router.py",
+      "upstream_source": "src/market_agent/decision_router.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "df0740e239afe465b7f6447ec7b7491eedd6ce28",
+      "public_blob": "df0740e239afe465b7f6447ec7b7491eedd6ce28",
+      "sha256": "53fdd6e22ebdf0b6f062597b7f8897a3d43a47717b9e967fc3df547130092496",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/deepseek.py",
+      "upstream_source": "src/market_agent/deepseek.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "770d55146201eced95f13f756ee674e08a7cbfcd",
+      "public_blob": "770d55146201eced95f13f756ee674e08a7cbfcd",
+      "sha256": "2626f35e42d0959988faf065e83876997354fb89e4336ac80c7630f067b26e86",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/demo_assets/public-ivs-v1.json",
+      "upstream_source": "src/market_agent/demo_assets/public-ivs-v1.json",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "d644cb66b28d825b34284aaed196092cf51280c2",
+      "public_blob": "77276a5f58074ecae3ccf78c8f42997981fcefc8",
+      "sha256": "85d162d3fbf85bba9287abc2d8972c021edfea139b3b941ca6a0c6ad8f9d037c",
+      "transformation": "LF_NORMALIZED"
+    },
+    {
+      "path": "src/market_agent/evidence_action.py",
+      "upstream_source": "src/market_agent/evidence_action.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "3fa0d176c17825034a6ee9d519e5f46166be46bf",
+      "public_blob": "3fa0d176c17825034a6ee9d519e5f46166be46bf",
+      "sha256": "3695f297c24074950298cffaf8ea8074cb3ac7cc042d0ac09422010668a3c74f",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/experiment_budget.py",
+      "upstream_source": "src/market_agent/experiment_budget.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "bc992aeead8e10cab7afb9026d32e383ab2dc933",
+      "public_blob": "bc992aeead8e10cab7afb9026d32e383ab2dc933",
+      "sha256": "5b4a9b66ff5c6b9b5158982acf7055f8afbe28ecd22890c3d4ad7458bc842ce4",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/ivs_observation.py",
+      "upstream_source": "src/market_agent/ivs_observation.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "fcbfda2cc14c4b4c87682c447298e887b66b43e5",
+      "public_blob": "fcbfda2cc14c4b4c87682c447298e887b66b43e5",
+      "sha256": "f210fd48af26936238625403cb67579a2014238f1879eff5ec28f91b512ae3b0",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/ivs_today_api.py",
+      "upstream_source": "src/market_agent/ivs_today_api.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "609c55559a867f65c43676a14a270d2af40da5d1",
+      "public_blob": "609c55559a867f65c43676a14a270d2af40da5d1",
+      "sha256": "b22e016d5bddce0447cc3a979120a98bd9171d1435f41ef8be5ff1b7cdec9bc9",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/jev_runtime.py",
+      "upstream_source": "src/market_agent/jev_runtime.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "8fbf0217a5014d9f23b9299c5ac4c2d1a1c027c5",
+      "public_blob": "8fbf0217a5014d9f23b9299c5ac4c2d1a1c027c5",
+      "sha256": "fb135a0dde211323ba3f1462468646c4ec6b94654ba1ea207d994aef74d04c20",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/llm.py",
+      "upstream_source": "src/market_agent/llm.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "0ae88602c6e134b31c3ae13f49c1f345ace92eba",
+      "public_blob": "0ae88602c6e134b31c3ae13f49c1f345ace92eba",
+      "sha256": "68859a5ea8e386d289c8853bd4b4beb4b75e6206e0e4e592f92488f912cb038e",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/local_api_security.py",
+      "upstream_source": "src/market_agent/local_api_security.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "383b9bbf886ebda845f1570dc05f38fa33e5ad54",
+      "public_blob": "383b9bbf886ebda845f1570dc05f38fa33e5ad54",
+      "sha256": "1a565d632a9ce89f33772ee14b6c55f67195067ab26ec4804b246386968d8b84",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/longbridge_mcp.py",
+      "upstream_source": "src/market_agent/longbridge_mcp.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "3394308897414d9b53413ff01660f9b5ae3b11e5",
+      "public_blob": "3394308897414d9b53413ff01660f9b5ae3b11e5",
+      "sha256": "b02756072e7dfe35e5b15c798306234cb232b86c98bfe3340306aa6e68c5e792",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/main.py",
+      "upstream_source": "src/market_agent/main.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "4b6b2dcf2eacb7be197753006b20a711ac5b9161",
+      "public_blob": "e9c7dfce2cd9c00ad82cee080f4b2ea64db6476d",
+      "sha256": "0c530b293db2222ee4dcce2be1bf18397073757bc74ad0787b821f8dca609544",
+      "transformation": "REVIEWED_PUBLIC_INTEGRATION_DELTA"
+    },
+    {
+      "path": "src/market_agent/market_evidence.py",
+      "upstream_source": "src/market_agent/market_evidence.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "d3047d60b45d1d58a548de1c0410a54ed6fe3058",
+      "public_blob": "d3047d60b45d1d58a548de1c0410a54ed6fe3058",
+      "sha256": "56a9d25419951173a0185d5a7ec79bb50370922777654884c2b76f002624fc2e",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/market_pulse.py",
+      "upstream_source": "src/market_agent/market_pulse.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "c3ded1971058c3f8bfa47dbb4f5b544a26179129",
+      "public_blob": "c3ded1971058c3f8bfa47dbb4f5b544a26179129",
+      "sha256": "45580dba7079417b4cfbe0e3611230cfd6258bf1c62412f0bea50ca30653b776",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/model_profiles.py",
+      "upstream_source": "src/market_agent/model_profiles.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "2538c878e2c9bb7fb2daa1471d3f217742ac61b6",
+      "public_blob": "2538c878e2c9bb7fb2daa1471d3f217742ac61b6",
+      "sha256": "c051f9aaee6d436bdc6762e64260c28347e00eb71f3f81d0ade2f33715210855",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/news.py",
+      "upstream_source": "src/market_agent/news.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "b4d6edb87d48ca2e930d19166541680f91d6c8f5",
+      "public_blob": "b4d6edb87d48ca2e930d19166541680f91d6c8f5",
+      "sha256": "f8474ea785eb41986aab0c2a698f3b89e50cf7cbe436a31e35dd17a0de93ac34",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/persistence.py",
+      "upstream_source": "src/market_agent/persistence.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "21852987cdd66cd216d337d0834688838716982d",
+      "public_blob": "60592cd54213cbf87b1730e0a0e720832db60ccc",
+      "sha256": "3fb549982698ffb75cb4da0b2a03497a7e5bf295c1a71aa2f3549f5db0056cca",
+      "transformation": "LF_NORMALIZED"
+    },
+    {
+      "path": "src/market_agent/portfolio_preview.py",
+      "upstream_source": "src/market_agent/portfolio_preview.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "26dee5c364907e2920cf4c0de25da09bbdbacfea",
+      "public_blob": "26dee5c364907e2920cf4c0de25da09bbdbacfea",
+      "sha256": "63caf54062fa4b12bacd68d51a6b0499a1dc1c4d649f521096fa3a84f1c606a9",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/provider.py",
+      "upstream_source": "src/market_agent/provider.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "b94aff8d2162496863331a4260626349a09bc930",
+      "public_blob": "b94aff8d2162496863331a4260626349a09bc930",
+      "sha256": "450342885ad90fcbddd1515bf4492b1a2b4562f9e58f6cd262a19419e27156f5",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/provider_pricing.py",
+      "upstream_source": "src/market_agent/provider_pricing.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "470a356169ec5af805be2d322ae444d68a9c854f",
+      "public_blob": "470a356169ec5af805be2d322ae444d68a9c854f",
+      "sha256": "cfb978e555a08f9931d7810e959410fecce7de62b8cfebde4a53369712092041",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/provider_vault.py",
+      "upstream_source": "src/market_agent/provider_vault.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "b49b103a6e7b172ad07bddc38de9946dd9d43395",
+      "public_blob": "b49b103a6e7b172ad07bddc38de9946dd9d43395",
+      "sha256": "3152500c413143366d0aada9c030229c185a0683b7f1a54d3356adda58550d8e",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/public_ivs.py",
+      "upstream_source": "src/market_agent/public_ivs.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "c662eb3764a9a874462e32e97ccd624c4883169e",
+      "public_blob": "c662eb3764a9a874462e32e97ccd624c4883169e",
+      "sha256": "adb44cf232c1c1d9c2bd0acf84ac34d1710da5e9621feedee2e8c4d985fe591f",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/quote.py",
+      "upstream_source": "src/market_agent/quote.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "fe7c22e33213d6f9f8bd3e0f3b6b02d771df6a01",
+      "public_blob": "fe7c22e33213d6f9f8bd3e0f3b6b02d771df6a01",
+      "sha256": "0c7a409c70a9fa372ffbb35fa6a6945c358fdae8380a06a081608a14a945dbdc",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/research_api.py",
+      "upstream_source": "src/market_agent/research_api.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "6727dfd494f078e40301fefd2cb1357bf41aac90",
+      "public_blob": "6727dfd494f078e40301fefd2cb1357bf41aac90",
+      "sha256": "c1997dda669bb8aa944b1f8710c265f3a5d7f487a13e759bd5d82b05be7011d8",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/research_context.py",
+      "upstream_source": "src/market_agent/research_context.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "8613ea16bacd0cb46da2e4ccc19b84279fa6a003",
+      "public_blob": "8613ea16bacd0cb46da2e4ccc19b84279fa6a003",
+      "sha256": "8564f1960c092c154bba1062f42faeeafa2ea2b201ed44a4ff1dacade0ed6257",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/research_egress.py",
+      "upstream_source": "src/market_agent/research_egress.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "e770926d92a86c4c1b32f2aaf91d92a3431d01d7",
+      "public_blob": "e770926d92a86c4c1b32f2aaf91d92a3431d01d7",
+      "sha256": "802c29ccd64f9b1b3f9320187b3b28176aacb0a43a504e1b583b3daf737629f3",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/research_loop.py",
+      "upstream_source": "src/market_agent/research_loop.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "2911a2e5f94772a083923969b2349c9faa4d32e9",
+      "public_blob": "2911a2e5f94772a083923969b2349c9faa4d32e9",
+      "sha256": "e2752d5c1a123ec6586503bf24d90409c3b3a7d0ae34d212ff4372d18a701bf4",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/research_task.py",
+      "upstream_source": "src/market_agent/research_task.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "34e0d631a770af9d5752549f12c2c062218792b9",
+      "public_blob": "34e0d631a770af9d5752549f12c2c062218792b9",
+      "sha256": "5672924b1fd147e53b3b9666b173201dbd9a65e2ae994394c87f82d135078324",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/research_universe.py",
+      "upstream_source": "src/market_agent/research_universe.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "b57ba66efbe4d3b0c10b9b8271efa99afc16d7f9",
+      "public_blob": "b57ba66efbe4d3b0c10b9b8271efa99afc16d7f9",
+      "sha256": "39a77297abc514a7044f258cf605708eeaa5be8f8ead335e46327e7571b7f048",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/route_preview.py",
+      "upstream_source": "src/market_agent/route_preview.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "c1d4435ce0c56aab31edc639fb60532ea4b9c431",
+      "public_blob": "c1d4435ce0c56aab31edc639fb60532ea4b9c431",
+      "sha256": "c95bd1d5a9f15c1c16b0499d00f81a97fa8e990e5fdd8944da95b87ba8060f33",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/runtime_bootstrap.py",
+      "upstream_source": "src/market_agent/runtime_bootstrap.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "bd9b6b5744b9108e6ac1ba650f1d2afee6596fd8",
+      "public_blob": "bd9b6b5744b9108e6ac1ba650f1d2afee6596fd8",
+      "sha256": "84bc8926bf5ca25c26a77be42895b87756630394d81a477e6f8eabe3f4f82119",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/runtime_budget.py",
+      "upstream_source": "src/market_agent/runtime_budget.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "c1d7b4343acb144f2e15a3e4fb8026130949b2ee",
+      "public_blob": "c1d7b4343acb144f2e15a3e4fb8026130949b2ee",
+      "sha256": "efbbd38631d9bedd5f7f085b6fa21e9d1f4cd4a5716586697a0c523e83b76f9c",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/runtime_errors.py",
+      "upstream_source": "src/market_agent/runtime_errors.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "c49d2914b74b13f7264a27e4187cbf48aa590e24",
+      "public_blob": "c49d2914b74b13f7264a27e4187cbf48aa590e24",
+      "sha256": "257450ad8a086c6b61ecbd574ef320fd42b093ae8dd513918e98a7c9b68f7b64",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/runtime_provider_hub.py",
+      "upstream_source": "src/market_agent/runtime_provider_hub.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "dfb9cc7f2de69a2b0e1a5550c6425f7081fabd2c",
+      "public_blob": "dfb9cc7f2de69a2b0e1a5550c6425f7081fabd2c",
+      "sha256": "0e26aa716bf949af46f9d29ea82afa018e55c18c476770734383ea1e91c2318c",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/sec_thesis_delta.py",
+      "upstream_source": "src/market_agent/sec_thesis_delta.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "b81d1b3e46fd2bc0b2489fe2827dc9a2561ad858",
+      "public_blob": "b81d1b3e46fd2bc0b2489fe2827dc9a2561ad858",
+      "sha256": "a11bd2a2d034c2a82b2f92b7664e7da7e527ff5fa6fddc40dba4510666e7451e",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/semantic.py",
+      "upstream_source": "src/market_agent/semantic.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "a12fd84769f200468d98d2ffe940a7bf089294a3",
+      "public_blob": "a12fd84769f200468d98d2ffe940a7bf089294a3",
+      "sha256": "d85df8b3bdb8f3a0b0a6709e0d9788e0e19f55fce314df73df11215c134fdaf7",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/serve.py",
+      "upstream_source": "src/market_agent/serve.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "578dece1684a91890827f48eaea77e8c6b1d1959",
+      "public_blob": "578dece1684a91890827f48eaea77e8c6b1d1959",
+      "sha256": "a72219d46cdb76c911fe7a92ce6d33b2317ad2c516870d82b4f03061a14b490b",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/attention.css",
+      "upstream_source": "src/market_agent/static/attention.css",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "15c7a00e7554f3e81c442e78cc2ffeffcae6089c",
+      "public_blob": "15c7a00e7554f3e81c442e78cc2ffeffcae6089c",
+      "sha256": "8a3bf68cc0038c34c5a03fd735de23ff7ee49e996c76ef03886f4c318ec6531e",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/attention.js",
+      "upstream_source": "src/market_agent/static/attention.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "15ff0880518fc0cbdcff18a818519c4a27586c59",
+      "public_blob": "15ff0880518fc0cbdcff18a818519c4a27586c59",
+      "sha256": "7222d868f1238eb883ba343aa34a8bdeb5721d7613fe1c19d6545be13503db7c",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/cockpit.js",
+      "upstream_source": "src/market_agent/static/cockpit.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "8d3e51f6df56408730c6908d5c25f7b280297212",
+      "public_blob": "8d3e51f6df56408730c6908d5c25f7b280297212",
+      "sha256": "4d2e34e87a893126dcef7a9a2bcb6a440e9bf3c1de7a850538fd66a88761c1ec",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/console.js",
+      "upstream_source": "src/market_agent/static/console.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "cc38277085661d6468e5a47df0b02cbdbfe30507",
+      "public_blob": "cc38277085661d6468e5a47df0b02cbdbfe30507",
+      "sha256": "878ae390d2b03714822cfaa7d89bd49a84646d68fd63291ba9c570844e053553",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/cost-dialog.js",
+      "upstream_source": "src/market_agent/static/cost-dialog.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "bffe55ce4a68f9e1ae93c608f8c2d8db01bbe534",
+      "public_blob": "bffe55ce4a68f9e1ae93c608f8c2d8db01bbe534",
+      "sha256": "fa7bcd711c0b8f0baffa19a01b41c0fb25242e86356f648cf5efef95cfc6a958",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/index.html",
+      "upstream_source": "src/market_agent/static/index.html",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "8d37d1b055a6e3fe2ecf8636b5cafa0ad08f2740",
+      "public_blob": "8d37d1b055a6e3fe2ecf8636b5cafa0ad08f2740",
+      "sha256": "c426944ab1ec508a1865c8f27162e4e2695709f2d6ced88a427457ad29ab76a0",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/ivs-filings.js",
+      "upstream_source": "src/market_agent/static/ivs-filings.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "a96b0f2c3e0bddc7bf40dcd8498e52ea261160f5",
+      "public_blob": "2b343fb74078544dd183a4082d5ace5eb5df01d7",
+      "sha256": "423e1660111da3c97d11fefeda42733a0f0cc33be2ce99864e3ed73b42dd3a71",
+      "transformation": "REVIEWED_PUBLIC_INTEGRATION_DELTA"
+    },
+    {
+      "path": "src/market_agent/static/ivs.css",
+      "upstream_source": "src/market_agent/static/ivs.css",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "405b4f5b28f71ccac8b0cf62e0143c83ad2bb7cd",
+      "public_blob": "749b12ce534f8df5cd1ff41a968fe340a8ded8c2",
+      "sha256": "814f5d7449d847d63c90da8374e4443f63ecf47487a25b6588f7cc7899612f1d",
+      "transformation": "REVIEWED_PUBLIC_INTEGRATION_DELTA"
+    },
+    {
+      "path": "src/market_agent/static/northstar.css",
+      "upstream_source": "src/market_agent/static/northstar.css",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "9e2f4e48d89815bcf60b6043bebb4b07daca3ccb",
+      "public_blob": "9e2f4e48d89815bcf60b6043bebb4b07daca3ccb",
+      "sha256": "02cd3d69d3ffd7a3c669e1730ee1ecd6f897f0a9f8c8345d93d136584b6dadae",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/providers.js",
+      "upstream_source": "src/market_agent/static/providers.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "06813f89b197bf86329dcae6abffb740495de284",
+      "public_blob": "06813f89b197bf86329dcae6abffb740495de284",
+      "sha256": "d53127d8d54b4490c0a6dac2f8824ca51ab41d73dcdbf167642cc42fd2059e75",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/quiet.css",
+      "upstream_source": "src/market_agent/static/quiet.css",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "99b7113f89ec73bde9a9bf9647a6bf703eaf5044",
+      "public_blob": "99b7113f89ec73bde9a9bf9647a6bf703eaf5044",
+      "sha256": "52f622b393829d096141ff54102600a953aea9f85cf6652bcd1400e442a5eca2",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/research-desk.js",
+      "upstream_source": "src/market_agent/static/research-desk.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "685201288c8bc7b22aff76acc2e0e952f83b5869",
+      "public_blob": "685201288c8bc7b22aff76acc2e0e952f83b5869",
+      "sha256": "ef3a44ebd68116aacd93d28488b8c013ce8f83f8374ac123f323aa5f821f03fa",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/research-runtime.js",
+      "upstream_source": "src/market_agent/static/research-runtime.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "b89acc4e9286608c4c7e42a6af466a277532055a",
+      "public_blob": "b89acc4e9286608c4c7e42a6af466a277532055a",
+      "sha256": "4cc8a3bdfdaddfc235e2c4d2753c714c008d4bb922dd4a6b295b7f8083b87e07",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "src/market_agent/static/today.js",
+      "upstream_source": "src/market_agent/static/today.js",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "4d99728ee7c4028af81819d2eb00858b765c501b",
+      "public_blob": "4d99728ee7c4028af81819d2eb00858b765c501b",
+      "sha256": "6d251ae59e2a81d71d28aafe32ed485e03f305910d2022f10e2e176e1b90433a",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "release/check_import_closure.py",
+      "upstream_source": "release/check_import_closure.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "86616af01511b12f7d13ca31153607c0dd1429a2",
+      "public_blob": "86616af01511b12f7d13ca31153607c0dd1429a2",
+      "sha256": "c43afb7b87230c3f204ee9982f22d37f4f35601d446653d71186a1f98abc6a73",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "tests/test_public_ivs_journey.py",
+      "upstream_source": "tests/test_public_ivs_journey.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "340d78e339bdfc58b64050773bfb0e8aa3864cce",
+      "public_blob": "722aad66cd82256307cbdd11b0bc1fb648da3378",
+      "sha256": "630f95df5f670862915824a46820128d22c1db59568f0be80d0af338a1d541f8",
+      "transformation": "REVIEWED_PUBLIC_INTEGRATION_DELTA"
+    },
+    {
+      "path": "tests/test_release_import_closure.py",
+      "upstream_source": "tests/test_release_import_closure.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "18440fd018dad9af0e310b87277c58aef88e14de",
+      "public_blob": "18440fd018dad9af0e310b87277c58aef88e14de",
+      "sha256": "ae2854c800fa0d07d9054bad60dc3396fad819e2599e63c30213798fd66c0793",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "tests/test_serve_entrypoint.py",
+      "upstream_source": "tests/test_serve_entrypoint.py",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "d25fa814ce84d018d83a9c702aec9ab1614c39cc",
+      "public_blob": "d25fa814ce84d018d83a9c702aec9ab1614c39cc",
+      "sha256": "69ac655034b83c498ad78df9bbfd45457d8cbafb8f563b0189ac72bd12af1bca",
+      "transformation": "EXACT_BYTES"
+    },
+    {
+      "path": "docs/assets/convictiondesk-beta-journey-1440.png",
+      "upstream_source": "release/assets/convictiondesk-beta-journey-1440.png",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "c418ae63015bc8f4fc03884f089833e9c4d40a74",
+      "public_blob": "6243af7125a55e4f94df8af13c777d746015cb6f",
+      "sha256": "1bf8b39a903230a1d61339976d32ae61a376e4faef1712120212158a254a5720",
+      "transformation": "REVIEWED_PUBLIC_INTEGRATION_DELTA"
+    },
+    {
+      "path": "docs/assets/convictiondesk-beta-decision-1440.png",
+      "upstream_source": "release/assets/convictiondesk-beta-decision-1440.png",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "0f2b5371f59df452a0e849c066ace97ee9f8dda4",
+      "public_blob": "9c165deb1c26bbb7fc4252dc717bc76935b68009",
+      "sha256": "949adbcdb35ec996eada131b6e7ea5621e04c2da5a95ccd59464f5ecfd6970bf",
+      "transformation": "REVIEWED_PUBLIC_INTEGRATION_DELTA"
+    },
+    {
+      "path": "docs/assets/convictiondesk-beta-mobile-390.png",
+      "upstream_source": "release/assets/convictiondesk-beta-mobile-390.png",
+      "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
+      "upstream_blob": "36ca781543bbc346ea8ebf670c3fdc2a54531295",
+      "public_blob": "8766c55ef54854976f3102d8a3b3161742ada2db",
+      "sha256": "4f23ae8fd62f9b059f503932cb8f36743d23e822dab6cec51c9bf740346fb119",
+      "transformation": "REVIEWED_PUBLIC_INTEGRATION_DELTA"
+    }
+  ],
+  "publication": "CANDIDATE_PENDING_INDEPENDENT_GOS_AND_EXACT_PUBLIC_CI",
+  "integrator_changed_paths": [
+    ".github/workflows/ci.yml",
+    ".gitignore",
+    "CHANGELOG.md",
+    "README.md",
+    "docs/assets/convictiondesk-beta-decision-1440.png",
+    "docs/assets/convictiondesk-beta-journey-1440.png",
+    "docs/assets/convictiondesk-beta-mobile-390.png",
+    "docs/getting-started.md",
+    "pyproject.toml",
+    "release/V010_RELEASE_NOTES.md",
+    "release/check_import_closure.py",
+    "release/public-files.json",
+    "scripts/build_public_demo_dataset.py",
+    "scripts/smoke_public_ivs_browser.cjs",
+    "src/market_agent/action_decision.py",
+    "src/market_agent/attention.py",
+    "src/market_agent/attention_api.py",
+    "src/market_agent/attention_coverage.py",
+    "src/market_agent/attention_groups.py",
+    "src/market_agent/attention_jev.py",
+    "src/market_agent/attention_radar.py",
+    "src/market_agent/call_budget.py",
+    "src/market_agent/decision_router.py",
+    "src/market_agent/deepseek.py",
+    "src/market_agent/demo_assets/public-ivs-v1.json",
+    "src/market_agent/evidence_action.py",
+    "src/market_agent/experiment_budget.py",
+    "src/market_agent/ivs_observation.py",
+    "src/market_agent/ivs_today_api.py",
+    "src/market_agent/jev_runtime.py",
+    "src/market_agent/llm.py",
+    "src/market_agent/local_api_security.py",
+    "src/market_agent/longbridge_mcp.py",
+    "src/market_agent/main.py",
+    "src/market_agent/market_evidence.py",
+    "src/market_agent/market_pulse.py",
+    "src/market_agent/model_profiles.py",
+    "src/market_agent/news.py",
+    "src/market_agent/persistence.py",
+    "src/market_agent/portfolio_preview.py",
+    "src/market_agent/provider.py",
+    "src/market_agent/provider_pricing.py",
+    "src/market_agent/provider_vault.py",
+    "src/market_agent/public_ivs.py",
+    "src/market_agent/quote.py",
+    "src/market_agent/research_api.py",
+    "src/market_agent/research_context.py",
+    "src/market_agent/research_egress.py",
+    "src/market_agent/research_loop.py",
+    "src/market_agent/research_task.py",
+    "src/market_agent/research_universe.py",
+    "src/market_agent/route_preview.py",
+    "src/market_agent/runtime_bootstrap.py",
+    "src/market_agent/runtime_budget.py",
+    "src/market_agent/runtime_errors.py",
+    "src/market_agent/runtime_provider_hub.py",
+    "src/market_agent/sec_thesis_delta.py",
+    "src/market_agent/semantic.py",
+    "src/market_agent/serve.py",
+    "src/market_agent/static/attention.css",
+    "src/market_agent/static/attention.js",
+    "src/market_agent/static/cockpit.js",
+    "src/market_agent/static/console.js",
+    "src/market_agent/static/cost-dialog.js",
+    "src/market_agent/static/index.html",
+    "src/market_agent/static/ivs-filings.js",
+    "src/market_agent/static/ivs.css",
+    "src/market_agent/static/northstar.css",
+    "src/market_agent/static/providers.js",
+    "src/market_agent/static/quiet.css",
+    "src/market_agent/static/research-desk.js",
+    "src/market_agent/static/research-runtime.js",
+    "src/market_agent/static/today.js",
+    "tests/test_public_ivs_journey.py",
+    "tests/test_quiet_ui_contract.py",
+    "tests/test_release_import_closure.py",
+    "tests/test_serve_entrypoint.py"
+  ]
+}

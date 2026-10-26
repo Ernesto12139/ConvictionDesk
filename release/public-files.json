@@ -268,6 +268,10 @@
     "path": "release/ASSET_PROVENANCE.md"
   },
   {
+    "source": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
+    "path": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json"
+  },
+  {
     "source": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
     "path": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json"
   },
