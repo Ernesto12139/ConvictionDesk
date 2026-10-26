@@ -1,5 +1,18 @@
 Original concept diagrams prepared for ConvictionDesk; MIT. No third-party templates, icons, font files, embedded media, or Owner data. SVG text uses system fonts. These are conceptual architecture/workflow illustrations, not screenshots or live-results evidence.
 
+Public IVS v0.10.0: `docs/assets/convictiondesk-beta-journey-1440.png`,
+`convictiondesk-beta-decision-1440.png` and `convictiondesk-beta-mobile-390.png`
+are direct Chromium captures of the integrated public-IVS Console at1440×900
+and390×844. Capture script: `scripts/smoke_public_ivs_browser.cjs`. They show
+real public SEC metadata from the packaged 2026-10-24 capture, fictional
+accounts/holdings/Theses/price marks, and scripted research. No filing body,
+licensed news body, model output or real portfolio is included. The decision
+image includes an actual deterministic What-if result. No pixel composition or
+retouching was applied; display times use the browser's local timezone, while
+the source receipts retain UTC. These three PNGs are distinct from the older
+fictional-company replay figures described below. Source metadata rights and
+dependency licenses remain separate from the code/screenshots' MIT license.
+
 The source budgets match research_context.py/model_profiles.py at this release. Dashed boxes are planned capabilities. Deep is not proven to judge better. Source provider terms and installed dependency licenses remain separate from the code license.
 
 Product screenshots (`convictiondesk-journey-*`, `-decision-*`, `-records-*`, `-mobile`) are real captures of this release's keyless PUBLIC_DEMO replay: fictional companies, accounts and filings; UTC; read-only; zero model or data calls; never an Owner instance. Captures were cropped, arranged and resized only, with no pixel edits, and saved without PNG metadata. The figures carry a caption that they are synthetic replay, not live results.

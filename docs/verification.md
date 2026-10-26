@@ -1,5 +1,25 @@
 # Verification
 
+## v0.10.0 public IVS scope
+
+The new keyless entrypoint is `python -m market_agent.public_ivs --serve` on8791:
+frozen real SEC metadata → fictional prior Thesis/portfolio → scripted Fast and
+same-task Deep → cited evidence/counterevidence → Decimal result-card What-if.
+Runtime execution makes no external model/data requests; dependency installation
+may require network. There is no live model-quality or investment-accuracy claim.
+
+Public CI retains the earlier replay, SEC authority/time/F2 and history gates,
+and adds strict research completion, repeated same-database WAL/failure tests,
+import/resource closure, actual desktop/mobile result-card What-if and a
+non-root installed Docker journey with network disabled and root filesystem
+read-only. The PR jobs checkout the exact PR head, rather than its synthetic
+merge object. `release/RELEASE_MANIFEST.json` binds exported file bytes;
+`release/IVS_EVIDENCE_INCREMENT_MANIFEST.json` records source and preservation.
+
+The v0.9.0 capability history below describes the retained replay and earlier
+engineering scope. It does not turn this scripted demo into live research or
+human business acceptance.
+
 This page records how far each capability in v0.9.0 is verified. It is the single place for scope and limits; the README links here instead of repeating them.
 
 **Verified (scoped)** means covered by deterministic tests and the keyless HTTP and browser journeys described below. **Implemented** means the code ships and is exercised on synthetic or frozen inputs, but has not been checked against live providers. **Experimental** means it works with your own keys and has not been benchmarked.
