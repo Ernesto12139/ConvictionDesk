@@ -14,10 +14,9 @@ Three properties are asserted rather than described:
 * the arithmetic is exact — floats and exponent notation are rejected at the boundary,
   and What-if is checked against hand-computed Decimals when the run completes.
 
-The SQLite write race that used to force these completion assertions into `xfail` is
-fixed at its cause (`Store` keeps one connection open so the WAL file is not deleted
-while another thread is writing), so Fast and Deep completion are asserted directly
-instead of being marked as a known defect.
+Research saves use a write-scoped WAL pin. Completion and repeated same-database
+execution are asserted directly, without retries or xfail. These checks cover the
+named paths; they do not establish that every intermittent SQLite failure is fixed.
 """
 import json
 import socket
@@ -192,17 +191,15 @@ def test_console_status_never_names_a_production_model(client):
 
 
 def test_research_completion_is_deterministic_across_runs(client):
-    """A completed run must not depend on thread timing.
-
-    One run per database is the shape the product actually serves, and that is what
-    this asserts. Repeating the task on one database still exposes a residual
-    WAL/`-shm` race on this host (see the module docstring), so the stress case is
-    recorded as a known gap rather than asserted here.
-    """
-    task = finish(client, client.post("/api/research/tasks",
-                                      json={"question": QUESTION, "mode": "FAST"}))
-    assert task["status"] == "COMPLETE", task.get("error")
-    assert task["assessment"]["key_reasons"]
+    """Three sequential tasks on one database must complete without retries."""
+    statuses = []
+    for _ in range(3):
+        task = finish(client, client.post("/api/research/tasks",
+                                          json={"question": QUESTION, "mode": "FAST"}))
+        assert task["status"] == "COMPLETE", task.get("error")
+        assert task["assessment"]["key_reasons"]
+        statuses.append(task['status'])
+    assert statuses == ['COMPLETE'] * 3
 
 
 # ------------------------------------------------------------- Today + SEC
