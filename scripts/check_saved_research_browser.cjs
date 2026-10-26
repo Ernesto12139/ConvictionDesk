@@ -62,7 +62,13 @@ const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
      const note=a.applicability_note||({SUPPORTED:'证据支持的研究方向',PROVISIONAL:'暂定 · PROVISIONAL'}[a.decision_status]||'尚无适用且有依据的操作方向');
      check(await page.locator('.desk-core').isVisible()&&card.includes(head)&&card.includes(note),prefix+'_conclusion_shows_action_direction_and_status');
     }
-    check(await page.locator('#desk-result .desk-decision-drivers').count()===1&&await page.locator('#desk-result [data-brief="counter"]').count()===1,prefix+'_decision_brief_rendered');
+    const brief=page.locator('#desk-result .desk-decision-communication');
+    check(await brief.count()===1&&await brief.isVisible(),prefix+'_decision_brief_rendered');
+    const briefText=await brief.innerText();
+    for(const field of ['key_reasons','counterevidence','action_conditions']){
+     const statement=task.assessment[field][0];
+     if(statement)check(briefText.includes(statement.text),prefix+'_saved_'+field+'_visible');
+    }
     const full=page.locator('.desk-report-details');await full.locator('summary').click();
     check(await full.evaluate(e=>e.open),prefix+'_full_report_expanded');
     const text=await full.innerText();
