@@ -43,6 +43,10 @@ async function completed(page, taskId, revision) {
       const banner = await page.locator('#public-ivs-banner').innerText();
       for (const token of ['REAL_PUBLIC_SEC_METADATA', 'SYNTHETIC', 'SCRIPTED']) assert.ok(banner.includes(token));
       await page.getByRole('button', {name: '研究这份披露', exact: true}).first().waitFor();
+      const firstCard = await page.locator('.ivs-filing').first().boundingBox();
+      assert.ok(firstCard && firstCard.y < page.viewportSize().height, 'First SEC card must be inside the initial viewport');
+      assert.equal(await page.locator('#today-pulse').isVisible(), false);
+      assert.ok((await page.locator('.ivs-filing').first().innerText()).includes('SYNTHETIC'));
       await page.screenshot({path: path.join(output, `public-ivs-${width}.png`)});
       await page.getByRole('button', {name: '研究这份披露', exact: true}).first().click();
       await page.getByRole('button', {name: 'Fast · 快速', exact: true}).click();

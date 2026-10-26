@@ -97,7 +97,8 @@ def test_paid_actions_use_in_app_dialog_and_cancel_is_safe():
     assert html.index('cost-dialog.js') < html.index('attention.js') < html.index('research-desk.js')
     desk = source('research-desk.js')
     # Every research POST sits behind an awaited confirmation.
-    assert desk.count('send(') == 4  # definition + three confirmed call sites
+    assert desk.count('send(') == 5  # definition + four confirmed call sites
+    assert 'if (await confirmFollowup("DEEP") && stillShowing(shown)) void send($("desk-followup").value, true, "DEEP");' in desk
     # The related Today item shown in the dialog must still be the one sent.
     assert 'const draft=attentionDraft;if(await confirmNew() && attentionDraft===draft)void send($("desk-question").value,false);' in desk
     # A follow-up/retry confirmation covers only the task revision it showed.
@@ -118,7 +119,8 @@ def test_home_keeps_short_recent_summary_and_records_is_full_list():
 def test_today_long_material_opens_in_drawer_without_hiding_history_or_failures():
     script = source('attention.js')
     assert 'id="attention-detail"' in source('index.html')
-    assert 'data.historical_items.forEach(row=>older.append(compactRow(row)))' in script
+    assert 'const earlier=data.earlier_items || data.historical_items || [];' in script
+    assert 'earlier.forEach(row=>older.append(compactRow(row)))' in script
     assert 'openDetail(row,r=>[`${r.item.symbol} · 证据与记录`,renderItem(r,"evidence")])' in script
     assert 'openDetail(row,r=>[`${r.item.symbol} · 关注详情`,renderItem(r,"drawer")])' in script
     # A queue refresh redraws an open drawer from the new row; it closes only

@@ -45,8 +45,15 @@ body[data-public-ivs="1"] .public-ivs-classes span { font-size: .78rem; line-hei
 /* The public build has no market data provider, so the market-pulse section would
    only show "not configured" counters. The SEC lane moves above it and this hides. */
 body[data-public-ivs="1"] #attention { display: none; }
+body[data-public-ivs="1"] #today-pulse { display: none; }
 body[data-public-ivs="1"] .public-ivs-banner + #ivs-filings { margin-top: 0; }
 @media (max-width: 600px) {
   body[data-public-ivs="1"] .public-ivs-banner { padding: .85rem .9rem; }
   body[data-public-ivs="1"] .public-ivs-banner h2 { font-size: 1.05rem; }
+  body[data-public-ivs="1"] .public-ivs-gloss { font-size: .78rem; margin-bottom: .5rem; }
+  body[data-public-ivs="1"] .public-ivs-classes { gap: .35rem; }
+  body[data-public-ivs="1"] .public-ivs-classes li { padding: .35rem .5rem; }
+  body[data-public-ivs="1"] .public-ivs-classes strong { font-size: .75rem; }
+  body[data-public-ivs="1"] .public-ivs-classes span { display: none; }
+  body[data-public-ivs="1"] .public-ivs-banner details { margin-top: .5rem; font-size: .8rem; }
 }

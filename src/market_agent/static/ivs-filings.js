@@ -31,7 +31,7 @@
     for (const filing of filings) {
       const item = node("li", null, "ivs-filing"), delta = deltas.get(filing.evidence_id);
       const lead = node("div", null, "ivs-filing-lead");
-      lead.append(node("strong", `${filing.symbol} · ${filing.event_label || filing.form}`), node("span", filing.scope?.kind === "HOLDING" ? "你的持仓" : "你的关注", "small muted"), node("span", "待核查，尚未研究", "small muted"));
+      lead.append(node("strong", `${filing.symbol} · ${filing.event_label || filing.form}`), node("span", publicIvs ? (filing.scope?.kind === "HOLDING" ? "虚构持仓 · SYNTHETIC" : "虚构关注 · SYNTHETIC") : (filing.scope?.kind === "HOLDING" ? "你的持仓" : "你的关注"), "small muted"), node("span", "待核查，尚未研究", "small muted"));
       const source = node("a", `打开 SEC 原始申报 · ${filing.form}`); source.href = filing.source_url; source.target = "_blank"; source.rel = "noopener noreferrer"; source.dataset.secAccession = filing.accession;
       const time = filing.time_precision === "SECOND" ? `SEC 接收 ${stamp(filing.accepted_at)}` : `仅知申报日期 ${filing.filing_date || "未知"}；未伪造精确时刻`;
       item.append(lead, node("p", `${time} · 条目 ${(filing.items || []).join("、") || "未注明"}`, "small muted"));

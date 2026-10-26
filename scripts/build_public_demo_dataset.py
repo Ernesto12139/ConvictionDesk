@@ -9,6 +9,7 @@ fictional. Docker serves the resulting rows and never invokes a model.
 """
 import asyncio
 import json
+import os
 import sqlite3
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal
@@ -268,7 +269,9 @@ def dump_tables(path):
 
 
 async def main():
-    with TemporaryDirectory(prefix='convictiondesk-demo-', ignore_cleanup_errors=True) as temp:
+    with TemporaryDirectory(prefix='convictiondesk-demo-',
+                            dir=os.environ.get('MIA_ISOLATED_ROOT'),
+                            ignore_cleanup_errors=True) as temp:
         path = Path(temp)/'demo.sqlite3'
         oracle = ScriptedOracle()
         from market_agent.persistence import Store
