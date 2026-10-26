@@ -1,3 +1,18 @@
+# Public IVS Quickstart — v0.10.0
+
+The primary keyless journey is now `python -m market_agent.public_ivs --serve`
+on http://127.0.0.1:8791/. Follow the complete Windows/Linux install and click
+path in [the README](../README.md#quickstart). Use a fresh synthetic root;
+no keys or runtime model/data requests are needed. Financial scope is fictional,
+SEC metadata is a frozen public capture, and research is scripted.
+
+`python -m market_agent.serve` still opens the older read-only fictional replay
+on8080. The instructions below describe that retained replay and optional live
+configuration; their live-mode requirement for What-if does **not** apply to the
+new public-IVS synthetic result card.
+
+---
+
 # Getting started
 
 ConvictionDesk runs in two modes from the same code:

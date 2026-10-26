@@ -37,12 +37,17 @@ class MarketEvidenceIdentity(FrozenModel):
     _retrieved = field_validator('retrieved_at')(utc)
 
 
+# Providers whose receipts carry exact publication instants when the field is absent.
+# Single source for market_identity and the Today radar (they had drifted apart).
+INSTANT_PUBLICATION_PROVIDERS = frozenset({'finnhub', 'synthetic', 'synthetic-copy', 'synthetic-research'})
+
+
 def market_identity(evidence: EvidenceItem, cutoff: datetime) -> MarketEvidenceIdentity:
     cutoff = utc(cutoff)
     data = evidence.structured_data or {}
     published = evidence.published_at
     precision = data.get('published_at_precision', 'INSTANT' if evidence.provider in
-        {'finnhub', 'synthetic', 'synthetic-copy', 'synthetic-research'} else 'UNKNOWN')
+        INSTANT_PUBLICATION_PROVIDERS else 'UNKNOWN')
     timestamp = evidence.as_of if evidence.evidence_type == 'market_data' else published
     status = 'UNKNOWN'
     if timestamp and (timestamp > cutoff or evidence.retrieved_at < timestamp):

@@ -41,11 +41,29 @@
     });
     return dialog;
   }
-  window.miaConfirmCost = ({ title, body, confirmLabel = "确认", facts = [] }) => {
+  window.miaConfirmCost = ({ title, body, confirmLabel = "确认", facts = [], consent = null }) => {
     if (pending) return Promise.resolve(false);
     const dialog = document.getElementById("mia-cost-dialog") || build();
+    // Optional data-sharing consent: the confirm button stays disabled until checked.
+    dialog.querySelector(".mia-consent")?.remove();
+    const confirmButton = dialog.querySelector('[data-cost="confirm"]');
+    confirmButton.disabled = false;
+    if (consent) {
+      const label = document.createElement("label"), box = document.createElement("input"), text = document.createElement("span");
+      label.className = "mia-consent"; box.type = "checkbox"; box.id = "mia-cost-consent"; text.textContent = consent;
+      label.append(box, text);
+      dialog.querySelector("#mia-cost-fee").after(label);
+      confirmButton.disabled = true;
+      box.addEventListener("change", () => { confirmButton.disabled = !box.checked; });
+    }
     dialog.querySelector("#mia-cost-title").textContent = title;
     dialog.querySelector("#mia-cost-body").textContent = body;
+    // Any IVS preview (keyless or scripted) is served by the local scripted oracle,
+    // so a fee warning would be false. The public build must say so explicitly.
+    const preview = document.body.dataset.ivsPreview;
+    dialog.querySelector("#mia-cost-fee").textContent = preview
+      ? "脚本回放：0 次模型调用 · 无费用 · 不调用外部模型。取消不会提交任何请求。"
+      : "可能产生模型费用。取消不会提交任何请求。";
     dialog.querySelector('[data-cost="confirm"]').textContent = confirmLabel;
     const list = dialog.querySelector("#mia-cost-facts");
     list.replaceChildren();

@@ -38,11 +38,13 @@ class JevAttentionScreen(JevSemanticJudge):
         try:
             if self.client is None:
                 async with httpx.AsyncClient() as client:
+                    self._admit(payload,client)
                     response=await client.post(f'{self.base_url}/v1/systemone',json=payload,
-                        headers={'Authorization':f'Bearer {self._api_key}'},timeout=self.timeout)
+                        headers={'Authorization':f'Bearer {self._api_key}'},timeout=self.timeout,follow_redirects=False)
             else:
+                self._admit(payload,self.client)
                 response=await self.client.post(f'{self.base_url}/v1/systemone',json=payload,
-                    headers={'Authorization':f'Bearer {self._api_key}'},timeout=self.timeout)
+                    headers={'Authorization':f'Bearer {self._api_key}'},timeout=self.timeout,follow_redirects=False)
         except httpx.TimeoutException:
             raise LLMError('timeout','Jev Attention timeout') from None
         except httpx.RequestError:

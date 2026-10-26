@@ -44,3 +44,31 @@
   .attention-actions { gap: 8px; }
   .attention-deep { padding: 16px; }
 }
+
+/* Today radar: scope sections, novelty and source chips. */
+.attention-section-head { display: flex; align-items: baseline; gap: 10px; margin: 0 0 4px; }
+.attention-section-head h3 { font-size: 14px; font-weight: 650; letter-spacing: .06em; margin: 0; }
+.attention-section-count { font-size: 12px; color: var(--muted); }
+.attention-section-note { margin: 0 0 8px; }
+.attention-radar-chips { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.attention-novelty, .attention-sources, .attention-exposure {
+  font-size: 12px; line-height: 1.4; padding: 2px 8px; border-radius: 999px;
+  border: 1px solid var(--line); white-space: nowrap;
+}
+.attention-novelty[data-novelty="NEW_TO_US"] { border-color: currentColor; font-weight: 600; }
+.attention-novelty:is([data-novelty="REPUBLISHED"],[data-novelty="AGED_IN"],[data-novelty="UNKNOWN"]) { border-style: dashed; color: var(--muted); }
+.attention-novelty[data-confidence="LOW"] { border-style: dotted; }
+.attention-sources[data-sources="SYNDICATED"] { border-style: dashed; color: var(--muted); }
+.attention-radar-note { color: var(--muted); }
+
+/* Today coverage honesty and event importance. */
+.attention-stale { border: 1px solid var(--line); border-left-width: 3px; border-radius: 6px; padding: 10px 12px; margin: 0 0 16px; }
+.attention-stale strong { display: block; font-size: 14px; margin-bottom: 4px; }
+.attention-stale p { margin: 2px 0 0; max-width: 72ch; }
+.attention-stale[data-state="OLD"], .attention-stale[data-state="NEVER"] { border-left-color: currentColor; }
+.attention-headline { margin: 0 0 18px; padding: 10px 12px; border-radius: 6px; background: var(--surface-inset, #f3f4f2); font-size: 15px; line-height: 1.6; max-width: 72ch; }
+.attention-headline.is-empty { background: transparent; border: 1px dashed var(--line); color: var(--muted); }
+.attention-class { font-size: 12px; line-height: 1.4; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); white-space: nowrap; }
+.attention-class[data-band="CRITICAL"] { border-color: currentColor; font-weight: 650; }
+.attention-section-empty { margin: 0 0 4px; }
+.attention-times { font-variant-numeric: tabular-nums; }

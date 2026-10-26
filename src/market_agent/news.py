@@ -137,8 +137,9 @@ class FinnhubNewsProvider:
         return NewsResult(evidence=selected, coverage_complete=coverage_complete)
 
     def _one(self, symbol: str, since: datetime, until: datetime) -> list[EvidenceItem]:
+        from .tool_deadline import check_tool_deadline, provider_get
         try:
-            response = self.client.get(
+            response = provider_get(self.client,
                 f"{self.base_url}/company-news",
                 headers={"X-Finnhub-Token": self._api_key},
                 params={
@@ -147,6 +148,7 @@ class FinnhubNewsProvider:
                     "to": until.date().isoformat(),
                 },
             )
+            check_tool_deadline()
         except httpx.TimeoutException:
             raise ProviderError("timeout", "Finnhub request timed out") from None
         except httpx.RequestError:

@@ -39,8 +39,10 @@ class FinnhubQuoteProvider:
         response = None
         for attempt in range(2):
             try:
-                response = self.client.get("https://finnhub.io/api/v1/quote",
+                from .tool_deadline import check_tool_deadline, provider_get
+                response = provider_get(self.client, "https://finnhub.io/api/v1/quote",
                     params={"symbol": symbol}, headers={"X-Finnhub-Token": self._api_key})
+                check_tool_deadline()
             except httpx.RequestError:
                 if attempt == 0:
                     continue

@@ -8,16 +8,228 @@
     "path": ".env.example"
   },
   {
+    "source": ".github/workflows/ci.yml",
+    "path": ".github/workflows/ci.yml"
+  },
+  {
+    "source": ".gitignore",
+    "path": ".gitignore"
+  },
+  {
+    "source": "CHANGELOG.md",
+    "path": "CHANGELOG.md"
+  },
+  {
+    "source": "CONTRIBUTING.md",
+    "path": "CONTRIBUTING.md"
+  },
+  {
     "source": "Dockerfile",
     "path": "Dockerfile"
+  },
+  {
+    "source": "LICENSE",
+    "path": "LICENSE"
+  },
+  {
+    "source": "README.md",
+    "path": "README.md"
+  },
+  {
+    "source": "docs/README.md",
+    "path": "docs/README.md"
+  },
+  {
+    "source": "docs/architecture.md",
+    "path": "docs/architecture.md"
+  },
+  {
+    "source": "docs/assets/convictiondesk-architecture-dark.svg",
+    "path": "docs/assets/convictiondesk-architecture-dark.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-architecture-light.svg",
+    "path": "docs/assets/convictiondesk-architecture-light.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-beta-decision-1440.png",
+    "path": "docs/assets/convictiondesk-beta-decision-1440.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-beta-journey-1440.png",
+    "path": "docs/assets/convictiondesk-beta-journey-1440.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-beta-mobile-390.png",
+    "path": "docs/assets/convictiondesk-beta-mobile-390.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-decision-dark.png",
+    "path": "docs/assets/convictiondesk-decision-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-decision-light.png",
+    "path": "docs/assets/convictiondesk-decision-light.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-evidence-to-action-dark.svg",
+    "path": "docs/assets/convictiondesk-evidence-to-action-dark.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-evidence-to-action-light.svg",
+    "path": "docs/assets/convictiondesk-evidence-to-action-light.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-fast-deep-dark.svg",
+    "path": "docs/assets/convictiondesk-fast-deep-dark.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-fast-deep-light.svg",
+    "path": "docs/assets/convictiondesk-fast-deep-light.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-hero-dark.svg",
+    "path": "docs/assets/convictiondesk-hero-dark.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-hero-light.svg",
+    "path": "docs/assets/convictiondesk-hero-light.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-journey-dark.png",
+    "path": "docs/assets/convictiondesk-journey-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-journey-light.png",
+    "path": "docs/assets/convictiondesk-journey-light.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-loop-dark.svg",
+    "path": "docs/assets/convictiondesk-loop-dark.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-loop-light.svg",
+    "path": "docs/assets/convictiondesk-loop-light.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-mobile.png",
+    "path": "docs/assets/convictiondesk-mobile.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-product-dark.png",
+    "path": "docs/assets/convictiondesk-product-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-product-light.png",
+    "path": "docs/assets/convictiondesk-product-light.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-records-dark.png",
+    "path": "docs/assets/convictiondesk-records-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-records-light.png",
+    "path": "docs/assets/convictiondesk-records-light.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-whatif-dark.png",
+    "path": "docs/assets/convictiondesk-whatif-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-whatif-light.png",
+    "path": "docs/assets/convictiondesk-whatif-light.png"
+  },
+  {
+    "source": "docs/data-sources.md",
+    "path": "docs/data-sources.md"
+  },
+  {
+    "source": "docs/getting-started.md",
+    "path": "docs/getting-started.md"
+  },
+  {
+    "source": "docs/research-agent/ACCOUNT_WHATIF.md",
+    "path": "docs/research-agent/ACCOUNT_WHATIF.md"
+  },
+  {
+    "source": "docs/research-agent/DATED_USER_VALUATION.md",
+    "path": "docs/research-agent/DATED_USER_VALUATION.md"
+  },
+  {
+    "source": "docs/research-agent/LOCAL_CAPITAL_REFERENCE.md",
+    "path": "docs/research-agent/LOCAL_CAPITAL_REFERENCE.md"
+  },
+  {
+    "source": "docs/research-agent/TECHNICAL_CONDITIONS.md",
+    "path": "docs/research-agent/TECHNICAL_CONDITIONS.md"
+  },
+  {
+    "source": "docs/research-agent/TODAY_CANDIDATE_EVENTS.md",
+    "path": "docs/research-agent/TODAY_CANDIDATE_EVENTS.md"
+  },
+  {
+    "source": "docs/research-agent/V09_PRODUCT_CLOSURE.md",
+    "path": "docs/research-agent/V09_PRODUCT_CLOSURE.md"
+  },
+  {
+    "source": "docs/showcase.md",
+    "path": "docs/showcase.md"
+  },
+  {
+    "source": "docs/verification.md",
+    "path": "docs/verification.md"
   },
   {
     "source": "evals/__init__.py",
     "path": "evals/__init__.py"
   },
   {
+    "source": "evals/closure_journey.py",
+    "path": "evals/closure_journey.py"
+  },
+  {
     "source": "evals/convictiondesk.py",
     "path": "evals/convictiondesk.py"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/overnight_account_whatif_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/overnight_account_whatif_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/owner_ux_t1_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/owner_ux_t1_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/second_overnight_technical_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/second_overnight_technical_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/v09_dualpath_r2_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/v09_dualpath_r2_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/v09_dualpath_r3_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/v09_dualpath_r3_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/attention_calibration/v09_dualpath_retained_compatibility.json",
+    "path": "evals/fixtures/attention_calibration/v09_dualpath_retained_compatibility.json"
+  },
+  {
+    "source": "evals/fixtures/ivs_sec/DOW.json",
+    "path": "evals/fixtures/ivs_sec/DOW.json"
+  },
+  {
+    "source": "evals/fixtures/ivs_sec/KR.json",
+    "path": "evals/fixtures/ivs_sec/KR.json"
+  },
+  {
+    "source": "evals/fixtures/ivs_sec/UNP.json",
+    "path": "evals/fixtures/ivs_sec/UNP.json"
   },
   {
     "source": "evals/fixtures/market_eod.json",
@@ -28,8 +240,24 @@
     "path": "evals/fixtures/research_agent/pre-v05-research-task.json"
   },
   {
+    "source": "evals/fixtures/research_agent/v09-8f-valuation-task.json",
+    "path": "evals/fixtures/research_agent/v09-8f-valuation-task.json"
+  },
+  {
+    "source": "evals/fixtures/sec_acceptance_dst_anchors.json",
+    "path": "evals/fixtures/sec_acceptance_dst_anchors.json"
+  },
+  {
     "source": "evals/research_agent.py",
     "path": "evals/research_agent.py"
+  },
+  {
+    "source": "evals/run_product_delta_scorecard.py",
+    "path": "evals/run_product_delta_scorecard.py"
+  },
+  {
+    "source": "evals/v09_intelligence.py",
+    "path": "evals/v09_intelligence.py"
   },
   {
     "source": "pyproject.toml",
@@ -40,8 +268,24 @@
     "path": "release/ASSET_PROVENANCE.md"
   },
   {
+    "source": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
+    "path": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json"
+  },
+  {
+    "source": "release/V010_RELEASE_NOTES.md",
+    "path": "release/V010_RELEASE_NOTES.md"
+  },
+  {
+    "source": "release/V09_RELEASE_NOTES.md",
+    "path": "release/V09_RELEASE_NOTES.md"
+  },
+  {
     "source": "release/audit_public_git.py",
     "path": "release/audit_public_git.py"
+  },
+  {
+    "source": "release/check_import_closure.py",
+    "path": "release/check_import_closure.py"
   },
   {
     "source": "release/export_snapshot.py",
@@ -52,8 +296,36 @@
     "path": "release/public-files.json"
   },
   {
+    "source": "release/verified_service_merges.json",
+    "path": "release/verified_service_merges.json"
+  },
+  {
     "source": "scripts/build_public_demo_dataset.py",
     "path": "scripts/build_public_demo_dataset.py"
+  },
+  {
+    "source": "scripts/build_technical_example.py",
+    "path": "scripts/build_technical_example.py"
+  },
+  {
+    "source": "scripts/check_attention_continuation_browser.cjs",
+    "path": "scripts/check_attention_continuation_browser.cjs"
+  },
+  {
+    "source": "scripts/check_capital_reference_browser.cjs",
+    "path": "scripts/check_capital_reference_browser.cjs"
+  },
+  {
+    "source": "scripts/check_closure_browser.cjs",
+    "path": "scripts/check_closure_browser.cjs"
+  },
+  {
+    "source": "scripts/check_current_event_research_browser.cjs",
+    "path": "scripts/check_current_event_research_browser.cjs"
+  },
+  {
+    "source": "scripts/check_dated_valuation_browser.cjs",
+    "path": "scripts/check_dated_valuation_browser.cjs"
   },
   {
     "source": "scripts/check_product_journey.py",
@@ -68,12 +340,24 @@
     "path": "scripts/check_today_cost_browser.cjs"
   },
   {
+    "source": "scripts/sec_evidence_demo.py",
+    "path": "scripts/sec_evidence_demo.py"
+  },
+  {
     "source": "scripts/smoke_public_demo.py",
     "path": "scripts/smoke_public_demo.py"
   },
   {
     "source": "scripts/smoke_public_demo_browser.cjs",
     "path": "scripts/smoke_public_demo_browser.cjs"
+  },
+  {
+    "source": "scripts/smoke_public_ivs_browser.cjs",
+    "path": "scripts/smoke_public_ivs_browser.cjs"
+  },
+  {
+    "source": "scripts/verify_sec_capture.py",
+    "path": "scripts/verify_sec_capture.py"
   },
   {
     "source": "src/market_agent/__init__.py",
@@ -100,6 +384,10 @@
     "path": "src/market_agent/attention_api.py"
   },
   {
+    "source": "src/market_agent/attention_coverage.py",
+    "path": "src/market_agent/attention_coverage.py"
+  },
+  {
     "source": "src/market_agent/attention_groups.py",
     "path": "src/market_agent/attention_groups.py"
   },
@@ -108,12 +396,24 @@
     "path": "src/market_agent/attention_jev.py"
   },
   {
+    "source": "src/market_agent/attention_preselection.py",
+    "path": "src/market_agent/attention_preselection.py"
+  },
+  {
+    "source": "src/market_agent/attention_radar.py",
+    "path": "src/market_agent/attention_radar.py"
+  },
+  {
     "source": "src/market_agent/attention_selection.py",
     "path": "src/market_agent/attention_selection.py"
   },
   {
     "source": "src/market_agent/call_budget.py",
     "path": "src/market_agent/call_budget.py"
+  },
+  {
+    "source": "src/market_agent/capital_reference.py",
+    "path": "src/market_agent/capital_reference.py"
   },
   {
     "source": "src/market_agent/clock.py",
@@ -128,6 +428,10 @@
     "path": "src/market_agent/console.py"
   },
   {
+    "source": "src/market_agent/dated_valuation.py",
+    "path": "src/market_agent/dated_valuation.py"
+  },
+  {
     "source": "src/market_agent/decision_context.py",
     "path": "src/market_agent/decision_context.py"
   },
@@ -140,12 +444,28 @@
     "path": "src/market_agent/deepseek.py"
   },
   {
+    "source": "src/market_agent/demo_assets/public-ivs-v1.json",
+    "path": "src/market_agent/demo_assets/public-ivs-v1.json"
+  },
+  {
     "source": "src/market_agent/demo_assets/research-replay-v2.json",
     "path": "src/market_agent/demo_assets/research-replay-v2.json"
   },
   {
+    "source": "src/market_agent/demo_assets/technical-example-v1.json",
+    "path": "src/market_agent/demo_assets/technical-example-v1.json"
+  },
+  {
     "source": "src/market_agent/domain.py",
     "path": "src/market_agent/domain.py"
+  },
+  {
+    "source": "src/market_agent/evidence_action.py",
+    "path": "src/market_agent/evidence_action.py"
+  },
+  {
+    "source": "src/market_agent/experiment_budget.py",
+    "path": "src/market_agent/experiment_budget.py"
   },
   {
     "source": "src/market_agent/fast_decision.py",
@@ -168,6 +488,18 @@
     "path": "src/market_agent/investment_context.py"
   },
   {
+    "source": "src/market_agent/ivs_observation.py",
+    "path": "src/market_agent/ivs_observation.py"
+  },
+  {
+    "source": "src/market_agent/ivs_today_api.py",
+    "path": "src/market_agent/ivs_today_api.py"
+  },
+  {
+    "source": "src/market_agent/jev_runtime.py",
+    "path": "src/market_agent/jev_runtime.py"
+  },
+  {
     "source": "src/market_agent/language.py",
     "path": "src/market_agent/language.py"
   },
@@ -178,6 +510,10 @@
   {
     "source": "src/market_agent/llm.py",
     "path": "src/market_agent/llm.py"
+  },
+  {
+    "source": "src/market_agent/local_api_security.py",
+    "path": "src/market_agent/local_api_security.py"
   },
   {
     "source": "src/market_agent/local_credentials.py",
@@ -194,6 +530,10 @@
   {
     "source": "src/market_agent/market_evidence.py",
     "path": "src/market_agent/market_evidence.py"
+  },
+  {
+    "source": "src/market_agent/market_pulse.py",
+    "path": "src/market_agent/market_pulse.py"
   },
   {
     "source": "src/market_agent/model_profiles.py",
@@ -216,6 +556,14 @@
     "path": "src/market_agent/portfolio_entry.py"
   },
   {
+    "source": "src/market_agent/portfolio_preview.py",
+    "path": "src/market_agent/portfolio_preview.py"
+  },
+  {
+    "source": "src/market_agent/portfolio_whatif.py",
+    "path": "src/market_agent/portfolio_whatif.py"
+  },
+  {
     "source": "src/market_agent/presentation.py",
     "path": "src/market_agent/presentation.py"
   },
@@ -224,8 +572,20 @@
     "path": "src/market_agent/provider.py"
   },
   {
+    "source": "src/market_agent/provider_pricing.py",
+    "path": "src/market_agent/provider_pricing.py"
+  },
+  {
+    "source": "src/market_agent/provider_vault.py",
+    "path": "src/market_agent/provider_vault.py"
+  },
+  {
     "source": "src/market_agent/public_demo.py",
     "path": "src/market_agent/public_demo.py"
+  },
+  {
+    "source": "src/market_agent/public_ivs.py",
+    "path": "src/market_agent/public_ivs.py"
   },
   {
     "source": "src/market_agent/quote.py",
@@ -240,6 +600,14 @@
     "path": "src/market_agent/research_context.py"
   },
   {
+    "source": "src/market_agent/research_egress.py",
+    "path": "src/market_agent/research_egress.py"
+  },
+  {
+    "source": "src/market_agent/research_loop.py",
+    "path": "src/market_agent/research_loop.py"
+  },
+  {
     "source": "src/market_agent/research_portfolio.py",
     "path": "src/market_agent/research_portfolio.py"
   },
@@ -252,8 +620,36 @@
     "path": "src/market_agent/research_universe.py"
   },
   {
+    "source": "src/market_agent/route_preview.py",
+    "path": "src/market_agent/route_preview.py"
+  },
+  {
+    "source": "src/market_agent/runtime_bootstrap.py",
+    "path": "src/market_agent/runtime_bootstrap.py"
+  },
+  {
+    "source": "src/market_agent/runtime_budget.py",
+    "path": "src/market_agent/runtime_budget.py"
+  },
+  {
+    "source": "src/market_agent/runtime_errors.py",
+    "path": "src/market_agent/runtime_errors.py"
+  },
+  {
+    "source": "src/market_agent/runtime_provider_hub.py",
+    "path": "src/market_agent/runtime_provider_hub.py"
+  },
+  {
     "source": "src/market_agent/sec.py",
     "path": "src/market_agent/sec.py"
+  },
+  {
+    "source": "src/market_agent/sec_filings.py",
+    "path": "src/market_agent/sec_filings.py"
+  },
+  {
+    "source": "src/market_agent/sec_thesis_delta.py",
+    "path": "src/market_agent/sec_thesis_delta.py"
   },
   {
     "source": "src/market_agent/semantic.py",
@@ -300,8 +696,20 @@
     "path": "src/market_agent/static/index.html"
   },
   {
+    "source": "src/market_agent/static/ivs-filings.js",
+    "path": "src/market_agent/static/ivs-filings.js"
+  },
+  {
+    "source": "src/market_agent/static/ivs.css",
+    "path": "src/market_agent/static/ivs.css"
+  },
+  {
     "source": "src/market_agent/static/mia.svg",
     "path": "src/market_agent/static/mia.svg"
+  },
+  {
+    "source": "src/market_agent/static/northstar.css",
+    "path": "src/market_agent/static/northstar.css"
   },
   {
     "source": "src/market_agent/static/portfolio-csv.js",
@@ -310,6 +718,10 @@
   {
     "source": "src/market_agent/static/portfolio-editor.js",
     "path": "src/market_agent/static/portfolio-editor.js"
+  },
+  {
+    "source": "src/market_agent/static/providers.js",
+    "path": "src/market_agent/static/providers.js"
   },
   {
     "source": "src/market_agent/static/quiet.css",
@@ -324,8 +736,16 @@
     "path": "src/market_agent/static/research-desk.js"
   },
   {
+    "source": "src/market_agent/static/research-runtime.js",
+    "path": "src/market_agent/static/research-runtime.js"
+  },
+  {
     "source": "src/market_agent/static/theme-init.js",
     "path": "src/market_agent/static/theme-init.js"
+  },
+  {
+    "source": "src/market_agent/static/today.js",
+    "path": "src/market_agent/static/today.js"
   },
   {
     "source": "src/market_agent/tdb.py",
@@ -344,6 +764,10 @@
     "path": "src/market_agent/tdb_workflow.py"
   },
   {
+    "source": "src/market_agent/technical_zones.py",
+    "path": "src/market_agent/technical_zones.py"
+  },
+  {
     "source": "src/market_agent/test_isolation.py",
     "path": "src/market_agent/test_isolation.py"
   },
@@ -352,188 +776,44 @@
     "path": "src/market_agent/thesis.py"
   },
   {
-    "source": "tests/conftest.py",
-    "path": "tests/conftest.py"
-  },
-  {
-    "source": "tests/test_call_budget.py",
-    "path": "tests/test_call_budget.py"
-  },
-  {
-    "source": "tests/test_convictiondesk_attention.py",
-    "path": "tests/test_convictiondesk_attention.py"
-  },
-  {
-    "source": "tests/test_convictiondesk_decision.py",
-    "path": "tests/test_convictiondesk_decision.py"
-  },
-  {
-    "source": "tests/test_financial_series.py",
-    "path": "tests/test_financial_series.py"
-  },
-  {
-    "source": "tests/test_model_profiles.py",
-    "path": "tests/test_model_profiles.py"
-  },
-  {
-    "source": "tests/test_product_journey_gate.py",
-    "path": "tests/test_product_journey_gate.py"
-  },
-  {
-    "source": "tests/test_public_demo.py",
-    "path": "tests/test_public_demo.py"
-  },
-  {
-    "source": "tests/test_quiet_ui_contract.py",
-    "path": "tests/test_quiet_ui_contract.py"
-  },
-  {
-    "source": "tests/test_release_export.py",
-    "path": "tests/test_release_export.py"
-  },
-  {
-    "source": "tests/test_sec_earnings.py",
-    "path": "tests/test_sec_earnings.py"
-  },
-  {
-    "source": "README.md",
-    "path": "README.md"
-  },
-  {
-    "source": ".github/workflows/ci.yml",
-    "path": ".github/workflows/ci.yml"
-  },
-  {
-    "source": "LICENSE",
-    "path": "LICENSE"
-  },
-  {
-    "source": ".gitignore",
-    "path": ".gitignore"
-  },
-  {
-    "source": "docs/assets/convictiondesk-architecture-dark.svg",
-    "path": "docs/assets/convictiondesk-architecture-dark.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-architecture-light.svg",
-    "path": "docs/assets/convictiondesk-architecture-light.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-evidence-to-action-dark.svg",
-    "path": "docs/assets/convictiondesk-evidence-to-action-dark.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-evidence-to-action-light.svg",
-    "path": "docs/assets/convictiondesk-evidence-to-action-light.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-fast-deep-dark.svg",
-    "path": "docs/assets/convictiondesk-fast-deep-dark.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-fast-deep-light.svg",
-    "path": "docs/assets/convictiondesk-fast-deep-light.svg"
+    "source": "src/market_agent/tool_deadline.py",
+    "path": "src/market_agent/tool_deadline.py"
   },
   {
     "source": "src/market_agent/valuation.py",
     "path": "src/market_agent/valuation.py"
   },
   {
-    "source": "evals/v09_intelligence.py",
-    "path": "evals/v09_intelligence.py"
+    "source": "tests/conftest.py",
+    "path": "tests/conftest.py"
   },
   {
-    "source": "tests/test_valuation.py",
-    "path": "tests/test_valuation.py"
-  },
-  {
-    "source": "tests/test_attention_current_window.py",
-    "path": "tests/test_attention_current_window.py"
-  },
-  {
-    "source": "tests/test_v09_intelligence.py",
-    "path": "tests/test_v09_intelligence.py"
-  },
-  {
-    "source": "evals/fixtures/research_agent/v09-8f-valuation-task.json",
-    "path": "evals/fixtures/research_agent/v09-8f-valuation-task.json"
+    "source": "tests/sec_capture_fixtures.py",
+    "path": "tests/sec_capture_fixtures.py"
   },
   {
     "source": "tests/test_attention_continuation.py",
     "path": "tests/test_attention_continuation.py"
   },
   {
-    "source": "scripts/check_attention_continuation_browser.cjs",
-    "path": "scripts/check_attention_continuation_browser.cjs"
-  },
-  {
-    "source": "scripts/check_current_event_research_browser.cjs",
-    "path": "scripts/check_current_event_research_browser.cjs"
-  },
-  {
-    "source": "src/market_agent/capital_reference.py",
-    "path": "src/market_agent/capital_reference.py"
-  },
-  {
-    "source": "tests/test_capital_reference.py",
-    "path": "tests/test_capital_reference.py"
-  },
-  {
-    "source": "docs/research-agent/LOCAL_CAPITAL_REFERENCE.md",
-    "path": "docs/research-agent/LOCAL_CAPITAL_REFERENCE.md"
-  },
-  {
-    "source": "tests/test_attention_priority.py",
-    "path": "tests/test_attention_priority.py"
-  },
-  {
-    "source": "scripts/check_capital_reference_browser.cjs",
-    "path": "scripts/check_capital_reference_browser.cjs"
-  },
-  {
-    "source": "src/market_agent/dated_valuation.py",
-    "path": "src/market_agent/dated_valuation.py"
-  },
-  {
-    "source": "tests/test_dated_valuation.py",
-    "path": "tests/test_dated_valuation.py"
-  },
-  {
-    "source": "docs/research-agent/DATED_USER_VALUATION.md",
-    "path": "docs/research-agent/DATED_USER_VALUATION.md"
-  },
-  {
-    "source": "scripts/check_dated_valuation_browser.cjs",
-    "path": "scripts/check_dated_valuation_browser.cjs"
-  },
-  {
-    "source": "src/market_agent/attention_preselection.py",
-    "path": "src/market_agent/attention_preselection.py"
+    "source": "tests/test_attention_current_window.py",
+    "path": "tests/test_attention_current_window.py"
   },
   {
     "source": "tests/test_attention_preselection.py",
     "path": "tests/test_attention_preselection.py"
   },
   {
-    "source": "docs/research-agent/TODAY_CANDIDATE_EVENTS.md",
-    "path": "docs/research-agent/TODAY_CANDIDATE_EVENTS.md"
+    "source": "tests/test_attention_priority.py",
+    "path": "tests/test_attention_priority.py"
   },
   {
-    "source": "evals/fixtures/attention_calibration/v09_dualpath_retained_compatibility.json",
-    "path": "evals/fixtures/attention_calibration/v09_dualpath_retained_compatibility.json"
+    "source": "tests/test_call_budget.py",
+    "path": "tests/test_call_budget.py"
   },
   {
-    "source": "evals/fixtures/attention_calibration/v09_dualpath_r2_retained_compatibility.json",
-    "path": "evals/fixtures/attention_calibration/v09_dualpath_r2_retained_compatibility.json"
-  },
-  {
-    "source": "evals/fixtures/attention_calibration/v09_dualpath_r3_retained_compatibility.json",
-    "path": "evals/fixtures/attention_calibration/v09_dualpath_r3_retained_compatibility.json"
-  },
-  {
-    "source": "evals/closure_journey.py",
-    "path": "evals/closure_journey.py"
+    "source": "tests/test_capital_reference.py",
+    "path": "tests/test_capital_reference.py"
   },
   {
     "source": "tests/test_closure_journey.py",
@@ -544,231 +824,95 @@
     "path": "tests/test_closure_scenario.py"
   },
   {
-    "source": "scripts/check_closure_browser.cjs",
-    "path": "scripts/check_closure_browser.cjs"
+    "source": "tests/test_convictiondesk_attention.py",
+    "path": "tests/test_convictiondesk_attention.py"
   },
   {
-    "source": "docs/research-agent/V09_PRODUCT_CLOSURE.md",
-    "path": "docs/research-agent/V09_PRODUCT_CLOSURE.md"
+    "source": "tests/test_convictiondesk_decision.py",
+    "path": "tests/test_convictiondesk_decision.py"
   },
   {
-    "source": "release/V09_RELEASE_NOTES.md",
-    "path": "release/V09_RELEASE_NOTES.md"
+    "source": "tests/test_dated_valuation.py",
+    "path": "tests/test_dated_valuation.py"
   },
   {
-    "source": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json",
-    "path": "evals/fixtures/attention_calibration/v09_closure_retained_compatibility.json"
-  },
-  {
-    "source": "evals/run_product_delta_scorecard.py",
-    "path": "evals/run_product_delta_scorecard.py"
-  },
-  {
-    "source": "tests/test_product_delta_scorecard.py",
-    "path": "tests/test_product_delta_scorecard.py"
-  },
-  {
-    "source": "src/market_agent/portfolio_whatif.py",
-    "path": "src/market_agent/portfolio_whatif.py"
-  },
-  {
-    "source": "tests/test_portfolio_whatif.py",
-    "path": "tests/test_portfolio_whatif.py"
-  },
-  {
-    "source": "docs/research-agent/ACCOUNT_WHATIF.md",
-    "path": "docs/research-agent/ACCOUNT_WHATIF.md"
-  },
-  {
-    "source": "evals/fixtures/attention_calibration/overnight_account_whatif_retained_compatibility.json",
-    "path": "evals/fixtures/attention_calibration/overnight_account_whatif_retained_compatibility.json"
-  },
-  {
-    "source": "src/market_agent/technical_zones.py",
-    "path": "src/market_agent/technical_zones.py"
-  },
-  {
-    "source": "src/market_agent/demo_assets/technical-example-v1.json",
-    "path": "src/market_agent/demo_assets/technical-example-v1.json"
-  },
-  {
-    "source": "tests/test_technical_zones.py",
-    "path": "tests/test_technical_zones.py"
-  },
-  {
-    "source": "tests/test_serve_entrypoint.py",
-    "path": "tests/test_serve_entrypoint.py"
-  },
-  {
-    "source": "docs/research-agent/TECHNICAL_CONDITIONS.md",
-    "path": "docs/research-agent/TECHNICAL_CONDITIONS.md"
-  },
-  {
-    "source": "scripts/build_technical_example.py",
-    "path": "scripts/build_technical_example.py"
-  },
-  {
-    "source": "docs/assets/convictiondesk-decision-dark.png",
-    "path": "docs/assets/convictiondesk-decision-dark.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-decision-light.png",
-    "path": "docs/assets/convictiondesk-decision-light.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-journey-dark.png",
-    "path": "docs/assets/convictiondesk-journey-dark.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-journey-light.png",
-    "path": "docs/assets/convictiondesk-journey-light.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-mobile.png",
-    "path": "docs/assets/convictiondesk-mobile.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-records-dark.png",
-    "path": "docs/assets/convictiondesk-records-dark.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-records-light.png",
-    "path": "docs/assets/convictiondesk-records-light.png"
-  },
-  {
-    "source": "evals/fixtures/attention_calibration/second_overnight_technical_retained_compatibility.json",
-    "path": "evals/fixtures/attention_calibration/second_overnight_technical_retained_compatibility.json"
-  },
-  {
-    "source": "evals/fixtures/attention_calibration/owner_ux_t1_retained_compatibility.json",
-    "path": "evals/fixtures/attention_calibration/owner_ux_t1_retained_compatibility.json"
-  },
-  {
-    "source": "docs/assets/convictiondesk-whatif-light.png",
-    "path": "docs/assets/convictiondesk-whatif-light.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-whatif-dark.png",
-    "path": "docs/assets/convictiondesk-whatif-dark.png"
-  },
-  {
-    "source": "docs/README.md",
-    "path": "docs/README.md"
-  },
-  {
-    "source": "docs/getting-started.md",
-    "path": "docs/getting-started.md"
-  },
-  {
-    "source": "docs/architecture.md",
-    "path": "docs/architecture.md"
-  },
-  {
-    "source": "docs/data-sources.md",
-    "path": "docs/data-sources.md"
-  },
-  {
-    "source": "docs/verification.md",
-    "path": "docs/verification.md"
-  },
-  {
-    "source": "docs/showcase.md",
-    "path": "docs/showcase.md"
-  },
-  {
-    "source": "CONTRIBUTING.md",
-    "path": "CONTRIBUTING.md"
-  },
-  {
-    "source": "CHANGELOG.md",
-    "path": "CHANGELOG.md"
-  },
-  {
-    "source": "docs/assets/convictiondesk-hero-light.svg",
-    "path": "docs/assets/convictiondesk-hero-light.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-hero-dark.svg",
-    "path": "docs/assets/convictiondesk-hero-dark.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-loop-light.svg",
-    "path": "docs/assets/convictiondesk-loop-light.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-loop-dark.svg",
-    "path": "docs/assets/convictiondesk-loop-dark.svg"
-  },
-  {
-    "source": "docs/assets/convictiondesk-product-light.png",
-    "path": "docs/assets/convictiondesk-product-light.png"
-  },
-  {
-    "source": "docs/assets/convictiondesk-product-dark.png",
-    "path": "docs/assets/convictiondesk-product-dark.png"
-  },
-  {
-    "source": "src/market_agent/sec_filings.py",
-    "path": "src/market_agent/sec_filings.py"
+    "source": "tests/test_financial_series.py",
+    "path": "tests/test_financial_series.py"
   },
   {
     "source": "tests/test_ivs_sec_provider.py",
     "path": "tests/test_ivs_sec_provider.py"
   },
   {
-    "source": "tests/test_sec_filings.py",
-    "path": "tests/test_sec_filings.py"
+    "source": "tests/test_model_profiles.py",
+    "path": "tests/test_model_profiles.py"
   },
   {
-    "source": "evals/fixtures/ivs_sec/UNP.json",
-    "path": "evals/fixtures/ivs_sec/UNP.json"
+    "source": "tests/test_portfolio_whatif.py",
+    "path": "tests/test_portfolio_whatif.py"
   },
   {
-    "source": "evals/fixtures/ivs_sec/KR.json",
-    "path": "evals/fixtures/ivs_sec/KR.json"
+    "source": "tests/test_product_delta_scorecard.py",
+    "path": "tests/test_product_delta_scorecard.py"
   },
   {
-    "source": "evals/fixtures/ivs_sec/DOW.json",
-    "path": "evals/fixtures/ivs_sec/DOW.json"
+    "source": "tests/test_product_journey_gate.py",
+    "path": "tests/test_product_journey_gate.py"
   },
   {
-    "source": "scripts/sec_evidence_demo.py",
-    "path": "scripts/sec_evidence_demo.py"
+    "source": "tests/test_public_demo.py",
+    "path": "tests/test_public_demo.py"
   },
   {
-    "source": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
-    "path": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json"
+    "source": "tests/test_public_ivs_journey.py",
+    "path": "tests/test_public_ivs_journey.py"
   },
   {
-    "source": "src/market_agent/tool_deadline.py",
-    "path": "src/market_agent/tool_deadline.py"
+    "source": "tests/test_quiet_ui_contract.py",
+    "path": "tests/test_quiet_ui_contract.py"
   },
   {
-    "source": "scripts/verify_sec_capture.py",
-    "path": "scripts/verify_sec_capture.py"
+    "source": "tests/test_release_export.py",
+    "path": "tests/test_release_export.py"
   },
   {
-    "source": "tests/test_sec_time_verification.py",
-    "path": "tests/test_sec_time_verification.py"
+    "source": "tests/test_release_import_closure.py",
+    "path": "tests/test_release_import_closure.py"
   },
   {
     "source": "tests/test_sec_amendment_freshness.py",
     "path": "tests/test_sec_amendment_freshness.py"
   },
   {
-    "source": "tests/sec_capture_fixtures.py",
-    "path": "tests/sec_capture_fixtures.py"
-  },
-  {
     "source": "tests/test_sec_authority_receipts.py",
     "path": "tests/test_sec_authority_receipts.py"
   },
   {
-    "source": "evals/fixtures/sec_acceptance_dst_anchors.json",
-    "path": "evals/fixtures/sec_acceptance_dst_anchors.json"
+    "source": "tests/test_sec_earnings.py",
+    "path": "tests/test_sec_earnings.py"
   },
   {
-    "source": "release/verified_service_merges.json",
-    "path": "release/verified_service_merges.json"
+    "source": "tests/test_sec_filings.py",
+    "path": "tests/test_sec_filings.py"
+  },
+  {
+    "source": "tests/test_sec_time_verification.py",
+    "path": "tests/test_sec_time_verification.py"
+  },
+  {
+    "source": "tests/test_serve_entrypoint.py",
+    "path": "tests/test_serve_entrypoint.py"
+  },
+  {
+    "source": "tests/test_technical_zones.py",
+    "path": "tests/test_technical_zones.py"
+  },
+  {
+    "source": "tests/test_v09_intelligence.py",
+    "path": "tests/test_v09_intelligence.py"
+  },
+  {
+    "source": "tests/test_valuation.py",
+    "path": "tests/test_valuation.py"
   }
 ]

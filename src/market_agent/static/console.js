@@ -1124,6 +1124,9 @@ $("query-input").addEventListener("keydown", (event) => {
 });
 $("query-form").addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (document.body.dataset.legacyCreation === "deprecated") {
+    window.dispatchEvent(new CustomEvent("mia-ask-draft",{detail:{question:$("query-input").value || "我应该如何核查当前持仓逻辑？"}}));return;
+  }
   if (state.busy) return;
   if (state.researchMode === "cockpit") { await submitCockpit(); return; }
   const query = $("query-input").value.trim();
@@ -1231,6 +1234,7 @@ $("back-to-brief").addEventListener("click", () => {
 });
 $("tdb-form").addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (document.body.dataset.legacyCreation === "deprecated") return;
   if (state.busy) return;
   const symbol = $("tdb-symbol").value;
   const price = $("tdb-price").value;

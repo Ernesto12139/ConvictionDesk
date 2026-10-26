@@ -44,3 +44,19 @@ def test_owner_mode_is_still_refused(monkeypatch):
     monkeypatch.setenv('MIA_RUNTIME_MODE', 'OWNER')
     with pytest.raises(ValueError):
         serve.main()
+
+
+def test_help_prints_usage_instead_of_serving(monkeypatch, capsys):
+    """`--help` used to be ignored and the command started a server instead."""
+    started = []
+    monkeypatch.setattr(serve.uvicorn, 'run', lambda *a, **kw: started.append(kw))
+    assert serve.main(['--help']) == 0
+    assert started == []
+    out = capsys.readouterr().out
+    assert 'market_agent.public_ivs --serve' in out
+
+
+def test_unknown_arguments_are_refused(monkeypatch):
+    monkeypatch.setattr(serve.uvicorn, 'run', lambda *a, **kw: None)
+    with pytest.raises(SystemExit):
+        serve.main(['--nonsense'])

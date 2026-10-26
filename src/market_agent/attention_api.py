@@ -11,6 +11,11 @@ from .domain import FrozenModel, utc
 from .research_universe import UniverseChange
 from .tdb import TDBError
 
+# Only the highest-ranked units can be displayed; novelty is never projected
+# over an unbounded backlog on a polling endpoint.
+RADAR_PROJECTION_LIMIT = 60
+EXACT_LIFECYCLE_LIMIT = 500
+
 
 class ReviewUnitRequest(FrozenModel):
     member_item_ids: list[str] = Field(min_length=1, max_length=1000)
@@ -68,38 +73,73 @@ def register_attention(app,service):
     @app.get('/api/attention/queue')
     def queue():
         from .market_evidence import attention_freshness, NEW_YORK
+        from .attention_coverage import coverage_projection, stale_gate
+        from .attention_radar import (build_sections, headline, order_by_importance,
+                                      project_rows, summarize)
         now=utc(service.clock())
         units=research.queue(now,None)
         decorated=[{**row, 'freshness': attention_freshness(row, now)} for row in units]
-        current=[row for row in decorated if row['freshness']['freshness_status'] in {'TODAY','RECENT'}]
-        historical=[row for row in decorated if row['freshness']['freshness_status'] not in {'TODAY','RECENT'}]
-        rows=current[:TOP_N]
         entries=[e for e in research.entries(now) if e.state!='ARCHIVED']
+        # What the last real scan covered decides whether any card may claim "today".
+        coverage_state=coverage_projection(service.store, research, entries, now=now)
+        stale_reason=stale_gate(coverage_state['state'])
+        # Bounded projection: only the highest-ranked units can be displayed, so
+        # novelty is never computed for an unbounded backlog on a polling endpoint.
+        projected=project_rows(service.store, research, decorated[:RADAR_PROJECTION_LIMIT],
+                               now=now, stale_reason=stale_reason)
+        current=order_by_importance([row for row in projected if row['radar']['placement']=='CURRENT'])
+        # Earlier material keeps the retained catch-up ranking (frozen calibration oracle);
+        # importance ordering applies to what is presented as today's change.
+        earlier=[row for row in projected if row['radar']['placement']=='EARLIER']
+        rows=current[:TOP_N]
+        earlier_rows=earlier[:TOP_N]
+        sections=build_sections(rows, coverage=coverage_state)
+        current_events=sum(1 for row in decorated if row['freshness']['freshness_status'] in {'TODAY','RECENT'})
         active={e.symbol for e in entries}
         with service.store._connect() as db:
             latest=db.execute('SELECT scan_id FROM attention_scans ORDER BY started_at DESC,rowid DESC LIMIT 1').fetchone()
-            successful=db.execute("SELECT scan_id FROM attention_scans WHERE status='COMPLETED' ORDER BY started_at DESC,rowid DESC LIMIT 1").fetchone()
+            # latest_successful_scan is the UI's "最近完整成功扫描": fully COMPLETED only.
+            # Coverage freshness (attention_coverage) separately counts a scan that
+            # finished with disclosed limitations as a real scan.
+            successful=db.execute("SELECT scan_id FROM attention_scans WHERE status='COMPLETED' "
+                                  "ORDER BY started_at DESC,rowid DESC LIMIT 1").fetchone()
             counts=db.execute('SELECT symbol,COUNT(*) FROM attention_events WHERE screen IS NULL GROUP BY symbol').fetchall()
             screened_counts=db.execute('SELECT symbol,COUNT(*) FROM attention_events WHERE screen IS NOT NULL GROUP BY symbol').fetchall()
-            pending_rows=db.execute('SELECT symbol,payload,payload_hash FROM attention_events WHERE screen IS NULL').fetchall()
         pending=sum(count for symbol,count in counts if symbol in active)
         inactive=sum(count for symbol,count in counts if symbol not in active)
         latest_scan = research.report(latest[0]) if latest else None
         latest_successful = research.report(successful[0]) if successful else None
         from .attention_selection import scan_outcome
-        from .attention_selection import pending_lifecycle
-        from .attention import EventPacket
-        lifecycle=pending_lifecycle([EventPacket.model_validate(research.checked(payload,digest))
-            for symbol,payload,digest in pending_rows if symbol in active],now)
+        backlog=coverage_state['backlog']
+        # Exact packet-level lifecycle while the backlog is small; SQL aggregates
+        # beyond that, because a thousand-row backlog must not be parsed per poll.
+        if backlog['pending_total'] <= EXACT_LIFECYCLE_LIMIT:
+            from .attention_selection import pending_lifecycle
+            from .attention import EventPacket
+            with service.store._connect() as db:
+                pending_rows=db.execute('SELECT symbol,payload,payload_hash FROM attention_events '
+                                        'WHERE screen IS NULL').fetchall()
+            lifecycle=pending_lifecycle([EventPacket.model_validate(research.checked(payload,digest))
+                for symbol,payload,digest in pending_rows if symbol in active],now)
+            lifecycle['basis']='EXACT_PACKET_SCAN'
+        else:
+            lifecycle={'current':backlog['pending_current'],
+                'expired_unscreened':backlog['pending_expired_eligible'],
+                'historical_other':backlog['pending_historical_other'],
+                'by_symbol':backlog['by_symbol'],'basis':'SQL_AGGREGATE'}
         coverage = {'ranking_set': 'SCREENED_UNRESOLVED_RESEARCH_EVENTS',
             'screened_records': sum(count for symbol,count in screened_counts if symbol in active),
             'unresolved_events': len(units), 'shown_events': len(rows),
             'unresolved_records': sum(len(r['research_event']['member_item_ids']) for r in units),
             'pending_records': pending, 'full_universe_ranking': False}
-        return {'items':rows,'historical_items':historical[:TOP_N],
+        return {'items':rows,'historical_items':earlier_rows,'earlier_items':earlier_rows,
+                'sections':sections,'radar':summarize(rows,earlier_rows),
+                'headline':headline(rows, coverage=coverage_state),
+                'coverage_state':coverage_state,
+                'backlog':coverage_state['backlog'],
                 'freshness':{'as_of':now.isoformat(),'market_timezone':'America/New_York',
                     'publication_date':now.astimezone(NEW_YORK).date().isoformat(),
-                    'current_events':len(current),'historical_events':len(historical),
+                    'current_events':current_events,'historical_events':len(decorated)-current_events,
                     'meaning':'Publication date, not verified event occurrence or trading day'},
                 'latest_scan':latest_scan,'latest_successful_scan':latest_successful,
                 'scan_result_status':scan_outcome(latest_scan.get('report') if latest_scan else None),

@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.10.0 — public keyless IVS limited beta
+
+- Real, frozen public SEC metadata → fictional portfolio/Thesis → scripted Fast
+  and explicit same-task Deep revision → cited evidence → Decimal account What-if.
+- Visible real-public / synthetic / scripted labels, no keys or runtime provider
+  requests. Missing evidence remains UNDETERMINED; missing prices remain unknown.
+- Completed research assertions are strict. Research saves retain a write-scoped
+  WAL connection; repeated same-database and failure-path checks guard this path.
+- Public Quickstart, three screenshots, import/resource closure and actual
+  result-card What-if browser verification. The earlier read-only fictional
+  replay and SEC CLI remain available; no live investment-quality claim is made.
+
 ## Unreleased
 
 - **Documentation.** A rewritten README, new docs pages — [Getting started](docs/getting-started.md), [Architecture](docs/architecture.md), [Data sources and keys](docs/data-sources.md), [Verification](docs/verification.md), [Showcase](docs/showcase.md) — plus this changelog and a contributing guide. New original diagrams and one product screenshot. No code changes.

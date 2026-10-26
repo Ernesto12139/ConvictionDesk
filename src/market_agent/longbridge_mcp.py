@@ -62,12 +62,15 @@ class LongbridgeMCPClient:
         if self.protocol:
             headers['MCP-Protocol-Version'] = self.protocol
         def remaining():
+            from .tool_deadline import check_tool_deadline
+            check_tool_deadline()
             seconds=deadline-perf_counter()
             if seconds<=0:raise ProviderError('timeout','MCP total operation deadline exceeded')
             return seconds
         try:
             seconds=remaining()
-            timeout=httpx.Timeout(min(seconds,5))
+            from .tool_deadline import provider_timeout
+            timeout=provider_timeout(min(seconds,5))
             with self.client.stream('POST', self.endpoint, headers=headers, json=payload, timeout=timeout) as response:
                 if response.status_code in {401,403}:
                     raise ProviderError('CONNECTOR_PENDING' if not self._token else 'authentication', 'MCP authorization required')

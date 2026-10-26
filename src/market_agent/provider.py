@@ -156,8 +156,10 @@ class MassiveEODProvider:
         first = last-timedelta(days=550)
         url = self.base_url+f"/v2/aggs/ticker/{quote(symbol, safe='')}/range/1/day/{first}/{last}"
         try:
-            response = self.client.get(url, headers={"Authorization": "Bearer "+self.api_key},
+            from .tool_deadline import check_tool_deadline, provider_get
+            response = provider_get(self.client, url, headers={"Authorization": "Bearer "+self.api_key},
                 params={"adjusted":"true", "sort":"asc", "limit":50000})
+            check_tool_deadline()
         except httpx.RequestError as exc:
             raise ProviderError("timeout" if isinstance(exc,httpx.TimeoutException) else "transport",
                 "Massive history transport failure") from None
@@ -233,8 +235,10 @@ class MassiveEODProvider:
         path = f"/v2/aggs/ticker/{quote(symbol, safe='')}/range/1/day/{first_date.isoformat()}/{last_date.isoformat()}"
         url = self.base_url + path
         try:
-            response = self.client.get(url, headers={"Authorization": f"Bearer {self.api_key}"},
-                                       params={"adjusted": "false", "sort": "desc", "limit": 50})
+            from .tool_deadline import check_tool_deadline, provider_get
+            response = provider_get(self.client, url, headers={"Authorization": f"Bearer {self.api_key}"},
+                params={"adjusted": "false", "sort": "desc", "limit": 50})
+            check_tool_deadline()
         except httpx.RequestError as exc:
             raise ProviderError("transport", f"Massive transport failure: {type(exc).__name__}") from exc
         if response.status_code in (400, 422):
@@ -360,10 +364,12 @@ class MassiveGroupedEODProvider(MassiveEODProvider):
         url = (self.base_url + "/v2/aggs/grouped/locale/us/market/stocks/"
                + market_date.isoformat())
         try:
-            response = self.client.get(
+            from .tool_deadline import check_tool_deadline, provider_get
+            response = provider_get(self.client,
                 url, headers={"Authorization": f"Bearer {self.api_key}"},
                 params={"adjusted": "false"},
             )
+            check_tool_deadline()
         except httpx.RequestError as exc:
             raise ProviderError("transport", f"Massive transport failure: {type(exc).__name__}") from exc
         if response.status_code in (400, 422):

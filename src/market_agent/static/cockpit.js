@@ -58,6 +58,13 @@ function renderCockpit(envelope, record, evidence, frozen=null) {
   state.cockpitResult=envelope; state.evidence=evidence; setRunId(envelope.run_id);
   $("evidence-count").textContent=String(evidence.length);$("evidence-filter").value="all";renderEvidence();
   const result=$("result");result.replaceChildren();
+  if (document.body.dataset.legacyCreation === "deprecated") {
+    if(document.body.dataset.ivsPreview)result.append(el("p","合成旧版兼容样例：本记录不是 Today 的真实 SEC 捕获证据。","status-line warning"));
+    const legacy=el("p", "旧版判断记录 · 操作方向 UNKNOWN（未保存 typed Action）。新研究请使用统一研究入口。", "small muted");
+    const migrate=el("button", "用研究入口继续"); migrate.type="button";
+    migrate.addEventListener("click",()=>window.dispatchEvent(new CustomEvent("mia-ask-draft",{detail:{question:envelope.framing.query}})));
+    result.append(legacy,migrate);
+  }
   const f=envelope.framing, brief=envelope.brief;
   $("query-input").value=f.query;
   $("cockpit-question-summary").textContent=`${f.query} · 点击换个问题`;
@@ -70,7 +77,7 @@ function renderCockpit(envelope, record, evidence, frozen=null) {
   const intensity={LIGHT:"小幅",MODERATE:"",STRONG:"明确",UNKNOWN:""};
   let action=cockpitActions[brief.primary_action];
   if (["ADD","REDUCE"].includes(brief.primary_action)) action=(intensity[brief.action_strength] || "")+action;
-  card.append(el("h3", action, "cockpit-action decision-conclusion"));
+  card.append(el("h3", document.body.dataset.legacyCreation === "deprecated" ? "UNKNOWN · 原研究判断" : action, "cockpit-action decision-conclusion"));
   if (brief.one_line_decision) card.append(el("p", brief.one_line_decision.text, "cockpit-one-line"));
   if (brief.boundary) card.append(el("p", brief.boundary, "cockpit-binding"));
   if (f.assertions.length) card.append(el("p", "你提供的事件信息尚未核实；本次按其成立分析。", "cockpit-user-premise"));
@@ -196,6 +203,9 @@ function appendFastDetails(result,envelope,evidence,frozen) {
   deep.addEventListener("click",async()=>{
     if (deep.disabled) return;
     if (deepRecord) {deepHost.hidden=!deepHost.hidden;deep.textContent=deepHost.hidden?"查看深入研究":"收起深入研究";return;}
+    if (document.body.dataset.legacyCreation === "deprecated" && (recoveryRun || !deepJob)) {
+      window.dispatchEvent(new CustomEvent("mia-ask-draft",{detail:{question:envelope.framing.query}}));return;
+    }
     deep.disabled=true;deep.textContent="正在深入研究…";
     deepHost.replaceChildren(el("p", "快速判断保留在上方。深入研究正在使用同一批冻结证据。", "small muted"));
     try {
@@ -298,6 +308,11 @@ async function observeCockpit(jobId) {
 }
 
 function cockpitFailure(error) {
+  if(error.status===404 && new URLSearchParams(location.search).has("cockpit")){
+    $("desk-legacy").open=true;document.body.dataset.consoleView="workspace";
+    $("result").replaceChildren(el("h3","没有找到这条旧版记录"),el("p","请检查原来的链接；可以返回研究工作台开始新的研究。"));
+    $("answer-state").textContent="记录不存在";return;
+  }
   const detail=error.detail || {};
   const messages={COCKPIT_PORTFOLIO_CHANGED:"研究开始时持仓已发生变化，请按最新组合重新提交。",
     COCKPIT_RESEARCH_FAILED:"本次公开证据或组合数据未能完成读取，可检查来源后重试。",
@@ -330,6 +345,9 @@ function cockpitFailure(error) {
 }
 
 async function submitCockpit() {
+  if (document.body.dataset.legacyCreation === "deprecated") {
+    window.dispatchEvent(new CustomEvent("mia-ask-draft",{detail:{question:$("query-input").value || "我应该如何核查当前持仓逻辑？"}}));return;
+  }
   const query=$("query-input").value.trim();if (!query) {$("query-input").focus();return;}
   if (cockpitCorrectionQuery!==query) clearCockpitCorrections();
   const payload={query};

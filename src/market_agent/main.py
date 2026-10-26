@@ -44,6 +44,23 @@ def llm_client_from_environment(environment: Mapping[str, str]) -> LLMClient:
     return production_llm_from_environment(environment)
 
 
+# Rendered at the top of the public keyless page. The three data-nature classes are
+# spelled out as visible text (not only in a tooltip or the README), because a reader
+# cannot otherwise tell which numbers came from SEC, which were invented for the demo,
+# and which came from a script instead of a model.
+PUBLIC_IVS_BANNER = """
+<section id="public-ivs-banner" class="public-ivs-banner" aria-labelledby="public-ivs-banner-title">
+  <h2 id="public-ivs-banner-title">公开演示：从一份真实的 SEC 披露，走到一个可核查的研究判断</h2>
+  <p class="public-ivs-gloss" lang="en">Public demo: one real public SEC filing receipt, a fictional portfolio and thesis, and a scripted research replay — keyless, offline, no model calls.</p>
+  <ul class="public-ivs-classes">
+    <li data-evidence-class="REAL_PUBLIC_SEC_METADATA"><strong>真实公开 SEC 申报元数据</strong><span>REAL_PUBLIC_SEC_METADATA · 冻结捕获，可打开 SEC 原文核对；只含元数据，不含申报正文。</span></li>
+    <li data-evidence-class="SYNTHETIC"><strong>虚构持仓与 Thesis</strong><span>SYNTHETIC · 账户、数量与投资逻辑均为演示虚构，不是任何人的真实持仓或记录。</span></li>
+    <li data-evidence-class="SCRIPTED"><strong>脚本回放（未运行 AI 模型）</strong><span>SCRIPTED · 0 次模型调用 · 无费用 · 不代表真实模型质量。</span></li>
+  </ul>
+  <p class="small muted">条目代码只用于提出核查问题，不证明价格或投资影响；UNKNOWN / UNDETERMINED 不会被显示成 HOLD；模拟不会下单，也不会修改任何真实组合。</p>
+</section>"""
+
+
 def create_app(db_path: str | Path = "data/market_agent.db",
                market_fixture: str | Path | None = None,
                market_provider: EODProvider | None = None,
@@ -131,14 +148,62 @@ def create_app(db_path: str | Path = "data/market_agent.db",
         from .model_profiles import ModelProfiles
         model_profiles = ModelProfiles(environment)
     from .capital_reference import LocalCapitalReference
+    # Local Owner runtime (D-088): Provider Hub, owned-data consent receipts and Jev
+    # routing. Assembled before the research router; one Hub, one research API.
+    runtime = None
+    if environment.get('MIA_PROVIDER_HUB') == '1' and environment.get('MIA_RUNTIME_MODE') != 'PUBLIC_DEMO':
+        from .runtime_bootstrap import configure_runtime
+        runtime = configure_runtime(app, agent, environment)
+    if runtime is None:
+        # Task mutations are protected with or without the Hub (QA-CONVERGENCE-002 P2-1).
+        from .local_api_security import install_task_origin_guard
+        install_task_origin_guard(app)
+    research_options = runtime.research_options() if runtime else {'model_profiles': model_profiles}
     register_research(app, agent,reference_provider=research_reference,decision_component=research_decision_component,
-        model_profiles=model_profiles,local_capital_reference=LocalCapitalReference.from_environment(environment))
+        local_capital_reference=LocalCapitalReference.from_environment(environment),
+        strategy_policy=environment.get('MIA_RESEARCH_STRATEGY') or (
+            'OPT_IN' if environment.get('MIA_RESEARCH_ADAPTIVE') == '1' else 'BASELINE_ONLY'),
+        answer_contract=environment.get('MIA_RESEARCH_CONTRACT') or ('GROUNDED_MEMO' if runtime else 'LEGACY'),
+        **research_options)
+    if runtime:
+        runtime.register_after_research(app)
     from .attention import AttentionService, GPTAttentionScreen, GPTAttentionDeep
     from .attention_api import register_attention
     register_attention(app,AttentionService(store,news_provider,
         attention_screen or GPTAttentionScreen(agent.llm,compact=True),attention_deep or GPTAttentionDeep(agent.llm),app_clock,
         fast_screen=attention_fast_screen,screen_batch_size=4 if attention_screen is None else 20,
         prefer_current=attention_screen is None))
+    from .market_pulse import MarketPulse, RangeContext, register_pulse
+    from .research_universe import ResearchStore
+    # RangeContext builds its history client on first use, so startup still opens no
+    # TLS context; without a Massive key it reports NOT_CONFIGURED instead of guessing.
+    pulse = MarketPulse('' if explicit_test_provider else environment.get('FINNHUB_API_KEY', ''),
+        ResearchStore(store).entries, clock=app_clock,
+        range_source=RangeContext(
+            '' if explicit_test_provider else environment.get('MASSIVE_API_KEY', ''),
+            None if explicit_test_provider else store, clock=app_clock))
+    register_pulse(app, pulse)
+    from .ivs_today_api import FilingsService, register_filings
+
+    def collect_filings(entries, *, as_of):
+        from .sec_filings import project
+        from .sec_thesis_delta import project as project_thesis
+        projection = project(sec_provider, entries=entries, as_of=as_of)
+        result = projection.model_dump(mode='json')
+        result['thesis_deltas'] = project_thesis(projection, store).model_dump(mode='json')
+        return result
+
+    app.state.ivs_scan_observation = None
+    filings_service = FilingsService(entries=ResearchStore(store).entries,
+        clock=app_clock, collect=collect_filings,
+        observer=lambda row: setattr(app.state, 'ivs_scan_observation', row))
+    register_filings(app, filings_service)
+    app.state.research_service.filing_source = filings_service
+    from .portfolio_preview import register_portfolio_preview
+    register_portfolio_preview(app, store, pulse, app_clock)
+    from .route_preview import register_route_preview
+    register_route_preview(app, ResearchStore(store).entries, app_clock,
+        model_profiles=runtime.profiles if runtime else None, jev_runtime=runtime.jev if runtime else None)
     jobs = {}
     app.state.decision_jobs = jobs
     def decision_error_detail(exc):
@@ -195,6 +260,23 @@ def create_app(db_path: str | Path = "data/market_agent.db",
 
     @app.get("/", include_in_schema=False)
     def console_page():
+        if getattr(app.state, "public_ivs", None):
+            # The public keyless slice composes the same console, but the page has to
+            # say what is real, what is invented and what is scripted before the
+            # reader clicks anything. `public_ivs` is set by
+            # `market_agent.public_ivs.build_app`; without this branch the public build
+            # silently rendered the Owner console with no labels at all.
+            html = (static / "index.html").read_text(encoding="utf-8")
+            html = html.replace(
+                'data-runtime-mode="OWNER"',
+                'data-runtime-mode="OWNER" data-ivs-preview="keyless" data-public-ivs="1"', 1)
+            return HTMLResponse(html.replace('<main>', '<main>' + PUBLIC_IVS_BANNER, 1))
+        if getattr(app.state, "ivs_preview", None):
+            html = (static / "index.html").read_text(encoding="utf-8")
+            preview_kind = 'keyless' if app.state.ivs_preview['keyless'] else 'scripted'
+            html = html.replace('data-runtime-mode="OWNER"', f'data-runtime-mode="OWNER" data-ivs-preview="{preview_kind}"', 1)
+            notice = '<p id="ivs-preview-notice" class="status-line warning" role="note">IVS 隔离预览：真实 SEC 元数据的冻结捕获；账户与 Thesis 均为合成；研究输出为本地脚本演示。无模型费用、无自动外部调用，不代表真实模型质量。</p>'
+            return HTMLResponse(html.replace('<main>', '<main>' + notice, 1))
         if getattr(app.state, "public_demo", None):
             html = (static / "index.html").read_text(encoding="utf-8")
             html = html.replace('data-runtime-mode="OWNER"', 'data-runtime-mode="PUBLIC_DEMO"')
@@ -205,6 +287,7 @@ def create_app(db_path: str | Path = "data/market_agent.db",
     def console_status():
         # Deliberately allowlisted: no environment mapping, keys, URLs or headers.
         status = {
+            "provider_hub_enabled": runtime is not None,
             "market_mode": (
                 "fixture" if isinstance(market_provider, FixtureMarketProvider) else
                 "unconfigured" if isinstance(market_provider, UnconfiguredEODProvider) else "provider"
@@ -224,8 +307,24 @@ def create_app(db_path: str | Path = "data/market_agent.db",
         if identity:
             status["local_acceptance"] = {key: identity[key] for key in
                 ("head", "source_sha256", "pid", "status")}
-        if getattr(app.state, "public_demo", None):
+        public = getattr(app.state, "public_ivs", None)
+        if public:
+            # A public build must never name a production model it did not call.
+            # Reported from the manifest so the label and the served behaviour agree.
+            model = public.get("model") or {}
+            status["synthesis_mode"] = "scripted"
+            status["model"] = model.get("name") or "SCRIPTED_ORACLE_NOT_A_REAL_MODEL"
+            status["public_ivs"] = {
+                "keyless": bool(public.get("keyless")),
+                "paid_model_calls": public.get("paid_model_calls", 0),
+                "live_network": bool(public.get("live_network")),
+                "as_of": public.get("as_of"),
+                "evidence_classes": ["REAL_PUBLIC_SEC_METADATA", "SYNTHETIC", "SCRIPTED"],
+            }
+        elif getattr(app.state, "public_demo", None):
             status["public_demo"] = app.state.public_demo
+            if status["synthesis_mode"] == "unconfigured":
+                status["model"] = None
         return status
 
     @app.get("/api/console/portfolio-overview")

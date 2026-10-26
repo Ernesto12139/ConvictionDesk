@@ -46,16 +46,33 @@ def build_context(task, *, supplemental_allowed, investigation=None):
         'task_history': {'prior_summary': (task.findings_summary or '')[:600],
             'prior_summary_identity': 'AI_DRAFT', 'unresolved_question': (task.unresolved_question or '')[:600]},
         'investigation': investigation}
-    selected, manifest = [], []
+    selected, manifest, omitted = [], [], []
     excerpt_owners = {}
     title_owners = {}
+
+    def omit(source, reason):
+        evidence = source.evidence
+        omitted.append({'evidence_id':evidence.evidence_id, 'identity':source.identity,
+            'source_hash':evidence.content_hash, 'source_uri':evidence.source_uri,
+            'published_at':evidence.published_at.isoformat() if evidence.published_at else None,
+            'as_of':evidence.as_of.isoformat() if evidence.as_of else None, 'reason':reason})
     for source in sorted(task.sources, key=priority):
         evidence = source.evidence
+        if (evidence.published_at and evidence.published_at > task.cutoff) or (evidence.as_of and evidence.as_of > task.cutoff):
+            omit(source, 'PIT cutoff excludes future source')
+            continue
+        if evidence.evidence_type not in {'news','sec_filing'} and evidence.retrieved_at > task.cutoff:
+            omit(source, 'Not known at PIT cutoff')
+            continue
+        if evidence.symbol and evidence.symbol != task.focus_symbol and evidence.evidence_type in {'news','sec_filing','thesis','semantic_judgment'}:
+            omit(source, 'Different focus symbol')
+            continue
         # Expired business receipts remain inspectable in immutable history.
         # Do not fill an otherwise small current-event prompt with stale search
         # hits; explicit historical/thesis comparisons can select background.
         if (source.freshness=='STALE' and evidence.evidence_type in {'news','sec_filing'}
                 and not any(word in task.question for word in ('历史','此前','冲突','对比','historical','conflict'))):
+            omit(source, 'Stale company receipt is not current evidence')
             continue
         reason = ('material investigation result' if investigation and evidence.evidence_id in investigation.get('new_evidence_ids', []) else
             'current company evidence' if source.freshness == 'CURRENT' and evidence.evidence_type in {'news','sec_filing'} else
@@ -104,6 +121,7 @@ def build_context(task, *, supplemental_allowed, investigation=None):
                 row['title_text_reference'] = title_owners[evidence.title]
         tentative = {**facts, 'sources': [*facts['sources'], row]}
         if len(selected) >= max_sources or len(json.dumps(tentative,ensure_ascii=False,default=str).encode()) > max_bytes:
+            omit(source, 'Source-count limit' if len(selected) >= max_sources else 'Context byte budget')
             continue
         facts = tentative
         selected.append(source)
@@ -112,11 +130,14 @@ def build_context(task, *, supplemental_allowed, investigation=None):
             if evidence.title:
                 title_owners.setdefault(evidence.title,evidence.evidence_id)
         manifest.append({'evidence_id': evidence.evidence_id, 'identity': source.identity,
-            'freshness': source.freshness, 'reason': reason, 'excerpt_truncated': row['excerpt_truncated']})
+            'freshness': source.freshness, 'source_hash':evidence.content_hash,
+            'source_uri':evidence.source_uri, 'published_at':evidence.published_at.isoformat() if evidence.published_at else None,
+            'as_of':evidence.as_of.isoformat() if evidence.as_of else None, 'reason': reason, 'excerpt_truncated': row['excerpt_truncated']})
     encoded = json.dumps(facts,ensure_ascii=False,default=str).encode()
     if len(encoded) > max_bytes or not selected:
         raise LLMError('research_context_budget', 'required research context exceeds bounded projection')
     audit = {'version':'bounded-research-v06','selected':manifest,
         'omitted_evidence_ids':[s.evidence.evidence_id for s in task.sources if s not in selected],
+        'omitted':omitted, 'cutoff':task.cutoff.isoformat(),
         'context_bytes':len(encoded), 'max_context_bytes':max_bytes, 'projection_hash':content_hash(facts)}
     return facts, selected, audit

@@ -54,7 +54,14 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install ".[test]"
-      - run: python -m pytest -q
+      - name: Run public tests with an exclusively owned external root
+        shell: bash
+        run: |
+          export MIA_ISOLATED_ROOT="$RUNNER_TEMP/public-tests-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          mkdir -p "$MIA_ISOLATED_ROOT"
+          python -m pytest -o addopts='' --basetemp="$MIA_ISOLATED_ROOT/pytest" -q
+      - name: Verify public import and resource closure
+        run: python release/check_import_closure.py --source .
       - name: Audit public history and identity
         if: github.event_name != 'pull_request'
         run: python release/audit_public_git.py --repo . --email 198560242+Ernesto12139@users.noreply.github.com --expected-root 555ca4fbc531e61bf0fdc33d5022fec38dece11b
@@ -106,11 +113,20 @@ jobs:
           for i in $(seq 1 30); do curl -fs http://127.0.0.1:8080/health && break; sleep 1; done
           python scripts/smoke_public_demo.py --base http://127.0.0.1:8080 --expected-revision "$revision"
           node scripts/smoke_public_demo_browser.cjs http://127.0.0.1:8080 output/browser "$RUNNER_TEMP/browser/node_modules/playwright/package.json"
+      - name: Real public-IVS result-card What-if at desktop and mobile widths
+        env:
+          MIA_BROWSER_CHANNEL: chromium
+        run: |
+          MIA_RUNTIME_MODE=PUBLIC_DEMO MIA_DEMO_DIR="$RUNNER_TEMP/ivs-legacy" python -m market_agent.public_ivs --root "$RUNNER_TEMP/public-ivs" --serve --port 8791 &
+          for i in $(seq 1 30); do curl -fs http://127.0.0.1:8791/api/public-ivs && break; sleep 1; done
+          node scripts/smoke_public_ivs_browser.cjs http://127.0.0.1:8791 output/ivs-browser "$RUNNER_TEMP/browser/node_modules/playwright/package.json"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: synthetic-browser-evidence
-          path: output/browser
+          path: |
+            output/browser
+            output/ivs-browser
   docker:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -129,3 +145,13 @@ jobs:
           for i in $(seq 1 30); do curl -fs http://127.0.0.1:8080/health && break; sleep 1; done
           python3 scripts/smoke_public_demo.py --base http://127.0.0.1:8080 --expected-revision "$revision"
           test "$(docker inspect --format '{{.Config.User}}' preview)" = '10001:10001'
+      - name: Installed public IVS journey without network or writable root filesystem
+        run: |
+          mkdir -p output
+          docker run --rm --network none --read-only --tmpfs /tmp:rw,mode=1777 --tmpfs /var/lib/mia-demo:rw,uid=10001,gid=10001 --entrypoint python convictiondesk -m market_agent.public_ivs --root /tmp/public-ivs --journey > output/ivs-offline.json
+          python3 -c "import json; d=json.load(open('output/ivs-offline.json')); assert d['research']['fast']['status']==d['research']['deep']['status']=='COMPLETE'; assert d['research']['same_task'] and d['research']['revision_one_preserved']; assert d['what_if']['after']['nav']=='12979'"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: public-ivs-offline-journey
+          path: output/ivs-offline.json

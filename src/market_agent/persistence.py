@@ -472,6 +472,31 @@ class Store:
         return [SecSearchChunk.from_payloads(json.loads(c),json.loads(d)) for c,d in rows]
 
     @contextmanager
+    def _wal_pin(self) -> Iterator[None]:
+        """Keep the WAL file alive for the duration of one write burst.
+
+        In WAL mode the *last* connection to close checkpoints and deletes the
+        `-wal`/`-shm` files. Because every operation here uses a short-lived
+        connection, one thread could delete the WAL while another thread's save
+        worker was still writing; that write then failed with
+        `sqlite3.OperationalError: attempt to write a readonly database`, surfaced to
+        the user as RESEARCH_FAILED (6 of 12 runs on this host).
+
+        Holding a connection open for the whole store fixed the race but kept the
+        database file locked, which broke temp-directory cleanup on Windows
+        (WinError 32). Pinning only around the write keeps the handle alive for
+        milliseconds: while a save runs there are at least two connections, so no
+        close can be the "last" one. The journal mode, the error path and the retry
+        behaviour are unchanged.
+        """
+        pin = sqlite3.connect(self.path)
+        try:
+            pin.execute("PRAGMA journal_mode=WAL")
+            yield
+        finally:
+            pin.close()
+
+    @contextmanager
     def _connect(self) -> Iterator[sqlite3.Connection]:
         db = sqlite3.connect(self.path)
         try:

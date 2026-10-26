@@ -20,7 +20,7 @@ class DeepSeekLLMClient:
 
     def __init__(self, api_key: str, model: str, *,
                  client: httpx.AsyncClient | None = None,
-                 timeout: float = 30.0, max_tokens: int = 1024):
+                 timeout: float = 30.0, max_tokens: int = 1024, transport_factory=None, _offline_test=False):
         if model not in DEEPSEEK_MODELS or not api_key.strip():
             raise LLMConfigurationError("configuration", "DeepSeek requires its own key and an allowed model")
         if not 1 <= max_tokens <= 8192 or not 0 < timeout <= 120:
@@ -28,6 +28,10 @@ class DeepSeekLLMClient:
         self._api_key = api_key.strip()
         self.model_name = model
         self.client = client
+        if client is not None and transport_factory is not None:
+            raise ValueError('Choose one explicit client or guarded transport factory')
+        self.transport_factory = transport_factory
+        self._offline_test = _offline_test
         self.timeout = timeout
         self.max_tokens = max_tokens
         self._metadata: ContextVar[dict] = ContextVar("deepseek_call_metadata", default={})
@@ -52,7 +56,7 @@ class DeepSeekLLMClient:
             "messages": [{"role": "system", "content": system + " Return JSON only."},
                          {"role": "user", "content": json.dumps(prompt, ensure_ascii=False, default=str)}],
             "response_format": {"type": "json_object"},
-        }, request.response_model)
+        }, request.response_model, output_limit=request.max_output_tokens)
 
     async def complete_tool_arguments(self, *, prompt: str, name: str,
                                       arguments_model: type[BaseModel]) -> BaseModel:
@@ -69,7 +73,7 @@ class DeepSeekLLMClient:
         }, arguments_model, tool_name=name)
 
     async def _complete(self, payload: dict, response_model: type[BaseModel], *,
-                        tool_name: str | None = None) -> BaseModel:
+                        tool_name: str | None = None, output_limit: int | None = None) -> BaseModel:
         metadata = {"provider": self.provider, "model": self.model_name,
                     "supported_capabilities": list(self.supported_capabilities),
                     "usage": {}, "error_type": None, "validated_output": False,
@@ -77,13 +81,14 @@ class DeepSeekLLMClient:
         self._metadata.set(metadata)
         started = perf_counter()
         payload = {**payload, "model": self.model_name, "stream": False,
-                   "thinking": {"type": "disabled"}, "max_tokens": self.max_tokens}
+                   "thinking": {"type": "disabled"}, "max_tokens": min(self.max_tokens, output_limit) if output_limit is not None else self.max_tokens}
         try:
             if self.client is None:
-                async with httpx.AsyncClient(follow_redirects=False, trust_env=False) as client:
-                    response = await self._post(client, payload)
+                async with httpx.AsyncClient(follow_redirects=False, trust_env=False,
+                        transport=self.transport_factory() if self.transport_factory else None) as client:
+                    response = await self._post(client, payload, tool_name=tool_name)
             else:
-                response = await self._post(self.client, payload)
+                response = await self._post(self.client, payload, tool_name=tool_name)
             if response.status_code != 200:
                 code = ("authentication" if response.status_code in (401, 403) else
                         "credit_exhausted" if response.status_code == 402 else
@@ -141,7 +146,19 @@ class DeepSeekLLMClient:
             metadata["latency_ms"] = round((perf_counter() - started) * 1000)
             self._metadata.set(metadata)
 
-    async def _post(self, client: httpx.AsyncClient, payload: dict) -> httpx.Response:
+    async def _post(self, client: httpx.AsyncClient, payload: dict, *, tool_name=None) -> httpx.Response:
+        from .research_egress import admit_model_send
+        # Tool proposals have no structured facts contract and remain blocked unless
+        # a dedicated admission matches this exact prompt; no implicit loop bypass.
+        try:
+            if tool_name is not None:
+                raise ValueError('Tool prompts bind their entire text, even if JSON-shaped')
+            prompt = json.loads(payload['messages'][-1]['content'])
+            facts, purpose = prompt['facts'], prompt['purpose']
+        except (ValueError, KeyError, TypeError):
+            facts, purpose = {'tool_prompt':payload['messages'][-1]['content']}, 'deepseek.tool_arguments'
+        admit_model_send(self.provider,self.model_name,DEEPSEEK_BASE_URL+'/chat/completions',facts,
+            purpose=purpose,client=client,offline_test=self._offline_test)
         return await client.post(
             f"{DEEPSEEK_BASE_URL}/chat/completions",
             headers={"Authorization": f"Bearer {self._api_key}"},

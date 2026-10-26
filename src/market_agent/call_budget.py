@@ -65,8 +65,9 @@ class CallBudget:
 
 class BudgetedModelTransport(httpx.AsyncBaseTransport):
     """Known direct prices only; no tools, redirects or hidden retry refund."""
-    def __init__(self, inner, budget):
+    def __init__(self, inner, budget, *, rate_card=None):
         self.inner, self.budget, self.stopped = inner, budget, False
+        self.rate_card = rate_card
 
     async def handle_async_request(self, request):
         if self.stopped:
@@ -76,6 +77,9 @@ class BudgetedModelTransport(httpx.AsyncBaseTransport):
         except ValueError:
             raise LLMError('api_budget_configuration', 'Expected explicit JSON model request') from None
         url, model = str(request.url), body.get('model')
+        if self.rate_card is not None:
+            from .provider_pricing import qualified_rates
+            qualified_rates(self.rate_card)
         wire = request.content
         input_upper = len(wire)+2048
         if request.method != 'POST' or len(wire) > 65536:
@@ -97,6 +101,24 @@ class BudgetedModelTransport(httpx.AsyncBaseTransport):
             input_upper = len(wire)+2048
             reserve = (Decimal(input_upper)*Decimal('2.50')+Decimal(maximum)*Decimal('10'))/1_000_000
             rate_in, rate_out = Decimal('2'), Decimal('10')
+        elif url == 'https://api.deepseek.com/chat/completions' and model == 'deepseek-flash':
+            from .provider_pricing import qualified_rates
+            if self.rate_card is None:
+                raise LLMError('api_budget_price_unknown','DeepSeek needs an explicit dated rate qualification')
+            rate_in, rate_out = qualified_rates(self.rate_card)
+            maximum = body.get('max_tokens')
+            allowed = {'model','messages','response_format','tools','tool_choice','stream','thinking','max_tokens'}
+            if (set(body)-allowed or type(maximum) is not int or not 1 <= maximum <= 8192
+                    or body.get('stream') is not False or body.get('thinking') != {'type':'disabled'}
+                    or not isinstance(body.get('messages'),list) or any(not isinstance(row,dict)
+                        or set(row)-{'role','content'} or not isinstance(row.get('content'),str)
+                        for row in body['messages'])):
+                raise LLMError('api_budget_configuration','Only bounded inline non-thinking DeepSeek requests are priced')
+            # These tools are local function proposals only, never server search/fetch.
+            if body.get('tools') and (len(body['tools']) != 1 or body['tools'][0].get('type') != 'function'
+                    or body.get('tool_choice',{}).get('function',{}).get('name') != body['tools'][0].get('function',{}).get('name')):
+                raise LLMError('api_budget_configuration','Expected one explicit local function')
+            reserve = (Decimal(input_upper)*rate_in+Decimal(maximum)*rate_out)/1_000_000
         elif url == 'https://api.typesafe.ai/v1/systemone' and model in {'jev-1.13.0', 'jev-1.14.0'}:
             if (set(body)-{'model','state','questions'} or len(wire) > 32000
                     or 'TypeSafe-Danger-Zone-Long-Context' in request.headers):
@@ -116,17 +138,22 @@ class BudgetedModelTransport(httpx.AsyncBaseTransport):
             await response.aread()
             envelope = response.json()
             usage = envelope.get('usage', {})
-            reported_model = envelope.get('model', model)
-            if reported_model != model:
-                raise LLMError('api_budget_identity', 'Response model differs from priced model')
-            i, o = usage.get('input_tokens'), usage.get('output_tokens', 0)
+            reported_model = envelope.get('model', model if model.startswith('jev-') else None)
+            i, o = ((usage.get('prompt_tokens'),usage.get('completion_tokens')) if model == 'deepseek-flash'
+                else (usage.get('input_tokens'),usage.get('output_tokens')))
+            if model.startswith('jev-') and o is None:
+                o = 0  # Jev's priced contract is input-only, not unknown generated-token usage.
             if type(i) is not int or i < 0 or i > input_upper or type(o) is not int or o < 0:
                 raise LLMError('api_budget_usage_unknown', 'Usage is absent or exceeds reservation')
-            if model == 'gpt-6.1-sol' and o > maximum:
+            if model in {'gpt-6.1-sol','deepseek-flash'} and o > maximum:
                 raise LLMError('api_budget_usage_unknown', 'Output exceeded configured maximum')
+            if reported_model != model:
+                raise LLMError('api_budget_identity', 'Response model differs from priced model')
             self.budget.record(request_id, 'RETURNED_USAGE_KNOWN',
                 {'input_tokens': i, 'output_tokens': o, 'http_status': response.status_code,
-                 'standard_rate_estimate_usd': str((i*rate_in+o*rate_out)/1_000_000)})
+                 'standard_rate_estimate_usd': str((i*rate_in+o*rate_out)/1_000_000),
+                 'rate_card_id':self.rate_card['id'] if self.rate_card else 'legacy-explicit-transport',
+                 'response_model':reported_model})
             if response.status_code != 200:
                 self.stopped = True
             return response

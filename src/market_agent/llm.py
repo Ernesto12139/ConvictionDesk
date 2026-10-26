@@ -75,12 +75,14 @@ class OpenAICompatibleLLMClient:
     provider = "openai_compatible"
 
     def __init__(self, base_url: str, api_key: str, model: str, *,
-                 client: httpx.AsyncClient | None = None, timeout: float = 120.0):
+                 client: httpx.AsyncClient | None = None, timeout: float = 120.0, transport_factory=None, _offline_test=False):
         self.base_url = base_url.rstrip("/")
         self._api_key = api_key
         self.model_name = model
         self.client = client
         self.timeout = timeout
+        self.transport_factory = transport_factory
+        self._offline_test = _offline_test
 
     async def complete_structured(self, request: StructuredLLMRequest) -> BaseModel:
         prompt = {
@@ -106,6 +108,7 @@ class OpenAICompatibleLLMClient:
             )
         payload = {
             "model": self.model_name,
+            "max_tokens": request.max_output_tokens,
             "messages": [
                 {
                     "role": "system",
@@ -118,19 +121,22 @@ class OpenAICompatibleLLMClient:
             payload["response_format"] = {"type": "json_object"}
         try:
             if self.client is None:
-                async with httpx.AsyncClient() as client:
+                async with httpx.AsyncClient(follow_redirects=False,trust_env=False,
+                        transport=self.transport_factory() if self.transport_factory else None) as client:
+                    self._admit(request,client)
                     response = await client.post(
                         f"{self.base_url}/chat/completions",
                         headers={"Authorization": f"Bearer {self._api_key}"},
                         json=payload,
-                        timeout=self.timeout,
+                        timeout=self.timeout, follow_redirects=False,
                     )
             else:
+                self._admit(request,self.client)
                 response = await self.client.post(
                     f"{self.base_url}/chat/completions",
                     headers={"Authorization": f"Bearer {self._api_key}"},
                     json=payload,
-                    timeout=self.timeout,
+                    timeout=self.timeout, follow_redirects=False,
                 )
         except httpx.TimeoutException:
             raise LLMError("timeout", "LLM request timed out") from None
@@ -172,6 +178,11 @@ class OpenAICompatibleLLMClient:
                 f"LLM assistant content failed schema validation ({issues[:500]})",
             ) from None
 
+    def _admit(self, request, client):
+        from .research_egress import admit_model_send
+        admit_model_send('compatible',self.model_name,self.base_url+'/chat/completions',request.facts,
+            purpose=request.purpose,client=client,offline_test=self._offline_test)
+
 
 class UnconfiguredLLMClient:
     provider = "openai"
@@ -200,7 +211,9 @@ def production_llm_from_environment(environment: Mapping[str, str]) -> LLMClient
         if not key:
             return UnconfiguredLLMClient(provider="deepseek", model=model,
                                         message="DEEPSEEK_API_KEY is required")
-        return DeepSeekLLMClient(key, model)
+        from .runtime_budget import runtime_transport_factory
+        return DeepSeekLLMClient(key, model,
+            transport_factory=runtime_transport_factory(environment, 'DeepSeek'))
     if provider == "compatible":
         return openai_compatible_client_from_environment(environment) or UnconfiguredLLMClient(
             provider="openai_compatible", model="unconfigured-compatible",
@@ -210,7 +223,9 @@ def production_llm_from_environment(environment: Mapping[str, str]) -> LLMClient
     key = environment.get("OPENAI_API_KEY", "").strip()
     if not key:
         return UnconfiguredLLMClient()
-    return OpenAIResponsesLLMClient(key, model=environment.get("OPENAI_MODEL", "").strip() or "gpt-6.1-sol")
+    from .runtime_budget import runtime_transport_factory
+    return OpenAIResponsesLLMClient(key, model=environment.get("OPENAI_MODEL", "").strip() or "gpt-6.1-sol",
+        max_transport_attempts=1, transport_factory=runtime_transport_factory(environment, 'OpenAI'))
 
 
 def structured_output_schema(model: type[BaseModel]) -> dict:
@@ -277,13 +292,17 @@ class OpenAIResponsesLLMClient:
 
     def __init__(self, api_key: str, model: str = "gpt-6.1-sol", *,
                  client: httpx.AsyncClient | None = None, timeout: float | None = None,
-                 max_transport_attempts: int = 2):
+                 max_transport_attempts: int = 2, transport_factory=None, _offline_test=False):
         self._api_key = api_key
         self.model_name = model
         if max_transport_attempts not in {1,2}:
             raise ValueError('Transport attempts must stay bounded')
         self.max_transport_attempts = max_transport_attempts
         self.client = client
+        if client is not None and transport_factory is not None:
+            raise ValueError('Choose one explicit client or guarded transport factory')
+        self.transport_factory = transport_factory
+        self._offline_test = _offline_test
         self.timeout = 60.0 if timeout is None else timeout
         # Non-streamed holding judgments can legitimately take over a minute.
         # Keep the general budget unchanged; explicit caller budgets still win.
@@ -326,7 +345,8 @@ class OpenAIResponsesLLMClient:
                 selected_evidence_count=len(request.evidence_ids),
                 packet_hash=request.facts["investment_context"]["packet_hash"])
         if self.client is None:
-            async with httpx.AsyncClient() as client:
+            async with httpx.AsyncClient(transport=self.transport_factory() if self.transport_factory else None,
+                                         trust_env=False, follow_redirects=False) as client:
                 return await self._complete(client, request, payload)
         return await self._complete(self.client, request, payload)
 
@@ -347,8 +367,11 @@ class OpenAIResponsesLLMClient:
             response = None
             timeout_phase = None
             try:
+                from .research_egress import admit_model_send
+                admit_model_send(self.provider,self.model_name,"https://api.openai.com/v1/responses",request.facts,
+                    purpose=request.purpose,client=client,offline_test=self._offline_test)
                 response = await client.post("https://api.openai.com/v1/responses",
-                    headers={"Authorization": f"Bearer {self._api_key}"}, json=payload, timeout=timeout)
+                    headers={"Authorization": f"Bearer {self._api_key}"}, json=payload, timeout=timeout, follow_redirects=False)
                 status = response.status_code
                 if status != 200:
                     code = ("authentication" if status in (401, 403) else "rate_limit" if status == 429

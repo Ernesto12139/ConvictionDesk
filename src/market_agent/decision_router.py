@@ -67,11 +67,13 @@ class JevSupplementalRouter(JevSemanticJudge):
         try:
             if self.client is None:
                 async with httpx.AsyncClient() as client:
+                    self._admit(payload,client)
                     response=await client.post(self.base_url+'/v1/systemone',json=payload,
-                        headers={'Authorization':'Bearer '+self._api_key},timeout=min(self.timeout,10))
+                        headers={'Authorization':'Bearer '+self._api_key},timeout=min(self.timeout,10),follow_redirects=False)
             else:
+                self._admit(payload,self.client)
                 response=await self.client.post(self.base_url+'/v1/systemone',json=payload,
-                    headers={'Authorization':'Bearer '+self._api_key},timeout=min(self.timeout,10))
+                    headers={'Authorization':'Bearer '+self._api_key},timeout=min(self.timeout,10),follow_redirects=False)
         except httpx.TimeoutException:
             raise LLMError('timeout','Jev router timed out') from None
         except httpx.RequestError:

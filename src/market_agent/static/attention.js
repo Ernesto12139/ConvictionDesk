@@ -131,19 +131,28 @@
     const item=row.item, current=row.current_universe;
     const event=row.research_event, brief=item.screen.brief;
     const receipts=event?.evidence || item.packet.evidence;
-    const article=el("article",null,"attention-item");article.dataset.itemId=item.item_id;
+    const article=el("article",null,"attention-item");article.dataset.itemId=item.item_id;article.dataset.symbol=item.symbol;
     const meta=el("div",null,"attention-meta");
     meta.append(el("strong",item.symbol,"attention-symbol"),freshnessChip(row.freshness,item.packet.evidence[0]),
-      el("span",priorities[item.priority],"attention-priority"),el("span",lifecycle[current.state]+" · 待复核","small muted"));
+      el("span",priorities[item.priority],"attention-priority"),el("span",lifecycle[current.state]+" · 待复核","small muted"),
+      radarChips(row));
     article.append(meta,el("h3",brief?.headline.text || item.screen.rationale.text));
     if(brief) article.append(el("p",item.screen.rationale.text));
     else article.append(el("p",item.what_changed.text,"small attention-original"),
       el("p","旧筛选记录 · 尚无中文事件提要和具体核查问题","small muted"));
     if(brief) article.append(el("p","接下来核查："+brief.next_check.text,"attention-next"));
     if(item.packet.revision_of) article.append(el("p","事实修订 / 新版本：原报道仍在证据中，请对照变化。","small"));
+    if(row.radar) article.append(el("p",row.radar.explanation+
+      (row.radar.confidence==="LOW"?" 新旧判定置信度低，请以原始来源为准。":""),"small attention-radar-note"));
     const direction={POSITIVE:"证据倾向正面",NEGATIVE:"证据倾向负面",MIXED:"支持与反对并存",NEUTRAL:"方向中性",UNKNOWN:"方向尚不明确"};
     const timing=item.screen.urgency==="NOW"?"优先核查":item.screen.urgency==="SOON"?"近期核查":"核查时机待判断";
     article.append(el("p",`${direction[item.screen.direction]} · ${timing} · 报道发布 ${publication(item.packet.evidence[0])} · ${session(row.freshness)}`,"small muted attention-time"));
+    if(row.radar?.times) article.append(el("p",
+      `发布 ${row.radar.times.published_at ? stamp(row.radar.times.published_at) : "未知"}`+
+      ` · 首次看到 ${row.radar.times.first_seen_at ? stamp(row.radar.times.first_seen_at) : "未记录"}`+
+      ` · 事件时间 ${row.radar.times.event_time_verified ? stamp(row.radar.times.event_time) : "来源未声明"}`+
+      ` · 获取 ${row.radar.times.retrieved_at ? stamp(row.radar.times.retrieved_at) : "未知"}`,
+      "small muted attention-times"));
     if(event?.grouped) article.append(el("p",`同一研究事件 · ${receipts.length} 条原始证据；合并依据可展开查看。`,"small"));
     if(item.screening_lineage?.candidate_repost_unit)article.append(el("p",`转载候选共同筛选 · ${item.screening_lineage.candidate_repost_unit.member_event_keys.length} 篇原文全部保留。相似性不是同事件或事实确认，新披露仍须单独核查。`,"small"));
     const actions=el("div",null,"attention-actions");
@@ -253,11 +262,67 @@
     });
     return article;
   }
+  // Radar chips answer the four questions the Owner actually asks: is this new,
+  // where does it hit me, how many independent sources, and is the count real.
+  const noveltyLabels = {
+    NEW_TO_US:"新进入系统", MATERIAL_UPDATE:"事件更新", REPUBLISHED:"旧闻转载",
+    AGED_IN:"旧事件后到", UNKNOWN:"新旧未判定"
+  };
+  function noveltyChip(radar) {
+    if(!radar) return null;
+    const chip=el("span",noveltyLabels[radar.novelty] || radar.novelty,"attention-novelty");
+    chip.dataset.novelty=radar.novelty;
+    chip.dataset.confidence=radar.confidence || "LOW";
+    chip.title=(radar.explanation || "")+(radar.prior_published_at?`（更早记录 ${stamp(radar.prior_published_at)}）`:"");
+    return chip;
+  }
+  function sourceChip(radar) {
+    if(!radar?.sources) return null;
+    const s=radar.sources;
+    const carried=s.publisher_count>1 ? `（${(s.publishers||[]).join("、")}）` : "";
+    const text=s.status==="SYNDICATED" ? `${s.receipt_count} 条原文 · 同一稿件转载${carried}` :
+      s.status==="LIKELY_SYNDICATED" ? `${s.receipt_count} 条原文 · 可能同一稿件${carried}` :
+      s.independent_sources>1 ? `${s.receipt_count} 条原文 · ${s.independent_sources} 个独立来源` :
+      s.independent_sources===1 ? `1 个独立来源` : "来源未定";
+    const chip=el("span",text,"attention-sources");
+    chip.dataset.sources=s.status;
+    chip.title=`保留 ${s.receipt_count} 条原文，其中 ${s.distinct_prose} 篇不同稿件、${s.publisher_count ?? 0} 个出版方、${s.independent_sources} 个独立来源${carried ? "："+carried.slice(1,-1) : ""}。同一稿件被多家转载只算一个来源，不构成独立证实。`;
+    return chip;
+  }
+  function scopeChip(radar) {
+    if(!radar?.scope) return null;
+    const s=radar.scope;
+    const text=s.scope!=="HOLDING" ? null :
+      s.exposure_pct!=null ? `成本敞口 ${s.exposure_pct}%` : "敞口未知";
+    if(!text) return null;
+    const chip=el("span",text,"attention-exposure");
+    chip.dataset.basis=s.exposure_basis;
+    chip.title=s.exposure_pct!=null ?
+      "按成本与现金口径计算，不是当前市值权重。" : "缺少合格价格或持仓数据；未知不等于零敞口。";
+    return chip;
+  }
+  const bandLabels={CRITICAL:"先看这条",IMPORTANT:"值得复核",ROUTINE:"常规"};
+  function classChip(radar) {
+    if(!radar?.event_class) return null;
+    const chip=el("span",radar.event_class.label,"attention-class");
+    chip.dataset.class=radar.event_class.event_class;
+    chip.dataset.band=radar.importance?.band || "ROUTINE";
+    chip.title=`类型依据 ${radar.event_class.basis}；排序分 ${radar.importance?.score ?? "-"}（${bandLabels[radar.importance?.band] || "常规"}）。排序不是概率、收益或仓位建议。`;
+    return chip;
+  }
+  function radarChips(row, compact=false) {
+    const wrap=el("span",null,"attention-radar-chips");
+    const novelty=noveltyChip(row.radar); if(novelty) wrap.append(novelty);
+    const cls=classChip(row.radar); if(cls) wrap.append(cls);
+    if(!compact) {const sources=sourceChip(row.radar); if(sources) wrap.append(sources);}
+    const scope=scopeChip(row.radar); if(scope) wrap.append(scope);
+    return wrap;
+  }
   function compactRow(row) {
     const item=row.item, brief=item.screen.brief;
-    const button=el("button",null,"attention-row");button.type="button";button.dataset.itemId=item.item_id;
+    const button=el("button",null,"attention-row");button.type="button";button.dataset.itemId=item.item_id;button.dataset.symbol=item.symbol;
     const head=el("span",null,"attention-row-meta");
-    head.append(el("strong",item.symbol,"attention-symbol"),freshnessChip(row.freshness,item.packet.evidence[0]));
+    head.append(el("strong",item.symbol,"attention-symbol"),freshnessChip(row.freshness,item.packet.evidence[0]),radarChips(row,true));
     if(row.deep?.status==="RUNNING")head.append(el("span","深入研究进行中","small muted"));
     button.append(head,el("span",brief?.headline.text || item.screen.rationale.text,"attention-row-title"));
     button.addEventListener("click",()=>openDetail(row,r=>[`${r.item.symbol} · 关注详情`,renderItem(r,"drawer")]));
@@ -293,7 +358,57 @@
     $("attention-summary").textContent=data.items.length ?
       `当前显示 ${data.items.length} 项 · ${symbols.join(" / ")}`+(incomplete||scopeLimited?" · 覆盖仍有缺口":" · 查看扫描覆盖") : "先建立研究范围，再检查相关变化。";
     if(lifecycle?.expired_unscreened)$("attention-summary").textContent+=` ${lifecycle.expired_unscreened} 条近期材料已过期未筛；不代表没有重要变化，也不会重新标为今日消息。`;
-    if (data.items.length) {
+    if(data.radar){
+      $("attention-summary").textContent+=` · 持仓 ${data.radar.scope.HOLDING} 项 · 原文 ${data.radar.receipts_shown} 条 / 独立来源 ${data.radar.independent_sources_shown} 个`;
+      if(data.radar.redundant_receipts_avoided)
+        $("attention-coverage").textContent+=` 已按独立来源折算 ${data.radar.redundant_receipts_avoided} 条转载计数；每条原文仍完整保留。`;
+    }
+    const sections=data.sections||[];
+    const cov=data.coverage_state;
+    // Coverage first: the Owner's complaint was that 17 October news looked like
+    // 23 October news. The page must say what the last real scan covered.
+    if(cov && cov.state!=="FRESH"){
+      const banner=el("div",null,"attention-stale");banner.dataset.state=cov.state;
+      banner.append(el("strong",cov.state==="NEVER"?"今天没有覆盖数据":
+        `数据截至 ${stamp(cov.last_successful_scan_at)}`),el("p",cov.state_sentence,"small"));
+      if(cov.uncovered_count){
+        banner.append(el("p",`本轮未覆盖 ${cov.uncovered_count} 个标的`+
+          (cov.uncovered_symbols?.length?`（${cov.uncovered_symbols.slice(0,6).join("、")}）`:"")+
+          "；未覆盖不等于没有变化。","small"));
+      }
+      queue.append(banner);
+    }
+    const hl=data.headline;
+    if(hl){
+      const line=el("p",hl.sentence,hl.available?"attention-headline":"attention-headline is-empty");
+      line.dataset.available=String(!!hl.available);
+      queue.append(line);
+    }
+    if (!(scope && scope.active_symbols===0) && sections.length) {
+      // Scope sections replace a flat list: holdings first, then watchlist, then
+      // the rest. Empty scopes are stated explicitly instead of being omitted, so
+      // "no holding change" cannot be confused with "holdings were not classified".
+      let expanded=3;
+      sections.forEach(section=>{
+        const block=el("section",null,"attention-section");block.dataset.scope=section.key;
+        block.dataset.count=String(section.count);
+        const head=el("div",null,"attention-section-head");
+        head.append(el("h3",section.title),el("span",`${section.count} 项`,"attention-section-count"));
+        block.append(head,el("p",section.note,"small muted attention-section-note"));
+        if(!section.count){
+          block.append(el("p",section.empty_sentence||"本次没有变化。","small attention-section-empty"));
+          queue.append(block);return;
+        }
+        const extra=el("div",null,"attention-rows");
+        section.items.forEach(row=>{
+          if(expanded>0){block.append(renderItem(row));expanded-=1;}
+          else extra.append(compactRow(row));
+        });
+        if(extra.children.length)block.append(disclosure(`其余 ${extra.children.length} 项`,extra));
+        queue.append(block);
+      });
+    }
+    else if (data.items.length) {
       const extra=el("div",null,"attention-rows");
       data.items.forEach((row,index)=>index<3?queue.append(renderItem(row)):extra.append(compactRow(row)));
       if(data.items.length>3)queue.append(disclosure(`其余 ${data.items.length-3} 项关注`,extra));
@@ -307,12 +422,13 @@
           scope?.active_symbols===0 || report?.symbols===0?"建立持仓，或在研究范围中加入观察与候选标的。":report?"已复核的事项不会反复打扰你；没有新变化也是有效结果。":"点击「刷新今日关注」开始检查。持仓自动纳入研究范围，无需归档持仓。","muted"));
       queue.append(empty);
     }
-    if(data.historical_items?.length){
-      const older=el("div",null,"attention-rows");data.historical_items.forEach(row=>older.append(compactRow(row)));
-      const count=data.freshness?.historical_events || data.historical_items.length;
-      const details=disclosure(`早前与时间未核实的报道 · ${count} 项`,older);
+    const earlier=data.earlier_items || data.historical_items || [];
+    if(earlier.length){
+      const older=el("div",null,"attention-rows");earlier.forEach(row=>older.append(compactRow(row)));
+      const count=data.radar?.earlier_shown || data.freshness?.historical_events || earlier.length;
+      const details=disclosure(`较早材料 · ${count} 项（不视为今日新变化）`,older);
       details.classList.add("attention-older");
-      older.prepend(el("p","发布时间较早或未注明，不应当作今日新消息；复核时请对照原始来源。","small muted"));
+      older.prepend(el("p","旧闻转载、旧事件后到，或发布时间早于本轮窗口的材料。保留供核查与召回，不计入今日变化。","small muted"));
       queue.append(details);
     }
     const screenError=report?.errors?.find(error=>error.stage==='screen' && !['PENDING_BACKLOG','PENDING_EVIDENCE_RETAINED'].includes(error.code));

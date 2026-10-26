@@ -9,7 +9,7 @@ from .llm import LLMError
 class ActionDecision(FrozenModel):
     symbol: str
     decision_action: Literal['ADD','HOLD','REDUCE','EXIT'] | None
-    decision_status: Literal['SUPPORTED','PROVISIONAL','UNDETERMINED','NOT_APPLICABLE']
+    decision_status: Literal['SUPPORTED','PROVISIONAL','UNDETERMINED','NOT_APPLICABLE','NO_ACTION_REQUESTED']
     evidence_strength: Literal['STRONG','MIXED','LIMITED','INSUFFICIENT']
     thesis_delta: str
     key_drivers: list[str]
@@ -22,6 +22,9 @@ class ActionDecision(FrozenModel):
     trace_id: str
     position_status: Literal['HELD','NOT_HELD','UNKNOWN']
     applicability_note: str | None = None
+
+
+NO_ACTION_OBJECTIVES = {'EXPLAIN_CHANGE', 'EARNINGS_CHECK'}
 
 
 def action_readback(assessment, task):
@@ -39,6 +42,16 @@ def action_readback(assessment, task):
         direction = None
         status = 'NOT_APPLICABLE' if held == 'NOT_HELD' else 'UNDETERMINED'
         note = '所选持仓范围没有该标的，持有/减持/退出不适用。' if held == 'NOT_HELD' else '尚未取得该标的持仓身份。'
+    if (direction is None and status == 'UNDETERMINED' and held == 'NOT_HELD'
+            and getattr(task, 'objective', None) == 'CONSIDER_REDUCE'):
+        # Reduce/exit without a position cannot apply. A thesis review of an unheld
+        # symbol stays a research question (UNDETERMINED), per the frozen v09 contract.
+        status = 'NOT_APPLICABLE'
+        note = '所选持仓范围没有该标的，减持/退出不适用；这不是证据不足'
+    if direction is None and status == 'UNDETERMINED' and getattr(task, 'objective', None) in NO_ACTION_OBJECTIVES:
+        # A research answer, not missing evidence: the question asked for no trade direction.
+        status = 'NO_ACTION_REQUESTED'
+        note = '本次问题没有请求交易方向；以下是研究回答，不是证据不足。'
     return ActionDecision(symbol=task.focus_symbol, decision_action=direction, decision_status=status,
         evidence_strength=action.evidence_strength if action else 'INSUFFICIENT',
         thesis_delta=action.thesis_delta.text if action else '当前输出没有经过验证的 Thesis Delta。',

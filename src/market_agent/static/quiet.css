@@ -492,3 +492,19 @@ html[data-theme] .desk-recent-all:hover { background:transparent; text-decoratio
   #desk-result .desk-whatif-deltas dd { margin:0; font-size:16px; }
 }
 @media(max-width:1100px) and (min-width:761px) { #desk-result .desk-whatif-deltas { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+/* Today radar chips use semantic tokens, never colour alone. */
+html[data-theme] .attention-section-head h3 { color: var(--text-secondary); }
+html[data-theme] .attention-novelty[data-novelty="NEW_TO_US"] { color: var(--status-success); background: var(--status-success-surface); border-color: transparent; }
+html[data-theme] .attention-novelty[data-novelty="MATERIAL_UPDATE"] { color: var(--status-info); background: var(--status-info-surface); border-color: transparent; }
+html[data-theme] .attention-novelty:is([data-novelty="REPUBLISHED"],[data-novelty="AGED_IN"],[data-novelty="UNKNOWN"]) { color: var(--text-secondary); background: transparent; border-color: var(--border-control); border-style: dashed; }
+html[data-theme] .attention-sources, html[data-theme] .attention-exposure { color: var(--text-secondary); border-color: var(--border-subtle); }
+html[data-theme] .attention-sources[data-sources="SYNDICATED"] { color: var(--status-uncertain); border-color: var(--border-control); }
+
+/* Today coverage and importance use semantic tokens, never colour alone. */
+html[data-theme] .attention-stale { border-color: var(--border-subtle); color: var(--text-secondary); }
+html[data-theme] .attention-stale[data-state="OLD"], html[data-theme] .attention-stale[data-state="NEVER"] { color: var(--status-uncertain); border-color: var(--border-control); }
+html[data-theme] .attention-headline { background: var(--surface-inset); color: var(--text-strong); }
+html[data-theme] .attention-class { color: var(--text-secondary); border-color: var(--border-subtle); }
+html[data-theme] .attention-class[data-band="CRITICAL"] { color: var(--status-info); background: var(--status-info-surface); border-color: transparent; }
+html[data-theme] .attention-class[data-band="IMPORTANT"] { color: var(--text-strong); border-color: var(--border-control); }

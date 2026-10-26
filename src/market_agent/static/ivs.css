@@ -1,0 +1,52 @@
+.ivs-filings { margin: 1.5rem 0 2rem; }
+.ivs-filings-heading, .ivs-filing-lead, .ivs-filing-actions { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.ivs-filings-heading { justify-content: space-between; }
+.ivs-filings-heading h3 { margin: 0; }
+.ivs-filing-list { list-style: none; padding: 0; margin: 0; }
+.ivs-filing { border-top: 1px solid var(--border, #dce1e8); padding: 1.1rem 0; overflow-wrap: anywhere; }
+.ivs-filing p { margin: .6rem 0; line-height: 1.65; }
+.ivs-filing details { margin: .75rem 0 1rem; }
+.ivs-filing-actions a { color: var(--primary, #2459cf); text-underline-offset: 3px; }
+.ivs-filing-actions a { min-height: 44px; display: inline-flex; align-items: center; }
+.ivs-condition-tag { font-size: .8rem; margin-inline-end: .5rem; font-weight: 600; }
+#desk-model-readout { overflow-wrap: anywhere; }
+.ivs-research-mode { margin: .8rem 0; padding: 0; border: 0; }
+.ivs-research-mode legend { font-weight: 600; margin-bottom: .5rem; }
+.ivs-research-mode-options { display: flex; gap: .5rem; flex-wrap: wrap; }
+.ivs-research-mode-options button[aria-pressed="true"] { color: var(--paper, #fff); background: var(--primary, #2459cf); border-color: var(--primary, #2459cf); }
+.ivs-mode-provider { margin-top: .6rem; }
+body[data-legacy-creation="deprecated"] .legacy-creation-deprecated { display: none !important; }
+@media (max-width: 600px) {
+  .ivs-filing-actions { align-items: stretch; }
+  .ivs-filing-actions a { flex-basis: 100%; }
+  .ivs-filings-heading { align-items: flex-start; }
+}
+
+/* ---- public keyless slice: three data-nature classes, stated up front ---- */
+.public-ivs-chip { display: none; }
+body[data-public-ivs="1"] .public-ivs-chip {
+  display: inline-flex; align-items: center; gap: .4rem; margin: .35rem 0 .2rem;
+  padding: .3rem .6rem; border: 1px solid var(--border, #dce1e8); border-radius: 999px;
+  font-size: .8rem; font-weight: 600; overflow-wrap: anywhere;
+}
+body[data-public-ivs="1"] .public-ivs-banner {
+  border: 1px solid var(--border, #dce1e8); border-left: 4px solid var(--primary, #2459cf);
+  border-radius: 10px; padding: 1rem 1.1rem; margin: 0 0 1.25rem; background: var(--surface, #f7f8fa);
+}
+body[data-public-ivs="1"] .public-ivs-banner h2 { margin: 0 0 .5rem; font-size: 1.15rem; line-height: 1.4; }
+body[data-public-ivs="1"] .public-ivs-gloss { margin: 0 0 .85rem; font-size: .88rem; line-height: 1.55; opacity: .85; }
+body[data-public-ivs="1"] .public-ivs-classes { list-style: none; padding: 0; margin: 0; display: grid; gap: .55rem; }
+body[data-public-ivs="1"] .public-ivs-classes li {
+  display: grid; gap: .15rem; padding: .55rem .7rem; border-radius: 8px;
+  border: 1px solid var(--border, #dce1e8); background: var(--paper, #fff); overflow-wrap: anywhere;
+}
+body[data-public-ivs="1"] .public-ivs-classes strong { font-size: .92rem; }
+body[data-public-ivs="1"] .public-ivs-classes span { font-size: .78rem; line-height: 1.5; opacity: .8; }
+/* The public build has no market data provider, so the market-pulse section would
+   only show "not configured" counters. The SEC lane moves above it and this hides. */
+body[data-public-ivs="1"] #attention { display: none; }
+body[data-public-ivs="1"] .public-ivs-banner + #ivs-filings { margin-top: 0; }
+@media (max-width: 600px) {
+  body[data-public-ivs="1"] .public-ivs-banner { padding: .85rem .9rem; }
+  body[data-public-ivs="1"] .public-ivs-banner h2 { font-size: 1.05rem; }
+}

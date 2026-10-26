@@ -91,8 +91,18 @@ class AttentionItem(FrozenModel):
     score: Decimal
     ranking_version: Literal['attention-research-v1'] = 'attention-research-v1'
     screening_lineage: dict
+    # Absent on items frozen before this field existed; omitted again on dump so an
+    # old item's hash does not change and no deep result falsely reports new input.
+    rights: dict | None = None
 
     _event_utc = field_validator('event_time')(utc)
+
+    @model_serializer(mode='wrap')
+    def serialize(self, handler):
+        value = handler(self)
+        if self.rights is None:
+            value.pop('rights', None)
+        return value
 
 
 class DeepOutput(FrozenModel):
@@ -122,6 +132,43 @@ def aliases(item):
         if len(title) >= 12:
             result.append('title:'+item.published_at.date().isoformat()+':'+title)
     return result
+
+
+# What the current subscription lets us do with a receipt. Recorded, not adjudicated:
+# this is the boundary the product already respects, written down so a research prompt
+# cannot silently treat "we fetched it" as "we may forward it".
+RIGHTS = {
+    'sec-edgar': ('PUBLIC_FILING', 'GRANTED', '美国证券交易委员会公开申报文件'),
+    'sec': ('PUBLIC_FILING', 'GRANTED', '美国证券交易委员会公开申报文件'),
+    'finnhub': ('LICENSED_LOCAL_DISPLAY', 'NOT_GRANTED',
+                '当前免费订阅允许本地展示并注明出版方；未确认可转发原文给外部模型'),
+    'massive': ('LICENSED_LOCAL_DISPLAY', 'NOT_GRANTED',
+                '当前订阅用于本地计算与展示；未确认可转发原文'),
+}
+
+
+def evidence_rights(receipts):
+    """Per-provider display and forwarding rights for one event's receipts."""
+    rows, seen = [], set()
+    for receipt in receipts:
+        provider = (receipt.provider or '').strip().lower()
+        if provider in seen:
+            continue
+        seen.add(provider)
+        display, forwarding, basis = RIGHTS.get(
+            provider, ('UNKNOWN', 'UNKNOWN', '没有该来源的授权记录'))
+        rows.append({'provider': provider, 'display': display,
+                     'model_forwarding': forwarding, 'basis': basis})
+    forwarding = ('GRANTED' if rows and all(r['model_forwarding'] == 'GRANTED' for r in rows)
+                  else 'NOT_GRANTED' if any(r['model_forwarding'] == 'NOT_GRANTED' for r in rows)
+                  else 'UNKNOWN')
+    return {
+        'version': 'evidence-rights-v1',
+        'per_provider': rows,
+        'model_forwarding': forwarding,
+        'note': ('记录当前订阅下的展示与转发边界，不是法律意见。转发受限不等于不能引用标题与链接，'
+                 '但不得把正文当作可再分发的材料。'),
+    }
 
 
 def eligible(screen):
@@ -267,7 +314,9 @@ class GPTAttentionDeep:
         return getattr(self.llm,'call_metadata',lambda:{})()
 
     async def investigate(self,item):
-        facts=item.model_dump(mode='json')
+        # rights is a local governance label, not research content; it never enters the
+        # model input (keeps the retained exact-input replay and the Deep prompt unchanged).
+        facts=item.model_dump(mode='json',exclude={'rights'})
         output=await self.llm.complete_structured(StructuredLLMRequest(purpose='attention_deep_v1',
             response_model=DeepOutput,facts=facts,evidence_ids=[e.evidence_id for e in item.packet.evidence],
             numeric_fact_tokens=sorted(set(NUMBER_TOKEN.findall(json.dumps(facts,ensure_ascii=False)))),
@@ -398,6 +447,14 @@ class AttentionService:
                         previous=None  # Explicit historical replay keeps its captured semantics.
                 if known or (existing and previous is None):
                     duplicate+=1
+                    if existing and not known:
+                        # A different receipt of a story already held. Folding it into one
+                        # event is correct; dropping its identity is not, because the card
+                        # then claims one source for a story several publishers carried.
+                        receipt=e.model_dump(mode='json')
+                        db.execute('INSERT OR IGNORE INTO attention_event_receipts VALUES (?,?,?,?,?)',
+                            (existing,e.evidence_id,json.dumps(receipt,ensure_ascii=False),
+                             content_hash(receipt),scan_id))
                     for a in ids:
                         db.execute('INSERT OR IGNORE INTO attention_aliases VALUES (?,?,?)',(entry.symbol,a,existing))
                     continue
@@ -597,7 +654,8 @@ class AttentionService:
                                 priority='HIGH' if s.materiality=='HIGH' or s.thesis_impact=='POTENTIALLY_INVALIDATING' else
                                          'VERIFY' if s.materiality=='UNKNOWN' or s.evidence_confidence=='LOW' else 'MEDIUM',
                                 suggested_next='DEEP_RESEARCH' if s.materiality=='HIGH' else 'REVIEW',
-                                score=attention_score(s,p.universe),screening_lineage={
+                                score=attention_score(s,p.universe),
+                                rights=evidence_rights(p.evidence),screening_lineage={
                                     'model':model_events[-1].model,'prompt_contract':model_events[-1].prompt_contract,
                                     'fallback_used':bool(self.fast_screen and model_events[-1].model==self.screen.model_name),
                                     **({'candidate_repost_unit':{

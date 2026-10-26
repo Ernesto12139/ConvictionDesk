@@ -56,7 +56,7 @@ ENGLISH_MONTHS = {name.lower(): i for i, name in enumerate(('January', 'February
 ENGLISH_DATE = re.compile(r'\b(' + '|'.join(ENGLISH_MONTHS) + r')\s+(\d{1,2}),?\s+(\d{4})\b', re.I)
 CALENDAR_YEAR = re.compile(r'(?<![\d.])(\d{4})\s*年')
 SEC_FORM_LITERAL = re.compile(r'(?<![A-Za-z0-9])(?:10-[KQ]|8-K|20-F|40-F|6-K|S-[1348]|F-[1346]|13[FDG])(?:/A)?(?![A-Za-z0-9])', re.I)
-INDEX_FIELDS = {'cik', 'accession', 'accession_number', 'form', 'sequence',
+INDEX_FIELDS = {'cik', 'accession', 'accession_number', 'form', 'items', 'item_codes', 'sequence',
     'section', 'document_id', 'chunk_id', 'revision'}
 TRADE_ACTION = re.compile(r'买入|买进|购入|购买|卖出|卖掉|出售|加仓|减仓|增持|清仓|建仓|'
     r'目标(?:持仓|仓位)|建议(?:股数|买入数量|卖出数量)|'
@@ -269,8 +269,13 @@ class ResearchRequest(FrozenModel):
     snapshot_id: str | None = None
     account_id: str | None = None
     attention_item_id: str | None = Field(default=None, max_length=96)
+    filing_evidence_id: str | None = Field(default=None, max_length=96)
     mode: Literal['FAST','DEEP'] | None = None
     model_profile_id: str | None = Field(default=None, max_length=64)
+    execution_strategy: Literal['BASELINE','ADAPTIVE'] | None = None
+    egress_consent_id: str | None = Field(default=None,max_length=96)
+    expected_revision: int | None = Field(default=None, ge=1,
+        description='The saved task revision the user confirmed for continuation.')
 
     @field_validator('question')
     @classmethod
@@ -382,6 +387,7 @@ class ResearchTask(FrozenModel):
     snapshot_hash: str | None = None
     account_id: str | None = None
     attention_item_id: str | None = None
+    filing_evidence: EvidenceItem | None = None
     cutoff: datetime
     updated_at: datetime
     user_price: Decimal | None = None
@@ -406,11 +412,15 @@ class ResearchTask(FrozenModel):
     mode: Literal['FAST','DEEP'] = 'DEEP'
     model_profile_id: str | None = None
     action_decision: 'ActionDecision | None' = None
+    execution_strategy: Literal['BASELINE','ADAPTIVE'] = 'BASELINE'
+    loop_trace: dict = {}
+    egress_consent_id: str | None = None
+    error_kind: str | None = None
 
     @model_serializer(mode='wrap')
     def serialize(self, handler):
         value = handler(self)
-        for key, default in (('mode','DEEP'),('model_profile_id',None),('action_decision',None)):
+        for key, default in (('mode','DEEP'),('model_profile_id',None),('action_decision',None),('execution_strategy','BASELINE'),('loop_trace',{}),('egress_consent_id',None),('error_kind',None),('filing_evidence',None)):
             if getattr(self,key) == default:
                 value.pop(key,None)
         return value
@@ -490,7 +500,10 @@ class ResearchTasks:
         payload = task.model_dump(mode='json')
         values = (task.revision, task.status, task.updated_at.isoformat(), content_hash(payload),
                   json.dumps(payload, ensure_ascii=False), task.task_id)
-        with self.store._connect() as db:
+        # Concurrent save workers used to race the WAL teardown and fail with
+        # "attempt to write a readonly database". The pin keeps a second connection
+        # alive for this write only, so no close can delete the WAL mid-commit.
+        with self.store._wal_pin(), self.store._connect() as db:
             if new:
                 db.execute('INSERT INTO research_tasks(revision,status,updated_at,payload_hash,payload,task_id) VALUES(?,?,?,?,?,?)', values)
             else:
@@ -622,7 +635,23 @@ def validate_assessment(assessment, sources, *, objective):
 class ResearchService:
     MAX_SECONDS = 240
     MODEL_SECONDS = 90
-    def __init__(self, agent, *, diagnostic_sink=None, reference_provider=None, decision_component=None,model_profiles=None):
+    LOOP_TOOL_SECONDS = 20
+    LOOP_MAX_TOOLS = 12
+    STRATEGY_POLICIES = ('BASELINE_ONLY','OPT_IN','ADAPTIVE_DEFAULT')
+
+    def __init__(self, agent, *, diagnostic_sink=None, reference_provider=None, decision_component=None,model_profiles=None,
+                 strategy_policy='OPT_IN', answer_contract='LEGACY', evidence_contract=None, egress=None, jev_runtime=None):
+        if strategy_policy not in self.STRATEGY_POLICIES:
+            raise ValueError('MIA_RESEARCH_STRATEGY must be BASELINE_ONLY, OPT_IN or ADAPTIVE_DEFAULT')
+        if answer_contract not in {'LEGACY', 'GROUNDED_MEMO'}:
+            raise ValueError('Invalid answer contract')
+        self.answer_contract = answer_contract
+        evidence_contract = evidence_contract or ('TYPED' if answer_contract == 'GROUNDED_MEMO' else 'LEGACY')
+        if evidence_contract not in {'LEGACY', 'TYPED'}:
+            raise ValueError('evidence_contract must be LEGACY or TYPED')
+        # Server-owned: a client may only choose ADAPTIVE when this policy allows it.
+        self.strategy_policy = strategy_policy
+        self.evidence_contract = evidence_contract
         self.agent = agent
         self.store = agent.store
         self.tasks = ResearchTasks(self.store)
@@ -631,25 +660,68 @@ class ResearchService:
         self.reference_provider = reference_provider
         self.decision_component = decision_component
         self.model_profiles = model_profiles
+        self.egress, self.jev_runtime = egress, jev_runtime
+
+    @property
+    def answer_contract(self):
+        return 'GROUNDED_MEMO' if self.evidence_contract == 'TYPED' else 'LEGACY'
+
+    @answer_contract.setter
+    def answer_contract(self, value):
+        if value not in {'LEGACY','GROUNDED_MEMO'}:
+            raise ValueError('Invalid answer contract')
+        self.evidence_contract = 'TYPED' if value == 'GROUNDED_MEMO' else 'LEGACY'
+
+    @property
+    def allow_adaptive(self):
+        # LOOP-002 compatibility view over the strategy policy.
+        return self.strategy_policy != 'BASELINE_ONLY'
+
+    @allow_adaptive.setter
+    def allow_adaptive(self, allowed):
+        self.strategy_policy = 'OPT_IN' if allowed else 'BASELINE_ONLY'
 
     def now(self):
         return utc(self.agent.clock())
 
     def begin(self, request):
+        # Server policy first: refusal never depends on profiles, keys or task state.
+        if request.execution_strategy == 'ADAPTIVE' and self.strategy_policy == 'BASELINE_ONLY':
+            raise TDBError('RESEARCH_ADAPTIVE_DISABLED', 409)
         previous = self.tasks.get(request.task_id) if request.task_id else None
+        # Refuse stale confirmations before profile resolution or consent access.
+        if request.expected_revision is not None and (
+                previous is None or request.expected_revision != previous.revision):
+            raise TDBError('RESEARCH_REVISION_CONFLICT', 409)
+        if previous and previous.status == 'RUNNING':
+            raise TDBError('RESEARCH_TASK_BUSY', 409)
         mode = request.mode or (previous.mode if previous else None)
-        profile_id = request.model_profile_id or (previous.model_profile_id if previous else None)
+        profile_id = request.model_profile_id or (previous.model_profile_id if previous and (not request.mode or request.mode==previous.mode) else None)
         if self.model_profiles:
             profile = self.model_profiles.resolve(profile_id,mode)
             mode, profile_id = profile.mode,profile.profile_id
         elif profile_id:
             raise TDBError('RESEARCH_MODEL_PROFILE_INVALID',422)
-        if previous and previous.status == 'RUNNING':
-            raise TDBError('RESEARCH_TASK_BUSY', 409)
+        if request.execution_strategy:
+            strategy, strategy_source = request.execution_strategy, 'REQUEST'
+        elif previous and (previous.execution_strategy == 'BASELINE' or self.strategy_policy != 'BASELINE_ONLY'):
+            strategy, strategy_source = previous.execution_strategy, 'INHERITED'
+        else:
+            strategy = 'ADAPTIVE' if self.strategy_policy == 'ADAPTIVE_DEFAULT' else 'BASELINE'
+            strategy_source = 'SERVER_POLICY'
         if previous and ((request.snapshot_id and request.snapshot_id != previous.snapshot_id) or
                          (request.account_id and request.account_id != previous.account_id)):
             raise TDBError('RESEARCH_CONTEXT_CHANGED', 409)
         cutoff = self.now()
+        filing_evidence = previous.filing_evidence if previous else None
+        if request.filing_evidence_id:
+            if previous or request.attention_item_id or not getattr(self, 'filing_source', None):
+                raise TDBError('RESEARCH_FILING_CONTEXT_INVALID', 409)
+            from fastapi import HTTPException
+            try:
+                filing_evidence = self.filing_source.evidence(request.filing_evidence_id, cutoff)
+            except (HTTPException, ValueError, KeyError, TypeError) as exc:
+                raise TDBError('RESEARCH_FILING_CONTEXT_INVALID', 409) from exc
         if request.attention_item_id:
             from .research_universe import ResearchStore
             selected_item = ResearchStore(self.store).item(request.attention_item_id)
@@ -667,6 +739,7 @@ class ResearchService:
         account_id = previous.account_id if previous else request.account_id
         if account_id and (not snapshot or account_id not in {a.account_id for a in snapshot.accounts}):
             raise TDBError('RESEARCH_ACCOUNT_INVALID', 422)
+        consent_id = self.egress.authorize(request,snapshot) if self.egress else None
         reusable = previous is not None
         if previous and previous.user_price is not None:
             try:
@@ -679,7 +752,11 @@ class ResearchService:
             snapshot_id=snapshot.snapshot_id if snapshot else None,
             snapshot_hash=snapshot.content_hash if snapshot else None, account_id=account_id,
             attention_item_id=request.attention_item_id,
+            filing_evidence=filing_evidence,
             mode=mode or 'DEEP', model_profile_id=profile_id,
+            egress_consent_id=consent_id,
+            execution_strategy=strategy,
+            loop_trace={'strategy_source':strategy_source,'strategy_policy':self.strategy_policy} if strategy == 'ADAPTIVE' else {},
             focus_symbol=previous.focus_symbol if previous else None,
             objective=previous.objective if previous else 'UNSUPPORTED',
             user_price=previous.user_price if reusable else None,
@@ -693,9 +770,21 @@ class ResearchService:
         return task, previous, snapshot
 
     async def execute(self, task, previous, snapshot):
-        llm = self.model_profiles.client(task.model_profile_id) if self.model_profiles else self.agent.llm
+        try:
+            llm = self.model_profiles.client(task.model_profile_id) if self.model_profiles else self.agent.llm
+        except TDBError as exc:
+            self.tasks.save(task.model_copy(update={'status':'FAILED','error':exc.code,'error_kind':'PROVIDER_ERROR','updated_at':self.now()}))
+            return
         # Each callback writes current observable state; reads always see a whole revision.
         pending_tool_call = None
+        adaptive = task.execution_strategy == 'ADAPTIVE'
+        loop_blocked = False
+        billing_blocked = None
+        from time import monotonic
+        expires = monotonic() + (min(self.MAX_SECONDS,90) if task.mode=='FAST' else self.MAX_SECONDS)
+
+        def outbound_task():
+            return self.egress.project(task,llm.provider)[0] if self.egress else task
 
         def observed_tool_calls():
             # Executed observations survive a failed save, while facts/sources
@@ -731,49 +820,157 @@ class ResearchService:
         async def step(message):
             await update(progress=[*task.progress, message])
 
-        async def model(purpose, schema, facts, sources, instruction):
+        async def model(purpose, schema, facts, sources, instruction, *, reference_ids=None, receipt_tokens=None):
             started = self.now()
+            getattr(llm,'reset_call_metadata',lambda:None)()
+            source_ids = [source.evidence.evidence_id for source in sources]
             request = StructuredLLMRequest(purpose=purpose, response_model=schema,
-                facts=facts, evidence_ids=[s.evidence.evidence_id for s in sources],
-                numeric_fact_tokens=sorted(numeric_facts(facts)), generation_mode='generate',
+                facts=facts, evidence_ids=reference_ids if reference_ids is not None else [s.evidence.evidence_id for s in sources],
+                numeric_fact_tokens=receipt_tokens if receipt_tokens is not None else sorted(numeric_facts(facts)), generation_mode='generate',
                 system_instruction=instruction, reasoning_effort='low' if task.mode=='FAST' else 'medium',
-                max_output_tokens=3072 if task.mode=='FAST' else 8192)
+                max_output_tokens=(1024 if purpose == 'research.intent' else 3072 if task.mode=='FAST' else 4096) if adaptive else (3072 if task.mode=='FAST' else 8192))
             try:
-                async with asyncio.timeout(min(self.MODEL_SECONDS,45) if task.mode=='FAST' else self.MODEL_SECONDS):
-                    result = schema.model_validate((await llm.complete_structured(request)).model_dump())
+                from .research_egress import active_egress, active_egress_guard
+                admission = None
+                if billing_blocked:
+                    raise LLMError(billing_blocked,'A previous budget refusal stops additional billable sends')
+                if self.egress:
+                    admission = self.egress.record_send(task,llm.provider,purpose,facts,sources)
+                    await update(loop_trace={**task.loop_trace,'egress':[*task.loop_trace.get('egress',[]),admission]})
+                if monotonic() >= expires:
+                    raise TimeoutError('Research deadline exhausted')
+                from .llm import OpenAICompatibleLLMClient
+                if adaptive and isinstance(llm, OpenAICompatibleLLMClient) and llm.transport_factory is None:
+                    raise LLMError('loop_unbounded_adapter','This compatible adapter does not enforce output tokens; use baseline or a bounded adapter')
+                token = active_egress.set(admission)
+                guard_token = active_egress_guard.set((lambda:self.egress.validate_send(task,llm.provider,admission)) if self.egress else None)
+                try:
+                    async with asyncio.timeout(min(expires-monotonic(), min(self.MODEL_SECONDS,45) if task.mode=='FAST' else self.MODEL_SECONDS)):
+                        result = schema.model_validate((await llm.complete_structured(request)).model_dump())
+                finally:
+                    active_egress_guard.reset(guard_token)
+                    active_egress.reset(token)
             except asyncio.CancelledError:
                 event = observed_model_event(llm, model=llm.model_name,
                     purpose=purpose, status='error', started_at=started, ended_at=self.now(),
-                    evidence_ids=request.evidence_ids, claim_links={}, error='cancelled')
+                    evidence_ids=source_ids, claim_links={}, error='cancelled')
                 await update(model_events=[*task.model_events, event])
                 raise
             except Exception as exc:
                 code = exc.code if isinstance(exc, LLMError) else 'RESEARCH_MODEL_TIMEOUT' if isinstance(exc, TimeoutError) else 'schema_validation'
                 event = observed_model_event(llm, model=llm.model_name,
                     purpose=purpose, status='error', started_at=started, ended_at=self.now(),
-                    evidence_ids=request.evidence_ids, claim_links={}, error=code)
+                    evidence_ids=source_ids, claim_links={}, error=code)
                 await update(model_events=[*task.model_events, event])
                 raise LLMError(code, 'research model failed') from None
             event = observed_model_event(llm, model=llm.model_name,
                 purpose=purpose, status='success', started_at=started, ended_at=self.now(),
-                evidence_ids=request.evidence_ids, claim_links={})
+                evidence_ids=source_ids, claim_links={})
+            if adaptive:
+                event = event.model_copy(update={'context_metrics':{**event.context_metrics,
+                    'facts_bytes':len(json.dumps(facts,ensure_ascii=False,default=str).encode()),
+                    'facts_hash':content_hash(facts), 'max_output_tokens':request.max_output_tokens,
+                    'selected_sources':len(sources)}})
             await update(model_events=[*task.model_events, event])
             return result
 
-        async def tool(name, args, operation, refs=lambda r: [], *, receipt_sources=None):
-            nonlocal pending_tool_call
-            started = self.now()
+        async def assess(purpose, facts, sources, instruction):
+            candidate = None
+            if self.jev_runtime and not billing_blocked:
+                candidate = await self.jev_runtime.candidate(task,sources,self.egress)
+                await update(loop_trace={**task.loop_trace,'jev_candidate':candidate})
+                if self.jev_runtime.mode == 'FAST_CANDIDATE' and candidate.get('status') == 'SUCCESS':
+                    facts = {**facts,'jev_candidate':{'direction':candidate['candidate'],
+                        'evidence_ids':candidate['evidence_ids'],'policy':'Independently verify; disagreement requires research, never silently adopt.'}}
+            if self.evidence_contract == 'LEGACY':
+                assessment = await model(purpose, ResearchAssessment, facts, sources, instruction)
+                return assessment, None, None
+            from .evidence_action import build_evidence_packet, compile_memo, contract_request
+            packet = build_evidence_packet(outbound_task(), sources=sources)
+            request = contract_request(packet)
+            if candidate and self.jev_runtime.mode == 'FAST_CANDIDATE' and candidate.get('status') == 'SUCCESS':
+                request['facts']['jev_candidate'] = {'direction':candidate['candidate'],
+                    'basis_refs':[packet.ref_for_evidence(eid) for eid in candidate['evidence_ids']],
+                    'policy':'Candidate only; independently ground the explanation, counterevidence and change conditions.'}
+            memo = await model(purpose, request['response_model'], request['facts'], sources,
+                               request['system_instruction'],reference_ids=request['evidence_ids'],
+                               receipt_tokens=request['numeric_fact_tokens'])
+            await update(context_manifest={**task.context_manifest, 'contract':'typed-evidence-v1',
+                'packet_hash':packet.packet_hash, 'refs':packet.citation_map(),
+                'receipts':{row.receipt_id:row.field for row in packet.receipts}},
+                model_events=[*task.model_events[:-1],task.model_events[-1].model_copy(update={
+                    'context_metrics':{**task.model_events[-1].context_metrics,
+                        'answer_contract':'GROUNDED_MEMO','packet_version':packet.version,
+                        'packet_hash':packet.packet_hash,'facts_bytes':len(json.dumps(request['facts'],ensure_ascii=False,default=str).encode()),
+                        'refs':len(packet.refs),'receipts':len(packet.receipts)}})])
             try:
-                result = await asyncio.to_thread(operation)
+                assessment = compile_memo(memo, packet, sources)
+            except LLMError as exc:
+                await update(loop_trace={**task.loop_trace, 'evidence_contract':'TYPED',
+                    'packet_hash':packet.packet_hash, 'memo':memo.model_dump(mode='json'),
+                    'compile_error':exc.code,
+                    'compile_diagnostic':getattr(exc,'diagnostic',{'reason':exc.code})})
+                raise
+            await update(loop_trace={**task.loop_trace, 'evidence_contract':'TYPED',
+                'packet_hash':packet.packet_hash, 'memo':memo.model_dump(mode='json'),
+                'compiled_disposition':assessment.disposition,
+                'compiled_action':assessment.action.model_dump(mode='json') if assessment.action else None})
+            return assessment, packet, memo
+
+        async def tool(name, args, operation, refs=lambda r: [], *, receipt_sources=None):
+            nonlocal pending_tool_call, loop_blocked, billing_blocked
+            started = self.now()
+            if self.egress:
+                try:
+                    self.egress.checked(task,llm.provider)
+                except LLMError as exc:
+                    pending_tool_call = ToolCall(sequence=len(task.tool_calls)+1,name=name,arguments=args,
+                        status='error',started_at=started,ended_at=self.now(),error=exc.code)
+                    await update(tool_calls=observed_tool_calls())
+                    pending_tool_call = None
+                    raise
+            if monotonic() >= expires or (loop_blocked or len(task.tool_calls) >= self.LOOP_MAX_TOOLS):
+                loop_blocked = True
+                call = ToolCall(sequence=len(task.tool_calls)+1,name=name,arguments=args,status='error',
+                    started_at=started,ended_at=self.now(),error='BUDGET_REJECTED')
+                pending_tool_call = call
+                await update(tool_calls=[*task.tool_calls,call])
+                pending_tool_call = None
+                await update(loop_trace={**task.loop_trace,'denied_tools':[*task.loop_trace.get('denied_tools',[]),
+                    {'tool':name,'reason':'BUDGET_OR_TIMEOUT_STOP'}]})
+                return None
+            # A cancelled await still leaves the attempted call visible. This is
+            # an observation, not a published successful evidence receipt.
+            pending_tool_call = ToolCall(sequence=len(task.tool_calls)+1,name=name,arguments=args,
+                status='error',started_at=started,ended_at=self.now(),error='CANCELLED')
+            try:
+                from .tool_deadline import run_bounded_tool
+                from .tool_deadline import tool_seconds
+                seconds = min(expires-monotonic(),tool_seconds(name))
+                if self.LOOP_TOOL_SECONDS != 20:  # explicit deterministic test/embedding override
+                    seconds = min(seconds,self.LOOP_TOOL_SECONDS)
+                result = await run_bounded_tool(operation, seconds=max(.001,seconds))
                 call = ToolCall(sequence=len(task.tool_calls)+1, name=name, arguments=args,
                     status='success', started_at=started, ended_at=self.now(), output_refs=refs(result))
-            except (ProviderError, ValueError) as exc:
-                code = exc.code if isinstance(exc, ProviderError) else 'invalid_data'
+            except asyncio.CancelledError:
+                await update(tool_calls=observed_tool_calls(),
+                    limitations=[*task.limitations,f'{name}: CANCELLED'])
+                pending_tool_call = None
+                raise
+            except (ProviderError, LLMError, ValueError, TimeoutError) as exc:
+                code = exc.code if isinstance(exc, (ProviderError,LLMError)) else 'PROVIDER_TIMEOUT' if isinstance(exc, TimeoutError) else 'invalid_data'
+                if code.startswith(('api_budget','experiment_','loop_tool_budget')):
+                    loop_blocked = True
+                if code.startswith(('api_budget','experiment_')):
+                    billing_blocked = code
                 call = ToolCall(sequence=len(task.tool_calls)+1, name=name, arguments=args,
                     status='error', started_at=started, ended_at=self.now(), error=code)
                 pending_tool_call = call
                 await update(tool_calls=[*task.tool_calls, call], limitations=[*task.limitations, f'{name}: {code}'])
                 pending_tool_call = None
+                if name == 'portfolio.get_snapshot' and snapshot is not None or name == 'portfolio.compute_analytics':
+                    await update(unresolved_question=f'必需工具 {name} 失败（{code}）；本轮缺少冻结账户范围内的持仓事实，不能生成新的行动判断。')
+                    raise LLMError('evidence_gap_required_tool','Required scoped portfolio evidence unavailable')
                 return None
             pending_tool_call = call
             if receipt_sources is not None:
@@ -855,7 +1052,13 @@ class ResearchService:
                     and previous.intent.focus_symbol == previous.focus_symbol
                     and previous.intent.clarification is None
                     and previous.intent.objective != 'UNSUPPORTED')
-                if retry_intent:
+                jev_intent = None
+                if self.jev_runtime:
+                    jev_intent, route_trace = await self.jev_runtime.route_intent(task,literals,previous,self.egress)
+                    await update(loop_trace={**task.loop_trace,'jev_routing':route_trace})
+                if jev_intent is not None:
+                    intent = jev_intent
+                elif retry_intent:
                     intent = ResearchIntent.model_validate(previous.intent.model_dump())
                     await step('复用同一问题已验证的研究目标；本轮重新核查来源和持仓。')
                 else:
@@ -994,6 +1197,16 @@ class ResearchService:
                         previous_decision.analysis_cutoff, symbol=symbol, title='历史决策记录身份', freshness='HISTORICAL')],
                         referenced_decision_ids=[previous_decision.decision_id])
                 await step('调查公司变化与反证；每项工具只在实际执行后记入 Trace。')
+                if task.filing_evidence:
+                    def filing_context():
+                        evidence = task.filing_evidence
+                        if evidence.symbol != symbol or not evidence.as_of or evidence.as_of > task.cutoff:
+                            raise ProviderError('filing_context_mismatch', 'SEC symbol/cutoff mismatch')
+                        return company_sources([evidence])
+                    items = await tool('sec.get_filing_metadata', None, filing_context,
+                        lambda rows: [s.evidence.evidence_id for s in rows], receipt_sources=lambda rows: rows)
+                    if items is None:
+                        raise TDBError('filing_context_mismatch', 409)
                 if task.attention_item_id:
                     def attention_context():
                         from .research_universe import ResearchStore
@@ -1022,16 +1235,38 @@ class ResearchService:
                 cached = self.store.get_persisted_event_evidence(symbol, task.cutoff, 8)
                 if cached:
                     await add_sources(company_sources(cached))
-                if intent.use_news and self.agent.news:
+                plan = None
+                if adaptive:
+                    from .research_loop import ask_input, plan_tools, today_input
+                    try:
+                        context = ask_input(task)
+                        if task.attention_item_id:
+                            from .research_universe import ResearchStore
+                            context = today_input(task, ResearchStore(self.store).item(task.attention_item_id))
+                        plan = plan_tools(context, intent, news_available=bool(self.agent.news),
+                            sec_available=bool(self.agent.sec),
+                            financials_available=bool(self.agent.sec and hasattr(self.agent.sec, 'fundamentals')))
+                        await update(loop_trace={**task.loop_trace,'version':'loop-001-v1', 'plan':plan.model_dump(mode='json'),
+                            'stages':['PLAN','ACT','OBSERVE'], 'fallback':None,
+                            'context_tools':[{'tool':c.name,'reason':'Required scoped premise/portfolio/thesis context; fixed typed prerequisite'} for c in task.tool_calls],
+                            'max_tools':self.LOOP_MAX_TOOLS,
+                            'max_semantic_model_output_tokens':4096 if task.mode=='FAST' else 9216,
+                            'max_transport_attempts':4 if task.mode=='FAST' else 6,
+                            'max_model_output_tokens':8192 if task.mode=='FAST' else 18432})
+                    except (ValueError, TypeError, AttributeError):
+                        # Planning failure falls back in this same revision; never recurse/replay tools.
+                        await update(loop_trace={**task.loop_trace,'version':'loop-001-v1','fallback':'BASELINE_PLAN_INVALID',
+                            'stages':['PLAN_REJECTED','BASELINE']})
+                if (plan.runs('news.search') if plan else intent.use_news) and self.agent.news:
                     args = NewsSearchToolArgs(symbols=[symbol], since=task.cutoff-timedelta(days=30), until=task.cutoff,
                         limit=2 if task.mode=='FAST' else 5)
                     await company('news.search', args, lambda: self.agent.news.search([symbol], args.since, args.until, args.limit))
-                if intent.use_sec and self.agent.sec:
+                if (plan.runs('sec.search') if plan else intent.use_sec) and self.agent.sec:
                     args = SECSearchToolArgs(symbol=symbol, query=intent.sec_query, forms=['10-Q', '10-K', '8-K'], as_of=task.cutoff,
                         limit=2 if task.mode=='FAST' else 4)
                     sec_search = getattr(self.agent.sec,'fast_search',self.agent.sec.search) if task.mode=='FAST' else self.agent.sec.search
                     await company('sec.search', args, lambda: sec_search(symbol, args.query, args.forms, args.as_of, args.limit))
-                if task.mode=='DEEP' and intent.use_sec and self.agent.sec and hasattr(self.agent.sec, 'fundamentals'):
+                if (plan.runs('sec.fundamentals') if plan else task.mode=='DEEP' and intent.use_sec) and self.agent.sec and hasattr(self.agent.sec, 'fundamentals'):
                     args = SECSearchToolArgs(symbol=symbol, query='exact-period financial facts',
                         forms=['10-Q', '10-K'], as_of=task.cutoff, limit=4)
                     items = await tool('sec.fundamentals', args,
@@ -1119,9 +1354,9 @@ class ResearchService:
                     'FAST uses the current bounded packet and no supplemental query; DEEP may select one material gap. '
                     'Adapt the business drivers to this company rather than copying another ticker template.')
                 from .research_context import build_context
-                initial_facts, selected, manifest = build_context(task, supplemental_allowed=task.mode=='DEEP')
+                initial_facts, selected, manifest = build_context(outbound_task(), supplemental_allowed=task.mode=='DEEP')
                 await update(context_manifest=manifest)
-                assessment = await model('research.assess', ResearchAssessment, initial_facts, selected, instruction)
+                assessment, typed_packet, typed_memo = await assess('research.assess', initial_facts, selected, instruction)
                 self.validate(assessment, task, sources=selected)
                 gap = assessment.evidence_gap
                 if gap and set(gap.evidence_ids)-{s.evidence.evidence_id for s in selected}:
@@ -1130,6 +1365,14 @@ class ResearchService:
                 selected_tool = gap.tool if gap else 'SEC'
                 available = self.agent.news if selected_tool == 'NEWS' else self.agent.sec
                 supplemental = bool(proposed_query and available and task.mode=='DEEP')
+                stop_reason = None
+                if adaptive:
+                    from .research_loop import replan_stop
+                    stop_reason = replan_stop(proposed=proposed_query, available=bool(available),
+                        mode=task.mode, blocked=loop_blocked, calls=len(task.tool_calls), maximum=self.LOOP_MAX_TOOLS)
+                    supplemental = supplemental and stop_reason is None
+                    await update(loop_trace={**task.loop_trace, 'stages':[*task.loop_trace.get('stages',[]),'REPLAN'],
+                        'stop_reason':stop_reason, 'supplement_count':int(supplemental)})
                 reason = gap.why_material if gap else 'Existing assessment requested one targeted SEC disclosure check.'
                 investigation = {'status':'NOT_NEEDED' if not proposed_query else 'PLANNED' if available else 'UNAVAILABLE',
                     'tool':selected_tool if proposed_query else None,'query':proposed_query,
@@ -1137,11 +1380,13 @@ class ResearchService:
                     'gap':gap.model_dump(mode='json') if gap else None,
                     'before_judgment':assessment.core_judgment.model_dump(mode='json'),
                     'new_evidence_ids':[], 'remaining_investigations':0 if proposed_query else 1}
+                if stop_reason:
+                    investigation={**investigation,'status':stop_reason,'remaining_investigations':0}
                 await update(investigation=investigation)
                 if proposed_query and task.mode=='FAST':
                     investigation={**investigation,'status':'SKIPPED_FAST_BUDGET','remaining_investigations':0}
                     await update(investigation=investigation)
-                if supplemental and selected_tool == 'SEC' and self.decision_component is not None:
+                if supplemental and selected_tool == 'SEC' and self.decision_component is not None and not adaptive:
                     from .decision_router import SupplementalContext,route_supplement
                     context = SupplementalContext(symbol=symbol,objective=task.objective,question=task.question,
                         sec_query=proposed_query,sources=initial_facts['sources'])
@@ -1179,22 +1424,49 @@ class ResearchService:
                         'NEW_EVIDENCE' if new_ids else 'NO_NEW_EVIDENCE','new_evidence_ids':new_ids,
                         'tool_error':task.tool_calls[-1].error,'remaining_investigations':0}
                     await update(investigation=investigation)
-                    revised_facts, selected, manifest = build_context(task, supplemental_allowed=False, investigation=investigation)
-                    await update(context_manifest=manifest)
-                    assessment = await model('research.reassess', ResearchAssessment, revised_facts, selected, instruction)
-                    self.validate(assessment, task, sources=selected)
-                    if gap and assessment.investigation_effect is None:
-                        raise LLMError('missing_investigation_effect','reassessment must explain investigation result')
-                    if gap and (assessment.judgment_change is None or
-                            assessment.judgment_change == 'CHANGED' and (not new_ids or
-                            not set(assessment.investigation_effect.evidence_ids) & set(new_ids))):
-                        raise LLMError('unsupported_investigation_gain','changed judgment requires cited new evidence')
+                    if adaptive and not new_ids:
+                        await update(loop_trace={**task.loop_trace,'stop_reason':investigation['status']})
+                    if not adaptive or new_ids:
+                        revised_facts, selected, manifest = build_context(outbound_task(), supplemental_allowed=False, investigation=investigation)
+                        await update(context_manifest=manifest)
+                        assessment, typed_packet, typed_memo = await assess('research.reassess', revised_facts, selected, instruction)
+                        self.validate(assessment, task, sources=selected)
+                        if gap and assessment.investigation_effect is None:
+                            raise LLMError('missing_investigation_effect','reassessment must explain investigation result')
+                        if gap and (assessment.judgment_change is None or
+                                assessment.judgment_change == 'CHANGED' and (not new_ids or
+                                not set(assessment.investigation_effect.evidence_ids) & set(new_ids))):
+                            raise LLMError('unsupported_investigation_gain','changed judgment requires cited new evidence')
+                        if adaptive:
+                            # EVAL-001 F-03: the one supplement ran and was reassessed; that is the stop.
+                            await update(loop_trace={**task.loop_trace,'stop_reason':'SUPPLEMENT_COMPLETED_NEW_EVIDENCE'})
                 elif proposed_query and not available:
                     await update(limitations=[*task.limitations, selected_tool.lower()+'.supplemental: unavailable'])
                 assessment = assessment.model_copy(update={'supplemental_query': None, 'evidence_gap':None})
                 # Revalidate model_copy output before persisted/serialized readback.
                 assessment = ResearchAssessment.model_validate(assessment.model_dump())
+                if adaptive and assessment.action and assessment.action.status == 'SUPPORTED' and not any(
+                        source.identity == 'VERIFIED_FACT' and source.freshness == 'CURRENT'
+                        and source.evidence.provider == 'python_decimal' and source.evidence.evidence_type == 'calculation'
+                        and source.evidence.structured_data.get('calculation') == 'sec_quarterly_v1' for source in selected):
+                    assessment = assessment.model_copy(update={'action':assessment.action.model_copy(update={
+                        'status':'PROVISIONAL','evidence_strength':'LIMITED'})})
+                    await update(limitations=[*task.limitations,'FINANCIAL_QUALIFICATION_MISSING: direction remains conditional; no qualified exact-period financial receipts.'])
+                if adaptive:
+                    await update(loop_trace={**task.loop_trace,'stages':[*task.loop_trace.get('stages',[]),'STOP'],
+                        'stop_reason':task.loop_trace.get('stop_reason') or 'SUPPLEMENT_LIMIT_REACHED',
+                        'tool_count':len(task.tool_calls),'model_count':len(task.model_events)})
                 from .action_decision import action_readback
+                candidate = task.loop_trace.get('jev_candidate',{})
+                direction = assessment.action.direction if assessment.action else None
+                if candidate.get('candidate') in {'ADD','HOLD','REDUCE','EXIT'} and candidate.get('status') == 'SUCCESS':
+                    disagreement = candidate['candidate'] != direction
+                    await update(loop_trace={**task.loop_trace,'jev_comparison':{
+                        'candidate':candidate['candidate'],'validated_direction':direction,
+                        'status':'NEEDS_RESEARCH' if disagreement else 'AGREES_AFTER_VALIDATORS',
+                        'authoritative_path':'EXISTING_GROUNDED_VALIDATORS'}})
+                    if disagreement:
+                        await update(limitations=[*task.limitations,'JEV_DISAGREEMENT: 快速候选与验证后的解释判断不同；需要继续补查，未自动采用候选。'])
                 await update(status='COMPLETE', assessment=assessment, action_decision=action_readback(assessment,task),
                     findings_summary=assessment.core_judgment.text,
                     unresolved_question=assessment.counterevidence[0].text,
@@ -1202,7 +1474,7 @@ class ResearchService:
                     progress=[*task.progress, '研究结果已保存，可继续追问。'])
         except asyncio.CancelledError:
             if task.status=='RUNNING':
-                await update(status='FAILED', assessment=None, error='RESEARCH_INTERRUPTED',
+                await update(status='FAILED', assessment=None, error='RESEARCH_INTERRUPTED',error_kind='CANCELLED',
                     tool_calls=observed_tool_calls(),
                     progress=[*task.progress, '本轮研究未完成：服务中断；任务和来源已保留。'],
                     pending_next_action='继续同一任务，重新核查来源。')
@@ -1212,7 +1484,10 @@ class ResearchService:
                 return  # A terminal commit completed while its await was cancelled.
             code = exc.code if isinstance(exc, (LLMError, TDBError)) else 'RESEARCH_TIMEOUT' if isinstance(exc, TimeoutError) else 'RESEARCH_FAILED'
             events=task.model_events
-            if task.model_events and isinstance(exc, LLMError) and task.model_events[-1].status == 'success':
+            from .runtime_errors import failure_kind
+            from .evidence_action import MemoContractError
+            rejected_claim = isinstance(exc,MemoContractError) or failure_kind(code) in {'MODEL_UNSUPPORTED_CLAIM','CONTRACT_PROJECTION_MISSING'}
+            if task.model_events and isinstance(exc, LLMError) and rejected_claim and task.model_events[-1].status == 'success':
                 diagnostic = getattr(exc, 'diagnostic', {'reason': code})
                 event = task.model_events[-1].model_copy(update={'status': 'error', 'error': code,
                     'validation_outcome': 'REJECTED', 'validation_attempts': [diagnostic]})
@@ -1226,7 +1501,10 @@ class ResearchService:
                 'unsupported_investigation_gain': '补查没有可引用的新增证据，不能据此声称判断已改善。',
             }
             evidence_gap = evidence_failures.get(code)
-            await update(status='FAILED', assessment=None, error=code,model_events=events,
+            if adaptive:
+                await update(loop_trace={**task.loop_trace,'stages':[*task.loop_trace.get('stages',[]),'STOP'],
+                    'stop_reason':code})
+            await update(status='FAILED', assessment=None, error=code,error_kind=failure_kind(code),model_events=events,
                    tool_calls=observed_tool_calls(),
                    unresolved_question=evidence_gap or task.unresolved_question,
                    progress=[*task.progress, '本轮研究未完成：'+code+'；任务和来源已保留。'],

@@ -43,12 +43,15 @@ def project_deep(research, deep, row):
             'applicability': validity.model_dump(mode='json')}
 
 
+from .market_evidence import INSTANT_PUBLICATION_PROVIDERS  # noqa: E402  shared with market_identity
+
+
 def publication_precision(receipt):
     value = (receipt.structured_data or {}).get('published_at_precision')
     # Legacy Finnhub/synthetic receipts have exact instants. Other unspecified
     # sources are unknown: never infer precision from midnight or retrieval time.
     return value if value in {'INSTANT', 'DATE', 'UNKNOWN'} else (
-        'INSTANT' if receipt.published_at and receipt.provider in {'finnhub', 'synthetic', 'synthetic-copy'} else 'UNKNOWN')
+        'INSTANT' if receipt.published_at and receipt.provider in INSTANT_PUBLICATION_PROVIDERS else 'UNKNOWN')
 
 
 def compatible_members(packets, screens):

@@ -10,11 +10,18 @@ from .portfolio_whatif import WhatIfRequest, WhatIfUnavailable, scope, simulate
 from .technical_zones import TechnicalRequest, technical_zones
 
 
+def offline_preview_scope(identity):
+    return (isinstance(identity, dict) and identity.get('live_network') is False
+            and type(identity.get('paid_calls')) is int and identity['paid_calls'] == 0)
+
+
 def register_research(app, agent, *, reference_provider=None, decision_component=None,model_profiles=None,
-                      local_capital_reference=None):
-    service = ResearchService(agent,reference_provider=reference_provider,decision_component=decision_component,model_profiles=model_profiles)
+                      local_capital_reference=None, strategy_policy='OPT_IN', answer_contract='LEGACY',egress=None,jev_runtime=None):
+    service = ResearchService(agent,reference_provider=reference_provider,decision_component=decision_component,model_profiles=model_profiles,
+        strategy_policy=strategy_policy, answer_contract=answer_contract,egress=egress,jev_runtime=jev_runtime)
     service.tasks.recover(service.now())
     running = set()
+    jobs = {}
     app.state.research_service = service
     existing_lifespan = app.router.lifespan_context
 
@@ -31,19 +38,46 @@ def register_research(app, agent, *, reference_provider=None, decision_component
 
     @app.get('/api/research/model-profiles')
     def profiles():
-        return {'profiles':model_profiles.describe() if model_profiles else []}
+        from .agent import MockLLMClient
+        described = model_profiles.describe() if model_profiles else []
+        modes = {mode: any(p['available'] and p['mode'] == mode for p in described)
+                 if model_profiles else isinstance(agent.llm, MockLLMClient)
+                 for mode in ('FAST', 'DEEP')}
+        return {'profiles':described,
+            'default_profile_ids':dict(model_profiles.defaults) if model_profiles else {},
+            'mode_availability':modes,
+            'execution_strategy':{'policy':service.strategy_policy,
+                'default':'ADAPTIVE' if service.strategy_policy == 'ADAPTIVE_DEFAULT' else 'BASELINE',
+                'adaptive_allowed':service.strategy_policy != 'BASELINE_ONLY'}}
+
+    @app.get('/api/research/tasks/{task_id}/observation')
+    def observation(task_id: str, revision: int | None = Query(default=None, ge=1)):
+        from .ivs_observation import observe_task, serialize_trace
+        task = service.tasks.revision(task_id, revision) if revision else service.tasks.get(task_id)
+        return serialize_trace(observe_task(task, offline_scripted=offline_preview_scope(getattr(app.state, 'ivs_preview', None))))
 
     @app.post('/api/research/tasks', status_code=202, response_model=ResearchTask)
     async def research(request: ResearchRequest):
         task, previous, snapshot = service.begin(request)
         job = asyncio.create_task(service.execute(task, previous, snapshot))
         running.add(job)
+        jobs[task.task_id] = job
         def done(completed):
             running.discard(completed)
+            if jobs.get(task.task_id) is completed:
+                jobs.pop(task.task_id,None)
             if not completed.cancelled():
                 completed.exception()  # Observe; no provider/private exception prose.
         job.add_done_callback(done)
         return task
+
+    @app.post('/api/research/tasks/{task_id}/cancel')
+    async def cancel(task_id: str):
+        job = jobs.get(task_id)
+        if job is not None:
+            job.cancel()
+            await asyncio.gather(job,return_exceptions=True)
+        return service.tasks.get(task_id)
 
     @app.get('/api/research/tasks', response_model=list[ResearchTask])
     def recent():

@@ -1,188 +1,103 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-hero-dark.svg">
-    <img alt="ConvictionDesk: from market noise to portfolio decisions. News, 8-K and 10-Q filings, end-of-day prices, your holdings and your thesis pass a point-in-time cutoff and become one typed decision card: ADD, HOLD, REDUCE or EXIT with why, counterevidence, what would change it, cited evidence and an account What-if." src="docs/assets/convictiondesk-hero-light.svg" width="100%">
-  </picture>
-</p>
+# ConvictionDesk · v0.10.0 limited beta
 
-<p align="center">
-  <a href="https://github.com/Ernesto12139/ConvictionDesk/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Ernesto12139/ConvictionDesk/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="release/V09_RELEASE_NOTES.md"><img alt="Release v0.9.0 limited beta" src="https://img.shields.io/badge/release-v0.9.0%20limited%20beta-27745F"></a>
-  <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-27745F">
-  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-27745F"></a>
-</p>
+**Follow one public SEC filing from a fictional holding to an auditable research
+record and a hypothetical account change — without an API key.**
 
-<p align="center">
-  <a href="#quickstart">Quickstart</a> ·
-  <a href="#how-it-works">How it works</a> ·
-  <a href="docs/architecture.md">Architecture</a> ·
-  <a href="docs/README.md">Docs</a> ·
-  <a href="https://github.com/Ernesto12139/ConvictionDesk/releases">Releases</a>
-</p>
+The interface is primarily Simplified Chinese, with an English first-screen gloss.
+This is a local, offline demonstration of the actual research workbench.
 
-**ConvictionDesk is an open-source research workstation for people who own US stocks.** It watches what changes around your holdings, investigates with evidence that existed at the time, and answers with a typed decision you can audit. Before you act, it shows what the trade would do to your account.
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-product-dark.png">
-    <img alt="A saved Deep research record in ConvictionDesk for the fictional company XMPL. The question asks whether a new multi-year retail media deal, with the largest customer's renewal still open, changes the research judgment. The decision reads HOLD, provisional, with three reasons citing evidence 5 and 8, the strongest counterevidence citing source 14, the condition that would change the call, and the thesis change. A side panel names the next priority check. The research cutoff and the price reference time are shown in UTC." src="docs/assets/convictiondesk-product-light.png" width="100%">
-  </picture>
-</p>
-<p align="center"><sub>A saved Deep decision in the keyless replay that ships with this repository. The company and its filings are fictional; the interface is in Simplified Chinese.</sub></p>
-
-## Why ConvictionDesk
-
-A chatbot answers questions about stocks. ConvictionDesk answers a narrower, harder one: *given what I own, and what was knowable at that moment, does this change my decision?*
-
-| | General stock chat | ConvictionDesk |
-|---|---|---|
-| **Context** | Whatever you paste in | A frozen snapshot of your holdings and account scope for every task |
-| **Time** | May use later information | A point-in-time cutoff; later sources are rejected before anything is saved |
-| **Evidence** | Facts and opinion blended | Every statement typed as verified fact, your assertion, AI draft or unknown, with citations that must resolve |
-| **Numbers** | Arithmetic by the model | Portfolio, SEC-quarter and What-if math in Python `Decimal`; the model cannot introduce new figures |
-| **Memory** | Gone when the chat ends | Immutable, hash-checked revisions you can reopen when the next event arrives |
-
-## Discover, investigate, decide
-
-### Discover — what changed for my holdings
-
-**Today** (今日关注) scans company news across your research universe, drops duplicates and stale stories, screens each event for materiality and ranks what is left. Every item says why it matters and what to verify next. A scan that cannot cover everything reports *partial* and shows what it covered.
-
-### Investigate — Fast or Deep, on one evidence trail
-
-**Fast** answers *"does this change anything?"* from up to 8 qualified sources. **Deep** reads up to 18, adds SEC quarters and trailing-twelve-month figures in `Decimal`, and may spend one targeted news or SEC search on the most material gap it finds. A Fast result can continue as Deep in the same record, so the reasoning stays in one line.
-
-### Decide — a typed answer, and its cost to your account
-
-Each result is an **Action** — `ADD`, `HOLD`, `REDUCE` or `EXIT` — with a status and evidence strength.
-
-- It carries the strongest counterevidence, the conditions that would change the call, and the thesis delta.
-- Thin evidence is `UNDETERMINED`, never a default HOLD. `HOLD`, `REDUCE` and `EXIT` apply only to stocks you actually hold.
-- From a saved Action, the **account What-if** turns a hypothetical fill into shares, cash, NAV, weight and concentration before and after, separating the trade itself from repricing of shares you already own. Nothing is ordered.
+| What you see | Provenance |
+| --- | --- |
+| SEC accession, form, accepted/captured UTC and original URL | Real public metadata, frozen on 2026-10-24; no filing body |
+| Account, holdings, price marks and prior Thesis | Fictional, labelled SYNTHETIC |
+| Fast and Deep research text | SCRIPTED replay; no AI model invoked, no model fee |
 
 ## Quickstart
 
-The bundled replay runs the whole journey — Today → Fast / Deep → Action → Evidence → Records — on fictional data, with no API keys and no model or market-data calls. Python 3.12+:
+Python3.12 or later. Dependency installation may use the internet; running the
+keyless demo does not contact model, news or market-data providers.
 
-```bash
-git clone https://github.com/Ernesto12139/ConvictionDesk.git
-cd ConvictionDesk
-python3 -m venv .venv && source .venv/bin/activate
-pip install .
-python -m market_agent.serve
-```
-
-Open **http://127.0.0.1:8080/**, pick an item under *今日关注* (Today), choose **Fast** or **Deep**, then open *查看依据* (Evidence) and *研究记录* (Records).
-
-<details>
-<summary>Windows, Docker and port options</summary>
+**Windows — PowerShell**
 
 ```powershell
 git clone https://github.com/Ernesto12139/ConvictionDesk.git
 cd ConvictionDesk
 python -m venv .venv
 .venv\Scripts\python.exe -m pip install .
-.venv\Scripts\python.exe -m market_agent.serve
+.venv\Scripts\python.exe -m market_agent.public_ivs --serve
 ```
+
+**Linux / macOS**
 
 ```bash
-docker build -t convictiondesk . && docker run --rm -p 127.0.0.1:8080:8080 convictiondesk
+git clone https://github.com/Ernesto12139/ConvictionDesk.git
+cd ConvictionDesk
+python3 -m venv .venv
+.venv/bin/python -m pip install .
+.venv/bin/python -m market_agent.public_ivs --serve
 ```
 
-Port 8080 taken? Set `PORT=8091` (PowerShell: `$env:PORT = "8091"`). More in [Getting started](docs/getting-started.md#troubleshooting).
-</details>
+Open **http://127.0.0.1:8791/**. The synthetic SQLite state is created in
+`./.public-ivs`; choose a fresh path with `--root <path>`, or another loopback
+port with `--port 8899`. An unmarked existing database is refused. Port8000 is
+reserved and refused by this demo. Keep the local service on loopback.
 
-**Your own portfolio.** Live mode connects four sources — a model, company news, end-of-day prices and SEC EDGAR — with keys that stay on your machine. Every scan and research run asks for cost confirmation first. Setup takes a few minutes: [Use your own portfolio →](docs/getting-started.md#use-your-own-portfolio)
+## Try the journey
 
-## How it works
+1. Read the three provenance labels and the populated SEC disclosure lane.
+2. Expand **查看申报前的 Thesis 待核查条件**. DOW deliberately has no prior Thesis.
+   The original SEC link is available; opening it explicitly uses your browser's
+   internet connection.
+3. Choose **研究这份披露 → 开始研究 → 确认开始研究**. Read the scripted Fast
+   result, cited evidence, counterevidence and what remains unknown.
+4. Choose **继续为 Deep · 保留同一条记录**, then confirm. This creates revision2
+   on the same task; revision1 stays available through **历史版本**.
+5. In the result card's **账户 What-if**, enter5 shares at240. Expand
+   **费用、其他持仓计价与资本假设**, enter fee1 and KR mark58, choose
+   2026-10-24, attest the stated share-basis assumption, and preview.
+   Fictional NAV is12980→12979; cash is10000→8799. Without KR's mark, NAV and
+   weights stay unknown. This never places an order or changes saved holdings.
 
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-loop-dark.svg">
-    <img alt="The ConvictionDesk research loop in five stages. 1 Scope: your holdings, the account and a time cutoff are frozen for the task. 2 Gather: typed tools fetch portfolio, price, news, SEC filings and XBRL facts. 3 Assess: a bounded model call writes a typed decision that cites evidence IDs. 4 Check: in Deep, one material gap may earn a single targeted news or SEC search. 5 Validate and save: citations, numbers, time and identity are checked, then an immutable revision is written. The next event continues the same task as a new revision. Guardrails enforced in code under every stage: point-in-time cutoff, Decimal arithmetic, typed statement identity, unknown stays unknown, source and token budgets, read-only tools." src="docs/assets/convictiondesk-loop-light.svg" width="100%">
-  </picture>
-</p>
+Filing item codes raise questions; they do not prove price causality or a changed
+Thesis. Insufficient evidence remains **UNDETERMINED**, never automatic HOLD.
+The demo does not claim a proven Thesis delta when no saved comparison exists.
 
-ConvictionDesk is one Python service (FastAPI, Pydantic v2, `httpx`, stdlib `sqlite3`) with a dependency-free HTML/CSS/JS console. There is no agent framework, vector store or queue: the research loop is plain, typed Python. Models screen, plan and synthesize inside fixed budgets; code owns the tools, the arithmetic and the final say on what may be saved.
+## Screenshots
 
-- **Portfolio-aware by construction.** Each task binds a frozen portfolio snapshot and account scope. Position-dependent actions require a position you actually hold.
-- **Point-in-time evidence.** Publication time, retrieval time, financial period and price session are separate fields, checked against the task cutoff before a source can be cited.
-- **Deterministic financial receipts.** SEC quarter and year-to-date normalization, derived Q4 flows, trailing-twelve-month figures and the account What-if run in `Decimal`. A missing price stays unknown, never zero.
-- **Validated output.** Every material claim must cite evidence in the task. Answers that invent a number, change a unit, upgrade an assumption into a fact or prescribe share quantities are rejected, not saved.
-- **Saved revisions.** Research is stored as immutable, hash-checked revisions; follow-ups append, schema upgrades keep the original bytes.
-- **Read-only MCP.** An optional [Model Context Protocol](https://modelcontextprotocol.io/) client fetches a market reference over JSON-RPC, allowlists read tools and refuses everything else before the network.
-- **Reproducible evaluation.** A scripted oracle and the keyless replay drive HTTP and Playwright journeys in CI, so behavior is tested end to end without keys or network.
+Captured from the public-IVS workbench; all financial scope is fictional.
 
-### Read the code
+![Public SEC lane and provenance labels](docs/assets/convictiondesk-beta-journey-1440.png)
+![Scripted research result and cited evidence](docs/assets/convictiondesk-beta-decision-1440.png)
+<img alt="Public IVS first screen at390 pixels" src="docs/assets/convictiondesk-beta-mobile-390.png" width="390">
 
-| Concern | Start here |
-|---|---|
-| Research loop, validators, saved revisions | [`research_task.py`](src/market_agent/research_task.py) |
-| Bounded model context | [`research_context.py`](src/market_agent/research_context.py) |
-| Typed Action and its checks | [`action_decision.py`](src/market_agent/action_decision.py) |
-| Account What-if in `Decimal` | [`portfolio_whatif.py`](src/market_agent/portfolio_whatif.py) |
-| SEC filings, XBRL and quarters | [`sec.py`](src/market_agent/sec.py), [`financial_series.py`](src/market_agent/financial_series.py) |
-| Today screening and ranking | [`attention.py`](src/market_agent/attention.py) |
-| Read-only MCP client | [`longbridge_mcp.py`](src/market_agent/longbridge_mcp.py) |
-| Evaluation harness and replay | [`evals/`](evals/), [`tests/`](tests/), [`scripts/smoke_public_demo.py`](scripts/smoke_public_demo.py) |
+## Reproduce the checks
 
-A longer walkthrough, with diagrams of every layer, is in [Architecture](docs/architecture.md).
-
-## Documentation
-
-| Guide | What is inside |
-|---|---|
-| [Getting started](docs/getting-started.md) | Keyless replay, live setup with your own keys, troubleshooting |
-| [Architecture](docs/architecture.md) | Layers, the research loop, Fast and Deep, point-in-time and `Decimal` design |
-| [Data sources and keys](docs/data-sources.md) | Providers, costs, usage terms and where your keys and data live |
-| [Verification](docs/verification.md) | What each capability is verified against, CI gates and known limits |
-| [Showcase](docs/showcase.md) | Screens of the full journey, desktop and mobile |
-| [Design notes](docs/README.md#design-notes) | Account What-if, Today candidate events, dated valuation and more |
-
-## Project status
-
-**v0.9.0 is a limited beta.** The decision engine, validators, `Decimal` finance and the keyless journey are covered by deterministic tests and browser journeys on every commit. Live mode with your own keys is experimental: the quality of live screening and decisions has not been benchmarked, and ConvictionDesk makes no accuracy or return claims. The interface is in Simplified Chinese. Details: [Verification](docs/verification.md) and the [v0.9.0 release notes](release/V09_RELEASE_NOTES.md).
-
-**Next:** portfolio-wide change tracking across accounts, qualified live technical and valuation inputs, ownership signals from 13F and Form 4, bring-your-own-model profiles, and an English interface.
-
-## Contributing
-
-Issues, bug reports and product feedback are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). Development happens in a private engineering repository; each public release is an allowlisted export of one verified commit, recorded in [`release/RELEASE_MANIFEST.json`](release/RELEASE_MANIFEST.json), so accepted changes arrive with the next release. See the [Changelog](CHANGELOG.md) for what changed.
-
-## License
-
-[MIT](LICENSE) © 2026 Ernesto12139. Covers the code, the original diagrams in `docs/assets/` and the replay screenshots, which show only fictional data. Data from news, price, SEC and model providers remains subject to their own terms.
-
-**ConvictionDesk is a research tool, not investment advice.**
-
-
-## Reproduce real SEC filing metadata offline
-
-This increment adds a runnable SEC metadata projection alongside the existing
-fictional UI replay. After the installation steps above, run:
-
-```sh
-python scripts/sec_evidence_demo.py
-python -m pytest tests/test_ivs_sec_provider.py tests/test_sec_filings.py -q
+```bash
+.venv/bin/python -m market_agent.public_ivs --root /tmp/convictiondesk-journey --journey
+.venv/bin/python -m pip install '.[test]'
+.venv/bin/python -m pytest -o addopts='' --basetemp=/tmp/convictiondesk-unique-test-root tests/test_public_ivs_journey.py
+python release/check_import_closure.py --source .
 ```
 
-The captured public EDGAR metadata covers UNP, KR and DOW, frozen on 2026-10-24.
-The command prints filing identities, original SEC links, timestamp precision,
-point-in-time eligibility and per-symbol coverage. UNP/KR holdings and the DOW
-watch scope are synthetic examples. No account quantities, model calls, network
-calls, news bodies or investment judgments are included. Item codes suggest
-questions to check; they do not prove investment impact. The full SEC-to-Thesis
-research UI is still a private candidate and is not advertised as public here.
+Use a fresh, exclusively owned external test directory on every run. On Windows
+use `.venv\Scripts\python.exe` and a unique directory under `$env:TEMP`.
+The executable journey prints exact Decimal results and revision/evidence identity.
+Public CI also exercises Linux/Windows, no-network runtime, the actual browser
+result-card What-if, existing SEC time/authority negatives and history auditing.
 
-Each captured acceptance instant is checked against SEC's own Eastern acceptance
-clock in the EDGAR filing index, converted to UTC with the calendar rather than a
-fixed offset. `acceptance` holds the verified instant, `raw_submission_acceptance`
-keeps SEC's submissions string verbatim, and `time_verification` records the outcome.
-A row whose time cannot be independently confirmed is stored without an instant and
-excluded from the projection, so no second-precision claim or point-in-time
-eligibility is derived from an ambiguous timestamp.
+## Other entrypoints and limitations
 
-Authority URL, response hash and verification read time are retained beside each
-verified instant. The fixed 2026-10-24 capture selection was reconciled later;
-`source_metadata_retrieved_at` and row verification times disclose those later reads.
-Legacy unverified instants cannot establish second-precision eligibility.
+- `python -m market_agent.serve` retains the earlier **read-only fictional replay**
+  at http://127.0.0.1:8080/. It does not start the new SEC-to-What-if journey.
+- `python scripts/sec_evidence_demo.py` retains the standalone offline SEC metadata
+  projection. Its source-time receipts and F1/F2 regression tests are preserved.
+- Deep demonstrates revision/evidence mechanics with scripted text. It is not a
+  claim of better model reasoning, live investment quality or verified returns.
+- This public demo stores fictional research locally. It is not an authenticated
+  shared service. Do not point it at a real portfolio or expose it publicly.
+- Live provider configuration is separate: [data sources](docs/data-sources.md).
+  Installing a key does not itself authorize paid dispatch or data transfer.
+
+[Quickstart details](docs/getting-started.md) · [Architecture](docs/architecture.md) ·
+[Verification](docs/verification.md) · [Changelog](CHANGELOG.md) ·
+[Release notes](release/V010_RELEASE_NOTES.md) · [MIT license](LICENSE)

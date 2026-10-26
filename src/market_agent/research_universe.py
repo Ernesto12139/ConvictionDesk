@@ -72,6 +72,13 @@ class ResearchStore:
                     payload TEXT NOT NULL, payload_hash TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS attention_reviewed (
                     item_id TEXT PRIMARY KEY, reviewed_at TEXT NOT NULL);
+                -- Receipts folded into an existing event. Folding is correct: one story
+                -- is one event. Discarding the folded receipts was not: it left the card
+                -- claiming a single source when three publishers carried the story.
+                CREATE TABLE IF NOT EXISTS attention_event_receipts (
+                    event_key TEXT NOT NULL, evidence_id TEXT NOT NULL,
+                    payload TEXT NOT NULL, payload_hash TEXT NOT NULL, scan_id TEXT,
+                    PRIMARY KEY(event_key,evidence_id));
                 CREATE TABLE IF NOT EXISTS attention_event_groups (
                     group_id TEXT PRIMARY KEY, payload TEXT NOT NULL, payload_hash TEXT NOT NULL);
                 CREATE TABLE IF NOT EXISTS attention_deep_inputs (
@@ -92,6 +99,12 @@ class ResearchStore:
                 CREATE TRIGGER IF NOT EXISTS attention_item_frozen
                     BEFORE UPDATE ON attention_items
                     BEGIN SELECT RAISE(ABORT,'attention items are immutable'); END;
+                CREATE TRIGGER IF NOT EXISTS attention_receipt_frozen
+                    BEFORE UPDATE ON attention_event_receipts
+                    BEGIN SELECT RAISE(ABORT,'attention receipt lineage is immutable'); END;
+                CREATE TRIGGER IF NOT EXISTS attention_receipt_retained
+                    BEFORE DELETE ON attention_event_receipts
+                    BEGIN SELECT RAISE(ABORT,'attention receipt lineage cannot be dropped'); END;
                 CREATE TRIGGER IF NOT EXISTS attention_screen_frozen
                     BEFORE UPDATE OF screen,screen_hash ON attention_events WHEN OLD.screen IS NOT NULL
                     BEGIN SELECT RAISE(ABORT,'attention screening is immutable'); END;

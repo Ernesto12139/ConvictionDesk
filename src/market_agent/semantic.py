@@ -421,11 +421,13 @@ class JevSemanticJudge:
         base_url: str = JEV_BASE_URL,
         model: str = "jev-latest",
         timeout: float = 30.0,
+        _offline_test=False,
     ):
         self._api_key = api_key
         self.client = client
         self.clock = clock or system_utc_now
         self.base_url = base_url.rstrip("/")
+        self._offline_test = _offline_test
         self.model = model
         self.model_name = model
         self.timeout = timeout
@@ -433,6 +435,11 @@ class JevSemanticJudge:
 
     def call_metadata(self):
         return self._metadata.get()
+
+    def _admit(self, payload, client):
+        from .research_egress import admit_model_send
+        admit_model_send('jev',self.model,self.base_url+'/v1/systemone',payload['state'],
+            client=client,offline_test=self._offline_test)
 
     async def assess(
         self, thesis: ThesisProfile, evidence: list[EvidenceItem]
@@ -480,19 +487,23 @@ class JevSemanticJudge:
         try:
             if self.client is None:
                 async with httpx.AsyncClient() as client:
+                    self._admit(payload,client)
                     response = await client.post(
                         f"{self.base_url}/v1/systemone",
                         headers={"Authorization": f"Bearer {self._api_key}"},
                         json=payload,
-                        timeout=self.timeout,
+                        timeout=self.timeout, follow_redirects=False,
                     )
             else:
+                self._admit(payload,self.client)
                 response = await self.client.post(
                     f"{self.base_url}/v1/systemone",
                     headers={"Authorization": f"Bearer {self._api_key}"},
                     json=payload,
-                    timeout=self.timeout,
+                    timeout=self.timeout, follow_redirects=False,
                 )
+        except LLMError as exc:
+            raise SemanticJudgeError(exc.code, "Jev model admission refused") from None
         except httpx.TimeoutException:
             raise SemanticJudgeError("timeout", "Jev request timed out") from None
         except httpx.RequestError:

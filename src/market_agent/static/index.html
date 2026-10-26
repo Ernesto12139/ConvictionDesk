@@ -13,16 +13,22 @@
     <link rel="stylesheet" href="/static/attention.css" />
     <link rel="stylesheet" href="/static/research-desk.css?v=owner-reset-20261015-v2" />
     <link rel="stylesheet" href="/static/quiet.css?v=quiet-v03-polish" />
+    <link rel="stylesheet" href="/static/northstar.css?v=convergence-002" />
+    <link rel="stylesheet" href="/static/ivs.css?v=ivs-001" />
     <script src="/static/console.js" defer></script>
     <script src="/static/decision-brief.js" defer></script>
     <script src="/static/cockpit.js" defer></script>
     <script src="/static/portfolio-editor.js" defer></script>
     <script src="/static/portfolio-csv.js" defer></script>
     <script src="/static/cost-dialog.js?v=quiet-v03-polish" defer></script>
+    <script src="/static/research-runtime.js?v=convergence-002" defer></script>
     <script src="/static/attention.js?v=quiet-v03-polish" defer></script>
     <script src="/static/research-desk.js?v=quiet-v03-polish" defer></script>
+    <script src="/static/today.js?v=convergence-002" defer></script>
+    <script src="/static/ivs-filings.js?v=ivs-001" defer></script>
+    <script src="/static/providers.js?v=convergence-002" defer></script>
   </head>
-  <body data-research-mode="cockpit" data-runtime-mode="OWNER">
+  <body data-research-mode="cockpit" data-runtime-mode="OWNER" data-legacy-creation="deprecated">
     <a class="skip-link" href="#attention">跳到今日关注</a>
     <aside class="rail" aria-label="工作台导航">
       <a class="brand" href="/" aria-label="ConvictionDesk 首页"
@@ -35,7 +41,7 @@
         <a href="#research-history">研究记录</a>
         <a href="#portfolio">我的组合</a>
         <a href="#universe">研究范围</a>
-        <details class="desk-nav-more"><summary>更多工具</summary><a class="desk-mobile-scope" href="#universe">研究范围</a><a href="#workspace">快速判断工具</a><a href="#inspector">依据与执行面板</a></details>
+        <details class="desk-nav-more"><summary>更多工具</summary><a class="desk-mobile-scope" href="#universe">研究范围</a><a href="#portfolio">组合成本敞口</a><a href="#workspace">旧版入口说明</a><a href="#inspector">依据与执行面板</a></details>
       </nav>
       <div class="rail-foot">
         <span class="local-dot"></span> 本地工作空间
@@ -82,16 +88,21 @@
         </section>
         <section id="ask-mia" class="desk-ask" aria-labelledby="ask-mia-title">
           <h2 id="ask-mia-title">研究提问</h2>
+          <p id="public-ivs-scripted-chip" class="public-ivs-chip">脚本回放 · SCRIPTED · 0 次模型调用 · 无费用</p>
           <p class="muted">结合持仓与公司证据，形成可追问的判断。</p>
           <form id="desk-question-form">
             <label for="desk-question">你想研究什么？</label>
             <textarea id="desk-question" name="question" autocomplete="off" rows="5" maxlength="1200" required placeholder="例如：APP 盘前跌到 226，我应该考虑分批加仓吗？"></textarea>
             <p id="desk-attention-context" class="small muted" hidden><span></span> <button id="desk-clear-attention" type="button">取消关联事项</button></p>
-            <div class="desk-prompt-ideas" aria-label="拟定一个研究问题"><button type="button" data-desk-prompt="APP 的近期变化会影响我的持仓逻辑吗？">复核持仓逻辑</button><button type="button" data-desk-prompt="APP 下次财报应该重点核查什么？">准备财报研究</button></div>
+            <div class="desk-prompt-ideas" aria-label="拟定一个研究问题"><button type="button" data-desk-prompt="APP 的近期变化会影响我的持仓逻辑吗？">复核持仓逻辑</button><button type="button" data-desk-prompt="APP 下次财报应该重点核查什么？">准备财报研究</button><button type="button" data-desk-prompt="现在组合最大的集中风险是什么？">组合集中风险</button></div>
+            <fieldset class="ivs-research-mode"><legend>研究深度</legend><div class="ivs-research-mode-options" aria-label="研究深度"><button type="button" data-research-depth="AUTO" aria-pressed="true" disabled>Auto · 自动</button><button type="button" data-research-depth="FAST" aria-pressed="false" disabled>Fast · 快速</button><button type="button" data-research-depth="DEEP" aria-pressed="false" disabled>Deep · 深入</button></div><p id="desk-mode-help" class="small muted">正在读取模型配置；Auto 先 Fast，是否深入由你再次确认。</p></fieldset>
             <div class="desk-compose-actions">
               <label for="desk-account">持仓范围<select id="desk-account"><option value="">全部账户</option></select></label>
-              <label id="desk-profile-label" for="desk-model-profile" hidden>研究方式与模型<select id="desk-model-profile" aria-label="研究方式与模型"></select></label>
-              <button id="desk-submit" class="primary" type="submit">开始研究</button>
+              <label id="desk-profile-label" for="desk-model-profile" hidden>内部模型配置<select id="desk-model-profile" aria-label="内部模型配置"></select></label>
+              <p id="desk-model-readout" class="small muted">正在读取模型配置</p>
+              <details id="desk-provider-disclosure" hidden><summary>更换模型</summary><label for="desk-provider">模型提供方<select id="desk-provider"></select></label></details>
+              <label id="desk-strategy-label" class="desk-strategy" for="desk-adaptive" hidden><input id="desk-adaptive" type="checkbox"> 自适应补查（实验）</label>
+              <button id="desk-submit" class="primary" type="submit" disabled>开始研究</button>
             </div>
           </form>
           <p class="small muted">提交前会确认账户范围与模型费用；快捷问题只拟定，不提交。</p>
@@ -157,16 +168,18 @@
           <p id="universe-status" role="status" aria-live="polite"></p>
           <div id="universe-list"></div>
         </details>
-        <details id="desk-legacy" class="desk-legacy"><summary>决策工具 · Cockpit 与组合分析</summary>
+        <details id="desk-legacy" class="desk-legacy"><summary>组合风险与旧版记录</summary>
+        <p class="small muted">日常新研究已统一到研究提问。旧版历史与深链仍可读取；没有 typed Action 的旧记录不推定为 HOLD。</p>
+        <p><a href="#ask-mia" id="legacy-use-research">转到统一研究入口</a> · <a href="#portfolio">查看组合与集中风险</a></p>
         <section id="workspace" aria-labelledby="workspace-title">
           <div class="section-heading">
             <div>
-              <h2 id="workspace-title">主动提问 · 快速判断</h2>
+              <h2 id="workspace-title">旧版判断记录</h2>
             </div>
 
           </div>
           <div class="workspace-grid">
-            <details id="cockpit-composer" class="panel composer" open>
+            <details id="cockpit-composer" class="panel composer legacy-creation-deprecated" hidden>
               <summary id="cockpit-question-summary">问题与研究入口</summary>
               <details class="advanced-research"><summary>详细研究与手工情景</summary>
               <div class="research-modes" role="group" aria-label="研究方式">
@@ -259,6 +272,7 @@
             <div>
 
               <h2 id="portfolio-title">投资组合</h2>
+              <p id="public-ivs-synthetic-chip" class="public-ivs-chip">虚构持仓 · SYNTHETIC · 不是任何人的真实持仓</p>
             </div>
             <span id="portfolio-state" class="tag">正在读取</span>
           </div>
