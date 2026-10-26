@@ -2,7 +2,7 @@
   "schema_version": "public-ivs-increment-v1",
   "public_parent": "7511011a58e8d05193849345bcdfa5e89e744de3",
   "upstream_code_sha": "eec48c2c38553c528831d81db60a7d349632f138",
-  "content_source_commit": "0851c6e0793997016355431b2165dcd8e7146a53",
+  "content_source_commit": "de916d2f2d3abf9d8f5ededc706fce16c732b24c",
   "version": "0.10.0",
   "scope": "REAL_PUBLIC_SEC_METADATA__SYNTHETIC_SCOPE__SCRIPTED_RESEARCH",
   "history": "Regular file blobs only; no private objects or ancestry copied",
@@ -564,8 +564,8 @@
       "upstream_source": "tests/test_public_ivs_journey.py",
       "upstream_sha": "eec48c2c38553c528831d81db60a7d349632f138",
       "upstream_blob": "340d78e339bdfc58b64050773bfb0e8aa3864cce",
-      "public_blob": "722aad66cd82256307cbdd11b0bc1fb648da3378",
-      "sha256": "630f95df5f670862915824a46820128d22c1db59568f0be80d0af338a1d541f8",
+      "public_blob": "b292bda20cdc71da641f2aa572335351f275c749",
+      "sha256": "860be0e14bdccb8c456e6ad03732d7ff3d7bb3f4dc80e1cdb782b4188fb2ca7d",
       "transformation": "REVIEWED_PUBLIC_INTEGRATION_DELTA"
     },
     {
@@ -625,6 +625,8 @@
     "docs/assets/convictiondesk-beta-mobile-390.png",
     "docs/getting-started.md",
     "pyproject.toml",
+    "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
+    "release/RELEASE_MANIFEST.json",
     "release/V010_RELEASE_NOTES.md",
     "release/check_import_closure.py",
     "release/public-files.json",
