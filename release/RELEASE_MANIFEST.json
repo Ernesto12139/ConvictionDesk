@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "f6eb70a5bbb000477892d4fd2d69b7f0a0af38b5",
+  "upstream_source_sha": "754f349864cdd70abb022107ed61c27d89319116",
   "source_version": "0.10.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -18,8 +18,8 @@
     {
       "path": ".github/workflows/ci.yml",
       "source": ".github/workflows/ci.yml",
-      "git_blob": "bbeaf98d02b9def3302300d8d204337285bb9666",
-      "sha256": "68453e2e6e58187bba48bf26d22ab13096b7983ff5e3316c849411763a0bd9d3"
+      "git_blob": "91ef36bf7604a81ca0b7442d5e5fb168f8304d78",
+      "sha256": "4b6fc14c67d8716fc8748a6f4e2ec0fb27a6549780a7d0642f028370dfd13096"
     },
     {
       "path": ".gitignore",
@@ -408,8 +408,8 @@
     {
       "path": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
       "source": "release/IVS_EVIDENCE_INCREMENT_MANIFEST.json",
-      "git_blob": "d2a08731efeb3431ff56464b2c834aed74c8c5bd",
-      "sha256": "bcfad2d977146f5414fdedc20782e37de23fdd6688009dee13e720c796f70555"
+      "git_blob": "eb9693bb4eb5a05b4a2876e1e17e2a891a66f215",
+      "sha256": "dbb4ba42a760bb4b781e618a778b1ed14c7c519f185f0ae45867fa6aa8bdf421"
     },
     {
       "path": "release/SEC_EVIDENCE_INCREMENT_MANIFEST.json",
@@ -1308,8 +1308,8 @@
     {
       "path": "tests/test_public_ivs_journey.py",
       "source": "tests/test_public_ivs_journey.py",
-      "git_blob": "722aad66cd82256307cbdd11b0bc1fb648da3378",
-      "sha256": "630f95df5f670862915824a46820128d22c1db59568f0be80d0af338a1d541f8"
+      "git_blob": "b292bda20cdc71da641f2aa572335351f275c749",
+      "sha256": "860be0e14bdccb8c456e6ad03732d7ff3d7bb3f4dc80e1cdb782b4188fb2ca7d"
     },
     {
       "path": "tests/test_quiet_ui_contract.py",
