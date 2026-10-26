@@ -173,7 +173,8 @@ def test_served_page_states_all_three_data_classes(client):
     for token in ("REAL_PUBLIC_SEC_METADATA", "SYNTHETIC", "SCRIPTED"):
         assert token in html, f"{token} class is not stated on the served page"
     # An English gloss and an explicit no-fee statement for the scripted class.
-    assert "Public demo:" in html
+    assert 'lang="en"' in html
+    assert "Real SEC metadata." in html
     assert "0 次模型调用" in html and "无费用" in html
     # Item codes must never be presented as price or investment causality.
     assert "不证明价格或投资影响" in html
