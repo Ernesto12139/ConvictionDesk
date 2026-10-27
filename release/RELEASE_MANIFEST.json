@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "c290c03b567c8dbf0beb87571b84b32e762a28ac",
+  "upstream_source_sha": "a04fd7a247241ac47857a651753b271522ad7163",
   "source_version": "0.11.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -582,8 +582,8 @@
     {
       "path": "release/public-files.json",
       "source": "release/public-files.json",
-      "git_blob": "ac9e6bf67d9e17d50bede178fe8a8583868bf622",
-      "sha256": "2457e9b226d2027c8f57093adec5aee9b4fa86a8e28fe90543f5a6b53a7a11d1"
+      "git_blob": "30a069d3fe4c8f69d17ce444baad817a5d33ee3f",
+      "sha256": "7630cbd793f2ef79bc697a936a029ff3979141e229e09d96633fee00e2c82b97"
     },
     {
       "path": "release/verified_service_merges.json",
@@ -1434,8 +1434,8 @@
     {
       "path": "src/market_agent/workbench_trace.py",
       "source": "src/market_agent/workbench_trace.py",
-      "git_blob": "b640440454bd46fc26362d4ce972d8637c14d9be",
-      "sha256": "438dcea2c99de90ac977335ba6bcfdef3342c4cdf30ec9ba78b29acd00852f7c"
+      "git_blob": "3a51e65abe119fd2c5c121bf2ab877134b3268a3",
+      "sha256": "81fdb629f9adc52a96ea46a2190c3e025217399243811766aa3b7e19cf86b84c"
     },
     {
       "path": "tests/conftest.py",
@@ -1676,6 +1676,12 @@
       "source": "tests/test_valuation.py",
       "git_blob": "05ca26ec8ff22ebb71c3f5fa17b77b29fb6329c8",
       "sha256": "ce84f34247406b64111bf788595cce7b40798f32b1b3605cc2c208dd8f8f40f5"
+    },
+    {
+      "path": "tests/test_workbench_code_identity.py",
+      "source": "tests/test_workbench_code_identity.py",
+      "git_blob": "d2bdc7c3d821cfe8c53de1619de434540a6ea613",
+      "sha256": "11ea05938d6d9af8983c27cf4deeacbcfef274d2afc216b23689b5957b7e7ad9"
     }
   ],
   "privacy_scan": "PASS",
