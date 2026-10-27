@@ -156,7 +156,7 @@ def test_real_launcher_identity_reaches_scoped_app_and_refuses_unadmitted_8000(b
                         identity=json.load(response)
                     break
                 except OSError:
-                    assert process.poll() is None
+                    assert process.poll() is None, (tmp_path/'cli.log').read_text(encoding='utf-8',errors='replace')
                     time.sleep(.1)
             else:
                 pytest.fail('Identity route did not become available')
