@@ -7,7 +7,7 @@ const target = new URL(base);
 assert.equal(target.hostname, '127.0.0.1');
 assert.notEqual(target.port, '8000');
 const {chromium} = createRequire(path.resolve(moduleFile))('playwright');
-const errors = [], external = [], checks = [];
+const errors = [], external = [], checks = [], expectedEmptyResponses = [];
 fs.mkdirSync(output, {recursive: true});
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function completed(page, taskId, revision) {
@@ -30,8 +30,16 @@ async function completed(page, taskId, revision) {
     for (const width of [1440, 390]) {
       const context = await browser.newContext({viewport: {width, height: width === 390 ? 844 : 900}});
       const page = await context.newPage();
+      let emptyPreflight = false;
       page.on('pageerror', error => errors.push(error.message));
-      page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+      page.on('console', message => {
+        if (message.type() !== 'error') return;
+        const location = message.location().url;
+        if (emptyPreflight && location === `${base}/api/portfolio/current`
+            && message.text() === 'Failed to load resource: the server responded with a status of 404 (Not Found)') {
+          expectedEmptyResponses.push({width, path: '/api/portfolio/current', status: 404});
+        } else errors.push(`${message.text()} @ ${location}`);
+      });
       await page.route('**/*', route => {
         if (new URL(route.request().url()).origin !== target.origin) {
           external.push(route.request().url()); return route.abort();
@@ -39,8 +47,8 @@ async function completed(page, taskId, revision) {
         return route.continue();
       });
       await page.goto(base);
-      await page.locator('#unified-workbench-banner').waitFor();
-      const banner = await page.locator('#unified-workbench-banner').innerText();
+      await page.locator('#public-ivs-banner').waitFor();
+      const banner = await page.locator('#public-ivs-banner').innerText();
       for (const token of ['REAL_PUBLIC_SEC_METADATA', 'SYNTHETIC', 'SCRIPTED']) assert.ok(banner.includes(token));
       await page.getByRole('button', {name: '研究这份披露', exact: true}).first().waitFor();
       assert.equal((await (await page.request.get(`${base}/api/workbench/mode`)).json()).scope, 'SYNTHETIC');
@@ -97,6 +105,7 @@ async function completed(page, taskId, revision) {
       assert.equal(traces.execution_mode, 'KEYLESS_SCRIPTED');
       assert.ok(traces.receipts.length >= 3);
       assert.ok(traces.receipts.every(row => row.trace.code.build.startsWith('runtime-sha256:')));
+      emptyPreflight = true;
       await page.locator('[data-workbench-scope=OWNER_PREVIEW]').click();
       await page.waitForLoadState('networkidle');
       assert.equal((await page.request.get(`${base}/api/research/tasks/${taskId}`)).status(), 404);
@@ -108,7 +117,7 @@ async function completed(page, taskId, revision) {
     }
     assert.deepEqual(errors, []); assert.deepEqual(external, []);
   } finally { await browser.close(); }
-  fs.writeFileSync(path.join(output, 'unified-workbench-browser.json'), JSON.stringify({status: 'PASS', checks, errors, external}, null, 2));
+  fs.writeFileSync(path.join(output, 'unified-workbench-browser.json'), JSON.stringify({status: 'PASS', checks, errors, external, expectedEmptyResponses}, null, 2));
   console.log(JSON.stringify({status: 'PASS', widths: [1440, 390], actual_result_card_whatif: true}));
 })().catch(error => {
   fs.writeFileSync(path.join(output, 'unified-workbench-browser.json'), JSON.stringify({status: 'FAIL', failure: error.stack, checks, errors, external}, null, 2));
