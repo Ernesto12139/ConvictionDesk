@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "a3bc3159220fc03844c8d6f2a825c621ffb7580f",
+  "upstream_source_sha": "026595725eadd4d1b003a6dd9e6992d5091d821d",
   "source_version": "0.11.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -30,8 +30,8 @@
     {
       "path": "CHANGELOG.md",
       "source": "CHANGELOG.md",
-      "git_blob": "f23962c38b8a01b066669f6a64dc635c257908d8",
-      "sha256": "5f5f0539b3fdac7e7802ea49fc3f394adc26a7a749cb6a827d0c686e8a86ca2d"
+      "git_blob": "391e222efae85507a33ddb4e44ac8150a049b5a2",
+      "sha256": "87eda507bc1710c0edc27144919592c5b48129dfbc1ff5606b71ba46880283f4"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -516,8 +516,8 @@
     {
       "path": "pyproject.toml",
       "source": "pyproject.toml",
-      "git_blob": "bdc488b66f73151a7c5ffe7f896975e0643cd4c4",
-      "sha256": "7b6570834737d45b019924cb7f13411c920150c5ad8524bec4cd037d73ec618d"
+      "git_blob": "974e2bd3e856cede444618a207030da26ded82ad",
+      "sha256": "c3e68e9e1e7ec5787ae7fad9c91d952f932c5a748156d1353f1b4a4e986b9b31"
     },
     {
       "path": "release/ASSET_PROVENANCE.md",
@@ -552,8 +552,8 @@
     {
       "path": "release/V011_RELEASE_NOTES.md",
       "source": "release/V011_RELEASE_NOTES.md",
-      "git_blob": "8395008543c9a0e546a7c165e7b1505509bf58d1",
-      "sha256": "d0814bc2ffcdf5cd308d4c58d997c4075642bce80ed3961fa93eb7082be100fe"
+      "git_blob": "cc4248b9689ff715f72c22bbc8c8b0ec688c20e1",
+      "sha256": "880e23853703bddc83f046e4f07f214d0b19f364f8827191ae7a453387af39f9"
     },
     {
       "path": "release/V09_RELEASE_NOTES.md",
@@ -576,8 +576,8 @@
     {
       "path": "release/export_snapshot.py",
       "source": "release/export_snapshot.py",
-      "git_blob": "8c7cddb06c2573b348aecb9c612a355ff44c0346",
-      "sha256": "b2b3801f5d60dc4811ba78ff9d3d1577407ac4ba62037e266cb5a55a179832a6"
+      "git_blob": "dd2e41135e7878a2adef5da9f8f9ddb3eaef7ec4",
+      "sha256": "6bb5887507ba98d193e5400d26ef31729df46e7e8510a89fc6977742a84023c5"
     },
     {
       "path": "release/public-files.json",
@@ -1422,8 +1422,8 @@
     {
       "path": "src/market_agent/unified_workbench.py",
       "source": "src/market_agent/unified_workbench.py",
-      "git_blob": "0d4d9cbe08cb6a682005aaf6ae469cc5244e492d",
-      "sha256": "ac86ee6ed431244d04b6823dcfa54a6a7c4efd754bf38f000abb97ccde7b9a99"
+      "git_blob": "d89d6f76da60445d61c2d88bc87d5d31bffd19db",
+      "sha256": "2edd84a7bbc3dbf8e68084aa8374e8e34d2624a29df286f000cda9b872ee28da"
     },
     {
       "path": "src/market_agent/valuation.py",
@@ -1584,8 +1584,8 @@
     {
       "path": "tests/test_release_export.py",
       "source": "tests/test_release_export.py",
-      "git_blob": "7b18194645d271c23669e727d0d29d7e10523557",
-      "sha256": "70d1f85f8336d0a8c9627ccca78a8c3eebcd053fc6a1ebe2a4f4bc6d8c0d0020"
+      "git_blob": "416a76a76e3021f691b751586893ffc3c4ea6b65",
+      "sha256": "8527012f63804fbad462c4f74823e487ac184a42906889dcf0347bd68d7c1bd1"
     },
     {
       "path": "tests/test_release_import_closure.py",
@@ -1662,8 +1662,8 @@
     {
       "path": "tests/test_unified_workbench.py",
       "source": "tests/test_unified_workbench.py",
-      "git_blob": "51895a121cedca0439025db45380b82c3d38499e",
-      "sha256": "d9b8eacc1823156e7b72569ee93b1a15a911026402d9aedc0b7d75f4c047a7ae"
+      "git_blob": "108307e4e19988a9044b79d37a8842c1940d4ed7",
+      "sha256": "bd5ae2b21050046f9b4f5a85901861fc0e29a794ef32d927e09a16d68287d4e8"
     },
     {
       "path": "tests/test_v09_intelligence.py",
