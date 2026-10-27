@@ -24,6 +24,8 @@ def workbench_code_identity():
         def git(*args):
             return subprocess.check_output(['git','-C',str(root),*args],stderr=subprocess.DEVNULL,
                                            text=True,encoding='utf-8',timeout=10).strip()
+        if Path(git('rev-parse','--show-toplevel')).resolve() != root.resolve():
+            raise OSError('Runtime package does not belong to this Git root')
         return CodeIdentity(commit=git('rev-parse','HEAD'), tree=git('rev-parse','HEAD^{tree}'),
             build=build, dirty=bool(git('status','--porcelain','--','src','scripts','tests','evals')), source='GIT')
     except (OSError, subprocess.SubprocessError):

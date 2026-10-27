@@ -1114,5 +1114,9 @@
   {
     "source": "tests/test_valuation.py",
     "path": "tests/test_valuation.py"
+  },
+  {
+    "path": "tests/test_workbench_code_identity.py",
+    "source": "tests/test_workbench_code_identity.py"
   }
 ]
