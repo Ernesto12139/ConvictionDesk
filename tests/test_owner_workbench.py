@@ -138,7 +138,12 @@ def test_real_launcher_identity_reaches_scoped_app_and_refuses_unadmitted_8000(b
         environment[name]=str(directory)
     environment['PYTHONPATH']=str(Path(__file__).resolve().parents[1]/'src')
     environment['PYTHONUTF8']='1'
-    command=[sys.executable,'-m','market_agent.owner_workbench','--root',str(tmp_path/'cli'),
+    # This HTTP/launcher test has an explicitly empty fixture Vault. Hosted CI
+    # must not depend on, or attempt to read, the runner account's DPAPI store.
+    bootstrap=('from market_agent.provider_vault import ProviderVault; '
+        'ProviderVault.bridge=lambda self,operation,provider,secret=None: None; '
+        'from market_agent.owner_workbench import main; main()')
+    command=[sys.executable,'-c',bootstrap,'--root',str(tmp_path/'cli'),
         '--database',str(database),'--backup',str(backup),'--inputs',str(inputs)]
     refused=subprocess.run(command+['--port','8000'],env=environment,capture_output=True,text=True,timeout=30)
     assert refused.returncode != 0
@@ -163,6 +168,9 @@ def test_real_launcher_identity_reaches_scoped_app_and_refuses_unadmitted_8000(b
             assert identity['port']==port
             assert identity['startup_model_calls']==0
             assert identity['scope']=='OWNER_LOCAL_WITH_ISOLATED_KEYLESS_SAMPLE'
+            with urllib.request.urlopen(f'http://127.0.0.1:{port}/api/provider-source-health',timeout=2) as response:
+                health=json.load(response)
+            assert not any(row['configured'] for row in health['providers'])
         finally:
             process.terminate()
             process.wait(timeout=10)
