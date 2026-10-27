@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "a04fd7a247241ac47857a651753b271522ad7163",
+  "upstream_source_sha": "b95d9e9f1a32088ba9ab74a9b635c230b4dcec9b",
   "source_version": "0.11.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -708,8 +708,8 @@
     {
       "path": "scripts/smoke_unified_workbench_browser.cjs",
       "source": "scripts/smoke_unified_workbench_browser.cjs",
-      "git_blob": "f6226eda512c749eacb1039a009f886624cee0eb",
-      "sha256": "0885c76de2e24b5185aca830ec34b8fe90a808fd8912a99816c3e11b93c15109"
+      "git_blob": "0b4a36c48bee40f8fd57de83a9735952e4544c2d",
+      "sha256": "05f479e0d5b213f357a19266b162aaf5ffb6d57508994f7f866bf49f496982d9"
     },
     {
       "path": "scripts/verify_sec_capture.py",
