@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "3333ed1f5c86195a1b9732461d52ddbf2344fa4c",
+  "upstream_source_sha": "a3bc3159220fc03844c8d6f2a825c621ffb7580f",
   "source_version": "0.11.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -1542,8 +1542,8 @@
     {
       "path": "tests/test_owner_workbench.py",
       "source": "tests/test_owner_workbench.py",
-      "git_blob": "b4a87ae1a776abf697b6fa5cb99565acc1b7f538",
-      "sha256": "556d79cb6a4081464c3084fda7f2461caf06a9820dd8d52cf1b95b0ebc257b04"
+      "git_blob": "29ef1356ce9b0328493a4457277bf137eb5516bb",
+      "sha256": "ece1d114ae90d2ee904c268d80cc0ec860bad451344e6640bd05b8bf4b74dff5"
     },
     {
       "path": "tests/test_portfolio_whatif.py",
