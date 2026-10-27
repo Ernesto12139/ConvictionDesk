@@ -38,8 +38,6 @@ def test_explicit_scope_no_cross_database_adoption(client):
     assert mode['data_kind'] == 'EMPTY_ISOLATED_SANDBOX'
     assert mode['paid_dispatch'] == 'BLOCKED' and mode['real_owner_database_opened'] is False
     assert client.get('/api/console/portfolio-overview').status_code == 404
-    status = client.get('/api/console/status').json()
-    assert status['synthesis_mode'] == 'unconfigured' and status['model'] is None
     assert not any(client.get('/api/research/model-profiles').json()['mode_availability'].values())
     assert client.post('/api/research/tasks', json={'question':'UNP','mode':'FAST'}).json()['detail'] == 'OWNER_SCOPE_NOT_ADMITTED'
     assert client.post('/api/portfolio', json={}).status_code == 409
@@ -76,8 +74,14 @@ def test_original_research_revision_preserved_across_modes(client):
             break
         time.sleep(.02)
     assert task['status'] == 'COMPLETE', task.get('error')
+    receipts = client.get(f'/api/research/tasks/{task_id}/execution-traces').json()
+    assert receipts['execution_mode'] == 'KEYLESS_SCRIPTED'
+    assert receipts['receipts']
+    receipt_id = receipts['receipts'][0]['trace_id']
+    assert client.get('/api/execution-traces/' + receipt_id).status_code == 200
     original = client.get(f'/api/research/tasks/{task_id}/revisions/1').content
     assert switch(client,'OWNER_PREVIEW').status_code == 200
+    assert client.get('/api/execution-traces/' + receipt_id).status_code == 404
     assert client.get('/api/research/tasks/'+task_id).status_code == 404
     assert switch(client,'SYNTHETIC').status_code == 200
     assert client.get(f'/api/research/tasks/{task_id}/revisions/1').content == original

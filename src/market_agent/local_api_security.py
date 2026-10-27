@@ -16,7 +16,7 @@ def install_local_boundary(app, *, enabled):
 
     @app.middleware('http')
     async def boundary(request, call_next):
-        protected = request.url.path.startswith(('/api/providers','/api/research/egress'))
+        protected = request.url.path.startswith(('/api/providers','/api/research/egress','/api/provider-source-health','/api/owner/','/api/execution-traces'))
         # Existing task API is protected too when the local hub is active: a hostile
         # site must not spend money or steal confirmed private research by CSRF.
         protected = protected or enabled and request.url.path.startswith('/api/research/tasks')

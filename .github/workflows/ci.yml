@@ -59,6 +59,7 @@ jobs:
         run: |
           export MIA_ISOLATED_ROOT="$RUNNER_TEMP/public-tests-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           mkdir -p "$MIA_ISOLATED_ROOT"
+          export TEMP="$MIA_ISOLATED_ROOT" TMP="$MIA_ISOLATED_ROOT" TMPDIR="$MIA_ISOLATED_ROOT"
           python -m pytest -o addopts='' --basetemp="$MIA_ISOLATED_ROOT/pytest" -q
       - name: Verify public import and resource closure
         run: python release/check_import_closure.py --source .
@@ -120,6 +121,13 @@ jobs:
           MIA_RUNTIME_MODE=PUBLIC_DEMO MIA_DEMO_DIR="$RUNNER_TEMP/ivs-legacy" python -m market_agent.public_ivs --root "$RUNNER_TEMP/public-ivs" --serve --port 8791 &
           for i in $(seq 1 30); do curl -fs http://127.0.0.1:8791/api/public-ivs && break; sleep 1; done
           node scripts/smoke_public_ivs_browser.cjs http://127.0.0.1:8791 output/ivs-browser "$RUNNER_TEMP/browser/node_modules/playwright/package.json"
+      - name: Unified sample workspace, actual Trace and scope separation
+        env:
+          MIA_BROWSER_CHANNEL: chromium
+        run: |
+          python -m market_agent.unified_workbench --root "$RUNNER_TEMP/unified-workbench" --port 8795 &
+          for i in $(seq 1 30); do curl -fs http://127.0.0.1:8795/api/workbench/mode && break; sleep 1; done
+          node scripts/smoke_unified_workbench_browser.cjs http://127.0.0.1:8795 output/workbench-browser "$RUNNER_TEMP/browser/node_modules/playwright/package.json"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -127,6 +135,7 @@ jobs:
           path: |
             output/browser
             output/ivs-browser
+            output/workbench-browser
   docker:
     runs-on: ubuntu-latest
     timeout-minutes: 15

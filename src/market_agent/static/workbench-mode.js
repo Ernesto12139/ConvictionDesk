@@ -10,7 +10,9 @@
     document.body.dataset.workbenchScope = data.scope;
     status.textContent = data.scope === 'SYNTHETIC'
       ? '当前：合成体验 · Fast/Deep 为脚本 · 无模型费用'
-      : '当前：Owner 接入预检 · 空白沙盒 · 真实持仓尚未接入 / 模型未配置 / paid dispatch BLOCKED';
+      : data.scope === 'OWNER_LOCAL'
+        ? '当前：Owner 本机研究 · OWNER_LOCAL · 行情、来源权限与模型调用分别核验'
+        : '当前：Owner 接入预检 · 空白沙盒 · 真实持仓尚未接入 / 模型未配置 / paid dispatch BLOCKED';
     buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.workbenchScope === data.scope)));
   }).catch(() => { status.textContent = '无法读取模式；请刷新，不要推断真实数据已接入。'; });
   buttons.forEach(button => button.addEventListener('click', async () => {

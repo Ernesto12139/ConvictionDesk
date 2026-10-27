@@ -1,0 +1,13 @@
+{
+  "currency": "USD",
+  "delay_note": "15_MIN_DELAY_FIXTURE",
+  "evidence_id": "EFIXTUREPRICE000002",
+  "observed_at": "2026-10-26T20:00:00Z",
+  "price": "25.10",
+  "price_basis": "UNADJUSTED",
+  "provider": "fixture-qualified-provider",
+  "retrieved_at": "2026-10-26T20:00:05Z",
+  "source_uri": "https://fixture.invalid/quote/GLXY",
+  "symbol": "GLXY",
+  "usage_rights": "SERVER_VERIFIED_DERIVATION"
+}

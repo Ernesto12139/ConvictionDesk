@@ -280,6 +280,34 @@
     "path": "evals/fixtures/mia_trace_eval/GLXY.json"
   },
   {
+    "path": "evals/fixtures/owner_value_003/price_fresh_qualified.json",
+    "source": "evals/fixtures/owner_value_003/price_fresh_qualified.json"
+  },
+  {
+    "path": "evals/fixtures/owner_value_003/price_stale_massive.json",
+    "source": "evals/fixtures/owner_value_003/price_stale_massive.json"
+  },
+  {
+    "path": "evals/fixtures/owner_value_003/sec/GLXY_capture.json",
+    "source": "evals/fixtures/owner_value_003/sec/GLXY_capture.json"
+  },
+  {
+    "path": "evals/fixtures/owner_value_003/sec_body_8k_5_02.json",
+    "source": "evals/fixtures/owner_value_003/sec_body_8k_5_02.json"
+  },
+  {
+    "path": "evals/fixtures/owner_value_003/sec_event_8k_5_02.json",
+    "source": "evals/fixtures/owner_value_003/sec_event_8k_5_02.json"
+  },
+  {
+    "path": "evals/fixtures/owner_value_003/snapshot_primary.json",
+    "source": "evals/fixtures/owner_value_003/snapshot_primary.json"
+  },
+  {
+    "path": "evals/fixtures/owner_value_003/thesis_ai_draft.json",
+    "source": "evals/fixtures/owner_value_003/thesis_ai_draft.json"
+  },
+  {
     "source": "evals/fixtures/research_agent/pre-v05-research-task.json",
     "path": "evals/fixtures/research_agent/pre-v05-research-task.json"
   },
@@ -336,6 +364,10 @@
     "path": "release/V010_RELEASE_NOTES.md"
   },
   {
+    "path": "release/V011_RELEASE_NOTES.md",
+    "source": "release/V011_RELEASE_NOTES.md"
+  },
+  {
     "source": "release/V09_RELEASE_NOTES.md",
     "path": "release/V09_RELEASE_NOTES.md"
   },
@@ -358,6 +390,14 @@
   {
     "source": "release/verified_service_merges.json",
     "path": "release/verified_service_merges.json"
+  },
+  {
+    "path": "scripts/ProviderHubBridge.ps1",
+    "source": "scripts/ProviderHubBridge.ps1"
+  },
+  {
+    "path": "scripts/ProviderSecrets.ps1",
+    "source": "scripts/ProviderSecrets.ps1"
   },
   {
     "source": "scripts/build_public_demo_dataset.py",
@@ -400,8 +440,16 @@
     "path": "scripts/check_today_cost_browser.cjs"
   },
   {
+    "path": "scripts/extract_owner_value_003.py",
+    "source": "scripts/extract_owner_value_003.py"
+  },
+  {
     "source": "scripts/mia_trace.py",
     "path": "scripts/mia_trace.py"
+  },
+  {
+    "path": "scripts/prepare_owner_inputs.py",
+    "source": "scripts/prepare_owner_inputs.py"
   },
   {
     "source": "scripts/sec_evidence_demo.py",
@@ -418,6 +466,10 @@
   {
     "source": "scripts/smoke_public_ivs_browser.cjs",
     "path": "scripts/smoke_public_ivs_browser.cjs"
+  },
+  {
+    "path": "scripts/smoke_unified_workbench_browser.cjs",
+    "source": "scripts/smoke_unified_workbench_browser.cjs"
   },
   {
     "source": "scripts/verify_sec_capture.py",
@@ -608,6 +660,22 @@
     "path": "src/market_agent/news.py"
   },
   {
+    "path": "src/market_agent/owner_provider_recovery.py",
+    "source": "src/market_agent/owner_provider_recovery.py"
+  },
+  {
+    "path": "src/market_agent/owner_value_slice.py",
+    "source": "src/market_agent/owner_value_slice.py"
+  },
+  {
+    "path": "src/market_agent/owner_value_view.py",
+    "source": "src/market_agent/owner_value_view.py"
+  },
+  {
+    "path": "src/market_agent/owner_workbench.py",
+    "source": "src/market_agent/owner_workbench.py"
+  },
+  {
     "source": "src/market_agent/persistence.py",
     "path": "src/market_agent/persistence.py"
   },
@@ -634,6 +702,10 @@
   {
     "source": "src/market_agent/provider.py",
     "path": "src/market_agent/provider.py"
+  },
+  {
+    "path": "src/market_agent/provider_preflight.py",
+    "source": "src/market_agent/provider_preflight.py"
   },
   {
     "source": "src/market_agent/provider_pricing.py",
@@ -768,6 +840,10 @@
     "path": "src/market_agent/static/decision-brief.js"
   },
   {
+    "path": "src/market_agent/static/execution-trace.js",
+    "source": "src/market_agent/static/execution-trace.js"
+  },
+  {
     "source": "src/market_agent/static/index.html",
     "path": "src/market_agent/static/index.html"
   },
@@ -786,6 +862,10 @@
   {
     "source": "src/market_agent/static/northstar.css",
     "path": "src/market_agent/static/northstar.css"
+  },
+  {
+    "path": "src/market_agent/static/owner-value.js",
+    "source": "src/market_agent/static/owner-value.js"
   },
   {
     "source": "src/market_agent/static/portfolio-csv.js",
@@ -872,6 +952,10 @@
     "path": "src/market_agent/valuation.py"
   },
   {
+    "path": "src/market_agent/workbench_trace.py",
+    "source": "src/market_agent/workbench_trace.py"
+  },
+  {
     "source": "tests/conftest.py",
     "path": "tests/conftest.py"
   },
@@ -934,6 +1018,14 @@
   {
     "source": "tests/test_model_profiles.py",
     "path": "tests/test_model_profiles.py"
+  },
+  {
+    "path": "tests/test_owner_value_slice.py",
+    "source": "tests/test_owner_value_slice.py"
+  },
+  {
+    "path": "tests/test_owner_workbench.py",
+    "source": "tests/test_owner_workbench.py"
   },
   {
     "source": "tests/test_portfolio_whatif.py",

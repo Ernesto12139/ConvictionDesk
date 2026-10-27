@@ -1,0 +1,37 @@
+{
+  "accession": "0001859392-26-000105",
+  "cik": "0001859392",
+  "document_id": "SDa7082bd82c9b0c78",
+  "form": "8-K",
+  "filed_at": "2026-09-23T20:06:26+00:00",
+  "retrieved_at": "2026-10-01T06:24:29.037244+00:00",
+  "source_uri": "https://www.sec.gov/Archives/edgar/data/1859392/000185939226000105/glxy-20260922.htm",
+  "content_hash": "sha256:a7082bd82c9b0c7879f0f851c4379ae7a9de0b79f52add60d8b58832d55dda7e",
+  "rights": "PUBLIC_SEC_FILING_BODY",
+  "chunks": [
+    {
+      "sequence": 0,
+      "section": "Document",
+      "text": "glxy-20260922 0001859392FALSE00018593922026-09-222026-09-22 UNITED STATES SECURITIES AND EXCHANGE COMMISSION WASHINGTON, D.C. 20549 FORM 8-K CURRENT REPORT Pursuant to Section 13 or 15(d) of the Securities Exchange Act of 1934 Date of Report (Date of earliest event reported): September 22, 2026 Galaxy Digital Inc. (Exact name of registrant as specified in its charter) Delaware 001-42655 87-0836313 (State or other jurisdiction of incorporation) (Commission File Number) (IRS Employer Identification No.) 300 Vesey Street New York, NY 10282 (Address of principal executive offices)(Zip Code) (212) 390-9216 (Registrant\u2019s telephone number, including area code) Not Applicable (Former name or former address, if changed since last report) Check the appropriate box below if the Form 8-K filing is intended to simultaneously satisfy the filing obligation of the registrant under any of the following provisions: oWritten communications pursuant to Rule 425 under the Securities Act (17 CFR 230.425) oSoliciting material pursuant to Rule 14a-12 under the Exchange Act (17 CFR 240.14a-12) oPre-commencement communications pursuant to Rule 14d-2(b) under the Exchange Act (17 CFR 240.14d-2(b)) oPre-comme",
+      "content_hash": "sha256:9c5337ac43fd9aed7e3b31a13334d95971b05aaa77f6de52a3fb0d55304edf05"
+    },
+    {
+      "sequence": 1,
+      "section": "Document",
+      "text": "communications pursuant to Rule 13e-4(c) under the Exchange Act (17 CFR 240.13e-4(c)) Securities registered pursuant to Section 12(b) of the Act: Title of each classTrading Symbol(s)Name of each exchange on which registered Class A Common Stock, $0.001 Par ValueGLXY The Nasdaq Stock Market LLC Indicate by check mark whether the registrant is an emerging growth company as defined in Rule 405 of the Securities Act of 1933 (\u00a7230.405 of this chapter) or Rule 12b-2 of the Securities Exchange Act of 1934 (\u00a7240.12b-2 of this chapter). Emerging growth company o If an emerging growth company, indicate by check mark if the registrant has elected not to use the extended transition period for complying with any new or revised financial accounting standards provided pursuant to Section 13(a) of the Exchange Act. o",
+      "content_hash": "sha256:013e359f228069f23c27d5e8213e1e91a3b92d578c10bb6e30c9e1165de47d46"
+    },
+    {
+      "sequence": 2,
+      "section": "Item 5.02 Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers; Compensatory Arrangements of Certain Officers.",
+      "text": "As previously announced, on August 5, 2026, Robert Rico notified Galaxy Digital Inc. (the \u201cCompany\u201d) of his intention to resign as the Company\u2019s Chief Accounting Officer and principal accounting officer (\u201cPAO\u201d), effective September 30, 2026 (the \u201cEffective Date\u201d), to pursue an opportunity outside of the Company. On September 22, 2026, the board of directors of the Company appointed Dritan Muneka, the Company\u2019s Head of Accounting Policy, to serve as the Company\u2019s PAO with the title Corporate Controller, effective as of the Effective Date, upon Mr. Rico\u2019s departure. Mr. Muneka, 40, has served as the Company\u2019s Head of Accounting Policy since May 2022. Prior to that, he served in various positions, ending with Managing Director, at KPMG LLP, a global accounting and financial services firm, from November 2010 to April 2022. Mr. Muneka holds a bachelor\u2019s degree in economics and a master\u2019s degree in international relations, both from Monash University, and is a certified public accountant. There is no arrangement or understanding between Mr. Muneka and any other persons pursuant to which he was appointed as PAO. There are no family relationships among any of the Company\u2019s directors or",
+      "content_hash": "sha256:5c4db50eaf541a3742519b52ecc51f2158334b2408b14524b038861fb708bd3e"
+    },
+    {
+      "sequence": 3,
+      "section": "Item 5.02 Departure of Directors or Certain Officers; Election of Directors; Appointment of Certain Officers; Compensatory Arrangements of Certain Officers.",
+      "text": "executive officers and Mr. Muneka, and Mr. Muneka does not have any direct or indirect material interest in any transaction required to be disclosed pursuant to Item 404(a) of Regulation S-K. Mr. Muneka will enter into the Company\u2019s standard form of Indemnification Agreement, which is attached as Exhibit 10.2 to the Company\u2019s Registration Statement on Form S-4 filed with the SEC on January 28, 2022 (File No. 333-262378) and is incorporated by reference herein. SIGNATURES Pursuant to the requirements of the Securities Exchange Act of 1934, as amended, the registrant has duly caused this report to be signed on its behalf by the undersigned hereunto duly authorized. GALAXY DIGITAL INC. Date: September 23, 2026 By:/s/ Anthony Paquette Anthony Paquette Chief Financial Officer",
+      "content_hash": "sha256:4e53e600ec0ed869a20e72b949875dea7be4ca6743a02a5e928dc8acf955eabd"
+    }
+  ]
+}

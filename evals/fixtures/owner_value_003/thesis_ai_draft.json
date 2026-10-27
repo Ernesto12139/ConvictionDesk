@@ -1,0 +1,46 @@
+{
+  "as_of": "2026-08-12T15:00:00Z",
+  "core_drivers": [
+    {
+      "evidence_ids": [
+        "EFIXTURE0000000002"
+      ],
+      "text": "Synthetic fixture driver: the board authorized a share repurchase program."
+    },
+    {
+      "evidence_ids": [
+        "EFIXTURE0000000003"
+      ],
+      "text": "Synthetic fixture driver: tokenized shares may improve settlement access."
+    }
+  ],
+  "evidence_id": "EFIXTURE0000000001",
+  "execution_risks": [
+    {
+      "evidence_ids": [
+        "EFIXTURE0000000003"
+      ],
+      "text": "Synthetic fixture risk: tokenized trading liquidity remains limited."
+    }
+  ],
+  "invalidation_conditions": [
+    {
+      "evidence_ids": [
+        "EFIXTURE0000000004"
+      ],
+      "text": "Synthetic fixture invalidation: a regulator suspends tokenized trading."
+    }
+  ],
+  "key_assumptions": [
+    {
+      "evidence_ids": [
+        "EFIXTURE0000000002"
+      ],
+      "text": "Synthetic fixture assumption: the repurchase program continues."
+    }
+  ],
+  "status": "AI_DRAFT",
+  "stored_available_at": "2026-08-12T15:00:00Z",
+  "symbol": "GLXY",
+  "thesis_version_id": "TVFIXTURE0000000001"
+}

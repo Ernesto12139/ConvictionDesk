@@ -1321,19 +1321,20 @@ async function initialize() {
         $("admin-diagnostics").hidden = !state.diagnostics;
         const modelLabel = config.synthesis_mode === "mock"
           ? "模拟研究"
-            : config.synthesis_mode === "unconfigured" ? "尚未配置" : config.model;
+            : config.synthesis_mode === "unconfigured" ? "尚未配置"
+            : config.synthesis_mode === "configured_unverified" ? `${config.configured_model || '本机模型'} · 已配置，尚未获准调用` : config.model;
         const comparisonLabel = config.comparison_mode === "jev"
-          ? `Jev (${config.comparison_model})`
+          ? `Jev 已配置（尚未验证，${config.comparison_model}）`
           : config.comparison_mode === "configured"
             ? config.comparison_model
             : "未启用";
         const marketSummary = config.market_mode === "fixture"
           ? "FIXTURE · 示例日终行情" : config.market_mode === "unconfigured"
             ? "未配置日终行情源" : config.market_provider === "massive"
-              ? "LIVE · Massive 日终行情" : "已配置日终行情源";
+              ? "Massive 已配置 · 权限与时效未验证" : "已配置日终行情源 · 尚未验证";
           $("environment").textContent = marketSummary + (config.synthesis_mode === "mock" ? " · MOCK 研究"
             : config.synthesis_mode === "unconfigured" ? " · 未配置研究模型" : "");
-        $("environment-detail").textContent = `结论模型：${modelLabel} · 对照评估：${comparisonLabel}。所有时间均显示为 UTC。持仓保存在本机，分析时会向已配置服务发送所需信息。`;
+        $("environment-detail").textContent = `结论模型：${modelLabel} · 对照评估：${comparisonLabel}。所有时间均显示为 UTC。真实调用还须本次服务器外传同意、来源权限及预算准入。`;
           if(config.public_demo){
             $("environment").textContent="PUBLIC_DEMO · OFFLINE_REPLAY · 共享只读";
             $("environment-detail").textContent="全部资料来自仓库内固定的合成数据集；不发送给金融或模型服务，不保存访客输入。邀请实时研究尚未开放。";

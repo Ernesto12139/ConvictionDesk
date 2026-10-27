@@ -38,9 +38,10 @@
     const hub = await window.miaHubReady;
     const profiles = await request("/api/research/model-profiles").catch(() => ({ profiles: [] }));
     if (!hub?.enabled) return { enabled: false, profiles: profiles.profiles || [] };
-    const [inventory, preferences, jev] = await Promise.all([request("/api/providers"), request("/api/providers/preferences"),
-      request("/api/providers/jev-policy").catch(() => null)]);
-    return { enabled: true, providers: inventory.providers, preferences, jev, profiles: profiles.profiles || [] };
+    const [inventory, preferences, jev, health] = await Promise.all([request("/api/providers"), request("/api/providers/preferences"),
+      request("/api/providers/jev-policy").catch(() => null), request('/api/provider-source-health').catch(() => null)]);
+    const providers = inventory.providers.map(p=>({...p,sourceHealth:health?.providers?.find(row=>row.provider===p.provider)}));
+    return { enabled: true, providers, preferences, jev, profiles: profiles.profiles || [] };
   }
 
   function badges(provider) {
@@ -51,7 +52,9 @@
     const states = (provider.states || []).filter(s => s !== "BALANCE_UNKNOWN" || (model && configured));
     if (!configured && !states.length) states.push("NOT_CONFIGURED");
     states.forEach(s => { const [label, cls] = STATE[s] || [s, "provider-badge"]; wrap.append(el("span", label, `provider-badge ${cls}`)); });
-    wrap.append(el("span", provider.activation === "LIVE_FOR_MODEL_PROFILES" ? "保存后下一次调用生效" : "数据源：重启后生效", "provider-badge"));
+    wrap.append(el("span", provider.sourceHealth?.states?.includes('RIGHTS_BLOCKED')
+      ? '数据源使用权限未验证，读取保持阻断'
+      : provider.activation === "LIVE_FOR_MODEL_PROFILES" ? "已保存；调用仍须认证、权限与预算" : "数据源：重启后生效", "provider-badge"));
     if (provider.error) wrap.append(el("span", ERRORS[provider.error] || provider.error, "provider-badge provider-bad"));
     if (provider.actual_model) wrap.append(el("span", `实际模型 ${provider.actual_model}`, "provider-badge"));
     if (provider.checked_at) wrap.title = `验证于 ${new Date(provider.checked_at).toLocaleString("zh-CN")}`;
@@ -158,6 +161,10 @@
     const entry = button("⚙ 模型与数据源", "rail-providers"); entry.id = "open-providers";
     entry.addEventListener("click", open);
     document.querySelector(".rail-foot")?.prepend(entry);
+    const compactEntry = button("模型与数据源", "providers-compact-entry");
+    compactEntry.id = "open-providers-compact";
+    compactEntry.addEventListener("click", open);
+    document.querySelector(".desk-nav-more")?.append(compactEntry);
   }
 
   // The cost dialog's facts. With the Hub, the server preview that follows is the

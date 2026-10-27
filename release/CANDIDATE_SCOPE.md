@@ -1,35 +1,18 @@
-# Unreleased unified workbench candidate
+# v0.11.0 candidate scope
 
-This local candidate extends the current public v0.10.0 source. It is not a new
-published release and has no final public-source or product GO.
+The existing Console provides separate Keyless Sample, empty Owner preflight and
+explicitly configured local Owner composition. Keyless research uses frozen public
+SEC metadata, synthetic holdings/theses/prices and scripted Fast/Deep. Actual
+execution receipts are scope-local; unobserved history is not given invented traces.
 
-The unified_workbench launcher composes the existing Console, research service
-and calculator. Explicit SYNTHETIC and OWNER_PREVIEW scopes have separate marked
-databases. SYNTHETIC runs the existing frozen public SEC / synthetic account /
-scripted model journey. OWNER_PREVIEW is an empty read-only sandbox; it has no
-Owner holdings, credentials or admitted research dispatch.
+Local Owner qualification covers a frozen snapshot, SEC body, strictly prior
+thesis, eligible prices and explicit hypothetical adjustments. Stale/unqualified
+prices remain unknown. Only source and synthetic fixtures are packaged. The
+launcher requires explicit database, backup and frozen inputs; native model sends
+retain scoped consent, source rights and durable budget admission. Data-vendor
+keys alone do not enable unqualified Finnhub/Massive/Longbridge background reads.
 
-```sh
-python -m market_agent.unified_workbench --root ./candidate-state --port 8795
-```
-
-Use a new empty directory. The process binds loopback, refuses port8000 and
-unknown/unmarked roots, and blocks external connections. The original documented
-v0.10.0 commands remain available; final installation/README/version scope must
-be approved together before any new release.
-
-The candidate includes execution-bound tracing adapters and deterministic
-adversarial evaluation. A trusted local composition must explicitly install the
-observer; it is off by default. The adapter wraps the product's actual tools,
-model-adapter await, immutable task readback and Decimal What-if. Native adapter
-attempts are distinguished from proof of transport dispatch; unmeasured usage and
-cost remain UNKNOWN. Existing scripted CLI traces are a separate covered path.
-
-No real-owner module, optional memory/retrieval extension, operator credential
-fixture or private deployment document is packaged. Historical trace samples
-with incomplete build identity are excluded. There is no real model-quality,
-account-performance, cloud-service or new-release claim.
-
-Required remaining gates include exact independent derivative review, finalized
-scope/commands/version/README, public-source/privacy/rights checks, required CI
-on the exact candidate, and clean installation/browser/readback verification.
+Jev news, Jev-Mem, live investment quality, measured cost savings and cloud
+operation claims are excluded. No broker or automatic trading is implemented.
+Candidate preparation is separate from exact independent public QA, CI, anonymous
+installation and final publication readback.

@@ -141,9 +141,10 @@ def create_app(db_path: str | Path = "data/market_agent.db",
         semantic_judge=semantic_judge,
         comparison_semantic_judge=comparison_semantic_judge,
     )
-    app = FastAPI(title="ConvictionDesk", version="0.9.0")
+    app = FastAPI(title="ConvictionDesk", version="0.11.0")
     from .research_api import register_research
-    if (model_profiles is None and not explicit_test_provider and llm_client is None
+    if (model_profiles is None and environment.get('MIA_PROVIDER_HUB') != '1'
+            and not explicit_test_provider and llm_client is None
             and environment.get('LLM_PROVIDER','openai')=='openai'
             and environment.get('OPENAI_MODEL','gpt-6.1-sol')=='gpt-6.1-sol'):
         from .model_profiles import ModelProfiles
@@ -305,6 +306,24 @@ def create_app(db_path: str | Path = "data/market_agent.db",
             "comparison_model": getattr(comparison_semantic_judge, "model_name", None),
             "diagnostics_enabled": diagnostics_enabled,
         }
+        status['market_readiness'] = ('FIXTURE' if status['market_mode'] == 'fixture' else
+            'NOT_CONFIGURED' if status['market_mode'] == 'unconfigured' else 'SOURCE_NOT_VERIFIED')
+        if runtime:
+            from .owner_provider_recovery import profile_dispatch_blockers
+            described = runtime.profiles.describe()
+            blockers = profile_dispatch_blockers(environment, runtime.hub, described)
+            selected = next(p for p in described if p['profile_id'] == runtime.profiles.defaults['FAST'])
+            blocker = blockers.get(selected['profile_id'])
+            status['configured_model'] = selected['model'] if selected['available'] else None
+            status['model_readiness'] = ('NOT_CONFIGURED' if not selected['available'] else
+                'CONFIGURED_NOT_VERIFIED' if blocker == 'AUTH_NOT_VERIFIED' else
+                'BUDGET_BLOCKED' if blocker else 'CONSENT_PREVIEW_REQUIRED')
+            status['model_dispatch_blocker'] = blocker
+            status['model_auth_verified'] = selected['available'] and blocker != 'AUTH_NOT_VERIFIED'
+            status['actual_usable_model'] = None
+            if selected['available'] and blocker:
+                status['synthesis_mode'] = 'configured_unverified'
+                status['model'] = None
         identity = getattr(app.state, "local_acceptance", None)
         if identity:
             status["local_acceptance"] = {key: identity[key] for key in

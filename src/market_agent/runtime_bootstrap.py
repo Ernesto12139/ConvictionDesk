@@ -54,6 +54,8 @@ def configure_runtime(app, agent, environment, *, provider_hub=None, model_profi
     jev = JevRuntime.from_environment(environment, hub.vault, agent.store)
     app.state.provider_hub = hub
     register_provider_hub(app, hub, token)
+    from .owner_provider_recovery import register_source_health
+    register_source_health(app, environment, hub)
     register_jev_policy(app, jev)
     return RuntimeComponents(profiles, egress, jev, hub)
 

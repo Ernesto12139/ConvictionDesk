@@ -8,7 +8,7 @@
 <h3 align="center">Know what changed. Understand what matters. Decide with conviction.</h3>
 
 <p align="center">
-  <a href="https://github.com/Ernesto12139/ConvictionDesk/releases/tag/v0.10.0"><img alt="Release v0.10.0" src="https://img.shields.io/badge/release-v0.10.0-27745F"></a>
+  <a href="https://github.com/Ernesto12139/ConvictionDesk/releases/tag/v0.11.0"><img alt="Release v0.11.0" src="https://img.shields.io/badge/release-v0.11.0-27745F"></a>
   <a href="https://github.com/Ernesto12139/ConvictionDesk/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Ernesto12139/ConvictionDesk/actions/workflows/ci.yml/badge.svg"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-27745F"></a>
   <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-27745F">
@@ -43,7 +43,7 @@ change my decision?*
 
 ## What it does
 
-| | Capability | In the keyless v0.10.0 workbench | With your own keys (experimental) |
+| | Capability | In the keyless v0.11.0 workbench | With your own keys (experimental) |
 |---|---|---|---|
 | **Know what changed** | SEC filings for your holdings, with accession, items and acceptance time verified against SEC's clock | Real public filings, frozen capture | Live EDGAR reads |
 | | Today: ranked company news with why it matters and what to verify next | — | Live news screening |
@@ -55,8 +55,11 @@ change my decision?*
 | | Single-account What-if: shares, cash, NAV and weight before and after | Yes | Yes |
 
 The keyless workbench runs end to end with no key and no model or market-data
-call. Live mode is in the code and works with your providers, but its answer
-quality has not been benchmarked.
+call. The same Console offers explicitly separated sample and local Owner
+workspaces, source-health readback and execution Trace receipts. The sample
+cannot opt itself into an Owner database. Local research requires qualified
+authentication, source rights, scoped consent and an executable budget; saved
+keys alone do not establish model availability or answer quality.
 
 ## One decision, end to end
 
@@ -97,7 +100,7 @@ git clone https://github.com/Ernesto12139/ConvictionDesk.git
 cd ConvictionDesk
 python3 -m venv .venv
 .venv/bin/python -m pip install .
-.venv/bin/python -m market_agent.public_ivs --serve
+.venv/bin/python -m market_agent.unified_workbench --root ./workbench-state --port 8795
 ```
 
 **Windows (PowerShell)**
@@ -107,10 +110,10 @@ git clone https://github.com/Ernesto12139/ConvictionDesk.git
 cd ConvictionDesk
 python -m venv .venv
 .venv\Scripts\python.exe -m pip install .
-.venv\Scripts\python.exe -m market_agent.public_ivs --serve
+.venv\Scripts\python.exe -m market_agent.unified_workbench --root ./workbench-state --port 8795
 ```
 
-Open **http://127.0.0.1:8791/**. Options, troubleshooting, the earlier replay and
+Open **http://127.0.0.1:8795/**. Start with **合成体验**. Options, troubleshooting, the earlier replay and
 live setup with your own keys: [Getting started](docs/getting-started.md).
 
 ## Under the hood
@@ -146,7 +149,7 @@ final say on what may be saved.
 | SEC filings and the thesis before them | [`sec_filings.py`](src/market_agent/sec_filings.py), [`sec_thesis_delta.py`](src/market_agent/sec_thesis_delta.py) |
 | Account What-if in `Decimal` | [`portfolio_whatif.py`](src/market_agent/portfolio_whatif.py) |
 | Hybrid retrieval, MCP | [`hybrid_retrieval.py`](src/market_agent/hybrid_retrieval.py), [`longbridge_mcp.py`](src/market_agent/longbridge_mcp.py) |
-| Keyless workbench | [`public_ivs.py`](src/market_agent/public_ivs.py) |
+| Unified workspaces and actual Trace | [`unified_workbench.py`](src/market_agent/unified_workbench.py), [`workbench_trace.py`](src/market_agent/workbench_trace.py) |
 
 More in [Architecture](docs/architecture.md) and [Verification](docs/verification.md).
 

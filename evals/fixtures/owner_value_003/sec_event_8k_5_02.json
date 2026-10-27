@@ -1,0 +1,14 @@
+{
+  "accepted_at": "2026-09-23T20:06:26Z",
+  "accession": "0001859392-26-000105",
+  "captured_at": "2026-10-26T10:10:22.107883Z",
+  "cik": "0001859392",
+  "form": "8-K",
+  "items": [
+    "5.02"
+  ],
+  "rights": "PUBLIC_SEC_FILING_METADATA",
+  "source_hash": "sha256:30a7b6685dc9ddfaf86b842886cc1602065618af292f49f7b2caaee3b67d8218",
+  "source_uri": "https://www.sec.gov/Archives/edgar/data/1859392/000185939226000105/0001859392-26-000105-index.htm",
+  "symbol": "GLXY"
+}

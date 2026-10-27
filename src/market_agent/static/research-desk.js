@@ -1034,14 +1034,16 @@
     $('desk-provider-disclosure').hidden=providers.length<2;
     $('desk-followup-profile-label').hidden=!select.options.length;
     selectResearchMode(selectedResearchMode);
-    const availability=data.mode_availability || {FAST:availableProfiles.some(p=>p.mode==='FAST'),DEEP:availableProfiles.some(p=>p.mode==='DEEP')};
+    const availability=data.preview_mode_availability || data.mode_availability || {FAST:availableProfiles.some(p=>p.mode==='FAST'),DEEP:availableProfiles.some(p=>p.mode==='DEEP')};
     researchConfigured=Boolean(availability.FAST || availability.DEEP);
-    configurationReason='模型尚未配置：研究已禁用。仍可读取公开披露、Thesis 缺口与历史记录。';
+    const reasons=[...new Set((availableProfiles.length ? availableProfiles.map(p=>data.dispatch_blockers?.[p.profile_id]) : Object.values(data.dispatch_blockers || {})).filter(Boolean))];
+    const reasonLabels={MODEL_NOT_CONFIGURED:'模型未配置',AUTH_NOT_VERIFIED:'已配置密钥，认证尚未验证',BUDGET_RESERVATION_REQUIRED:'缺少共享模型预算预约',PRICE_CARD_EXPIRED:'模型价格资格已过期'};
+    configurationReason=reasons.length ? reasons.map(r=>reasonLabels[r] || r).join('；')+'。研究调用未开始；仍可读取披露、历史与本机预演。' : '模型尚未配置：研究已禁用。仍可读取公开披露、Thesis 缺口与历史记录。';
     selectResearchMode(selectedResearchMode);
     document.querySelectorAll('[data-research-depth]').forEach(button=>{const mode=button.dataset.researchDepth==='DEEP'?'DEEP':'FAST';button.disabled=!availability[mode];if(button.disabled)button.title='当前模型配置没有这个可用档位';});
     if(!availability.FAST && availability.DEEP)selectResearchMode('DEEP');
     $('desk-submit').disabled=!researchConfigured;
-    if(!researchConfigured)$('desk-mode-help').textContent='模型尚未配置：研究已禁用。仍可读取公开披露、Thesis 缺口与历史记录。';
+    if(!researchConfigured)$('desk-mode-help').textContent=configurationReason;
     buttons(active);
     // Server policy decides whether ADAPTIVE may be chosen; follow-ups inherit.
     const strategy=data.execution_strategy;

@@ -13,7 +13,7 @@ from pathlib import Path, PurePosixPath
 import xml.etree.ElementTree as ET
 import zlib
 
-TEXT_TYPES = {'.py', '.js', '.cjs', '.css', '.html', '.svg', '.json', '.toml', '.md', '.txt',
+TEXT_TYPES = {'.py', '.ps1', '.js', '.cjs', '.css', '.html', '.svg', '.json', '.toml', '.md', '.txt',
               '.yml', '.yaml', '.example', ''}
 PNG_SIGNATURE = bytes.fromhex('89504e470d0a1a0a')
 PNG_CHUNKS = {b'IHDR', b'PLTE', b'IDAT', b'IEND', b'sRGB', b'gAMA', b'pHYs'}

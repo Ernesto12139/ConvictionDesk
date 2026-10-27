@@ -34,8 +34,10 @@ class RuntimeModelBudget:
             group = next(row for row in data['reservations'] if row['reservation_id'] == reservation)
             amounts = [Decimal(row['upper_usd']) for row in data['reservations']]
             ceiling = Decimal(data['ceiling_usd'])
+            operation_ceiling = Decimal(self.environment.get('MIA_RUNTIME_OPERATION_CEILING_USD', '10'))
             limits = [Decimal(value) for value in group['provider_limits_usd'].values()]
-            if (not ceiling.is_finite() or not 0 < ceiling <= 10
+            if (not operation_ceiling.is_finite() or not 0 < operation_ceiling <= 10
+                    or not ceiling.is_finite() or not 0 < ceiling <= operation_ceiling
                     or any(not value.is_finite() or value < 0 for value in [*amounts,*limits])
                     or sum(amounts) > ceiling or sum(limits) > Decimal(group['upper_usd'])
                     or type(group['max_requests']) is not int or not 1 <= group['max_requests'] <= 40):

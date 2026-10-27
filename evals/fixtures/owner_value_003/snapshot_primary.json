@@ -1,0 +1,66 @@
+{
+  "accounts": [
+    {
+      "account_id": "a0",
+      "cash": "1000",
+      "name": "FixtureBrokerA"
+    },
+    {
+      "account_id": "a1",
+      "cash": "0",
+      "name": "FixtureBrokerB"
+    }
+  ],
+  "as_of": "2026-10-20T14:00:00Z",
+  "base_currency": "USD",
+  "content_hash": "sha256:50f6887fd3801f1368187f4c4450d02a7dc1d569d261e1941332be24b166af2e",
+  "instrument_overrides": {},
+  "portfolio_id": "fixture-default",
+  "positions": [
+    {
+      "account_id": "a0",
+      "avg_cost": "11.11",
+      "note": "",
+      "position_id": "a0:GLXY",
+      "quantity": "7",
+      "symbol": "GLXY",
+      "user_stage": "hold"
+    },
+    {
+      "account_id": "a0",
+      "avg_cost": "100",
+      "note": "",
+      "position_id": "a0:AAPL",
+      "quantity": "3",
+      "symbol": "AAPL",
+      "user_stage": "hold"
+    },
+    {
+      "account_id": "a0",
+      "avg_cost": "50",
+      "note": "",
+      "position_id": "a0:KLAC",
+      "quantity": "2",
+      "symbol": "KLAC",
+      "user_stage": "hold"
+    },
+    {
+      "account_id": "a1",
+      "avg_cost": "12.34",
+      "note": "",
+      "position_id": "a1:GLXY",
+      "quantity": "23",
+      "symbol": "GLXY",
+      "user_stage": "hold"
+    }
+  ],
+  "schema_version": 1,
+  "snapshot_id": "fixture-snapshot-0001",
+  "source": {
+    "imported_at": "2026-10-20T14:00:00Z",
+    "kind": "manual_entry",
+    "legacy_manual_prices": {},
+    "source_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "watchlist": []
+}

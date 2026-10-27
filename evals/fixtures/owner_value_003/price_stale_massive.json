@@ -1,0 +1,13 @@
+{
+  "currency": "USD",
+  "delay_note": "PROVIDER_DELAY_UNKNOWN",
+  "evidence_id": "EFIXTUREPRICE000001",
+  "observed_at": "2026-10-01T03:59:59.999999Z",
+  "price": "22.74",
+  "price_basis": "UNADJUSTED",
+  "provider": "massive",
+  "retrieved_at": "2026-10-01T06:24:19.902245Z",
+  "source_uri": "https://api.massive.com/v2/aggs/ticker/GLXY/range/1/day/2026-08-31/2026-09-30?adjusted=false&sort=desc&limit=50",
+  "symbol": "GLXY",
+  "usage_rights": "UNKNOWN"
+}

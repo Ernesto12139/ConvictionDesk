@@ -75,6 +75,8 @@ def test_manifest_version_is_taken_from_the_fixed_exported_pyproject(tmp_path):
 
 def test_secrets_private_paths_and_active_svg_are_rejected():
     assert exporter.scan('app.py', ('token="'+'sk-'+'a'*32+'"').encode())
+    assert exporter.scan('scripts/bridge.ps1', ('token="'+'sk-'+'a'*32+'"').encode())
+    assert exporter.scan('scripts/bridge.ps1', b'param([string]$Operation)') == []
     assert exporter.scan('settings.txt', ('/home/'+'synthetic-owner/private').encode())
     assert exporter.scan('.env', b'EXAMPLE=')
     assert exporter.scan('asset.svg', b'<svg><script>bad()</script></svg>')

@@ -1,5 +1,36 @@
 # Getting started
 
+## Unified v0.11 workbench
+
+After cloning and installing, start the Console with explicit sample boundaries:
+
+```sh
+python -m market_agent.unified_workbench --root ./workbench-state --port 8795
+```
+
+Open http://127.0.0.1:8795/. **合成体验** uses public SEC captures, synthetic
+holdings and scripted Fast/Deep. Actual execution receipts are available beside
+research history. **Owner 接入预检** is an empty, read-only configuration sandbox.
+It does not discover or import an existing Owner database.
+
+The optional `market_agent.owner_workbench` launcher requires an explicit local
+database, a distinct verified backup and frozen source-qualified inputs. Run the
+reviewed source checkout with `python -m pip install -e .` for Windows DPAPI
+helpers in `scripts/`; keep private inputs and state outside the repository.
+`scripts/prepare_owner_inputs.py --help` describes read-only copy extraction,
+including an explicit protected original database path. The launcher binds
+loopback, defaults to port8797, and refuses8000 without an exact-source admission
+record covering independent QA, CI and backup restore. No Owner data, keys or
+private history are packaged. Missing or stale prices remain unknown; What-if
+never changes the actual portfolio.
+
+Saved credentials, authentication, source rights, freshness and model budget are
+separate checks. Fast/Deep sends require scoped consent and the existing durable
+reservation; the launcher enforces an additional USD5 operation ceiling. No live
+research-quality claim follows from installation.
+
+## Earlier standalone replay
+
 ConvictionDesk v0.10.0 runs the full research journey on your machine without an
 API key: real SEC filing metadata, a synthetic account and thesis, scripted
 Fast and Deep research, and a `Decimal` account What-if. You need Python 3.12 or

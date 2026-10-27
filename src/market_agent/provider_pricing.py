@@ -4,11 +4,11 @@ from decimal import Decimal
 from .llm import LLMError
 
 RATE_CARD = {
-    # Re-verified 2026-10-23 against the same official pages (values unchanged):
-    # output/convergence-002/budget/PRICING_RECHECK_20261023.json
-    'id':'official-2026-10-23-peak-upper-v2',
-    'verified_at':'2026-10-23T02:52:06.067317+00:00',
-    'expires_at':'2026-10-24T23:59:59+00:00',
+    # Re-verified 2026-10-27 against the same official pages (rates unchanged).
+    # docs/FINAL_INTEGRATION_CONTRACT.md records provenance; no balance/admission implied.
+    'id':'official-2026-10-27-peak-upper-v3',
+    'verified_at':'2026-10-27T08:39:35+00:00',
+    'expires_at':'2026-10-28T08:39:35+00:00',
     'deepseek_source':'https://api-docs.deepseek.com/quick_start/pricing/',
     'deepseek_cny_source':'https://api-docs.deepseek.com/zh-cn/quick_start/pricing/',
     'openai_source':'https://developers.openai.com/api/docs/models/gpt-6.1-sol',

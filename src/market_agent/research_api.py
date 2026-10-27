@@ -40,10 +40,18 @@ def register_research(app, agent, *, reference_provider=None, decision_component
     def profiles():
         from .agent import MockLLMClient
         described = model_profiles.describe() if model_profiles else []
+        blockers = {}
+        hub = getattr(app.state, 'provider_hub', None)
+        if hub is not None:
+            from .owner_provider_recovery import profile_dispatch_blockers
+            blockers = profile_dispatch_blockers(hub.environment, hub, described)
         modes = {mode: any(p['available'] and p['mode'] == mode for p in described)
                  if model_profiles else isinstance(agent.llm, MockLLMClient)
                  for mode in ('FAST', 'DEEP')}
-        return {'profiles':described,
+        preview_modes = {mode: any(p['available'] and p['mode'] == mode and not blockers.get(p['profile_id'])
+                                  for p in described) for mode in ('FAST','DEEP')} if hub else modes
+        return {'profiles':described, 'dispatch_blockers':blockers,
+            'preview_mode_availability':preview_modes,
             'default_profile_ids':dict(model_profiles.defaults) if model_profiles else {},
             'mode_availability':modes,
             'execution_strategy':{'policy':service.strategy_policy,

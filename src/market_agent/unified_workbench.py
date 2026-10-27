@@ -21,6 +21,7 @@ MARKER = 'UNIFIED_PREVIEW_ONLY.json'
 class Scope(str, Enum):
     SYNTHETIC = 'SYNTHETIC'
     OWNER_PREVIEW = 'OWNER_PREVIEW'
+    OWNER_LOCAL = 'OWNER_LOCAL'
 
 
 class SelectScope(BaseModel):
@@ -68,14 +69,20 @@ def _main_factory(root):
         os.environ.update(saved)
 
 
-def _selection(request):
+def _selection(request, default=Scope.SYNTHETIC):
     try:
-        return Scope(request.cookies.get(COOKIE, Scope.SYNTHETIC.value))
+        return Scope(request.cookies.get(COOKIE, default.value))
     except ValueError:
         raise HTTPException(400, detail='PREVIEW_SCOPE_INVALID') from None
 
 
 def _context(scope):
+    if scope == Scope.OWNER_LOCAL:
+        return {'scope': scope.value, 'paid_dispatch': 'REQUIRES_SCOPED_ADMISSION',
+                'provider_hub_enabled': True, 'real_owner_database_opened': True,
+                'owner_data_integration': 'LOCAL_QUALIFIED_SLICE',
+                'model_kind': 'NATIVE_GATED_NOT_VERIFIED', 'data_kind': 'OWNER_LOCAL',
+                'owner_acceptance': 'NOT_ASSESSED'}
     return {'scope': scope.value, 'paid_dispatch': 'BLOCKED', 'provider_hub_enabled': False,
             'real_owner_database_opened': False, 'owner_data_integration': 'PLANNED_QODER_W_27',
             'model_kind': 'SCRIPTED' if scope == Scope.SYNTHETIC else 'NOT_CONFIGURED',
@@ -83,7 +90,7 @@ def _context(scope):
             'owner_acceptance': 'NOT_ASSESSED_FOR_THIS_CANDIDATE'}
 
 
-def _decorate(app, scope):
+def _decorate(app, scope, *, owner_admitted=False):
     @app.middleware('http')
     async def mode_surface(request, call_next):
         response = await call_next(request)
@@ -94,7 +101,15 @@ def _decorate(app, scope):
 <div class="workbench-mode-actions"><button type="button" data-workbench-scope="SYNTHETIC">合成体验</button>
 <button type="button" data-workbench-scope="OWNER_PREVIEW">Owner 接入预检</button></div>
 <details class="workbench-boundary"><summary>数据与调用边界</summary><p class="small muted">接入预检是独立空白沙盒，尚未连接真实持仓或凭据。两种模式不复制或合并数据；付费调用保持阻断。</p></details></section>'''
-            body = body.replace('</head>', '<link rel="stylesheet" href="/static/workbench-mode.css"><script src="/static/workbench-mode.js" defer></script></head>', 1)
+            if owner_admitted:
+                panel = panel.replace('data-workbench-scope="OWNER_PREVIEW">Owner 接入预检',
+                                      'data-workbench-scope="OWNER_LOCAL">Owner 本机研究')
+                panel = panel.replace('接入预检是独立空白沙盒，尚未连接真实持仓或凭据。两种模式不复制或合并数据；付费调用保持阻断。',
+                    'Owner 模式读取本机授权组合；样本模式使用隔离合成数据。两者不复制或合并数据。真实调用仍须来源权限、服务器同意与预算准入。')
+            if scope == Scope.OWNER_LOCAL:
+                panel += '<section id="owner-value" class="panel" aria-label="持仓证据核查"><h2>持仓与披露核查</h2><p id="owner-value-status" role="status">正在读取本机证据…</p><div id="owner-value-content"></div></section>'
+                body = body.replace('</head>', '<script src="/static/owner-value.js" defer></script></head>', 1)
+            body = body.replace('</head>', '<link rel="stylesheet" href="/static/workbench-mode.css"><script src="/static/workbench-mode.js" defer></script><script src="/static/execution-trace.js" defer></script></head>', 1)
             body = body.replace('<main>', '<main>'+panel, 1)
             return HTMLResponse(body, headers={'Cache-Control': 'no-store'})
         response.headers['Cache-Control'] = 'no-store'
@@ -102,15 +117,17 @@ def _decorate(app, scope):
 
 
 class ScopedConsole:
-    def __init__(self, apps):
-        self.apps = apps
+    def __init__(self, apps, default=Scope.SYNTHETIC):
+        self.apps, self.default = apps, default
 
     async def __call__(self, scope, receive, send):
         request = Request(scope)
         try:
-            selected = _selection(request)
+            selected = _selection(request, self.default)
         except HTTPException as error:
             return await JSONResponse({'detail': error.detail}, status_code=error.status_code)(scope, receive, send)
+        if selected not in self.apps:
+            return await JSONResponse({'detail':'OWNER_SCOPE_NOT_ADMITTED'},status_code=403)(scope, receive, send)
         # The Owner sandbox is preview-only, not a path to importing or modifying
         # real holdings. Even same-origin mutations are refused server-side.
         if selected == Scope.OWNER_PREVIEW and request.method not in {'GET','HEAD','OPTIONS'}:
@@ -118,7 +135,7 @@ class ScopedConsole:
         return await self.apps[selected](scope, receive, send)
 
 
-def build_app(root):
+def build_app(root, *, owner_app=None, default_scope=Scope.SYNTHETIC, trace_code=None):
     root = checked_root(root)
     factory = _main_factory(root)
     from .public_ivs import build_app as public_app
@@ -131,8 +148,15 @@ def build_app(root):
     owner_marker.write_text('{"kind":"EMPTY_PREVIEW_ONLY"}',encoding='utf-8')
     apps = {Scope.SYNTHETIC: public_app(root / 'synthetic'),
             Scope.OWNER_PREVIEW: factory(database, environment={'MIA_RUNTIME_MODE':'OWNER', 'MIA_PROVIDER_HUB':'0', 'MIA_RESEARCH_STRATEGY':'BASELINE_ONLY'})}
+    from .workbench_trace import install_workbench_trace, workbench_code_identity
+    install_workbench_trace(apps[Scope.SYNTHETIC], root / 'sample-traces',
+                            trace_code or workbench_code_identity(), 'KEYLESS_SCRIPTED')
+    if owner_app is not None:
+        apps[Scope.OWNER_LOCAL] = owner_app
+    if default_scope not in apps:
+        raise ValueError('DEFAULT_SCOPE_NOT_ADMITTED')
     for scope, app in apps.items():
-        _decorate(app, scope)
+        _decorate(app, scope, owner_admitted=owner_app is not None)
 
     @asynccontextmanager
     async def lifespan(app):
@@ -141,28 +165,35 @@ def build_app(root):
                 await stack.enter_async_context(child.router.lifespan_context(child))
             yield
 
-    app = FastAPI(title='ConvictionDesk unified workbench preview', lifespan=lifespan)
+    app = FastAPI(title='ConvictionDesk', version='0.11.0', lifespan=lifespan)
     app.state.scopes = apps
 
     @app.middleware('http')
     async def loopback_host(request, call_next):
-        if request.url.hostname not in {'127.0.0.1','localhost','::1'} or request.client.host not in {'127.0.0.1','::1','testclient'}:
+        if (request.url.hostname not in {'127.0.0.1','localhost','::1'}
+                or request.client.host not in {'127.0.0.1','::1','testclient'}
+                or any(k in request.headers for k in ('forwarded','x-forwarded-for','x-forwarded-host','x-forwarded-proto','x-real-ip'))):
             return JSONResponse({'detail':'LOCAL_PREVIEW_ONLY'},status_code=403)
         return await call_next(request)
 
     @app.get('/api/workbench/mode')
     def current_mode(request: Request):
-        return JSONResponse(_context(_selection(request)), headers={'Cache-Control':'no-store'})
+        selected = _selection(request, default_scope)
+        if selected not in apps:
+            raise HTTPException(403, detail='OWNER_SCOPE_NOT_ADMITTED')
+        return JSONResponse(_context(selected), headers={'Cache-Control':'no-store'})
 
     @app.post('/api/workbench/mode')
     def select_mode(payload: SelectScope, request: Request):
         if request.headers.get('origin') != str(request.base_url).rstrip('/') or request.headers.get('x-workbench-mode') != 'select':
             raise HTTPException(403, detail='ORIGIN_REJECTED')
+        if payload.scope not in apps:
+            raise HTTPException(403, detail='OWNER_SCOPE_NOT_ADMITTED')
         response = JSONResponse(_context(payload.scope), headers={'Cache-Control':'no-store'})
         response.set_cookie(COOKIE,payload.scope.value,httponly=True,samesite='strict')
         return response
 
-    app.mount('/', ScopedConsole(apps))
+    app.mount('/', ScopedConsole(apps, default_scope))
     return app
 
 
