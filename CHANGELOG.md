@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.11.0 — unified workbench and execution trace
+
+- One Console with separate keyless sample and explicit local Owner workspaces,
+  visible data identity and Provider source-health diagnostics.
+- Scope-local execution Trace, immutable Fast-to-Deep revisions and a 31-case
+  fixed Trace/Eval corpus. Keyless research is scripted, with no model calls.
+- Qualified holding, SEC body, thesis and point-in-time price readback; missing,
+  stale or unqualified prices keep valuation UNKNOWN. What-if remains hypothetical.
+- The installable distribution is `convictiondesk`; public exports reject the
+  private project identifier by default. No Owner data or credentials are included.
+- Brand README and original hero assets. Native model generation and live market
+  sources remain subject to separate authentication, rights, consent and budget
+  admission; this release does not verify them or execute trades.
+
+Full notes: [release/V011_RELEASE_NOTES.md](release/V011_RELEASE_NOTES.md).
+
 ## v0.10.0 — public keyless IVS limited beta
 
 - Real, frozen public SEC metadata → fictional portfolio/Thesis → scripted Fast
@@ -11,10 +27,6 @@
 - Public Quickstart, three screenshots, import/resource closure and actual
   result-card What-if browser verification. The earlier read-only fictional
   replay and SEC CLI remain available; no live investment-quality claim is made.
-
-## Unreleased
-
-- **Documentation.** A rewritten README, new docs pages — [Getting started](docs/getting-started.md), [Architecture](docs/architecture.md), [Data sources and keys](docs/data-sources.md), [Verification](docs/verification.md), [Showcase](docs/showcase.md) — plus this changelog and a contributing guide. New original diagrams and one product screenshot. No code changes.
 
 ## v0.9.0 — limited beta
 

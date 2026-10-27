@@ -84,6 +84,13 @@ def test_secrets_private_paths_and_active_svg_are_rejected():
     assert exporter.scan('settings.txt', b'private-synthetic-marker', ['private-synthetic-marker'])
 
 
+def test_default_scan_rejects_private_distribution_name():
+    private_name = 'market-' + 'intelligence-' + 'agent'
+    assert 'private project identifier' in exporter.scan(
+        'pyproject.toml', ('name = "' + private_name + '"').encode())
+    assert exporter.scan('pyproject.toml', b'name = "convictiondesk"') == []
+
+
 def test_owner_identity_does_not_prove_release_and_coauthor_or_refs_reject(tmp_path):
     root, sha = repo(tmp_path)
     result = auditor.audit(root, EMAIL, expected_root=sha)

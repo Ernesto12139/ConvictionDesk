@@ -13,3 +13,8 @@ Authentication, rights, freshness, consent and budget remain separate states.
 No Owner data, credentials or private history are packaged. No live investment
 quality, return, Jev cost-saving or cloud operation is claimed. There is no order
 execution. See getting-started and candidate scope for setup and data boundaries.
+
+The installed distribution is named `convictiondesk`; Python imports remain
+`market_agent`. In an exported installation without Git metadata, code commit
+identity is honestly UNKNOWN. Use the packaged source version and release
+manifest to identify the source snapshot.

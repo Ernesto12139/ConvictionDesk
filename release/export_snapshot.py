@@ -18,6 +18,8 @@ TEXT_TYPES = {'.py', '.ps1', '.js', '.cjs', '.css', '.html', '.svg', '.json', '.
 PNG_SIGNATURE = bytes.fromhex('89504e470d0a1a0a')
 PNG_CHUNKS = {b'IHDR', b'PLTE', b'IDAT', b'IEND', b'sRGB', b'gAMA', b'pHYs'}
 PNG_MAX_BYTES = 1_000_000
+# Compose the forbidden identifier so the scanner can itself be exported.
+PRIVATE_IDENTIFIERS = ('market-' + 'intelligence-' + 'agent',)
 RULES = {
     'private_key': r'-----BEGIN [A-Z ]*PRIVATE KEY-----',
     'api_key': r'\bsk-[A-Za-z0-9_-]{20,}',
@@ -90,6 +92,8 @@ def scan(name, data, private_terms=()):
     for label, pattern in RULES.items():
         if re.search(pattern, text):
             errors.append(label)
+    if any(term.casefold() in text.casefold() for term in PRIVATE_IDENTIFIERS):
+        errors.append('private project identifier')
     if any(term and term.casefold() in text.casefold() for term in private_terms):
         errors.append('owner-specified private term')
     if name.endswith('.svg'):

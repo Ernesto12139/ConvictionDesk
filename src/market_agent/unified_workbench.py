@@ -84,7 +84,7 @@ def _context(scope):
                 'model_kind': 'NATIVE_GATED_NOT_VERIFIED', 'data_kind': 'OWNER_LOCAL',
                 'owner_acceptance': 'NOT_ASSESSED'}
     return {'scope': scope.value, 'paid_dispatch': 'BLOCKED', 'provider_hub_enabled': False,
-            'real_owner_database_opened': False, 'owner_data_integration': 'PLANNED_QODER_W_27',
+            'real_owner_database_opened': False, 'owner_data_integration': 'NOT_CONNECTED',
             'model_kind': 'SCRIPTED' if scope == Scope.SYNTHETIC else 'NOT_CONFIGURED',
             'data_kind': 'REAL_PUBLIC_SEC_METADATA__SYNTHETIC_PORTFOLIO' if scope == Scope.SYNTHETIC else 'EMPTY_ISOLATED_SANDBOX',
             'owner_acceptance': 'NOT_ASSESSED_FOR_THIS_CANDIDATE'}

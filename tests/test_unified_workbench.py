@@ -31,6 +31,7 @@ def switch(client, scope, origin=BASE):
 
 def test_explicit_scope_no_cross_database_adoption(client):
     assert client.get('/api/workbench/mode').json()['scope'] == 'SYNTHETIC'
+    assert client.get('/api/workbench/mode').json()['owner_data_integration'] == 'NOT_CONNECTED'
     demo = client.get('/api/console/portfolio-overview')
     assert demo.status_code == 200
     assert switch(client, 'OWNER_PREVIEW').status_code == 200
