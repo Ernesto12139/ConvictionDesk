@@ -38,7 +38,7 @@ change my decision?*
 | **Time** | May mix in later information | A point-in-time cutoff; later sources cannot be cited |
 | **Your thesis** | Forgotten between chats | The version you held *before* the event, kept with every round |
 | **Evidence** | Facts and opinion blended | Every claim cites a source; the strongest counterevidence is shown |
-| **The answer** | Always confident | `ADD`, `HOLD`, `REDUCE`, `EXIT`, or `UNDETERMINED` when the case is not made |
+| **The answer** | Depends on the application | `ADD`, `HOLD`, `REDUCE`, `EXIT`, or `UNDETERMINED` when the case is not made |
 | **Numbers** | Arithmetic by the model | Portfolio and What-if math in Python `Decimal`; unknown stays unknown |
 
 ## What it does

@@ -50,14 +50,15 @@ def llm_client_from_environment(environment: Mapping[str, str]) -> LLMClient:
 # and which came from a script instead of a model.
 PUBLIC_IVS_BANNER = """
 <section id="public-ivs-banner" class="public-ivs-banner" aria-labelledby="public-ivs-banner-title">
-  <h2 id="public-ivs-banner-title">公开演示：SEC 披露 → 研究 → 账户预演</h2>
+  <h2 id="public-ivs-banner-title">合成体验 · SYNTHETIC · 脚本回放 SCRIPTED · 0 模型调用</h2>
+  <details><summary>数据与调用边界 · 真实 SEC 元数据 / 虚构持仓</summary>
   <p class="public-ivs-gloss" lang="en">Real SEC metadata. Fictional holdings and thesis. Scripted research, offline and keyless; no model calls.</p>
   <ul class="public-ivs-classes">
     <li data-evidence-class="REAL_PUBLIC_SEC_METADATA"><strong>真实 SEC · REAL_PUBLIC_SEC_METADATA</strong><span>冻结于 2026-10-24，可打开 SEC 原文核对；只含元数据，不含申报正文。</span></li>
     <li data-evidence-class="SYNTHETIC"><strong>虚构持仓与 Thesis · SYNTHETIC</strong><span>账户、数量与投资逻辑均为演示虚构，不是任何人的真实持仓或记录。</span></li>
     <li data-evidence-class="SCRIPTED"><strong>脚本回放 · SCRIPTED · 无模型费用</strong><span>未运行 AI 模型；0 次模型调用 · 不代表真实模型质量。</span></li>
   </ul>
-  <details><summary>演示范围与限制</summary><p class="small muted">条目代码只用于提出核查问题，不证明价格或投资影响；UNKNOWN / UNDETERMINED 不会被显示成 HOLD；模拟不会下单，也不会修改任何真实组合。</p></details>
+  <details><summary>演示范围与限制</summary><p class="small muted">条目代码只用于提出核查问题，不证明价格或投资影响；UNKNOWN / UNDETERMINED 不会被显示成 HOLD；模拟不会下单，也不会修改任何真实组合。</p></details></details>
 </section>"""
 
 

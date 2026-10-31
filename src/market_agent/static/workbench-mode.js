@@ -2,7 +2,10 @@
 (() => {
   const status = document.getElementById('workbench-mode-status');
   if (!status) return;
+  const banner=document.getElementById('public-ivs-banner');
+  if(banner)banner.querySelector('details').append(document.getElementById('workbench-mode'));
   const buttons = [...document.querySelectorAll('[data-workbench-scope]')];
+  document.querySelector('.workbench-boundary').append(document.querySelector('.workbench-mode-actions'));
   fetch('/api/workbench/mode', {cache:'no-store'}).then(r => {
     if (!r.ok) throw Error('mode');
     return r.json();
