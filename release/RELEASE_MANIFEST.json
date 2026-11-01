@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "0ebc9df828395b8a82cdba859da885328c62d8d2",
+  "upstream_source_sha": "fbe363458f8b65aa521583ada1a920def29ce91a",
   "source_version": "0.12.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -1260,8 +1260,8 @@
     {
       "path": "src/market_agent/serve.py",
       "source": "src/market_agent/serve.py",
-      "git_blob": "c67caafdb5fcb41a70b2fa2ca4e8170a34514cf2",
-      "sha256": "5f89cfe9b070e0e8d352cebe9fee6c4348627e24948dc420a2f136f1032f6c2d"
+      "git_blob": "ada15911eec9d5b72f79292c509059d893e0fffc",
+      "sha256": "58c7e0c41461388c67f9c8bfc6b9b4eacbec72ff4bcc89a96c90751c655fba1c"
     },
     {
       "path": "src/market_agent/static/attention.css",
@@ -1644,8 +1644,8 @@
     {
       "path": "tests/test_public_journey_entrypoint.py",
       "source": "tests/test_public_journey_entrypoint.py",
-      "git_blob": "f96ffe65b79ccaf704ca1bb260eab68338d165ab",
-      "sha256": "457917a604f0471fbc6782ba0ab8a7e2a5fc714379c92d9e3b8673ca682eff29"
+      "git_blob": "e28b126af3cc98923af6287943de7d89b60edb46",
+      "sha256": "a26c011df7b664611d3d6d1934d6de84f1d3d43aa75fe63f29679f5084a3c591"
     },
     {
       "path": "tests/test_quiet_ui_contract.py",
