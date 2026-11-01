@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.12.0 candidate — portfolio priority and capital efficiency
+
+- The default public server links directly to the four-account Portfolio Priority
+  journey and back to the existing read-only replay, with separate state.
+- Rank all six synthetic holdings by committed cost; show SEC/price coverage
+  independently. Missing quotes and current NAV remain UNKNOWN.
+- APP Fast → same-task Deep adds comparable historical PUBLIC_SEC Revenue/OCF
+  facts, immutable versions and actual tool/Trace receipts. Models are SCRIPTED.
+- Detached, single-account Decimal What-if refuses overspending and never places
+  an order. No Owner records, keys, licensed news or live model calls are included.
+- Source candidate only: independent product/security, installation and Hosted CI
+  gates remain separate from publication. See [release notes](release/V012_RELEASE_NOTES.md).
+
 ## v0.11.0 — unified workbench and execution trace
 
 - One Console with separate keyless sample and explicit local Owner workspaces,

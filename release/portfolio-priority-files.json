@@ -1,0 +1,17 @@
+{
+  "schema_version": "portfolio-priority-additive-allowlist-v1",
+  "purpose": "Candidate-only additive file ownership; the Integrator controls the release manifest.",
+  "base_sha": "42992cdbaec62ed7cd90332147d4a178c7bf63e5",
+  "files": [
+    "docs/portfolio-priority-journey.md",
+    "evals/portfolio_priority_eval.py",
+    "release/portfolio-priority-files.json",
+    "scripts/smoke_portfolio_priority_browser.cjs",
+    "scripts/verify_portfolio_priority.py",
+    "src/market_agent/demo_assets/portfolio-priority-v1.json",
+    "src/market_agent/portfolio_priority_journey.py",
+    "src/market_agent/static/portfolio-priority.css",
+    "src/market_agent/static/portfolio-priority.js",
+    "tests/test_portfolio_priority_journey.py"
+  ]
+}

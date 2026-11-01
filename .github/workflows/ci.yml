@@ -128,14 +128,13 @@ jobs:
           python -m market_agent.unified_workbench --root "$RUNNER_TEMP/unified-workbench" --port 8795 &
           for i in $(seq 1 30); do curl -fs http://127.0.0.1:8795/api/workbench/mode && break; sleep 1; done
           node scripts/smoke_unified_workbench_browser.cjs http://127.0.0.1:8795 output/workbench-browser "$RUNNER_TEMP/browser/node_modules/playwright/package.json"
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: synthetic-browser-evidence
-          path: |
-            output/browser
-            output/ivs-browser
-            output/workbench-browser
+      - name: Default-entry Portfolio Priority, account-local What-if and immutable revisions
+        env:
+          MIA_BROWSER_CHANNEL: chromium
+          MIA_PUBLIC_DEFAULT_ENTRY: '1'
+        run: |
+          python evals/portfolio_priority_eval.py
+          node scripts/smoke_portfolio_priority_browser.cjs http://127.0.0.1:8080 output/priority-browser "$RUNNER_TEMP/browser/node_modules/playwright/package.json"
   docker:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -159,8 +158,6 @@ jobs:
           mkdir -p output
           docker run --rm --network none --read-only --tmpfs /tmp:rw,mode=1777 --tmpfs /var/lib/mia-demo:rw,uid=10001,gid=10001 --entrypoint python convictiondesk -m market_agent.public_ivs --root /tmp/public-ivs --journey > output/ivs-offline.json
           python3 -c "import json; d=json.load(open('output/ivs-offline.json')); assert d['research']['fast']['status']==d['research']['deep']['status']=='COMPLETE'; assert d['research']['same_task'] and d['research']['revision_one_preserved']; assert d['what_if']['after']['nav']=='12979'"
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: public-ivs-offline-journey
-          path: output/ivs-offline.json
+      - name: Installed default Portfolio Priority without network or writable root
+        run: |
+          docker run --rm -i --network none --read-only --tmpfs /tmp:rw,mode=1777 --tmpfs /var/lib/mia-demo:rw,uid=10001,gid=10001 --entrypoint python convictiondesk - < evals/portfolio_priority_eval.py

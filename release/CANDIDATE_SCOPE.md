@@ -1,4 +1,10 @@
-# v0.11.0 candidate scope
+# v0.12.0 candidate scope
+
+The default server adds the integrated Portfolio Priority & Capital Efficiency
+journey using synthetic four-account data, historical PUBLIC_SEC captures,
+scripted Fast/Deep and account-local Decimal What-if. Native loopback writes only;
+the original public read-only replay is preserved in a separate scope. See
+V012_RELEASE_NOTES.md for candidate limits and remaining independent release gates.
 
 The existing Console provides separate Keyless Sample, empty Owner preflight and
 explicitly configured local Owner composition. Keyless research uses frozen public

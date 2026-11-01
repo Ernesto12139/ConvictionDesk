@@ -188,6 +188,10 @@
     "path": "docs/getting-started.md"
   },
   {
+    "source": "docs/portfolio-priority-journey.md",
+    "path": "docs/portfolio-priority-journey.md"
+  },
+  {
     "source": "docs/research-agent/ACCOUNT_WHATIF.md",
     "path": "docs/research-agent/ACCOUNT_WHATIF.md"
   },
@@ -320,6 +324,10 @@
     "path": "evals/fixtures/sec_acceptance_dst_anchors.json"
   },
   {
+    "source": "evals/portfolio_priority_eval.py",
+    "path": "evals/portfolio_priority_eval.py"
+  },
+  {
     "source": "evals/research_agent.py",
     "path": "evals/research_agent.py"
   },
@@ -368,6 +376,10 @@
     "path": "release/V011_RELEASE_NOTES.md"
   },
   {
+    "source": "release/V012_RELEASE_NOTES.md",
+    "path": "release/V012_RELEASE_NOTES.md"
+  },
+  {
     "source": "release/V09_RELEASE_NOTES.md",
     "path": "release/V09_RELEASE_NOTES.md"
   },
@@ -382,6 +394,10 @@
   {
     "source": "release/export_snapshot.py",
     "path": "release/export_snapshot.py"
+  },
+  {
+    "source": "release/portfolio-priority-files.json",
+    "path": "release/portfolio-priority-files.json"
   },
   {
     "source": "release/public-files.json",
@@ -456,6 +472,10 @@
     "path": "scripts/sec_evidence_demo.py"
   },
   {
+    "source": "scripts/smoke_portfolio_priority_browser.cjs",
+    "path": "scripts/smoke_portfolio_priority_browser.cjs"
+  },
+  {
     "source": "scripts/smoke_public_demo.py",
     "path": "scripts/smoke_public_demo.py"
   },
@@ -470,6 +490,10 @@
   {
     "source": "scripts/smoke_unified_workbench_browser.cjs",
     "path": "scripts/smoke_unified_workbench_browser.cjs"
+  },
+  {
+    "source": "scripts/verify_portfolio_priority.py",
+    "path": "scripts/verify_portfolio_priority.py"
   },
   {
     "source": "scripts/verify_sec_capture.py",
@@ -558,6 +582,10 @@
   {
     "source": "src/market_agent/deepseek.py",
     "path": "src/market_agent/deepseek.py"
+  },
+  {
+    "source": "src/market_agent/demo_assets/portfolio-priority-v1.json",
+    "path": "src/market_agent/demo_assets/portfolio-priority-v1.json"
   },
   {
     "source": "src/market_agent/demo_assets/public-ivs-v1.json",
@@ -690,6 +718,10 @@
   {
     "source": "src/market_agent/portfolio_preview.py",
     "path": "src/market_agent/portfolio_preview.py"
+  },
+  {
+    "source": "src/market_agent/portfolio_priority_journey.py",
+    "path": "src/market_agent/portfolio_priority_journey.py"
   },
   {
     "source": "src/market_agent/portfolio_whatif.py",
@@ -876,6 +908,14 @@
     "path": "src/market_agent/static/portfolio-editor.js"
   },
   {
+    "source": "src/market_agent/static/portfolio-priority.css",
+    "path": "src/market_agent/static/portfolio-priority.css"
+  },
+  {
+    "source": "src/market_agent/static/portfolio-priority.js",
+    "path": "src/market_agent/static/portfolio-priority.js"
+  },
+  {
     "source": "src/market_agent/static/providers.js",
     "path": "src/market_agent/static/providers.js"
   },
@@ -1028,6 +1068,10 @@
     "path": "tests/test_owner_workbench.py"
   },
   {
+    "source": "tests/test_portfolio_priority_journey.py",
+    "path": "tests/test_portfolio_priority_journey.py"
+  },
+  {
     "source": "tests/test_portfolio_whatif.py",
     "path": "tests/test_portfolio_whatif.py"
   },
@@ -1046,6 +1090,10 @@
   {
     "source": "tests/test_public_ivs_journey.py",
     "path": "tests/test_public_ivs_journey.py"
+  },
+  {
+    "source": "tests/test_public_journey_entrypoint.py",
+    "path": "tests/test_public_journey_entrypoint.py"
   },
   {
     "source": "tests/test_quiet_ui_contract.py",

@@ -41,7 +41,57 @@ For the complete public keyless journey (real SEC metadata -> scripted research
 -> What-if) run instead:
 
   python -m market_agent.public_ivs --serve
+
+The default Console also links to Portfolio Priority & Capital Efficiency:
+four synthetic accounts, historical PUBLIC_SEC evidence and scripted Fast/Deep.
 """
+
+
+def build_public_workbench(root=None):
+    """Compose two existing public journeys; neither scope can select Owner data."""
+    from contextlib import AsyncExitStack, asynccontextmanager
+    from pathlib import Path
+    from unittest.mock import patch
+    from fastapi import FastAPI
+    from fastapi.responses import RedirectResponse
+    from .portfolio_priority_journey import build_app
+    from .unified_workbench import COOKIE, Scope, ScopedConsole
+
+    root = Path(root or os.environ.get('MIA_DEMO_DIR', 'data/public-demo')).absolute()
+    # Contain main.py's historical module import too; it must not adopt host
+    # credentials/default DB. Seed the legacy marker before its child directory.
+    with patch.dict(os.environ, {'MIA_RUNTIME_MODE': 'PUBLIC_DEMO', 'MIA_DEMO_DIR': str(root)}, clear=True):
+        from .main import create_app
+    from .public_demo import create_public_demo
+    replay = create_public_demo(create_app, {'MIA_DEMO_DIR': str(root),
+        'MIA_BUILD_REVISION': os.environ.get('MIA_BUILD_REVISION', '')})
+    replay.state.public_navigation = True
+    priority = build_app(root / 'portfolio-priority', public_navigation=True)
+    scopes = {Scope.SYNTHETIC: replay, Scope.PORTFOLIO_PRIORITY: priority}
+
+    @asynccontextmanager
+    async def lifespan(app):
+        async with AsyncExitStack() as stack:
+            for child in scopes.values():
+                await stack.enter_async_context(child.router.lifespan_context(child))
+            yield
+
+    app = FastAPI(lifespan=lifespan)
+
+    @app.get('/portfolio-priority', include_in_schema=False)
+    def select_priority():
+        response = RedirectResponse('/', status_code=303, headers={'Cache-Control': 'no-store'})
+        response.set_cookie(COOKIE, Scope.PORTFOLIO_PRIORITY.value, httponly=True, samesite='strict')
+        return response
+
+    @app.get('/public-replay', include_in_schema=False)
+    def select_replay():
+        response = RedirectResponse('/', status_code=303, headers={'Cache-Control': 'no-store'})
+        response.set_cookie(COOKIE, Scope.SYNTHETIC.value, httponly=True, samesite='strict')
+        return response
+
+    app.mount('/', ScopedConsole(scopes, Scope.SYNTHETIC))
+    return app
 
 
 def main(argv=None):
@@ -61,7 +111,7 @@ def main(argv=None):
         raise ValueError('Public serving entrypoint requires PUBLIC_DEMO; Owner keeps its existing launcher')
     host, port = bind_address(os.environ)
     ensure_port_free(host, port)
-    uvicorn.run('market_agent.main:app', host=host, port=port, workers=1,
+    uvicorn.run('market_agent.serve:build_public_workbench', factory=True, host=host, port=port, workers=1,
         access_log=False, proxy_headers=False)
     return 0
 

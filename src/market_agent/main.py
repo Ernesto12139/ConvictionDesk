@@ -142,7 +142,7 @@ def create_app(db_path: str | Path = "data/market_agent.db",
         semantic_judge=semantic_judge,
         comparison_semantic_judge=comparison_semantic_judge,
     )
-    app = FastAPI(title="ConvictionDesk", version="0.11.0")
+    app = FastAPI(title="ConvictionDesk", version="0.12.0")
     from .research_api import register_research
     if (model_profiles is None and environment.get('MIA_PROVIDER_HUB') != '1'
             and not explicit_test_provider and llm_client is None
@@ -283,6 +283,8 @@ def create_app(db_path: str | Path = "data/market_agent.db",
             return HTMLResponse(html.replace('<main>', '<main>' + notice, 1))
         if getattr(app.state, "public_demo", None):
             html = (static / "index.html").read_text(encoding="utf-8")
+            if getattr(app.state, 'public_navigation', False):
+                html = html.replace('<nav>', '<nav><a href="/portfolio-priority">组合研究优先级</a>', 1)
             html = html.replace('data-runtime-mode="OWNER"', 'data-runtime-mode="PUBLIC_DEMO"')
             return HTMLResponse(html.replace('role="note" hidden>', 'role="note">'))
         return FileResponse(static / "index.html")

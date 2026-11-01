@@ -1,5 +1,18 @@
 # Getting started
 
+## Default v0.12 source candidate
+
+After installation, run `python -m market_agent.serve` and open
+http://127.0.0.1:8080/. Choose **组合研究优先级** to operate the four-account
+synthetic journey, then **返回只读示例** to return to the original replay. Their
+databases and history are separate. The same Console renders both; neither
+workspace imports Owner data or enables paid models. See the
+[five-minute portfolio journey](portfolio-priority-journey.md).
+
+Native research writes require direct loopback and same-origin requests. The
+container's published replay remains read-only; its network-isolated installed
+journey check exercises the synthetic engine without enabling remote writes.
+
 ## Unified v0.11 workbench
 
 After cloning and installing, start the Console with explicit sample boundaries:

@@ -91,6 +91,15 @@ A guided click path with exact values is in [Getting started](docs/getting-start
 
 ## Get started
 
+The v0.12.0 source candidate adds **Portfolio Priority & Capital Efficiency** to
+the default server. Open **组合研究优先级** in its navigation: inspect four
+synthetic accounts, choose APP and an account, run scripted Fast → Deep, inspect
+the historical public SEC cash-flow evidence, then try an account-local Decimal
+What-if. **返回只读示例** returns to the original replay. No key is required and no
+model or market-data request is made. Current quotes/NAV remain unknown.
+The [guided journey](docs/portfolio-priority-journey.md) states exact examples,
+source dates and limitations. This candidate is not a claim of a published release.
+
 Python 3.12 or later. Installing downloads dependencies; running the workbench needs no key.
 
 **macOS / Linux**
@@ -100,7 +109,7 @@ git clone https://github.com/Ernesto12139/ConvictionDesk.git
 cd ConvictionDesk
 python3 -m venv .venv
 .venv/bin/python -m pip install .
-.venv/bin/python -m market_agent.unified_workbench --root ./workbench-state --port 8795
+.venv/bin/python -m market_agent.serve
 ```
 
 **Windows (PowerShell)**
@@ -110,10 +119,10 @@ git clone https://github.com/Ernesto12139/ConvictionDesk.git
 cd ConvictionDesk
 python -m venv .venv
 .venv\Scripts\python.exe -m pip install .
-.venv\Scripts\python.exe -m market_agent.unified_workbench --root ./workbench-state --port 8795
+.venv\Scripts\python.exe -m market_agent.serve
 ```
 
-Open **http://127.0.0.1:8795/**. Start with **合成体验**. Options, troubleshooting, the earlier replay and
+Open **http://127.0.0.1:8080/** and choose **组合研究优先级**. Options, troubleshooting, the earlier unified sample and
 live setup with your own keys: [Getting started](docs/getting-started.md).
 
 ## Under the hood
