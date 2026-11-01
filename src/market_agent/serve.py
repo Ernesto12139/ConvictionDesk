@@ -78,7 +78,7 @@ def build_public_workbench(root=None):
                 await stack.enter_async_context(child.router.lifespan_context(child))
             yield
 
-    app = FastAPI(lifespan=lifespan)
+    app = FastAPI(lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
 
     @app.get('/portfolio-priority', include_in_schema=False)
     def select_priority():

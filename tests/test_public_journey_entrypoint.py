@@ -12,6 +12,8 @@ def test_default_public_entrypoint_switches_isolated_journeys(tmp_path, monkeypa
         from market_agent.unified_workbench import COOKIE
         client.cookies.set(COOKIE, 'OWNER_LOCAL')
         assert client.get('/api/public-demo').json()['access'] == 'SHARED_READ_ONLY'
+        for path in ('/docs', '/redoc', '/openapi.json'):
+            assert client.get(path).status_code == 404
         assert client.get('/api/today/pulse').json() == {
             'status': 'OFFLINE_REPLAY', 'scopes': {}, 'model_calls': 0}
         assert 'href="/portfolio-priority"' in client.get('/').text
@@ -20,6 +22,8 @@ def test_default_public_entrypoint_switches_isolated_journeys(tmp_path, monkeypa
         assert selected.status_code == 200
         assert client.cookies.get(COOKIE) == 'OWNER_LOCAL'
         assert 'href="/public-replay"' in selected.text
+        for path in ('/docs', '/redoc', '/openapi.json'):
+            assert client.get(path).status_code == 403
         overview = client.get('/api/portfolio-priority').json()
         assert len(overview['accounts']) == 4
         assert client.post('/api/trade', json={}).status_code == 403
