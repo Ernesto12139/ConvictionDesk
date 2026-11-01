@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "fbe363458f8b65aa521583ada1a920def29ce91a",
+  "upstream_source_sha": "8ead8f80e65b07841aee1531f3034311550f621a",
   "source_version": "0.12.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -732,8 +732,8 @@
     {
       "path": "scripts/smoke_public_ivs_browser.cjs",
       "source": "scripts/smoke_public_ivs_browser.cjs",
-      "git_blob": "d828197466f9b064430399fab026c931a21f6de7",
-      "sha256": "199dcc96aae6e5b34a5403b5a7d33656437bbe3a5634d2f91eede364b1f8728d"
+      "git_blob": "aaf9b24f1757a99bde3d911bf116b5a088a2932b",
+      "sha256": "9c0024f1818674f5086dc96620458e4f43b54aa49e313424b36018d93b6dbb0f"
     },
     {
       "path": "scripts/smoke_unified_workbench_browser.cjs",
