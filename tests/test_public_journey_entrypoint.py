@@ -30,6 +30,7 @@ def test_default_public_entrypoint_switches_isolated_journeys(tmp_path, monkeypa
         assert client.get('/public-replay').status_code == 200
         assert client.get('/api/public-demo').status_code == 200
         assert client.get('/api/portfolio-priority').status_code == 404
+        client.cookies.delete(serve.PUBLIC_JOURNEY_COOKIE)
         client.cookies.set(serve.PUBLIC_JOURNEY_COOKIE, 'OWNER_LOCAL')
         assert client.get('/api/portfolio/current').status_code == 403
     assert not forbidden.exists()
