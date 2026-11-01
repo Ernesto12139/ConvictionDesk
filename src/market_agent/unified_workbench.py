@@ -70,9 +70,9 @@ def _main_factory(root):
         os.environ.update(saved)
 
 
-def _selection(request, default=Scope.SYNTHETIC):
+def _selection(request, default=Scope.SYNTHETIC, cookie=COOKIE):
     try:
-        return Scope(request.cookies.get(COOKIE, default.value))
+        return Scope(request.cookies.get(cookie, default.value))
     except ValueError:
         raise HTTPException(400, detail='PREVIEW_SCOPE_INVALID') from None
 
@@ -118,13 +118,13 @@ def _decorate(app, scope, *, owner_admitted=False):
 
 
 class ScopedConsole:
-    def __init__(self, apps, default=Scope.SYNTHETIC):
-        self.apps, self.default = apps, default
+    def __init__(self, apps, default=Scope.SYNTHETIC, *, cookie=COOKIE):
+        self.apps, self.default, self.cookie = apps, default, cookie
 
     async def __call__(self, scope, receive, send):
         request = Request(scope)
         try:
-            selected = _selection(request, self.default)
+            selected = _selection(request, self.default, self.cookie)
         except HTTPException as error:
             return await JSONResponse({'detail': error.detail}, status_code=error.status_code)(scope, receive, send)
         if selected not in self.apps:

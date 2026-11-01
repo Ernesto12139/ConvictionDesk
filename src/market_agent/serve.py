@@ -9,6 +9,8 @@ import sys
 
 import uvicorn
 
+PUBLIC_JOURNEY_COOKIE = 'convictiondesk_public_journey'
+
 
 def bind_address(environment):
     host = environment.get('HOST', '127.0.0.1').strip()
@@ -55,7 +57,7 @@ def build_public_workbench(root=None):
     from fastapi import FastAPI
     from fastapi.responses import RedirectResponse
     from .portfolio_priority_journey import build_app
-    from .unified_workbench import COOKIE, Scope, ScopedConsole
+    from .unified_workbench import Scope, ScopedConsole
 
     root = Path(root or os.environ.get('MIA_DEMO_DIR', 'data/public-demo')).absolute()
     # Contain main.py's historical module import too; it must not adopt host
@@ -81,16 +83,16 @@ def build_public_workbench(root=None):
     @app.get('/portfolio-priority', include_in_schema=False)
     def select_priority():
         response = RedirectResponse('/', status_code=303, headers={'Cache-Control': 'no-store'})
-        response.set_cookie(COOKIE, Scope.PORTFOLIO_PRIORITY.value, httponly=True, samesite='strict')
+        response.set_cookie(PUBLIC_JOURNEY_COOKIE, Scope.PORTFOLIO_PRIORITY.value, httponly=True, samesite='strict')
         return response
 
     @app.get('/public-replay', include_in_schema=False)
     def select_replay():
         response = RedirectResponse('/', status_code=303, headers={'Cache-Control': 'no-store'})
-        response.set_cookie(COOKIE, Scope.SYNTHETIC.value, httponly=True, samesite='strict')
+        response.set_cookie(PUBLIC_JOURNEY_COOKIE, Scope.SYNTHETIC.value, httponly=True, samesite='strict')
         return response
 
-    app.mount('/', ScopedConsole(scopes, Scope.SYNTHETIC))
+    app.mount('/', ScopedConsole(scopes, Scope.SYNTHETIC, cookie=PUBLIC_JOURNEY_COOKIE))
     return app
 
 

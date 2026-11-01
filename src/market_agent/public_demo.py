@@ -174,6 +174,8 @@ def create_public_demo(create_app, environment):
         # No request body is read and no endpoint/background job executes first.
         if request.method not in {'GET', 'HEAD'}:
             response = JSONResponse(status_code=403, content={'detail': 'PUBLIC_DEMO_READ_ONLY'})
+        elif request.url.path == '/api/today/pulse':
+            response = JSONResponse({'status': 'OFFLINE_REPLAY', 'scopes': {}, 'model_calls': 0})
         elif not READ_ROUTES.fullmatch(request.url.path):
             response = JSONResponse(status_code=404, content={'detail': 'PUBLIC_DEMO_ROUTE_NOT_AVAILABLE'})
         else:
