@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "8ead8f80e65b07841aee1531f3034311550f621a",
+  "upstream_source_sha": "dc9045c2b44f15ff9bf22220d7ad77521023389e",
   "source_version": "0.12.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -738,8 +738,8 @@
     {
       "path": "scripts/smoke_unified_workbench_browser.cjs",
       "source": "scripts/smoke_unified_workbench_browser.cjs",
-      "git_blob": "0b4a36c48bee40f8fd57de83a9735952e4544c2d",
-      "sha256": "05f479e0d5b213f357a19266b162aaf5ffb6d57508994f7f866bf49f496982d9"
+      "git_blob": "baa164ef53165365d38274f5d97faebca16b4ef7",
+      "sha256": "ea93bcab95a5ccdfad0318fb8df69f126b718376e5b76362e81804a5f963ca2f"
     },
     {
       "path": "scripts/verify_portfolio_priority.py",
