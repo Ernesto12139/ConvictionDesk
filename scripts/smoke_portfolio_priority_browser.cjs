@@ -63,10 +63,32 @@ async function saved(page, tid, revision) {
       await page.getByText('Deep 补入可比期间公开财务事实；UNDETERMINED。', {exact: true}).waitFor();
       await page.waitForFunction(() => document.getElementById('desk-task-meta').textContent.includes('第 2 轮'));
       assert.ok(deep.assessment.support.length && deep.assessment.counterevidence.length);
+      const caseFile = page.getByRole('region', {name: '版本与执行收据'});
+      const originalCard = caseFile.locator('[data-revision="1"]');
+      const selectedCard = caseFile.locator('[data-revision="2"]');
+      assert.ok((await originalCard.innerText()).includes(fast.assessment.core_judgment.text));
+      assert.ok((await selectedCard.innerText()).includes(deep.assessment.counterevidence[0].text));
+      assert.ok((await selectedCard.innerText()).includes(deep.assessment.next_checks[0].text));
+      assert.equal(await originalCard.locator('.pp-case-decision').innerText(), 'UNDETERMINED');
+      assert.equal(await selectedCard.locator('.pp-case-decision').innerText(), 'UNDETERMINED');
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      await caseFile.screenshot({path: path.join(output, `case-file-${width}.png`)});
+      const evidenceJump = caseFile.getByRole('link', {name: '前往本版依据'});
+      await evidenceJump.focus();
+      await evidenceJump.press('Enter');
+      await page.waitForURL(url => url.hash === '#desk-evidence-open');
+      await page.locator('#desk-evidence-open').click();
+      assert.match(await page.locator('#desk-evidence-scope').innerText(), /第 2 轮/);
+      await page.keyboard.press('Escape');
+      await caseFile.getByText('查看新增证据、财务期间与来源', {exact: true}).click();
+      assert.match(await caseFile.locator('.pp-case-evidence').innerText(), /0001751008-26-000059/);
       await page.getByText('查看实际工具选择与执行 Trace', {exact: true}).click();
       await page.locator('.pp-receipt a[href^="/api/execution-traces/"]').first().waitFor();
+      assert.equal(await caseFile.locator('li').filter({hasText: /^版本 1 ·/}).count(), 0);
       assert.ok((await page.locator('.pp-receipt').innerText()).includes('sec.fundamentals'));
       // The existing, shipped single-account What-if form remains the calculator.
+      await caseFile.getByRole('link', {name: '前往单账户 What-if'}).click();
+      await page.waitForURL(url => url.hash === '#desk-case-whatif');
       await page.getByRole('textbox', {name: '增减股数（正数）', exact: true}).fill('5');
       await page.getByRole('textbox', {name: 'APP 假设成交价 · USD/股', exact: true}).fill('200');
       await page.getByText('费用、其他持仓计价与资本假设', {exact: true}).click();
@@ -96,9 +118,16 @@ async function saved(page, tid, revision) {
       // Open the saved Fast version through the existing history UI. The extension
       // must bind to that version too, and never continue a historical view.
       await page.getByRole('button', {name: '历史版本', exact: true}).click();
+      const historicalWhatIf = page.waitForResponse(r => r.url().endsWith(`/api/research/tasks/${tid}/what-if?revision=1`) && r.request().method() === 'GET' && r.ok());
       await page.locator('#desk-history-select').selectOption('1');
       await page.waitForURL(url => url.searchParams.get('revision') === '1');
       await page.waitForFunction(() => document.querySelector('#portfolio-priority [role="status"]').textContent.includes('历史版本只读'));
+      await historicalWhatIf;
+      await originalCard.waitFor();
+      assert.equal(await selectedCard.count(), 0);
+      await caseFile.getByText('查看实际工具选择与执行 Trace', {exact: true}).click();
+      await caseFile.locator('li').filter({hasText: /^版本 1 ·/}).first().waitFor();
+      assert.equal(await caseFile.locator('li').filter({hasText: /^版本 2 ·/}).count(), 0);
       assert.equal(await page.getByRole('button', {name: '继续同一 Task 的 Deep', exact: true}).isVisible(), false);
       await page.getByRole('button', {name: '最新一轮', exact: true}).click();
       await page.waitForURL(url => !url.searchParams.has('revision'));
@@ -112,6 +141,8 @@ async function saved(page, tid, revision) {
       const otherTid = new URL(page.url()).searchParams.get('research_task');
       await saved(page, otherTid, 1);
       await page.getByRole('heading', {name: 'UNP · 投资逻辑复核', exact: true}).waitFor();
+      await caseFile.getByRole('heading', {name: 'UNP · 投资案卷', exact: true}).waitFor();
+      assert.equal(await caseFile.locator('[data-revision]').count(), 1);
       await page.getByRole('button', {name: '返回工作台', exact: true}).click();
       await page.locator('#desk-recent button').filter({hasText: 'APP'}).first().click();
       await page.waitForURL(url => url.searchParams.get('research_task') === tid);
@@ -132,7 +163,8 @@ async function saved(page, tid, revision) {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       runs.push({width, task_id: tid, revisions: [fast.revision, deep.revision],
         research_posts: researchPosts, original_preserved: true, whatif_cash: '199',
-        history_task_switch_bound: true, historical_version_read_only: true,
+        history_task_switch_bound: true, historical_version_read_only: true, case_comparison: true,
+        revision_bound_evidence_whatif_trace: true,
         insufficient_cash_refused: true, get_failure_recovered: true, expected_503_console_count: faultCount,
         expected_422_console_count: expectedRefusalErrors.length, overflow: false});
       await context.close();

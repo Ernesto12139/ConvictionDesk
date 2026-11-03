@@ -6,7 +6,7 @@
   const el = (tag, text, className) => { const n = document.createElement(tag); if (text !== undefined) n.textContent = text; if (className) n.className = className; return n; };
   const button = (text, action, className) => { const b = el('button', text, className); b.type = 'button'; b.addEventListener('click', action); return b; };
   const dollar = value => value == null ? 'UNKNOWN' : '$' + value; // Python supplied exact decimal text; no JS money arithmetic.
-  const stamp = value => value.replace('T', ' ').replace('+00:00', ' UTC');
+  const stamp = value => value.replace('T', ' ').replace(/(?:\+00:00|Z)$/, ' UTC');
   async function api(path, body) {
     const response = await fetch(path, body === undefined ? {} : {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
     const data = await response.json();
@@ -26,6 +26,8 @@
 
   function choose(candidate) {
     if (sending) return;
+    ++readGeneration;
+    receipt.hidden = true;
     selected = candidate; active = null;
     chosen.textContent = `${candidate.symbol} · 累计投入成本 ${dollar(candidate.committed_cost)}；覆盖 ${candidate.account_ids.length} 个合成账户。`;
     const placeholder = el('option', '明确选择一个账户'); placeholder.value = '';
@@ -66,7 +68,8 @@
     const generation = ++readGeneration;
     const params = new URL(location.href).searchParams;
     const id = params.get('research_task') || active?.task_id, revision = params.get('revision');
-    if (!id) return;
+    if (!overview || !id) return;
+    receipt.hidden = true;
     read.hidden = false;
     try {
       // GET-only recovery and a finite polling window. No implicit research retry.
@@ -83,40 +86,89 @@
       if (revision) status.textContent += ' · 历史版本只读';
       if (active.status === 'FAILED') status.textContent += ` · ${active.error || 'RESEARCH_FAILED'}。保留失败版；重试会创建下一版。`;
       if (active.status === 'RUNNING') { status.textContent += '；等待上限已到，可只读恢复。'; return; }
-      const delta = await api(`/api/portfolio-priority/tasks/${encodeURIComponent(id)}/delta${revision ? '?revision=' + encodeURIComponent(revision) : ''}`);
+      const current = active;
+      const taskPath = '/api/research/tasks/' + encodeURIComponent(id);
+      const [delta, first] = await Promise.all([
+        api(`/api/portfolio-priority/tasks/${encodeURIComponent(id)}/delta?revision=${current.revision}`),
+        current.revision === 1 ? current : api(taskPath + '/revisions/1'),
+      ]);
       if (generation !== readGeneration) return;
-      receipt.replaceChildren(el('h2', '这次研究增加了什么'));
-      receipt.append(el('p', `${delta.information_gain === 'NEW_PUBLIC_SEC_FACTS' ? 'Deep 补入可比期间公开财务事实' : delta.information_gain === 'NEW_METADATA_ONLY' ? '仅补入其他申报元数据，没有可比财务增量' : 'NO_NEW_EVIDENCE · 尚未增加公司事实'}；${delta.decision_status}。`));
-      receipt.append(el('p', `${delta.prior_thesis}；${delta.prior_decision}。`, 'small'));
+      const header = el('header', undefined, 'pp-case-header');
+      header.append(el('p', 'INVESTMENT CASE FILE', 'pp-case-kicker'),
+        el('h2', `${current.focus_symbol || '研究'} · 投资案卷`),
+        el('p', `${current.account_id} · 快照 ${stamp(overview.snapshot_as_of)} · PIT ${stamp(current.cutoff)}`, 'pp-case-meta'),
+        el('p', `版本 ${current.revision} · ${current.status} · SCRIPTED / NOT_LIVE_MODEL`, 'pp-case-meta'));
+      const comparison = el('div', undefined, 'pp-case-comparison');
+      function revisionCard(task, label) {
+        const card = el('section', undefined, 'pp-case-version');
+        card.dataset.revision = task.revision;
+        card.append(el('h3', label), el('p', task.action_decision?.decision_status || task.assessment?.disposition || 'UNKNOWN', 'pp-case-decision'));
+        const fields = el('dl');
+        for (const [name, statement] of [
+          ['判断', task.assessment?.core_judgment],
+          ['关键反证', task.assessment?.counterevidence?.[0]],
+          ['下一步核查', task.assessment?.next_checks?.[0]],
+        ]) {
+          fields.append(el('dt', name), el('dd', statement?.text || '此版本未记录'));
+        }
+        card.append(fields);
+        return card;
+      }
+      if (current.revision !== 1) comparison.append(revisionCard(first, '初始 Fast · 1'));
+      comparison.append(revisionCard(current, current.revision === 1 ? '初始 Fast · 1' : `所选版本 · ${current.revision}`));
+      const actions = el('nav', undefined, 'pp-case-actions');
+      actions.setAttribute('aria-label', '投资案卷操作');
+      if (current.assessment) {
+        const evidenceJump = el('a', '前往本版依据'); evidenceJump.href = '#desk-evidence-open'; actions.append(evidenceJump);
+      }
+      if (current.action_decision) {
+        const whatIfJump = el('a', '前往单账户 What-if'); whatIfJump.href = '#desk-case-whatif'; actions.append(whatIfJump);
+      }
+      const evidenceDetails = el('details', undefined, 'pp-case-evidence');
+      evidenceDetails.append(el('summary', '查看新增证据、财务期间与来源'));
+      receipt.replaceChildren(header, actions, comparison,
+        el('p', `${delta.information_gain === 'NEW_PUBLIC_SEC_FACTS' ? 'Deep 补入可比期间公开财务事实' : delta.information_gain === 'NEW_METADATA_ONLY' ? '仅补入其他申报元数据，没有可比财务增量' : 'NO_NEW_EVIDENCE · 尚未增加公司事实'}；${delta.decision_status}。`, 'pp-case-gain'));
+      evidenceDetails.append(el('p', `${delta.prior_thesis}；${delta.prior_decision}。`, 'small'));
       for (const evidence of delta.new_evidence) {
         const d = evidence.structured_data;
-        receipt.append(el('p', `证据 ${evidence.evidence_id} · ${d.cik} / ${evidence.symbol} · accession ${d.accession}`, 'small'));
-        receipt.append(el('p', `Accepted ${stamp(d.accepted_at)}；捕获 ${stamp(d.capture_as_of)}；PIT ${stamp(d.pit_cutoff)}。`, 'small'));
-        const source = el('a', '在 SEC 核对公开来源'); source.href = evidence.source_uri; source.target = '_blank'; source.rel = 'noopener noreferrer'; receipt.append(source);
-        if (!d.metrics) { receipt.append(el('p', '仅有元数据，报告期间与财务单位不适用；不能据此形成经营结论。', 'small')); continue; }
+        evidenceDetails.append(el('p', `证据 ${evidence.evidence_id} · ${d.cik} / ${evidence.symbol} · accession ${d.accession}`, 'small'));
+        evidenceDetails.append(el('p', `Accepted ${stamp(d.accepted_at)}；捕获 ${stamp(d.capture_as_of)}；PIT ${stamp(d.pit_cutoff)}。`, 'small'));
+        const source = el('a', '在 SEC 核对公开来源'); source.href = evidence.source_uri; source.target = '_blank'; source.rel = 'noopener noreferrer'; evidenceDetails.append(source);
+        if (!d.metrics) { evidenceDetails.append(el('p', '仅有元数据，报告期间与财务单位不适用；不能据此形成经营结论。', 'small')); continue; }
         const table = el('table', undefined, 'pp-table pp-facts');
         const header = el('tr'); ['事实', '期间', '报告值 / 单位'].forEach(text => header.append(el('th', text))); table.append(header);
         for (const fact of d.metrics) { const row = el('tr'); row.append(el('td', fact.metric), el('td', `${fact.start} → ${fact.end}`), el('td', `${fact.value} ${fact.unit}`)); table.append(row); }
-        const wrap = el('div', undefined, 'pp-table-wrap'); wrap.append(table); receipt.append(wrap);
-        receipt.append(el('p', `Python Decimal：收入同比 ${d.comparison.revenue.yoy_pct}%；经营现金流同比 ${d.comparison.operating_cash_flow.yoy_pct}%。这不是单季增速或当前盈利预测。`, 'small'));
+        const wrap = el('div', undefined, 'pp-table-wrap'); wrap.append(table); evidenceDetails.append(wrap);
+        evidenceDetails.append(el('p', `Python Decimal：收入同比 ${d.comparison.revenue.yoy_pct}%；经营现金流同比 ${d.comparison.operating_cash_flow.yoy_pct}%。这不是单季增速或当前盈利预测。`, 'small'));
       }
-      for (const check of delta.next_check) receipt.append(el('p', check));
+      for (const check of delta.next_check) evidenceDetails.append(el('p', check));
+      receipt.append(evidenceDetails);
       const trace = el('details'); trace.append(el('summary', '查看实际工具选择与执行 Trace'));
       const reasons = el('ol', undefined, 'pp-trace-list');
       for (const step of delta.tool_selection) reasons.append(el('li', `${step.tool} [${step.status}] — ${step.reason}`));
-      trace.append(reasons);
+      const traceResult = el('div'); traceResult.setAttribute('aria-live', 'polite');
+      trace.append(reasons, traceResult);
+      let tracePending = false;
       trace.addEventListener('toggle', async () => {
-        if (!trace.open || trace.dataset.loaded) return;
+        if (!trace.open || tracePending || trace.dataset.loaded) return;
+        tracePending = true;
+        traceResult.textContent = '正在读取本版 Trace。';
         try {
-          const result = await api(`/api/research/tasks/${encodeURIComponent(id)}/execution-traces`);
+          const result = await api(taskPath + '/execution-traces');
+          if (generation !== readGeneration) return;
           const list = el('ul', undefined, 'pp-trace-list');
           for (const row of result.receipts) {
+            if (row.trace.revision_id !== String(current.revision)) continue;
             const tools = row.trace.spans.filter(span => span.kind === 'tool').map(span => span.name);
-            list.append(el('li', `版本 ${row.trace.revision_id} · ${row.trace.execution_mode} · ${tools.join(' → ') || row.trace.status}`));
-            const link = el('a', `读取 Trace ${row.trace_id}`); link.href = '/api/execution-traces/' + row.trace_id; link.target = '_blank'; list.append(link);
+            const item = el('li', `版本 ${row.trace.revision_id} · ${row.trace.execution_mode} · ${tools.join(' → ') || row.trace.status} `);
+            const link = el('a', `读取 Trace ${row.trace_id}`); link.href = '/api/execution-traces/' + encodeURIComponent(row.trace_id);
+            link.target = '_blank'; link.rel = 'noopener noreferrer'; item.append(link); list.append(item);
           }
-          trace.append(list); trace.dataset.loaded = '1';
-        } catch (error) { trace.append(el('p', `Trace 读取失败：${error.message}`)); }
+          traceResult.replaceChildren(list.childElementCount ? list : el('p', '本版没有保存的执行 Trace。'));
+          trace.dataset.loaded = '1';
+        } catch (error) {
+          traceResult.textContent = `Trace 读取失败：${error.message}。关闭后可重新打开。`;
+        } finally { tracePending = false; }
       });
       receipt.append(trace); receipt.hidden = false;
     } catch (error) { if (generation === readGeneration) status.textContent = `保存状态读取失败：${error.message}。可再次读取；不会自动重跑研究。`; }
@@ -158,7 +210,7 @@
         for (const p of a.positions) section.append(el('p', `${p.symbol} · ${p.shares} 股 · 平均成本 ${dollar(p.avg_cost)} · 累计成本 ${dollar(p.committed_cost)} · 合成价格 ${dollar(p.synthetic_mark)}`));
         ledger.append(section);
       }
-      root.replaceChildren(introduction, notice, coverage, layout, ledger, receipt);
+      root.replaceChildren(introduction, notice, receipt, coverage, layout, ledger);
       const skip = document.querySelector('.skip-link'); skip.href = '#portfolio-priority'; skip.textContent = '跳到研究优先级';
       document.querySelector('.topbar .tag').textContent = '合成组合 · 无密钥';
       const holdings = document.querySelector('.rail nav a[href="#portfolio"]');

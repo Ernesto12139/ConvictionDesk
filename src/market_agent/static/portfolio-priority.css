@@ -39,6 +39,22 @@ body[data-portfolio-priority] .rail nav details { display: none !important; }
 .pp-receipt { margin-top: 22px; padding: 20px; background: var(--surface, #fff); border: 1px solid var(--line, #d7e1df); border-radius: 12px; }
 .pp-receipt code, .pp-receipt a { overflow-wrap: anywhere; }
 .pp-receipt details { margin: 12px 0; }
+.pp-case-header { background: #102238; color: #fbf5e8; border-radius: 8px; padding: clamp(16px, 3vw, 32px); }
+#portfolio-priority .pp-case-header h2 { color: #fbf5e8; font-size: clamp(1.5rem, 3vw, 2.3rem); letter-spacing: -.02em; }
+.pp-case-kicker { color: #e2bc78; font-size: .72rem; letter-spacing: .15em; font-weight: 700; margin: 0 0 10px; }
+.pp-case-meta { font-size: .82rem; color: #e0e8f1; margin: 5px 0 0; font-variant-numeric: tabular-nums; }
+.pp-case-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
+.pp-case-version { min-width: 0; padding: 16px; border: 1px solid #c9b991; border-radius: 8px; color: #14273c; background: #fbf5e8; }
+.pp-case-version:only-child { grid-column: 1 / -1; }
+.pp-case-version h3, .pp-case-version dl { margin: 0; }
+.pp-case-version dt { font-size: .78rem; font-weight: 700; margin-top: 12px; }
+.pp-case-version dd { margin: 4px 0 0; overflow-wrap: anywhere; line-height: 1.55; }
+.pp-case-decision { font-weight: 700; font-size: .78rem; letter-spacing: .04em; }
+.pp-case-actions { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 10px; }
+.pp-case-actions a { padding-block: 6px; text-underline-offset: .2em; }
+.pp-case-actions a:focus-visible, .pp-receipt summary:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.pp-case-gain { font-weight: 650; }
+.pp-case-evidence { overflow-wrap: anywhere; }
 .pp-trace-list { padding-left: 22px; font-size: .83rem; line-height: 1.75; overflow-wrap: anywhere; }
 .pp-facts { font-size: .83rem; }
 .pp-empty { color: var(--muted, #51656c); }
@@ -49,4 +65,5 @@ body[data-portfolio-priority][data-desk-view] .pp-introduction { display: none; 
   .pp-table th, .pp-table td { padding: 10px 4px; }
   .pp-selection, .pp-receipt { padding: 14px; }
   .pp-table { font-size: .78rem; }
+  .pp-case-comparison { grid-template-columns: minmax(0, 1fr); }
 }

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 360" role="img" aria-labelledby="title desc">
+  <title id="title">ConvictionDesk Investment Case File</title>
+  <desc id="desc">An illustration of the workflow from a position to a case, public evidence and a hypothetical account consequence.</desc>
+  <rect width="1120" height="360" rx="16" fill="#102238"/>
+  <path d="M48 77H1072M48 245H1072" stroke="#64788d" stroke-width="1"/>
+  <g font-family="system-ui, sans-serif">
+    <text x="48" y="51" fill="#e2bc78" font-size="15" font-weight="700" letter-spacing="3">CONVICTIONDESK</text>
+    <text x="48" y="153" fill="#fbf5e8" font-size="50" font-weight="650">Investment Case File</text>
+    <text x="49" y="198" fill="#d7e2ed" font-size="21">Research the position. See the evidence. Understand the consequence.</text>
+    <g font-size="16" font-weight="650" letter-spacing="1" fill="#fbf5e8">
+      <text x="48" y="293">01  POSITION</text>
+      <text x="317" y="293">02  CASE</text>
+      <text x="586" y="293">03  EVIDENCE</text>
+      <text x="855" y="293">04  CONSEQUENCE</text>
+    </g>
+    <g font-size="13" fill="#d7e2ed">
+      <text x="48" y="324">Choose one account</text>
+      <text x="317" y="324">Compare saved versions</text>
+      <text x="586" y="324">Read the filing and period</text>
+      <text x="855" y="324">Test an explicit hypothesis</text>
+    </g>
+  </g>
+</svg>

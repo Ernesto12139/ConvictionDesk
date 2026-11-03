@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.13.0rc1 — Investment Case File
+
+- Compare the original Fast record with the selected revision in one place.
+  Both show the saved judgment, counterevidence and next check.
+- Follow the selected version to its evidence, account What-if and execution
+  Trace. Selecting an earlier version reads the stored record without re-running it.
+- See the same journey on desktop and mobile in the updated product README.
+
 ## v0.12.0 candidate — portfolio priority and capital efficiency
 
 - The default public server links directly to the four-account Portfolio Priority

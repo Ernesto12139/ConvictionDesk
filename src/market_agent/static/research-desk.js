@@ -767,7 +767,7 @@
       void valuationSection(task,valuation);
       const financials=financialHistory(task);if(financials)reference.append(fold("最近已披露季度","确定性财务",financials));
       if(!task.action_decision && task.focus_symbol && window.miaOpenWhatIf && !publicReplay){const entry=node("section",null,"desk-memo-section desk-whatif-entry");entry.setAttribute("aria-label","调仓预演");const go=node("button",`调仓预演 · ${task.focus_symbol}`);go.type="button";go.addEventListener("click",()=>window.miaOpenWhatIf(task.focus_symbol));entry.append(node("h3","如果现在加减仓？"),node("p","用当前组合快照与最新报价预演一次加仓或减仓对现金、股数和权重的影响；不下单、不保存。","small muted"),go);result.append(entry);}
-      if(task.action_decision){const technical=node("details",null,"desk-memo-section desk-technical desk-fold");technical.append(node("summary","技术条件 · 当前仅合成行情"));const whatif=node("section",null,"desk-memo-section desk-whatif");whatif.setAttribute("aria-label","单账户调仓预演");result.append(whatif);reference.append(technical);void whatifSection(task,whatif);technicalSection(task,technical,whatif);}
+      if(task.action_decision){const technical=node("details",null,"desk-memo-section desk-technical desk-fold");technical.append(node("summary","技术条件 · 当前仅合成行情"));const whatif=node("section",null,"desk-memo-section desk-whatif");whatif.id="desk-case-whatif";whatif.setAttribute("aria-label","单账户调仓预演");result.append(whatif);reference.append(technical);void whatifSection(task,whatif);technicalSection(task,technical,whatif);}
     }
     const metricBand=result.querySelector(":scope > .desk-key-metrics");if(metricBand && accountDetails)accountDetails.append(metricBand);
     if (task.status === "COMPLETE" && task.assessment) {
