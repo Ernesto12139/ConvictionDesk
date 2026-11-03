@@ -30,13 +30,14 @@ separately. Missing quotes leave current NAV unknown.
 1. **Position.** Open **组合研究优先级**, choose APP and select the synthetic
    Growth account. The account and snapshot date remain visible in the case.
 2. **Case.** Save a Fast pass, then continue Deep on the same task. The case file
-   shows the two saved judgments, counterevidence and next checks together.
+   above the saved reading pane shows both judgments, counterevidence and next checks.
    Both APP versions retain `UNDETERMINED`.
 3. **Evidence.** Open the new evidence section to see the comparative revenue
    and operating cash flow periods from the filing. The case also links to the
    evidence reader and the selected revision's execution trace.
 4. **Consequence.** Jump to the account What-if. Use five shares, an assumed
-   $200 fill, a $1 fee and $240 for the other holding. The synthetic account
+   $200 fill, a $1 fee and $240 for the other holding. Confirm the hypothetical
+   price and share basis checkbox, then choose **预览组合变化**. The synthetic account
    preview moves cash from $1,200 to $199 and shares from 30 to 35. Reopen
    the first saved revision to see its evidence and trace again.
 
