@@ -22,6 +22,22 @@ The 31-case guard corpus (`evals/run_trace_eval.py`) is exercised through the te
 suite (`tests/test_trace_eval.py`). None of this measures investment quality; the
 research judgments are scripted, and `UNDETERMINED` is an expected answer.
 
+## Run the guards locally
+
+Install the test extras into the virtual environment (`python -m pip install ".[test]"`),
+then run from the repository root. Substitute `.venv/bin/python` or
+`.venv\Scripts\python.exe` for `python` when the environment is not activated.
+
+```sh
+python -m pytest -q tests/test_portfolio_priority_journey.py
+python evals/run_trace_eval.py
+python evals/portfolio_priority_eval.py
+```
+
+They exercise the account/revision journey, the 31-case frozen guard corpus and the
+scripted HTTP research/What-if journey. They make zero paid model calls. Guard and
+arithmetic checks do not measure investment accuracy.
+
 The sections below describe earlier releases and remain accurate for them.
 
 ## v0.10.0 public IVS scope

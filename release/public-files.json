@@ -44,6 +44,26 @@
     "path": "docs/architecture.md"
   },
   {
+    "source": "docs/assets/cd-case-1440-light.png",
+    "path": "docs/assets/cd-case-1440-light.png"
+  },
+  {
+    "source": "docs/assets/cd-case-390-light.png",
+    "path": "docs/assets/cd-case-390-light.png"
+  },
+  {
+    "source": "docs/assets/cd-home-1440-light.png",
+    "path": "docs/assets/cd-home-1440-light.png"
+  },
+  {
+    "source": "docs/assets/cd-priority-1440-dark.png",
+    "path": "docs/assets/cd-priority-1440-dark.png"
+  },
+  {
+    "source": "docs/assets/cd-priority-1440-light.png",
+    "path": "docs/assets/cd-priority-1440-light.png"
+  },
+  {
     "source": "docs/assets/convictiondesk-architecture-dark.svg",
     "path": "docs/assets/convictiondesk-architecture-dark.svg"
   },

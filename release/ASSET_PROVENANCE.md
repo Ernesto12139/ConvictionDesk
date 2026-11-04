@@ -48,3 +48,18 @@ of position, saved case, evidence and hypothetical consequence. It uses system
 fonts, inline SVG shapes, no embedded media and no external references. It does
 not depict a live account or measured investment outcome. All three assets are
 MIT and contain no Owner data, credentials or licensed vendor content.
+
+Investor-first workbench captures (2026-11-04 UTC, Claude worktree branch
+`feat/20261105-warm-decision-desk`, UI commit `7e1c96c` over released
+`a68b078`): `docs/assets/cd-priority-1440-{light,dark}.png`,
+`cd-case-1440-light.png`, `cd-case-390-light.png` and `cd-home-1440-light.png`
+are direct headless-Chromium (Playwright) viewport captures of the keyless
+`python -m market_agent.serve` on loopback. 1440×900 at 2×, 390×844 at 3×; no
+cropping or pixel edits. Route: **组合研究优先级** → 选择 APP → Synthetic growth →
+Fast → same-task Deep (both rounds `UNDETERMINED`); the home capture is the
+read-only replay scope. No model or market-data provider was called and no
+external request was made. Data shown: real public SEC metadata and facts from the
+packaged capture, synthetic accounts and marks, scripted research. Capture
+scripts and receipts are kept in the private handoff
+`MIA-INVESTOR-FIRST-20261105/claude/`. All MIT; no Owner data, credentials or
+licensed vendor content.

@@ -1,137 +1,100 @@
+# ConvictionDesk — From holdings to conviction.
+
+**Investigate what changed in the US stocks you own, weigh the evidence against
+your thesis, and see what a change would do to the account that pays for it.**
+A local, open-source research workbench. No broker connection.
+
 <p align="center">
-  <img src="docs/assets/investment-case-hero.svg" alt="ConvictionDesk Investment Case File. Position, saved research case, evidence, then hypothetical account consequence. Conceptual illustration." width="100%">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cd-priority-1440-dark.png">
+    <img src="docs/assets/cd-priority-1440-light.png" alt="The ConvictionDesk portfolio priority page: six synthetic holdings across four accounts ranked by committed capital, each with its public filing coverage, next to a panel for researching one holding." width="100%">
+  </picture>
 </p>
+<p align="center"><sub>Browser capture of the public workbench: synthetic accounts, frozen public SEC filings, scripted research. Capture IDs in <a href="release/ASSET_PROVENANCE.md">asset provenance</a>.</sub></p>
 
-**ConvictionDesk is a local investment research workbench for people who own US stocks.**
-Start with a position and one account. Compare what you knew at the first pass with
-what later evidence adds, then see how a hypothetical change would affect that account.
+[Try it in 30 seconds](#try-it-in-30-seconds) · [Run it](#run-it) ·
+[How it works](#how-it-works) · [Scope](#scope) ·
+[Releases](https://github.com/Ernesto12139/ConvictionDesk/releases)
 
-![The actual desktop Investment Case File showing two saved APP research versions with the same UNDETERMINED status](docs/assets/investment-case-1440.png)
+## What it does
 
-This Console capture uses a synthetic account and scripted research. PUBLIC_SEC
-filings were accepted on 2026-08-05, with an evidence cutoff of 2026-10-30.
-The desktop and mobile images are original 1× light-theme captures. [390 px mobile view](docs/assets/investment-case-390.png).
+**See what merits attention.** The home page lists your holdings in research order: new
+filings or news, then positions you have never researched, then stale research,
+then capital at stake. The daily scan says plainly whether it ran, found
+nothing new, or could not reach its source, so an old list never passes as
+today's news. Each quote carries its provider, market time and delay status.
 
-[Run it locally](#run-it-locally) · [Walk the case](#one-position-one-case-file) ·
-[Under the hood](#under-the-hood) · [Releases](https://github.com/Ernesto12139/ConvictionDesk/releases)
+**Investigate real evidence.** Ask about one holding. Fast reads the filing;
+Deep adds comparable-period financials to the same task. Every round shows the
+judgment, the strongest counterevidence, what would change it and the next
+check, each linked to its source. Thin evidence stays `UNDETERMINED`; it is
+never turned into a default hold.
 
-## Why keep a case file?
+**Understand portfolio consequences.** Preview a hypothetical buy or sell on a
+copy of one account and see cash, shares and concentration before and after.
+Missing prices stay unknown instead of becoming zero. Nothing is ordered and
+your saved holdings do not change.
 
-If you manage positions across accounts, a new filing can add evidence without
-changing your investment judgment. The workbench keeps the two versions together
-so you can see which assumption, counterargument or next check changed. Before
-acting, preview the cash and concentration effect on the account that would
-actually fund the change.
+<p align="center">
+  <img src="docs/assets/cd-case-1440-light.png" alt="The Investment Case File for APP: the first Fast round and the Deep round side by side, each with its judgment, key counterevidence and next check, both UNDETERMINED, with links to the evidence and the account What-if." width="100%">
+</p>
+<p align="center"><sub>The Case File after Fast and Deep on the same task. Both rounds stay readable.</sub></p>
 
-The research queue ranks positions by committed cost and shows evidence coverage
-separately. Missing quotes leave current NAV unknown.
+## Try it in 30 seconds
 
-## One position, one case file
+1. Open **组合研究优先级** (portfolio priority) and choose **APP**, then the Growth account.
+2. Run **Fast**, then continue **Deep** on the same task. The Case File keeps both rounds side by side.
+3. Follow **前往单账户 What-if** and preview five shares at $200 with a $1 fee. Cash moves from $1,200 to $199; no order is placed.
 
-1. **Position.** Open **组合研究优先级**, choose APP and select the synthetic
-   Growth account. The account and snapshot date remain visible in the case.
-2. **Case.** Save a Fast pass, then continue Deep on the same task. The case file
-   above the saved reading pane shows both judgments, counterevidence and next checks.
-   Both APP versions retain `UNDETERMINED`.
-3. **Evidence.** Open the new evidence section to see the comparative revenue
-   and operating cash flow periods from the filing. The case also links to the
-   evidence reader and the selected revision's execution trace.
-4. **Consequence.** Jump to the account What-if. Use five shares, an assumed
-   $200 fill, a $1 fee and $240 for the other holding. Confirm the hypothetical
-   price and share basis checkbox, then choose **预览组合变化**. The synthetic account
-   preview moves cash from $1,200 to $199 and shares from 30 to 35. Reopen
-   the first saved revision to see its evidence and trace again.
+[The full walkthrough](docs/portfolio-priority-journey.md) lists every source and number.
 
-[Full portfolio journey and source details](docs/portfolio-priority-journey.md)
+## Run it
 
-## Run it locally
-
-Use Python 3.12 or newer. Installing downloads dependencies. The default public
-workbench uses bundled evidence and scripted research without API keys.
-
-**macOS / Linux**
+Python 3.12 or newer. No API keys.
 
 ```sh
-git clone https://github.com/Ernesto12139/ConvictionDesk.git
-cd ConvictionDesk
-python3 -m venv .venv
-.venv/bin/python -m pip install .
+# macOS / Linux
+git clone https://github.com/Ernesto12139/ConvictionDesk.git && cd ConvictionDesk
+python3 -m venv .venv && .venv/bin/python -m pip install .
 .venv/bin/python -m market_agent.serve
 ```
 
-**Windows PowerShell**
-
 ```powershell
-git clone https://github.com/Ernesto12139/ConvictionDesk.git
-cd ConvictionDesk
-python -m venv .venv
-.venv\Scripts\python.exe -m pip install .
+# Windows PowerShell
+git clone https://github.com/Ernesto12139/ConvictionDesk.git; cd ConvictionDesk
+python -m venv .venv; .venv\Scripts\python.exe -m pip install .
 .venv\Scripts\python.exe -m market_agent.serve
 ```
 
-Open [the local workbench](http://127.0.0.1:8080/) and choose **组合研究优先级**.
-Version 0.13.0 adds the Investment Case File to the portfolio journey.
-The commands above install the source checkout. For a published package and its
-versioned assets, use the [GitHub Releases page](https://github.com/Ernesto12139/ConvictionDesk/releases).
-Candidate reviewers should check out the exact reviewed commit before installation.
+Open <http://127.0.0.1:8080/>. Or run `docker build -t convictiondesk . && docker run --rm -p 127.0.0.1:8080:8080 convictiondesk`.
+Packaged versions are on the [Releases page](https://github.com/Ernesto12139/ConvictionDesk/releases).
 
-```sh
-docker build -t convictiondesk .
-docker run --rm -p 127.0.0.1:8080:8080 convictiondesk
-```
+## How it works
 
-## Under the hood
-
-The research service freezes the task scope, collects bounded evidence, validates
-the result and saves an immutable revision. Fast and Deep use the same typed
-contracts. The public workbench exercises this loop with scripted responses.
+Each question becomes a research task with a frozen scope. Typed tools gather
+evidence, code checks the result, and the task saves an immutable revision.
 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-task-loop-dark.svg">
-    <img src="docs/assets/convictiondesk-task-loop-light.svg" alt="Research task loop. Freeze account and evidence cutoff, call typed read-only tools, assess within a bounded budget, validate citations and numbers, save an immutable revision, then preview a Decimal What-if. Tool and model spans feed Trace. Conceptual architecture diagram." width="100%">
+    <img src="docs/assets/convictiondesk-task-loop-light.svg" alt="Research task loop: freeze account and evidence cutoff, call typed read-only tools, assess within a bounded budget, validate citations and numbers, save an immutable revision, then preview a Decimal What-if. Tool and model spans feed Trace. Conceptual diagram." width="100%">
   </picture>
 </p>
 
-- **Scope and point in time.** Bind one account and snapshot to an evidence cutoff.
-  Sources published after that cutoff are rejected. [Context compiler](src/market_agent/research_context.py)
-- **Tools and validation.** Typed read-only tools produce evidence receipts. Code
-  rejects citations outside the task and unsupported numbers or units, and keeps
-  verified facts distinct from attributed model drafts. [Research service and validation](src/market_agent/research_task.py)
-- **Financial meaning.** Financial facts retain accession, currency and reporting
-  period. Comparable periods feed deterministic calculations.
-  [Financial series](src/market_agent/financial_series.py)
-- **Memory and Trace.** Deep appends a revision while preserving the first round.
-  The Case File reads saved versions and shows the selected revision's tool and
-  model spans. [Journey](src/market_agent/portfolio_priority_journey.py) ·
-  [Execution Trace](src/market_agent/research_execution_trace.py)
-- **Account consequence.** Python Decimal computes cash, shares and concentration
-  on a copy of one account. Cash limits and cross-account checks apply.
-  [What-if engine](src/market_agent/portfolio_whatif.py)
+- **Point in time.** A task binds one account snapshot to an evidence cutoff; later sources are rejected. [Context](src/market_agent/research_context.py)
+- **Bounded, typed tools.** Read-only tools return evidence receipts within a fixed budget. Citations outside the task and unsupported numbers are rejected. [Research service](src/market_agent/research_task.py)
+- **Financial meaning.** SEC facts keep accession, unit and exact period, so comparisons use matching periods. [Financial series](src/market_agent/financial_series.py)
+- **Revisions and Trace.** Deep appends a revision; the first round is never rewritten. Each revision shows its own tool and model spans. [Trace](src/market_agent/research_execution_trace.py)
+- **Account consequence.** Python `Decimal` computes the What-if on an isolated copy of one account, with cash and cross-account checks. [What-if](src/market_agent/portfolio_whatif.py)
 
-To reproduce the guards, install test dependencies with the virtual environment's
-Python (`python -m pip install ".[test]"`). Run the following from the repository
-root, substituting `.venv/bin/python` or `.venv\Scripts\python.exe` for `python`
-when the environment is not activated.
+[Architecture](docs/architecture.md) · [Verification and guard commands](docs/verification.md) · [Data sources](docs/data-sources.md)
 
-```sh
-python -m pytest -q tests/test_portfolio_priority_journey.py
-python evals/run_trace_eval.py
-python evals/portfolio_priority_eval.py
-```
+## Scope
 
-These commands exercise the account/revision journey, the 31-case frozen guard
-corpus, and the scripted HTTP research/What-if journey respectively. They make
-zero paid model calls. Guard and arithmetic checks do not measure investment
-accuracy. See the [verification scope](docs/verification.md) for platform gates.
+The public build uses synthetic holdings and prices, frozen public SEC filings
+and scripted research; it calls no model or market-data provider. Live quotes
+need your own provider key and may be delayed. ConvictionDesk has no broker
+connection or order API, and it is not investment advice. The server listens on
+loopback by default.
 
-## Trust and scope
-
-The shipped public journey uses synthetic holdings and marks, frozen public SEC
-evidence and a scripted model path. It requires no API key or live quote feed. ConvictionDesk has no broker
-connection and no order API.
-A What-if is arithmetic on a copy of one account and never places an order.
-It is not investment advice and makes no accuracy or return claim.
-The default native server listens on loopback.
-
-[Documentation](docs/README.md) · [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
+[Documentation](docs/README.md) · [Showcase](docs/showcase.md) · [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)

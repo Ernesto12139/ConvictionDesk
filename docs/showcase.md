@@ -1,5 +1,21 @@
 # Showcase
 
+## Investor-first workbench
+
+The home leads with today's scan state, your holdings in research order and the
+research question box. Each status chip links to its detail; full provenance and
+runtime records sit below the work. This capture is the read-only replay scope
+(synthetic accounts, scripted research).
+
+![Home: status chips, a synthetic replay scan card, holdings in research order and the research question panel](assets/cd-home-1440-light.png)
+
+The Investment Case File after APP Fast and same-task Deep, on a 390-pixel phone.
+Both rounds stay readable and both remain `UNDETERMINED`.
+
+<img src="assets/cd-case-390-light.png" alt="Phone view of the APP Investment Case File with the first Fast round and the Deep round" width="320">
+
+## v0.12.0 screens
+
 Screens from ConvictionDesk v0.12.0, captured from the default keyless workbench
 (`python -m market_agent.serve`, then **组合研究优先级**) at 1440 and 390 pixels with
 every external request blocked. SEC filing metadata and financial facts are real,
