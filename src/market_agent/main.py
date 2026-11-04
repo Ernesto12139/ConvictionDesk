@@ -142,7 +142,7 @@ def create_app(db_path: str | Path = "data/market_agent.db",
         semantic_judge=semantic_judge,
         comparison_semantic_judge=comparison_semantic_judge,
     )
-    app = FastAPI(title="ConvictionDesk", version="0.13.0rc1")
+    app = FastAPI(title="ConvictionDesk", version="0.13.0")
     from .research_api import register_research
     if (model_profiles is None and environment.get('MIA_PROVIDER_HUB') != '1'
             and not explicit_test_provider and llm_client is None

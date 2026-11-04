@@ -21,7 +21,14 @@
   const deep = button('继续同一 Task 的 Deep', () => submit('DEEP'), 'primary'); deep.hidden = true;
   const retry = button('重试失败研究', () => submit(active.mode || 'FAST')); retry.hidden = true;
   const read = button('读取保存状态', () => readTask()); read.hidden = true;
-  const receipt = el('section', undefined, 'pp-receipt'); receipt.hidden = true; receipt.setAttribute('aria-label', '版本与执行收据');
+  let submittedCase = null;
+  const receipt = el('section', undefined, 'pp-receipt'); receipt.hidden = true; receipt.setAttribute('aria-label', '版本与执行收据'); receipt.tabIndex = -1;
+  window.addEventListener('mia-task-opened', event => {
+    if (submittedCase?.taskId !== event.detail.taskId || submittedCase.revision !== event.detail.revision || receipt.hidden) return;
+    receipt.focus({preventScroll: true});
+    receipt.scrollIntoView({block: 'start', behavior: 'instant'});
+    submittedCase = null;
+  });
   account.addEventListener('change', () => { start.disabled = !account.value || sending; });
 
   function choose(candidate) {
@@ -59,7 +66,10 @@
       window.dispatchEvent(new PopStateEvent('popstate'));
       await readTask();
       const saved = document.getElementById('desk-read-saved');
-      if (saved && !document.getElementById('desk-task').hidden) saved.click();
+      if (saved && !document.getElementById('desk-task').hidden && active.status === 'COMPLETE') {
+        submittedCase = {taskId: active.task_id, revision: active.revision};
+        saved.click();
+      }
     } catch (error) { status.textContent = `研究未提交：${error.message}。读取保存状态后再决定是否重试。`; }
     finally { sending = false; start.disabled = !account.value || account.disabled; deep.disabled = false; retry.disabled = false; }
   }

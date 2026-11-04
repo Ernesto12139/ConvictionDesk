@@ -1,5 +1,29 @@
 # Verification
 
+## v0.12.0 portfolio priority scope
+
+The default entry `python -m market_agent.serve` adds **组合研究优先级**: four
+synthetic accounts, six holdings ranked by committed cost, APP Fast then same-task
+Deep with comparable PUBLIC_SEC revenue and operating cash flow, and a detached
+single-account `Decimal` What-if. Research prose is scripted; nothing calls a model
+or market-data provider at runtime.
+
+CI (`.github/workflows/ci.yml`) runs on every pull request, push to `main` and
+release tag:
+
+| Gate | Where it runs |
+|---|---|
+| Deterministic test suite, import/resource closure, public history audit | Linux and Windows |
+| `evals/portfolio_priority_eval.py` over HTTP, then the priority browser journey (`scripts/smoke_portfolio_priority_browser.cjs`) | Linux |
+| The earlier replay, public-IVS What-if and unified-workbench browser journeys | Linux |
+| Installed wheel in Docker with no network and a read-only root filesystem, running the priority eval | Linux |
+
+The 31-case guard corpus (`evals/run_trace_eval.py`) is exercised through the test
+suite (`tests/test_trace_eval.py`). None of this measures investment quality; the
+research judgments are scripted, and `UNDETERMINED` is an expected answer.
+
+The sections below describe earlier releases and remain accurate for them.
+
 ## v0.10.0 public IVS scope
 
 The new keyless entrypoint is `python -m market_agent.public_ivs --serve` on8791:

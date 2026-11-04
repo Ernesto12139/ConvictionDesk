@@ -928,6 +928,7 @@
       if(revision)target.searchParams.set("revision",revision);else target.searchParams.delete("revision");
       if(target.href!==location.href)history.pushState(null,"",target);
       render(task,!!revision);if(!initial){$("desk-task").focus({preventScroll:true});$("desk-task").scrollIntoView({block:"start",behavior:motion()});}
+      window.dispatchEvent(new CustomEvent("mia-task-opened",{detail:{taskId:task.task_id,revision:task.revision}}));
       void historyOptions(task,generation);
       if(!revision && task.status==="RUNNING")void watch(taskId,generation);
     }catch(error){if(generation===viewGeneration){if(active)observationLost("任务暂时无法读取，仍保留上次观察的版本。请重新读取进度。");else $("desk-request-status").textContent="任务暂时无法读取，请刷新最近研究；没有重新提交。";}}

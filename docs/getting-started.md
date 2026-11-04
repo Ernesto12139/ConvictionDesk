@@ -1,6 +1,6 @@
 # Getting started
 
-## Default v0.12 source candidate
+## Default v0.12 workbench
 
 After installation, run `python -m market_agent.serve` and open
 http://127.0.0.1:8080/. Choose **组合研究优先级** to operate the four-account

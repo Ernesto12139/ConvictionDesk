@@ -47,6 +47,8 @@ body[data-portfolio-priority] .rail nav details { display: none !important; }
 .pp-case-version { min-width: 0; padding: 16px; border: 1px solid #c9b991; border-radius: 8px; color: #14273c; background: #fbf5e8; }
 .pp-case-version:only-child { grid-column: 1 / -1; }
 .pp-case-version h3, .pp-case-version dl { margin: 0; }
+#portfolio-priority .pp-case-version h3 { color: #14273c; }
+#portfolio-priority .pp-receipt a { color: #1f6b56; }
 .pp-case-version dt { font-size: .78rem; font-weight: 700; margin-top: 12px; }
 .pp-case-version dd { margin: 4px 0 0; overflow-wrap: anywhere; line-height: 1.55; }
 .pp-case-decision { font-weight: 700; font-size: .78rem; letter-spacing: .04em; }

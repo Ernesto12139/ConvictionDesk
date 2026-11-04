@@ -1,49 +1,58 @@
 # Showcase
 
-Screens from ConvictionDesk v0.10.0, captured from the keyless workbench
-(`python -m market_agent.public_ivs --serve`) at 1440 and 390 pixels. SEC filing
-metadata is real; the account, thesis and prices are synthetic; research text is
-scripted. The interface is in Simplified Chinese.
+Screens from ConvictionDesk v0.12.0, captured from the default keyless workbench
+(`python -m market_agent.serve`, then **组合研究优先级**) at 1440 and 390 pixels with
+every external request blocked. SEC filing metadata and financial facts are real,
+frozen public captures (`PUBLIC_SEC`). The four accounts, their cash and marks are
+invented (`SYNTHETIC`). The research prose is a fixed script (`SCRIPTED`). The
+interface is in Simplified Chinese.
 
-## The filings that matter to you
+## Where to look first
 
-The workbench opens on recent SEC filings for the demo holdings (UNP, KR) and
-watch list (DOW). The banner names the three kinds of data on the page. Each card
-gives the form, the SEC acceptance time, why the filing is here and what to check
-first, with a link to the original and the thesis held before it.
+Six synthetic holdings across four accounts, ranked by committed cost (shares ×
+average cost). Source coverage sits beside the rank and does not change it. No
+holding has a current quote, so current NAV is `UNKNOWN`.
 
-<img alt="The v0.10.0 workbench first screen at 1440 pixels. A banner reads: public demo, SEC filing to research to account preview, with labels for real SEC metadata, synthetic holdings and thesis, and scripted research. Below it, the company filings lane: a UNP quarterly report card marked synthetic holding, pending review, with its SEC acceptance time in UTC, why it is listed, the next check, the prior thesis link, and buttons to open the SEC original, research the filing and run an account What-if." src="assets/convictiondesk-v010-home-1440.png" width="100%">
+<img alt="The research priority screen at 1440 pixels. A label strip names PUBLIC_SEC frozen capture, SYNTHETIC accounts and prices, SCRIPTED, NOT_LIVE_MODEL, the data cutoff, no keys, no model calls and no orders. A coverage line counts synthetic marks, SEC metadata, comparable financials and current quotes (0 of 6). A table ranks APP, UNP, AAPL, DOW, NVDA and KR by committed cost with their source coverage." src="assets/convictiondesk-v012-priority-light.png" width="100%">
 
-## A research record
+## One record, two rounds
 
-Researching the UNP 8-K returns the direction (here not formed, because the
-filing metadata alone does not establish an operating impact), the primary
-evidence, the strongest counterevidence, what would change the judgment and the
-next check. The record keeps its cutoff and round number, and Deep continues it as
-round 2.
+APP in the Synthetic growth account: Fast locates the filings, then Deep adds
+comparable January–June revenue and operating cash flow from the same 10-Q as
+round 2. Python `Decimal` derives +55.77% and +34.70%. Revenue outgrew cash flow,
+there is no confirmed prior thesis and no current price, so the judgment stays
+`UNDETERMINED`; it is not turned into HOLD. Round 1 is kept exactly as saved.
 
-<img alt="A saved research record at 1440 pixels: UNP investment logic review, round 1, research cutoff 2026-10-24 15:18 UTC. Direction not formed, evidence insufficient, UNDETERMINED. Primary evidence traceable to the SEC original, key counterevidence, a note that no comparable before-and-after thesis was saved, what evidence would change the judgment, and a side panel with the next priority check and a follow-up form. The price reference is labelled as a synthetic mark." src="assets/convictiondesk-v010-record-1440.png" width="100%">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/convictiondesk-v012-record-dark.png">
+  <img alt="The saved APP research record, round 2, with its research cutoff and bound holdings snapshot. Direction not formed, insufficient evidence, UNDETERMINED. Primary evidence: comparable periods of revenue and operating cash flow from the same filing. Key counterevidence: revenue grew faster than operating cash flow. What would change the judgment: a current quote and a confirmed thesis are missing. The next check is after the next filing." src="assets/convictiondesk-v012-record-light.png" width="100%">
+</picture>
 
 ## Account What-if
 
-From the result, preview a hypothetical trade. Shares, cash, NAV and weight are
-computed before and after in `Decimal`; the trade itself and repricing of shares
-already held are reported separately. Nothing is ordered or saved.
+Five more APP shares at a hypothetical USD 200 with a USD 1 fee: cash 1,200 → 199,
+shares 30 → 35, account value 8,400 → 8,399. The trade itself only costs the fee.
+Seven shares would be refused, because one account cannot spend another account's
+cash. Nothing is ordered or saved.
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/convictiondesk-v010-whatif-dark.png">
-  <img alt="What-if receipt: shares 10 to 15, cash 10,000 to 8,799 USD, NAV 12,980 to 12,979 USD, weight 18.49% to 27.74%, trade itself minus 1 USD, modeled unrealized P&L 1,399 USD, original direction UNDETERMINED, no order placed." src="assets/convictiondesk-v010-whatif-light.png" width="720">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/convictiondesk-v012-whatif-dark.png">
+  <img alt="Single-account What-if for the Synthetic growth account: shares 30 to 35, cash 1,200 to 199 USD, account value 8,400 to 8,399 USD, position weight 71.43% to 83.34%. The trade itself costs minus 1 USD. The note says the research direction stays UNDETERMINED, no order was placed and nothing was saved." src="assets/convictiondesk-v012-whatif-light.png" width="88%">
 </picture>
 
 ## On a phone
 
-<img alt="The v0.10.0 first screen at 390 pixels: a compact banner with the three data labels, then the SEC filings lane with the first UNP card visible." src="assets/convictiondesk-beta-mobile-390.png" width="390">
+<img alt="The same journey at 390 pixels: the research priority screen with the synthetic, scripted and no-order labels, and the saved APP record showing UNDETERMINED with the next check." src="assets/convictiondesk-v012-mobile-390.png" width="72%">
 
 ## How these images were made
 
-Each screen is a direct headless-Chromium capture of the v0.10.0 workbench; the
-What-if is cropped, nothing is retouched, and files carry no image metadata. The
-README hero frames one of these captures with an original receipt rail, and the
-flow diagram is an original SVG; both are generated from
-[`assets/src/`](assets/src/). Provenance:
+Each screen is a direct headless-Chromium capture of the released v0.12.0 source
+(`a251e90`) served on loopback, at 1440 × 900 and 390 × 844, with every request to
+another origin aborted (none were made). Images are cropped and scaled, and the
+two phone screens are placed side by side; nothing is retouched. On-screen times
+use the capturing browser's local time zone; saved receipts keep UTC. Provenance:
 [`release/ASSET_PROVENANCE.md`](../release/ASSET_PROVENANCE.md).
+
+Earlier screens remain in [`assets/`](assets/): the v0.10.0 filing-first workbench
+(`convictiondesk-v010-*`) and the v0.9 replay (`convictiondesk-journey-*`,
+`-records-*`).

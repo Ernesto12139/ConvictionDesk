@@ -24,7 +24,7 @@ async function saved(page, tid, revision) {
   const browser = await chromium.launch({headless: true, channel: process.env.MIA_BROWSER_CHANNEL || 'chrome'});
   try {
     for (const width of [1440, 390]) {
-      const context = await browser.newContext({viewport: {width, height: width === 390 ? 844 : 1000}});
+      const context = await browser.newContext({colorScheme: 'dark', viewport: {width, height: width === 390 ? 844 : 1000}});
       const page = await context.newPage();
       let expectedFault = false, faultCount = 0, researchPosts = 0;
       page.on('pageerror', e => errors.push(e.message));
@@ -64,6 +64,11 @@ async function saved(page, tid, revision) {
       await page.waitForFunction(() => document.getElementById('desk-task-meta').textContent.includes('第 2 轮'));
       assert.ok(deep.assessment.support.length && deep.assessment.counterevidence.length);
       const caseFile = page.getByRole('region', {name: '版本与执行收据'});
+      await page.waitForFunction(() => document.activeElement?.classList.contains('pp-receipt'));
+      assert.ok(await caseFile.evaluate(section => {
+        const heading = section.querySelector('h2').getBoundingClientRect();
+        return heading.top >= 0 && heading.bottom < innerHeight;
+      }), 'Completed case heading must be visible without scrolling');
       const originalCard = caseFile.locator('[data-revision="1"]');
       const selectedCard = caseFile.locator('[data-revision="2"]');
       assert.ok((await originalCard.innerText()).includes(fast.assessment.core_judgment.text));
@@ -72,6 +77,28 @@ async function saved(page, tid, revision) {
       assert.equal(await originalCard.locator('.pp-case-decision').innerText(), 'UNDETERMINED');
       assert.equal(await selectedCard.locator('.pp-case-decision').innerText(), 'UNDETERMINED');
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      const contrastByTheme = {};
+      for (const theme of ['auto', 'light']) {
+        await page.getByRole('combobox', {name: '外观主题', exact: true}).selectOption(theme);
+        contrastByTheme[theme] = await caseFile.evaluate(section => {
+          const luminance = color => {
+            const channels = color.match(/[\d.]+/g).slice(0, 3).map(Number).map(value => {
+              const channel = value / 255;
+              return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+            });
+            return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+          };
+          return [...section.querySelectorAll('.pp-case-version h3, .pp-case-actions a')].map(element => {
+            let parent = element;
+            while (getComputedStyle(parent).backgroundColor === 'rgba(0, 0, 0, 0)') parent = parent.parentElement;
+            const foreground = luminance(getComputedStyle(element).color);
+            const background = luminance(getComputedStyle(parent).backgroundColor);
+            return {text: element.textContent, ratio: (Math.max(foreground, background) + 0.05) / (Math.min(foreground, background) + 0.05)};
+          });
+        });
+        assert.equal(contrastByTheme[theme].length, 4);
+        assert.ok(contrastByTheme[theme].every(item => item.ratio >= 4.5), JSON.stringify(contrastByTheme));
+      }
       await caseFile.screenshot({path: path.join(output, `case-file-${width}.png`)});
       const evidenceJump = caseFile.getByRole('link', {name: '前往本版依据'});
       await evidenceJump.focus();
@@ -163,8 +190,8 @@ async function saved(page, tid, revision) {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       runs.push({width, task_id: tid, revisions: [fast.revision, deep.revision],
         research_posts: researchPosts, original_preserved: true, whatif_cash: '199',
-        history_task_switch_bound: true, historical_version_read_only: true, case_comparison: true,
-        revision_bound_evidence_whatif_trace: true,
+        history_task_switch_bound: true, historical_version_read_only: true, case_comparison: true, completed_case_focused: true,
+        revision_bound_evidence_whatif_trace: true, contrast_by_theme: contrastByTheme,
         insufficient_cash_refused: true, get_failure_recovered: true, expected_503_console_count: faultCount,
         expected_422_console_count: expectedRefusalErrors.length, overflow: false});
       await context.close();

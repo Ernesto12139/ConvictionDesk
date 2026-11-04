@@ -8,7 +8,8 @@
 | [Architecture](architecture.md) | The research loop, Fast and Deep, point-in-time evidence, `Decimal` finance, validation, MCP and evaluation |
 | [Data sources and keys](data-sources.md) | Each provider, what it can establish, costs, and where your keys and data live |
 | [Verification](verification.md) | How far each capability is verified, CI gates and known limits |
-| [Showcase](showcase.md) | v0.10.0 screens: filings, a research record, the account What-if and the phone layout |
+| [Portfolio priority journey](portfolio-priority-journey.md) | The default v0.12 journey: four synthetic accounts, Fast then Deep on APP, What-if |
+| [Showcase](showcase.md) | v0.12.0 screens: research priority, a two-round record, the account What-if and the phone layout |
 
 ## Design notes
 
@@ -28,4 +29,4 @@ Deeper notes on individual capabilities, written alongside the code:
 - [README](../README.md) — what ConvictionDesk is and why
 - [Contributing](../CONTRIBUTING.md) — how to report issues and how releases are made
 - [Changelog](../CHANGELOG.md) — what changed in each release
-- [v0.10.0 release notes](../release/V010_RELEASE_NOTES.md) · [v0.9.0 release notes](../release/V09_RELEASE_NOTES.md)
+- Release notes: [v0.12.0](../release/V012_RELEASE_NOTES.md) · [v0.11.0](../release/V011_RELEASE_NOTES.md) · [v0.10.0](../release/V010_RELEASE_NOTES.md) · [v0.9.0](../release/V09_RELEASE_NOTES.md)

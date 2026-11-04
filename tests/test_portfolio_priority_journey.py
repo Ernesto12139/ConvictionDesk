@@ -113,6 +113,8 @@ def test_full_fast_deep_whatif_history_and_restart(tmp_path):
         assert client.post(route, json=fill(deep, unchanged_share_basis_attested=False)).status_code == 422
         traces = client.get(f'/api/research/tasks/{tid}/execution-traces').json()['receipts']
         assert len(traces) >= 3
+        assert {r['trace']['revision_id'] for r in traces} == {'1', '2'}
+        assert all(r['trace']['task_id'] == tid for r in traces)
         assert all(r['trace']['execution_mode'] == 'KEYLESS_SCRIPTED' for r in traces)
         assert 'SCRIPTED' in json.dumps(traces)
         assert 'REAL_MODEL' not in json.dumps(traces)

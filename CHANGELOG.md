@@ -1,5 +1,12 @@
 # Changelog
 
+## v0.13.0 — release candidate
+
+- Make saved case headings and evidence links readable in dark and light themes.
+- Focus the completed Fast/Deep case and retain same-revision evidence and Trace.
+- Restore executable setup, engine documentation and explicit no-order scope.
+- Publication awaits independent exact-candidate review and Hosted CI.
+
 ## v0.13.0rc1 — Investment Case File
 
 - Compare the original Fast record with the selected revision in one place.
@@ -8,7 +15,7 @@
   Trace. Selecting an earlier version reads the stored record without re-running it.
 - See the same journey on desktop and mobile in the updated product README.
 
-## v0.12.0 candidate — portfolio priority and capital efficiency
+## v0.12.0 — portfolio priority and capital efficiency (2026-11-03)
 
 - The default public server links directly to the four-account Portfolio Priority
   journey and back to the existing read-only replay, with separate state.
@@ -18,8 +25,9 @@
   facts, immutable versions and actual tool/Trace receipts. Models are SCRIPTED.
 - Detached, single-account Decimal What-if refuses overspending and never places
   an order. No Owner records, keys, licensed news or live model calls are included.
-- Source candidate only: independent product/security, installation and Hosted CI
-  gates remain separate from publication. See [release notes](release/V012_RELEASE_NOTES.md).
+- Released as tag `v0.12.0` on 2026-11-03 with one wheel asset, after independent
+  product/security review, anonymous installation and tag CI. See
+  [release notes](release/V012_RELEASE_NOTES.md).
 
 ## v0.11.0 — unified workbench and execution trace
 
