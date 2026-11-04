@@ -72,14 +72,20 @@ def test_rights_failure_is_blocked_not_error():
 
 
 def test_sensitive_inputs_are_dropped_not_hashed():
-    recorder = _recorder()
-    with recorder.record_tool("portfolio.snapshot",
-                              input_class={"symbol": "GLXY", "quantity": "28",
-                                           "cash": "300", "question": "should I sell?"}) as span:
-        span.output_count = 2
-    span = recorder.close().spans[0]
-    assert span.input_class == {"symbol": "GLXY"}
-    assert "28" not in json.dumps(span.model_dump(mode="json"))
+    # Timestamp digits may coincide with a private value without leaking it.
+    fixed_time = datetime(2026, 11, 4, 13, 28, 28, tzinfo=timezone.utc)
+    spans = []
+    for inputs in ({"symbol": "GLXY", "quantity": "28", "cash": "300",
+                    "question": "should I sell?"}, {"symbol": "GLXY"}):
+        recorder = TraceRecorder(run_id="trace-test", execution_mode="KEYLESS_SCRIPTED",
+                                 clock=lambda: fixed_time, timer=lambda: 0.0,
+                                 code=CodeIdentity(commit="0" * 40, build="test", source="ENV"))
+        with recorder.record_tool("portfolio.snapshot", input_class=inputs) as span:
+            span.output_count = 2
+        spans.append(recorder.close().spans[0].model_dump(mode="json"))
+    assert spans[0]["input_class"] == {"symbol": "GLXY"}
+    # Sensitive input must have no effect anywhere, including hashes or notes.
+    assert spans[0] == spans[1]
 
 
 def test_scripted_step_is_not_a_zero_cost_model_call():
