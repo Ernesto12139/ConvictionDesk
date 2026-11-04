@@ -916,6 +916,14 @@
     "path": "src/market_agent/static/decision-brief.js"
   },
   {
+    "source": "src/market_agent/static/desk-brand.css",
+    "path": "src/market_agent/static/desk-brand.css"
+  },
+  {
+    "source": "src/market_agent/static/desk-home.js",
+    "path": "src/market_agent/static/desk-home.js"
+  },
+  {
     "source": "src/market_agent/static/execution-trace.js",
     "path": "src/market_agent/static/execution-trace.js"
   },

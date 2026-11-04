@@ -1,0 +1,130 @@
+/* ConvictionDesk brand layer v1 (investor-first home).
+   Loaded after quiet.css. Light tokens are quiet.css v0.10 tokens unchanged; this file
+   adds the restrained warm-gold accent, a green-charcoal dark palette and the home
+   layout. Components use semantic tokens only, so light and dark stay one design. */
+
+/* ---------- Brand tokens ---------- */
+html[data-theme="light"], html[data-theme="light"] body {
+  --brand-gold:#7d5a1f; --brand-gold-soft:#f7f0e1; --brand-gold-line:#dcc699;
+  --surface-warm:#fbf8f1;
+}
+html[data-theme="dark"], html[data-theme="dark"] body {
+  /* Green-charcoal, not navy: the same brand at night. */
+  --surface-canvas:#111614; --surface-panel:#1a211e; --surface-inset:#151b18; --surface-rail:#0c100e;
+  --surface-hover:#233029; --surface-selected:#26443a;
+  --text-primary:#eef2ee; --text-secondary:#b2beb8; --text-strong:#ffffff;
+  --border-subtle:#303b36; --border-control:#7a8a82;
+  --brand-gold:#e6c481; --brand-gold-soft:#2d2819; --brand-gold-line:#5e4f30;
+  --surface-warm:#1d211b;
+}
+/* Legacy names some components still read (portfolio-priority.css, owner panels). */
+html[data-theme], html[data-theme] body {
+  --text:var(--text-primary); --surface:var(--surface-panel); --accent:var(--action);
+  --surface-soft:var(--surface-inset); --primary:var(--action); --border:var(--border-subtle);
+}
+/* Older blue literals (research-desk.css, ivs.css) mapped onto the green action token. */
+html[data-theme] .ivs-research-mode-options button[aria-pressed="true"] { background:var(--action); color:var(--on-action); border-color:var(--action); }
+html[data-theme] .ivs-research-mode-options button[aria-pressed="true"]:disabled { background:var(--action-soft); color:var(--text-primary); border-color:var(--border-subtle); }
+html[data-theme] :is(.attention-actions button.primary, #desk-next-draft) { background:var(--action-soft); color:var(--action); border-color:transparent; }
+html[data-theme] :is(.desk-recent-task:hover, .desk-source-button) { color:var(--action); }
+html[data-theme] .is-current .desk-stage-number { border-color:var(--action); color:var(--action); }
+html[data-theme] .desk-mobile-action { background:var(--action); color:var(--on-action); }
+
+
+/* ---------- Home: one coherent first screen ---------- */
+html[data-theme] body:not([data-portfolio-priority]) .page-heading { margin-bottom:var(--space-1); align-items:flex-end; }
+html[data-theme] body[data-research-mode]:not([data-portfolio-priority]) .page-heading h1 { font-size:26px; }
+html[data-theme] .page-heading .muted { font-size:14px; }
+html[data-theme] .desk-home-shortcuts { display:none; }
+
+.desk-status { display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; margin:0 0 var(--space-2); padding:0; list-style:none; }
+.desk-status li { display:inline-flex; align-items:center; gap:6px; min-height:30px; padding:4px 10px; border:1px solid var(--border-subtle);
+  border-radius:999px; background:var(--surface-panel); color:var(--text-secondary); font-size:var(--text-label); line-height:1.3; }
+.desk-status li b { color:var(--text-primary); font-weight:600; }
+.desk-status li[data-tone="ok"] { border-color:color-mix(in srgb, var(--action) 35%, var(--border-subtle)); }
+.desk-status li[data-tone="warn"] { border-color:var(--brand-gold-line); background:var(--brand-gold-soft); color:var(--brand-gold); }
+.desk-status li[data-tone="warn"] b { color:var(--brand-gold); }
+.desk-status .dot { width:7px; height:7px; border-radius:50%; background:var(--text-secondary); flex:none; }
+.desk-status [data-tone="ok"] .dot { background:var(--action); }
+.desk-status [data-tone="warn"] .dot { background:var(--brand-gold); }
+.desk-status a, .desk-status button.desk-linklike { color:inherit; font:inherit; }
+html[data-theme] .desk-status button.desk-linklike { min-height:0; padding:0; border:0; background:none; text-decoration:underline; text-underline-offset:.2em; font-weight:600; }
+
+/* Today state: one card, one action. */
+.today-state { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:6px 16px; align-items:center; margin:0 0 var(--space-2);
+  padding:14px 16px; border:1px solid var(--border-subtle); border-left:3px solid var(--action); border-radius:var(--radius-control); background:var(--surface-warm); }
+.today-state[data-state="PROVIDER_ERROR"], .today-state[data-state="STALE_SCAN"], .today-state[data-state="NOT_SCANNED"] { border-left-color:var(--brand-gold); }
+.today-state h3 { margin:0; font-size:15px; color:var(--text-strong); }
+.today-state p { margin:0; font-size:var(--text-meta); color:var(--text-secondary); line-height:1.55; grid-column:1; }
+.today-state .today-state-code { font-size:11px; letter-spacing:.06em; color:var(--brand-gold); font-weight:700; margin-bottom:2px; }
+.today-state > div:last-child { grid-column:2; grid-row:1 / span 3; display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; }
+
+/* Research priority: holdings first, explicit reason, three actions. */
+.priority-list { margin:0 0 var(--space-2); }
+.priority-head { display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:6px; }
+.priority-head h3 { margin:0; font-size:15px; }
+.priority-head p { margin:0; font-size:var(--text-label); color:var(--text-secondary); }
+.priority-rows { list-style:none; margin:0; padding:0; border-top:1px solid var(--border-subtle); }
+.priority-row { display:grid; grid-template-columns:minmax(76px,96px) minmax(0,1fr) auto; gap:4px 14px; align-items:center; padding:11px 0; border-bottom:1px solid var(--border-subtle); }
+.priority-symbol { display:grid; gap:2px; }
+.priority-symbol b { font-size:15px; color:var(--text-strong); letter-spacing:.01em; }
+.priority-symbol span, .priority-why small { font-size:var(--text-label); color:var(--text-secondary); font-variant-numeric:tabular-nums; }
+.priority-why { min-width:0; display:grid; gap:2px; }
+.priority-why span { font-size:var(--text-meta); color:var(--text-primary); overflow-wrap:anywhere; }
+.priority-why .reason { display:inline-block; width:max-content; max-width:100%; padding:1px 8px; border-radius:999px; font-size:11px; font-weight:650;
+  background:var(--surface-inset); color:var(--text-secondary); }
+.priority-why .reason[data-kind="CHANGE"] { background:var(--action-soft); color:var(--action); }
+.priority-why .reason[data-kind="NEVER"] { background:var(--brand-gold-soft); color:var(--brand-gold); }
+.priority-actions { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+html[data-theme] .priority-actions button { min-height:34px; padding:5px 10px; font-size:var(--text-meta); }
+.priority-more { margin-top:8px; font-size:var(--text-meta); }
+.priority-note { margin:8px 0 0; font-size:var(--text-label); color:var(--text-secondary); }
+
+/* Ask readiness: say what runs and the one action that unblocks it. */
+.ask-readiness { margin:8px 0 0; padding:10px 12px; border-radius:var(--radius-control); background:var(--brand-gold-soft);
+  border:1px solid var(--brand-gold-line); color:var(--text-primary); font-size:var(--text-meta); line-height:1.55; }
+.ask-readiness[data-ready="true"] { background:var(--action-soft); border-color:transparent; }
+.ask-readiness b { color:var(--text-strong); }
+#desk-mode-help:has(+ #ask-readiness[data-ready="false"]) { display:none; }
+.ask-readiness button { margin-top:8px; }
+
+/* Diagnostics: kept complete, placed after the work. */
+#desk-diagnostics { margin-top:var(--space-3); }
+#desk-diagnostics > summary { font-weight:600; cursor:pointer; padding:10px 0; color:var(--text-primary); }
+#desk-diagnostics > p { margin:0 0 var(--space-1); }
+#desk-diagnostics #workbench-mode, #desk-diagnostics #owner-value { margin:0 0 var(--space-2); }
+html[data-theme] main > #owner-value:not([data-placed]), html[data-theme] main > #workbench-mode:not([data-placed]) { display:none; }
+
+/* Redundant empty-state prose is replaced by the Today state card above. */
+body[data-today-state] #attention-queue > .attention-stale,
+body[data-today-state] #attention-queue > .attention-headline.is-empty,
+body[data-today-state] #attention-queue > .attention-section[data-count="0"] { display:none; }
+/* Pulse tabs and headlines only when the provider returned data. */
+body[data-pulse-state]:not([data-pulse-state="AVAILABLE"]):not([data-pulse-state="PARTIAL"]) #today-scope,
+body[data-pulse-state]:not([data-pulse-state="AVAILABLE"]):not([data-pulse-state="PARTIAL"]) #today-filter,
+body[data-pulse-state]:not([data-pulse-state="AVAILABLE"]):not([data-pulse-state="PARTIAL"]) #today-headlines { display:none; }
+body:is([data-pulse-state="NOT_CONFIGURED"],[data-pulse-state="OFFLINE_REPLAY"]) main > .today-pulse { display:none; }
+
+/* ---------- Research result: scan the case in one look (v0.10 grid restored) ---------- */
+@media (min-width: 900px) {
+  html[data-theme] .desk-decision-communication { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px 28px; align-items:start; }
+  html[data-theme] .desk-decision-communication > .desk-source-tally { grid-column:1 / -1; }
+}
+html[data-theme] .desk-decision-communication > .desk-memo-section { padding-top:14px; border-top:1px solid var(--border-subtle); }
+html[data-theme] .desk-decision-communication > .desk-memo-section h3 { font-size:14px; color:var(--text-secondary); font-weight:650; }
+html[data-theme] .desk-core > h3 { font-size:24px; }
+html[data-theme] .desk-core-thesis { margin-top:14px; padding:14px 16px; border-radius:var(--radius-control); background:var(--surface-warm); border:1px solid var(--brand-gold-line); }
+html[data-theme] .desk-core .desk-core-thesis > h3 { font-size:14px; color:var(--brand-gold); letter-spacing:.02em; }
+
+@media (max-width: 760px) {
+  html[data-theme] body:not([data-portfolio-priority]) .page-heading { flex-direction:row; align-items:center; justify-content:space-between; gap:12px; }
+  html[data-theme] body:not([data-portfolio-priority]) .page-heading .muted { display:none; }
+  html[data-theme] body[data-research-mode]:not([data-portfolio-priority]) .page-heading h1 { font-size:22px; }
+  .priority-row { grid-template-columns:minmax(64px,auto) minmax(0,1fr); }
+  .priority-actions { grid-column:1 / -1; justify-content:flex-start; }
+  .today-state { grid-template-columns:minmax(0,1fr); }
+  .today-state > div:last-child { grid-column:1; grid-row:auto; justify-content:flex-start; }
+  .desk-status li { min-height:28px; }
+}
+
+html[data-theme] .skip-link { background:var(--surface-panel); color:var(--text-strong); border:1px solid var(--border-control); }

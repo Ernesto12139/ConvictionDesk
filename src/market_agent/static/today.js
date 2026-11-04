@@ -102,6 +102,7 @@
   }
 
   function renderPulse(data) {
+    document.body.dataset.pulseState = data.status || "UNKNOWN"; // read by desk-home.css/js
     pulse.replaceChildren();
     const head = el("div", null, "today-pulse-head");
     const refresh = button(state.loading ? "取消刷新" : "刷新行情与报道", state.loading ? "" : "primary");

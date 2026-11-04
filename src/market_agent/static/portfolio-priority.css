@@ -14,41 +14,41 @@ body[data-portfolio-priority] #desk-earnings,
 body[data-portfolio-priority] #desk-retry,
 body[data-portfolio-priority] #desk-retry-options,
 body[data-portfolio-priority] .rail nav details { display: none !important; }
-#portfolio-priority { margin: 12px 0 30px; color: var(--text, #192c32); }
+#portfolio-priority { margin: 12px 0 30px; color: var(--text-primary); }
 #portfolio-priority h1 { font-size: clamp(1.7rem, 3.2vw, 2.5rem); letter-spacing: -.035em; margin: 14px 0 10px; }
 #portfolio-priority h2 { font-size: 1.15rem; margin: 0 0 12px; }
 #portfolio-priority p { line-height: 1.65; }
-.pp-notice { background: var(--surface, #fff); border-left: 3px solid var(--accent, #27716b); padding: 12px 16px; font-size: .85rem; }
+.pp-notice { background: var(--surface-panel); border-left: 3px solid var(--action); padding: 12px 16px; font-size: .85rem; }
 .pp-layout { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(275px, 1fr); gap: 24px; align-items: start; margin-top: 22px; }
 .pp-table-wrap { overflow-x: auto; max-width: 100%; }
 .pp-table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .87rem; }
-.pp-table th, .pp-table td { padding: 12px 8px; text-align: left; border-bottom: 1px solid var(--line, #d7e1df); vertical-align: top; }
-.pp-table th { font-weight: 500; color: var(--muted, #51656c); }
+.pp-table th, .pp-table td { padding: 12px 8px; text-align: left; border-bottom: 1px solid var(--border-subtle); vertical-align: top; }
+.pp-table th { font-weight: 500; color: var(--text-secondary); }
 .pp-table td:last-child { text-align: right; }
-.pp-table small { display: block; color: var(--muted, #51656c); font-size: .74rem; margin-top: 4px; }
+.pp-table small { display: block; color: var(--text-secondary); font-size: .74rem; margin-top: 4px; }
 .pp-table button { white-space: nowrap; }
-.pp-selection { border: 1px solid var(--line, #d7e1df); border-radius: 12px; padding: 20px; background: var(--surface, #fff); }
+.pp-selection { border: 1px solid var(--border-subtle); border-radius: 12px; padding: 20px; background: var(--surface-panel); }
 .pp-selection label { display: block; font-size: .85rem; margin: 14px 0; }
-.pp-selection select { width: 100%; margin-top: 8px; padding: 10px; background: var(--surface, #fff); color: inherit; }
+.pp-selection select { width: 100%; margin-top: 8px; padding: 10px; background: var(--surface-panel); color: inherit; }
 .pp-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 14px 0; }
-.pp-coverage { font-size: .87rem; color: var(--muted, #51656c); }
-.pp-error { color: var(--danger, #a23333); }
+.pp-coverage { font-size: .87rem; color: var(--text-secondary); }
+.pp-error { color: var(--status-danger); }
 .pp-ledger { margin-top: 22px; }
-.pp-account { padding: 16px 0; border-bottom: 1px solid var(--line, #d7e1df); }
+.pp-account { padding: 16px 0; border-bottom: 1px solid var(--border-subtle); }
 .pp-account p { font-size: .85rem; }
-.pp-receipt { margin-top: 22px; padding: 20px; background: var(--surface, #fff); border: 1px solid var(--line, #d7e1df); border-radius: 12px; }
+.pp-receipt { margin-top: 22px; padding: 20px; background: var(--surface-panel); border: 1px solid var(--border-subtle); border-radius: 12px; }
 .pp-receipt code, .pp-receipt a { overflow-wrap: anywhere; }
 .pp-receipt details { margin: 12px 0; }
-.pp-case-header { background: #102238; color: #fbf5e8; border-radius: 8px; padding: clamp(16px, 3vw, 32px); }
-#portfolio-priority .pp-case-header h2 { color: #fbf5e8; font-size: clamp(1.5rem, 3vw, 2.3rem); letter-spacing: -.02em; }
-.pp-case-kicker { color: #e2bc78; font-size: .72rem; letter-spacing: .15em; font-weight: 700; margin: 0 0 10px; }
-.pp-case-meta { font-size: .82rem; color: #e0e8f1; margin: 5px 0 0; font-variant-numeric: tabular-nums; }
+.pp-case-header { background: var(--surface-panel); color: var(--text-primary); border: 1px solid var(--border-subtle); border-top: 3px solid var(--action); border-radius: var(--radius-panel, 12px); padding: clamp(16px, 3vw, 28px); }
+#portfolio-priority .pp-case-header h2 { color: var(--text-strong); font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -.02em; }
+.pp-case-kicker { color: var(--brand-gold); font-size: .72rem; letter-spacing: .12em; font-weight: 700; margin: 0 0 10px; }
+.pp-case-meta { font-size: .82rem; color: var(--text-secondary); margin: 5px 0 0; font-variant-numeric: tabular-nums; }
 .pp-case-comparison { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 14px 0; }
-.pp-case-version { min-width: 0; padding: 16px; border: 1px solid #c9b991; border-radius: 8px; color: #14273c; background: #fbf5e8; }
+.pp-case-version { min-width: 0; padding: 16px; border: 1px solid var(--brand-gold-line); border-radius: 8px; color: var(--text-primary); background: var(--surface-warm); }
 .pp-case-version:only-child { grid-column: 1 / -1; }
 .pp-case-version h3, .pp-case-version dl { margin: 0; }
-#portfolio-priority .pp-case-version h3 { color: #14273c; }
-#portfolio-priority .pp-receipt a { color: #1f6b56; }
+#portfolio-priority .pp-case-version h3 { color: var(--text-strong); }
+#portfolio-priority .pp-receipt a { color: var(--action); }
 .pp-case-version dt { font-size: .78rem; font-weight: 700; margin-top: 12px; }
 .pp-case-version dd { margin: 4px 0 0; overflow-wrap: anywhere; line-height: 1.55; }
 .pp-case-decision { font-weight: 700; font-size: .78rem; letter-spacing: .04em; }
@@ -59,7 +59,7 @@ body[data-portfolio-priority] .rail nav details { display: none !important; }
 .pp-case-evidence { overflow-wrap: anywhere; }
 .pp-trace-list { padding-left: 22px; font-size: .83rem; line-height: 1.75; overflow-wrap: anywhere; }
 .pp-facts { font-size: .83rem; }
-.pp-empty { color: var(--muted, #51656c); }
+.pp-empty { color: var(--text-secondary); }
 body[data-portfolio-priority][data-desk-view] .pp-introduction { display: none; }
 @media (max-width: 850px) { .pp-layout { grid-template-columns: minmax(0, 1fr); gap: 18px; } }
 @media (max-width: 480px) {
