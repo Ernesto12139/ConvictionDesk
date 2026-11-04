@@ -69,3 +69,4 @@ body[data-portfolio-priority][data-desk-view] .pp-introduction { display: none; 
   .pp-table { font-size: .78rem; }
   .pp-case-comparison { grid-template-columns: minmax(0, 1fr); }
 }
+.pp-receipt .pp-case-header { border: 0; border-top: 3px solid var(--action); border-radius: 0; padding-inline: 0; padding-bottom: 8px; }
