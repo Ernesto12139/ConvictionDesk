@@ -187,7 +187,7 @@
     return wrap;
   }
 
-  function renderReadiness(profiles) {
+  function renderReadiness(profiles, afterProviders = false) {
     const help = $("desk-mode-help"); if (!help || publicDemo) return;
     $("ask-readiness")?.remove();
     const box = el("div", null, "ask-readiness"); box.id = "ask-readiness"; box.setAttribute("role", "status");
@@ -195,6 +195,10 @@
     box.dataset.ready = String(Boolean(ready));
     if (ready) {
       box.append(el("b", "可以开始研究。"), el("span", " 提交前会确认账户范围、模型与费用上限；Fast 结果可继续 Deep，同一任务保留每一轮。"));
+      // Became ready after the providers dialog closed: research-desk read the old state at load.
+      if (afterProviders && $("desk-submit")?.disabled) {
+        box.append(el("p", "模型刚刚通过验证；重新载入后研究按钮才会启用。", "small"), button("重新载入", () => location.reload()));
+      }
     } else {
       const blockers = new Set(Object.values(profiles?.dispatch_blockers || {}));
       const reason = !profiles ? "无法读取模型配置。" :
@@ -209,7 +213,7 @@
     return ready;
   }
 
-  async function load() {
+  async function load(afterProviders = false) {
     const [queue, overview, tasks, profiles, observations] = await Promise.all([
       optional("/api/attention/queue"), optional("/api/console/portfolio-overview"),
       optional("/api/research/tasks"), publicDemo ? null : optional("/api/research/model-profiles"),
@@ -219,7 +223,7 @@
     const priority = renderPriority(overview, tasks, queue, observations);
     if (priority) today.append(priority);
     if ($("ask-mia")) { const jump = el("a", "提出研究问题 ↓", "desk-ask-jump"); jump.href = "#ask-mia"; today.append(jump); }
-    const ready = renderReadiness(profiles);
+    const ready = renderReadiness(profiles, afterProviders);
 
     status.replaceChildren();
     chip("数据", publicDemo ? "公开合成示例" : runtime === "OWNER" ? "本机组合" : "本地", publicDemo ? "warn" : "ok", showDiagnostics);
@@ -236,6 +240,8 @@
   const pulse = $("today-pulse");
   if (grid && pulse) grid.after(pulse);
   load().catch(() => { today.replaceChildren(renderState({ code: "UNAVAILABLE" })); });
+  // After the user verifies a key or source in the existing dialog, re-read readiness.
+  $("providers-dialog")?.addEventListener("close", () => void load(true).catch(() => {}));
   // Re-read after the existing scan control repaints the queue (scan, continue, review).
   let timer = null;
   const queueNode = $("attention-queue");
