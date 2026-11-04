@@ -218,6 +218,7 @@
     today.replaceChildren(renderState(state));
     const priority = renderPriority(overview, tasks, queue, observations);
     if (priority) today.append(priority);
+    if ($("ask-mia")) { const jump = el("a", "提出研究问题 ↓", "desk-ask-jump"); jump.href = "#ask-mia"; today.append(jump); }
     const ready = renderReadiness(profiles);
 
     status.replaceChildren();

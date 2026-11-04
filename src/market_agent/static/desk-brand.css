@@ -78,6 +78,7 @@ html[data-theme] .desk-status button.desk-linklike { min-height:0; padding:0; bo
 .priority-actions { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
 html[data-theme] .priority-actions button { min-height:34px; padding:5px 10px; font-size:var(--text-meta); }
 .priority-more { margin-top:8px; font-size:var(--text-meta); }
+.desk-ask-jump { display:none; }
 .priority-note { margin:8px 0 0; font-size:var(--text-label); color:var(--text-secondary); }
 
 /* Ask readiness: say what runs and the one action that unblocks it. */
@@ -117,6 +118,7 @@ html[data-theme] .desk-core-thesis { margin-top:14px; padding:14px 16px; border-
 html[data-theme] .desk-core .desk-core-thesis > h3 { font-size:14px; color:var(--brand-gold); letter-spacing:.02em; }
 
 @media (max-width: 760px) {
+  .desk-ask-jump { display:flex; align-items:center; justify-content:center; min-height:44px; margin:4px 0 var(--space-2); border:1px solid var(--action); border-radius:var(--radius-control); color:var(--action); font-weight:650; text-decoration:none; }
   html[data-theme] body:not([data-portfolio-priority]) .page-heading { flex-direction:row; align-items:center; justify-content:space-between; gap:12px; }
   html[data-theme] body:not([data-portfolio-priority]) .page-heading .muted { display:none; }
   html[data-theme] body[data-research-mode]:not([data-portfolio-priority]) .page-heading h1 { font-size:22px; }
