@@ -51,7 +51,8 @@ MIT and contain no Owner data, credentials or licensed vendor content.
 
 Investor-first workbench captures (2026-11-04 UTC, Claude worktree branch
 `feat/20261105-warm-decision-desk`, UI commit `7e1c96c` over released
-`a68b078`): `docs/assets/cd-priority-1440-{light,dark}.png`,
+`a68b078`; later commits on that branch change only the phone home layout and
+the Ask readiness re-check, not these captured views): `docs/assets/cd-priority-1440-{light,dark}.png`,
 `cd-case-1440-light.png`, `cd-case-390-light.png` and `cd-home-1440-light.png`
 are direct headless-Chromium (Playwright) viewport captures of the keyless
 `python -m market_agent.serve` on loopback. 1440×900 at 2×, 390×844 at 3×; no
