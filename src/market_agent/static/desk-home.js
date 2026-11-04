@@ -5,7 +5,7 @@
 // What-if dialog); nothing here submits research, spends budget or edits holdings.
 (() => {
   const body = document.body;
-  if (body.dataset.portfolioPriority) return; // the priority journey has its own queue
+  if (body.dataset.portfolioPriority || body.dataset.publicIvs === "1") return; // standalone journeys own their first-screen layout
   const $ = id => document.getElementById(id);
   const runtime = body.dataset.runtimeMode;
   const publicDemo = runtime === "PUBLIC_DEMO";
