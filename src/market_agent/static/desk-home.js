@@ -175,11 +175,12 @@
       li.append(symbol, why, actions);
       return li;
     };
-    rows.slice(0, 5).forEach(row => list.append(render(row)));
+    const shown = matchMedia("(max-width: 760px)").matches ? 3 : 5; // phones reach Ask sooner
+    rows.slice(0, shown).forEach(row => list.append(render(row)));
     wrap.append(head, list);
-    if (rows.length > 5) {
-      const rest = el("ol", null, "priority-rows"); rows.slice(5).forEach(row => rest.append(render(row)));
-      const more = el("details", null, "priority-more"); more.append(el("summary", `其余 ${rows.length - 5} 个持仓`), rest);
+    if (rows.length > shown) {
+      const rest = el("ol", null, "priority-rows"); rows.slice(shown).forEach(row => rest.append(render(row)));
+      const more = el("details", null, "priority-more"); more.append(el("summary", `其余 ${rows.length - shown} 个持仓`), rest);
       wrap.append(more);
     }
     wrap.append(el("p", "排序：新变化 → 尚未研究 → 研究较久 → 占比。只决定先研究什么，不是买卖建议。", "priority-note"));
