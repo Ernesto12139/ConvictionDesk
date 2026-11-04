@@ -1,5 +1,18 @@
 # Changelog
 
+## v0.14.0 — Investor-first workbench
+
+- Put Today, portfolio research priorities and Ask together on the first screen.
+  Show scan state and snapshot freshness before opening detailed source diagnostics.
+- Rank the next research question using existing saved evidence, research age and
+  portfolio context; keep the path to counterevidence and account What-if visible.
+- Use a consistent green/off-white visual language across the workbench, Case File
+  and a shorter README, with mobile shortcuts and readable dark-theme panels.
+- Keep the public package synthetic, scripted and free of external model calls.
+  Private live research is a separate deployment, not a public-demo capability.
+- Versioned release status and assets are recorded on the GitHub Releases page;
+  a source checkout alone is not proof of a published release.
+
 ## v0.13.0 — Investment Case File
 
 - Make saved case headings and evidence links readable in dark and light themes.
