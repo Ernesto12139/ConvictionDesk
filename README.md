@@ -13,7 +13,7 @@ filings were accepted on 2026-08-05, with an evidence cutoff of 2026-10-30.
 The desktop and mobile images are original 1× light-theme captures. [390 px mobile view](docs/assets/investment-case-390.png).
 
 [Run it locally](#run-it-locally) · [Walk the case](#one-position-one-case-file) ·
-[Under the hood](#under-the-hood) · [Stable release](https://github.com/Ernesto12139/ConvictionDesk/releases/tag/v0.12.0)
+[Under the hood](#under-the-hood) · [Releases](https://github.com/Ernesto12139/ConvictionDesk/releases)
 
 ## Why keep a case file?
 
@@ -70,11 +70,10 @@ python -m venv .venv
 ```
 
 Open [the local workbench](http://127.0.0.1:8080/) and choose **组合研究优先级**.
-The published v0.12.0 includes the portfolio journey. The Investment Case File
-is part of the v0.13.0 release candidate in this checkout, pending independent
-QA and Hosted CI. Cloning public main currently installs the published baseline
-plus its documentation updates. Candidate reviewers should check out the exact
-reviewed commit before installation.
+Version 0.13.0 adds the Investment Case File to the portfolio journey.
+The commands above install the source checkout. For a published package and its
+versioned assets, use the [GitHub Releases page](https://github.com/Ernesto12139/ConvictionDesk/releases).
+Candidate reviewers should check out the exact reviewed commit before installation.
 
 ```sh
 docker build -t convictiondesk .

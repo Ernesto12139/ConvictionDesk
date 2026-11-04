@@ -148,6 +148,14 @@
     "path": "docs/assets/convictiondesk-records-light.png"
   },
   {
+    "source": "docs/assets/convictiondesk-task-loop-dark.svg",
+    "path": "docs/assets/convictiondesk-task-loop-dark.svg"
+  },
+  {
+    "source": "docs/assets/convictiondesk-task-loop-light.svg",
+    "path": "docs/assets/convictiondesk-task-loop-light.svg"
+  },
+  {
     "source": "docs/assets/convictiondesk-v010-home-1440.png",
     "path": "docs/assets/convictiondesk-v010-home-1440.png"
   },
@@ -162,6 +170,30 @@
   {
     "source": "docs/assets/convictiondesk-v010-whatif-light.png",
     "path": "docs/assets/convictiondesk-v010-whatif-light.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v012-mobile-390.png",
+    "path": "docs/assets/convictiondesk-v012-mobile-390.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v012-priority-light.png",
+    "path": "docs/assets/convictiondesk-v012-priority-light.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v012-record-dark.png",
+    "path": "docs/assets/convictiondesk-v012-record-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v012-record-light.png",
+    "path": "docs/assets/convictiondesk-v012-record-light.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v012-whatif-dark.png",
+    "path": "docs/assets/convictiondesk-v012-whatif-dark.png"
+  },
+  {
+    "source": "docs/assets/convictiondesk-v012-whatif-light.png",
+    "path": "docs/assets/convictiondesk-v012-whatif-light.png"
   },
   {
     "source": "docs/assets/convictiondesk-whatif-dark.png",

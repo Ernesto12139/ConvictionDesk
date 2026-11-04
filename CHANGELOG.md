@@ -1,11 +1,11 @@
 # Changelog
 
-## v0.13.0 — release candidate
+## v0.13.0 — Investment Case File
 
 - Make saved case headings and evidence links readable in dark and light themes.
 - Focus the completed Fast/Deep case and retain same-revision evidence and Trace.
 - Restore executable setup, engine documentation and explicit no-order scope.
-- Publication awaits independent exact-candidate review and Hosted CI.
+- Keep source-checkout verification distinct from versioned Release assets.
 
 ## v0.13.0rc1 — Investment Case File
 
