@@ -1,6 +1,6 @@
 {
-  "upstream_source_sha": "dc9045c2b44f15ff9bf22220d7ad77521023389e",
-  "source_version": "0.12.0",
+  "upstream_source_sha": "98fa5f7679c1e5d8146e34163c4517a343e0ce26",
+  "source_version": "0.14.0",
   "allowlist": "explicit paths and mappings",
   "files": [
     {
@@ -30,8 +30,8 @@
     {
       "path": "CHANGELOG.md",
       "source": "CHANGELOG.md",
-      "git_blob": "129f2761f7a9eb63b58db3bc57162b98b3cb6dfd",
-      "sha256": "17b41281fcec5aa1baa4c6c0060fc81a17807f225b4c9f9eaa1c4db3802fd6e6"
+      "git_blob": "06e3dd417714efc48a1e31a711bb66993c6430bf",
+      "sha256": "f0cce3bd16dfb877d4c17f1ff8e2a2a063343f1a5a30fb5f6568ddeb3f000246"
     },
     {
       "path": "CONTRIBUTING.md",
@@ -54,20 +54,62 @@
     {
       "path": "README.md",
       "source": "README.md",
-      "git_blob": "2d7d9544fc45823d9fa5999063b48ed57ac663b8",
-      "sha256": "fe1df42f9f961589ecc57c4f3f8aa7503ce70063fb9c4380f7fcd465c78f7fe1"
+      "git_blob": "2282125d557acdebe3c8addbdd00ba286a221faa",
+      "sha256": "578ee57e949298abd7d3e2fa082595f21da4ad24f9cc9b1f60f061ef484be1ba"
     },
     {
       "path": "docs/README.md",
       "source": "docs/README.md",
-      "git_blob": "df65d337d63bfbcfa873b87724a4ed7cdb08f485",
-      "sha256": "826172b361265073233804efc2f0df2cc4821abff53d448ff3882156e9e54931"
+      "git_blob": "0fe225d043c4e89e851d5140e3d07815939cf78a",
+      "sha256": "4ca1a90f2dd3cc00f2e3ff2906df36356569d1da1d612c53067324dad9318543"
     },
     {
       "path": "docs/architecture.md",
       "source": "docs/architecture.md",
       "git_blob": "c6cdd74d060565bcb295a289ca2f3bfe13a5cc7f",
       "sha256": "59cad28888cb091df9e6099b7dd25e5a78904945118081973f32609e640b2f5d"
+    },
+    {
+      "path": "docs/assets/cd-case-1440-light.png",
+      "source": "docs/assets/cd-case-1440-light.png",
+      "git_blob": "532eb321816bab4fe7348b739631913e79305eb4",
+      "sha256": "25475c04d8eb0187cfda160d81e9507b5d7be53f00efbee8be03c272c4899d11"
+    },
+    {
+      "path": "docs/assets/cd-case-390-light.png",
+      "source": "docs/assets/cd-case-390-light.png",
+      "git_blob": "cf0fbb4f1699c4b8656a5c8511b7941fa377d017",
+      "sha256": "71616599cf63674f607b9f15673aab8dbb4b3c44b29d21fe45e646333c71362e"
+    },
+    {
+      "path": "docs/assets/cd-case-proof-dark.png",
+      "source": "docs/assets/cd-case-proof-dark.png",
+      "git_blob": "541a3882b67ced8400f94802ec8e4d90888b1293",
+      "sha256": "aaaef98cf3cf6f69b757b0599911d594c6338c96543b819a722088862393c6e8"
+    },
+    {
+      "path": "docs/assets/cd-case-proof-light.png",
+      "source": "docs/assets/cd-case-proof-light.png",
+      "git_blob": "3fdb1cd6a094456af271e2dae9ec94d22fc6c80a",
+      "sha256": "64911c0b1e8a8428679d25a8f5a947e383b39416e46b1696778626555ae9abc5"
+    },
+    {
+      "path": "docs/assets/cd-home-1440-light.png",
+      "source": "docs/assets/cd-home-1440-light.png",
+      "git_blob": "35b6546e757402368f099c5a7cb8356527e8ce37",
+      "sha256": "b94a9be98c3784f11911d08d5ab28c79e10eb2266bca7db361ed2a0a598ad1e5"
+    },
+    {
+      "path": "docs/assets/cd-priority-1440-dark.png",
+      "source": "docs/assets/cd-priority-1440-dark.png",
+      "git_blob": "052599be5eaef7f048d744a2866b67e63f9dd990",
+      "sha256": "de0ac55c8f23ea24bb4ed27e12ab0b1707d0ba461dfc1c5e687e15f393528585"
+    },
+    {
+      "path": "docs/assets/cd-priority-1440-light.png",
+      "source": "docs/assets/cd-priority-1440-light.png",
+      "git_blob": "132b45d421b9d70fe7847ab556b461af15d57204",
+      "sha256": "e83382736d03081b68f9bc05c4663f21d3e63151a98ceff24c148871f571484e"
     },
     {
       "path": "docs/assets/convictiondesk-architecture-dark.svg",
@@ -98,6 +140,18 @@
       "source": "docs/assets/convictiondesk-beta-mobile-390.png",
       "git_blob": "8766c55ef54854976f3102d8a3b3161742ada2db",
       "sha256": "4f23ae8fd62f9b059f503932cb8f36743d23e822dab6cec51c9bf740346fb119"
+    },
+    {
+      "path": "docs/assets/convictiondesk-brand-hero-dark.svg",
+      "source": "docs/assets/convictiondesk-brand-hero-dark.svg",
+      "git_blob": "cac78889cf1df927df18fc1bc3c3211bd324df58",
+      "sha256": "ff857cfbece3aafe291457d86f7ccecbb8ced2456bea254c28ecc570c348f2af"
+    },
+    {
+      "path": "docs/assets/convictiondesk-brand-hero-light.svg",
+      "source": "docs/assets/convictiondesk-brand-hero-light.svg",
+      "git_blob": "5dcfe573eed2467dbf5626bb13bb94094b0465f6",
+      "sha256": "d8a43983ef3ca922840fff3e7f3e3a378f25850eddc72bea63a357c9735f3261"
     },
     {
       "path": "docs/assets/convictiondesk-decision-dark.png",
@@ -226,6 +280,18 @@
       "sha256": "f6353f0d89037402b6a027deb0efc260e8e7ab4b932bd9dead7a7dd16a4a856e"
     },
     {
+      "path": "docs/assets/convictiondesk-task-loop-dark.svg",
+      "source": "docs/assets/convictiondesk-task-loop-dark.svg",
+      "git_blob": "b33d941e7859124a0dadcdc7d996461d3dd70f47",
+      "sha256": "3fbee0fa890abff5989ffb13e0155d4a6a652c4cc6b2a39dd09ef6afde74b542"
+    },
+    {
+      "path": "docs/assets/convictiondesk-task-loop-light.svg",
+      "source": "docs/assets/convictiondesk-task-loop-light.svg",
+      "git_blob": "9fe52766ea8e889b4671b7f0dd43399442ca9f14",
+      "sha256": "16c84e79551032d6155afcf87c96b0dc7ec2b19727594bf4411b0c14a9b1a914"
+    },
+    {
       "path": "docs/assets/convictiondesk-v010-home-1440.png",
       "source": "docs/assets/convictiondesk-v010-home-1440.png",
       "git_blob": "8cabcc8c0aadae54a8ec576c3e9b6c85d539ec93",
@@ -250,6 +316,42 @@
       "sha256": "5e9859d89d34c693787912f3bb537450d748414d692175065b7d371bd1bf7d4a"
     },
     {
+      "path": "docs/assets/convictiondesk-v012-mobile-390.png",
+      "source": "docs/assets/convictiondesk-v012-mobile-390.png",
+      "git_blob": "bcb9dfa7aa4acd359709adb628359eca4f73b20e",
+      "sha256": "bd7046714a834aa729ac6594a791bf1a12215f43cae6d05b9548435ec4627eee"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v012-priority-light.png",
+      "source": "docs/assets/convictiondesk-v012-priority-light.png",
+      "git_blob": "8287d287305fa50e3b4c510a85a575756db7d222",
+      "sha256": "ef44070ede17605607c3255d093d7584dbdba23823e5d1f0d9b841c69e1be22a"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v012-record-dark.png",
+      "source": "docs/assets/convictiondesk-v012-record-dark.png",
+      "git_blob": "4b60c2f3fab3a329fca651d3043dff1df6b97208",
+      "sha256": "b10dd3d1c9698cbcdc697f934e9b0d84c55b5ac485e38eb55561007e6b45ba65"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v012-record-light.png",
+      "source": "docs/assets/convictiondesk-v012-record-light.png",
+      "git_blob": "22ea92f414d5204242d063fe0f09404e642bf3ee",
+      "sha256": "0563fadf3c4b3ae61a7a0d0fd9c5b957e9a05399f44c42b765dc7382e7506ad9"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v012-whatif-dark.png",
+      "source": "docs/assets/convictiondesk-v012-whatif-dark.png",
+      "git_blob": "7d0b073e0d31cc944f0d02ec4333c9e1a8d0bf62",
+      "sha256": "afcd9d198f49bcb84dc94b3d31eb939b596919bcf01153c5a0bf914fa73b0997"
+    },
+    {
+      "path": "docs/assets/convictiondesk-v012-whatif-light.png",
+      "source": "docs/assets/convictiondesk-v012-whatif-light.png",
+      "git_blob": "d7f4b6a94b67b017c15d7de0b015b9fbeac6abb5",
+      "sha256": "700d5f45b6efc8c56c6d749f261f69e2e72fd139e4ad2eb7676a3656d7bd67ca"
+    },
+    {
       "path": "docs/assets/convictiondesk-whatif-dark.png",
       "source": "docs/assets/convictiondesk-whatif-dark.png",
       "git_blob": "4bd6b3ee8158a25e72b45a76de69d18838783a2e",
@@ -262,10 +364,34 @@
       "sha256": "6f45c7af45e4279ed2e65f4fabe4ebad7a861988e455f22ab3975d1038c24329"
     },
     {
+      "path": "docs/assets/investment-case-1440.png",
+      "source": "docs/assets/investment-case-1440.png",
+      "git_blob": "b76f9c395b7eac7a6b6b72e7dea5cfe03409b9cd",
+      "sha256": "4e8ff30b0ade719c928320ed765bcedacfdac60947b3df6e6059532dad25b4f4"
+    },
+    {
+      "path": "docs/assets/investment-case-390.png",
+      "source": "docs/assets/investment-case-390.png",
+      "git_blob": "dd267025df9ca799b8a38aee0a0a6be83ce4beeb",
+      "sha256": "297e20cc007dca749c01e2087eb64751a6d2fdee2ffe3ed144c797ee7bedf08d"
+    },
+    {
+      "path": "docs/assets/investment-case-hero.svg",
+      "source": "docs/assets/investment-case-hero.svg",
+      "git_blob": "8a906e080af6d1967a25308701e5c30f1b3f0c8e",
+      "sha256": "b49ede5b1ac6bdad9ae2cfd2eef868e027a80de6d98a5d9bf0cab30f864ea122"
+    },
+    {
       "path": "docs/assets/src/hero_v010.html",
       "source": "docs/assets/src/hero_v010.html",
       "git_blob": "389e31f994fa4f87edcdaf5934c9c975e42329db",
       "sha256": "006b4a3af042722ed17ca6ab6ace2329e8d42b8097f6a5b52b3b6251183dee3f"
+    },
+    {
+      "path": "docs/assets/src/make_brand_hero.py",
+      "source": "docs/assets/src/make_brand_hero.py",
+      "git_blob": "941fc4df9cb290f71057d6fec28c27ce50ebc2c1",
+      "sha256": "baca8b6ea5e29f244b3b4ec1f535145b171aae4fc34f61eb82bcde8708f38668"
     },
     {
       "path": "docs/assets/src/make_flow_v010.py",
@@ -282,8 +408,8 @@
     {
       "path": "docs/getting-started.md",
       "source": "docs/getting-started.md",
-      "git_blob": "45bcf9a1b1a365dc35c98294432b3169d9fbdbe6",
-      "sha256": "cc9f787edb699b37a179a3f1eb2c30366ee324dbcbb6dbdd520c79741db8d189"
+      "git_blob": "5a0d5bbd84e359e93f04a111048df87fadb8bfbe",
+      "sha256": "9e9cccd8978a5adb14b8d3cb72e9f67c820b6fd98bb336599e10bb2ffc5dbd43"
     },
     {
       "path": "docs/portfolio-priority-journey.md",
@@ -330,14 +456,14 @@
     {
       "path": "docs/showcase.md",
       "source": "docs/showcase.md",
-      "git_blob": "288b293439d604d2e72c06f0a761235eb0e484eb",
-      "sha256": "7a94b053f3db14f4dbf6212bd6730ef521416afa719bae7a6ffac84d3e2abbfd"
+      "git_blob": "ec3c4e6f4cc98f8e0b801c7ef3895d2cdf679c7d",
+      "sha256": "7da36c930336d7802612554bfa6b4fbab9af69ece2416086db8f2cdaa4abb620"
     },
     {
       "path": "docs/verification.md",
       "source": "docs/verification.md",
-      "git_blob": "92cc7d8de83ddb13dbb25e6dd17862d96ad5e2df",
-      "sha256": "2c28aedef20b31e8d2eaf89b860c8d0d7ddeb7c7546b26d3c8f9d25dd54665e4"
+      "git_blob": "2f7d97e6dade41ecdb048001abd9603153607cfe",
+      "sha256": "47b4b0e9c1f1dcbf50c110b7e39df8229eec600dbe3ea5bd0adbc7a07ed12ae1"
     },
     {
       "path": "evals/__init__.py",
@@ -528,14 +654,14 @@
     {
       "path": "pyproject.toml",
       "source": "pyproject.toml",
-      "git_blob": "ac47be91c98077de456408c37975013eb48e2c8a",
-      "sha256": "8c1c7667afc7c6ac03946316b86c92631bc6bfc5438a4950592942e4dfec3ef3"
+      "git_blob": "592d4ad29f18c10a80e39ea1c1dc64fcabee247f",
+      "sha256": "507705dde4761d46e2b0b3e6252084474c350cc04397936493d03fc4729c6032"
     },
     {
       "path": "release/ASSET_PROVENANCE.md",
       "source": "release/ASSET_PROVENANCE.md",
-      "git_blob": "ebab69e68455461538bf7598741a2617cda08550",
-      "sha256": "944720f8887550b19d3a112939b821b3597a035090465045d9cdf1407a812597"
+      "git_blob": "2b2f315d23c0fadbddec9d53f04ac9822a07f121",
+      "sha256": "48a1e3a01a705d078c07985d8a44200327191e4964b597c244dbdfb7c729763a"
     },
     {
       "path": "release/CANDIDATE_SCOPE.md",
@@ -606,8 +732,8 @@
     {
       "path": "release/public-files.json",
       "source": "release/public-files.json",
-      "git_blob": "936c4f9bbefb7a94c0931aa455c61dd8762e67e5",
-      "sha256": "c0f1c3e37d758dac1c9d3032843d6ad3a36dc4e3faa14c52a6de321bb57c0a23"
+      "git_blob": "9f51c33236374dade6c7574f1612211ed05a201b",
+      "sha256": "eaae2ff9fd2668241727f18198de9ac95c8bcccf44f4c603ec9dd89304dd12c8"
     },
     {
       "path": "release/verified_service_merges.json",
@@ -714,8 +840,8 @@
     {
       "path": "scripts/smoke_portfolio_priority_browser.cjs",
       "source": "scripts/smoke_portfolio_priority_browser.cjs",
-      "git_blob": "7905ba28c9a9059f72519c58bcbbaec923a3f81a",
-      "sha256": "0aec7e5b0ac94735ac747e27395e06acc9833b5fcfa3b9efd9764a536135d95b"
+      "git_blob": "b3ba9baea7e35161ea93e96c1e3c0bb76de55c6c",
+      "sha256": "e946e545a8e0f0ef224a58f533663592bdc51492a63345b6b857744b2614efb3"
     },
     {
       "path": "scripts/smoke_public_demo.py",
@@ -738,8 +864,8 @@
     {
       "path": "scripts/smoke_unified_workbench_browser.cjs",
       "source": "scripts/smoke_unified_workbench_browser.cjs",
-      "git_blob": "baa164ef53165365d38274f5d97faebca16b4ef7",
-      "sha256": "ea93bcab95a5ccdfad0318fb8df69f126b718376e5b76362e81804a5f963ca2f"
+      "git_blob": "807f36c0eeb59ada1eae0acf381a463453c3e655",
+      "sha256": "10f7930262fe1a9a30713ab2c5689d40d90a338335ebba03f3d5822b92132d79"
     },
     {
       "path": "scripts/verify_portfolio_priority.py",
@@ -1008,8 +1134,8 @@
     {
       "path": "src/market_agent/main.py",
       "source": "src/market_agent/main.py",
-      "git_blob": "5cfc1c23826730689cbfa0dd2ff241a37f0e7174",
-      "sha256": "2f483e233d92d95edba0db4c2dffeedbf291dd3197599925ec1585509503cc14"
+      "git_blob": "4bafb091d33045c6608b3289ad6e6686c6349de9",
+      "sha256": "6c881ce7184b9b2d95d8c3be2b7faf8e184c958bf7b790d5a52eacb76f09b6d6"
     },
     {
       "path": "src/market_agent/market_evidence.py",
@@ -1312,6 +1438,18 @@
       "sha256": "d44376dbda2368ddd6d6e975b62abb4d428f1da29f67e0629872130617d4d346"
     },
     {
+      "path": "src/market_agent/static/desk-brand.css",
+      "source": "src/market_agent/static/desk-brand.css",
+      "git_blob": "db45b4038c55d7dd954d2def7b0e4ed68aafcad7",
+      "sha256": "ea1238e61d145fda8aa0fa8a85c555367e7ee03804f4f08acf65f757727c0346"
+    },
+    {
+      "path": "src/market_agent/static/desk-home.js",
+      "source": "src/market_agent/static/desk-home.js",
+      "git_blob": "d99ffff0370f6368d6b7f2f486e5e95ce217e99c",
+      "sha256": "7f242c4c1c0dce4f7b88f87720c7d1c07dc8f84b58c0c7a6f4c71202b23de321"
+    },
+    {
       "path": "src/market_agent/static/execution-trace.js",
       "source": "src/market_agent/static/execution-trace.js",
       "git_blob": "c2ce9602369447b9e978c31c8914efc3a6675583",
@@ -1320,8 +1458,8 @@
     {
       "path": "src/market_agent/static/index.html",
       "source": "src/market_agent/static/index.html",
-      "git_blob": "9e5e6ec388fac1f5289a6721572621cbcce93150",
-      "sha256": "1b0c292ac86bac44a5ecc9b9b87409600c3ad2c654d8766ce93aff5265b9fc20"
+      "git_blob": "757b4dcf0fd705b95cad3a53c757f1e1366db580",
+      "sha256": "d3d9fb3c739a3de1decf4275388c605e840e547635b3872994431cc8f2a0a893"
     },
     {
       "path": "src/market_agent/static/ivs-filings.js",
@@ -1368,14 +1506,14 @@
     {
       "path": "src/market_agent/static/portfolio-priority.css",
       "source": "src/market_agent/static/portfolio-priority.css",
-      "git_blob": "060913ba5610d9238fa89a4b2e63f4c8ce9812fd",
-      "sha256": "f9b811e36f39d8f4ab6e3c389d006e87a7a1491da19b9bedea3c9fc6822bbeaf"
+      "git_blob": "418373376cb6a4baefde75fb217e0e58032b34a9",
+      "sha256": "1e50021f53687ec2c6687e712db67c8321830db94ce5808b6f4418fddf26a65a"
     },
     {
       "path": "src/market_agent/static/portfolio-priority.js",
       "source": "src/market_agent/static/portfolio-priority.js",
-      "git_blob": "d1f24066e94b96079485391cca2678e31c951ba9",
-      "sha256": "f7550f06c51cb06d319abceac1b737edccf8f741802f2b31b24a6159c9702022"
+      "git_blob": "016f609fcb86148efe9f2d2cb4a113d47efbcab5",
+      "sha256": "f082be491187f2efdc9efa71c211482b865995499e7bbf4d8ef6c9774845cd96"
     },
     {
       "path": "src/market_agent/static/providers.js",
@@ -1398,8 +1536,8 @@
     {
       "path": "src/market_agent/static/research-desk.js",
       "source": "src/market_agent/static/research-desk.js",
-      "git_blob": "dcb31c6ee979644caff554bd32d5a84daf7779b7",
-      "sha256": "31d43bae89e4213e6c0da2c490dcd2ef31aa8908ec16148b62cefbd8ca96cc55"
+      "git_blob": "1ed4e8b70a72193c6d722499f71b1a1fdd352d13",
+      "sha256": "0bb0a2fa94868b60d502988ee0980907b84d412cee2b2a4eb6fd4fbef62a2183"
     },
     {
       "path": "src/market_agent/static/research-runtime.js",
@@ -1416,8 +1554,8 @@
     {
       "path": "src/market_agent/static/today.js",
       "source": "src/market_agent/static/today.js",
-      "git_blob": "4d99728ee7c4028af81819d2eb00858b765c501b",
-      "sha256": "6d251ae59e2a81d71d28aafe32ed485e03f305910d2022f10e2e176e1b90433a"
+      "git_blob": "cdefd3983eb0c908f18fdd389eb0529365008f31",
+      "sha256": "67f10b05e0ffe4aa8b26b54fb209be7ffe24c51723114e4ef055429d831b5c6f"
     },
     {
       "path": "src/market_agent/static/workbench-mode.css",
@@ -1608,8 +1746,8 @@
     {
       "path": "tests/test_portfolio_priority_journey.py",
       "source": "tests/test_portfolio_priority_journey.py",
-      "git_blob": "716a9db2248cdd2befc16d5b5514ad29a4cc2be3",
-      "sha256": "1e15a225ac61a1d8e0c86d30e88f04a5bb88609eb66e8b465ebff051b0d0f2d8"
+      "git_blob": "3c99cb0f8da1b237a364d93d6eabe4c0ab7f7e6b",
+      "sha256": "b765b96e99bf6866a45457780239d3df11970a527e7a8fc19bc01f81248bf952"
     },
     {
       "path": "tests/test_portfolio_whatif.py",
@@ -1674,8 +1812,8 @@
     {
       "path": "tests/test_run_trace.py",
       "source": "tests/test_run_trace.py",
-      "git_blob": "05bc66a06ccb74a408245edde595fc64ecce7116",
-      "sha256": "42e35f528a3d89bb6dc8dcd1e6a5e40807530be808371f7cb32577c8dce42233"
+      "git_blob": "524752d5c24777b685630ee7416cfe950e1f94b5",
+      "sha256": "b8d863c872a2cde03ed1167d574a7c59e56a48d3944fc34529268d4a5bccdf6d"
     },
     {
       "path": "tests/test_scripted_research.py",
