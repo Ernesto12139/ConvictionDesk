@@ -1,20 +1,30 @@
-# ConvictionDesk — From holdings to conviction.
-
-**Investigate what changed in the US stocks you own, weigh the evidence against
-your thesis, and see what a change would do to the account that pays for it.**
-A local, open-source research workbench. No broker connection.
-
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cd-priority-1440-dark.png">
-    <img src="docs/assets/cd-priority-1440-light.png" alt="The ConvictionDesk portfolio priority page: six synthetic holdings across four accounts ranked by committed capital, each with its public filing coverage, next to a panel for researching one holding." width="100%">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-brand-hero-dark.svg">
+    <img src="docs/assets/convictiondesk-brand-hero-light.svg" alt="ConvictionDesk: from holdings to conviction. Your holdings in research order and their evidence pass an evidence cutoff into one case file with a cited judgment, or UNDETERMINED when evidence is thin, plus counterevidence, what would change it and the next check, kept as Fast and Deep revisions, then a What-if on cash, shares and concentration. Original brand illustration, not a screenshot." width="100%">
   </picture>
 </p>
-<p align="center"><sub>Browser capture of the public workbench: synthetic accounts, frozen public SEC filings, scripted research. Capture IDs in <a href="release/ASSET_PROVENANCE.md">asset provenance</a>.</sub></p>
 
-[Try it in 30 seconds](#try-it-in-30-seconds) · [Run it](#run-it) ·
-[How it works](#how-it-works) · [Scope](#scope) ·
-[Releases](https://github.com/Ernesto12139/ConvictionDesk/releases)
+<p align="center">
+  <a href="https://github.com/Ernesto12139/ConvictionDesk/releases"><img alt="Latest release" src="https://img.shields.io/github/v/release/Ernesto12139/ConvictionDesk?color=27745F&amp;label=release"></a>
+  <a href="https://github.com/Ernesto12139/ConvictionDesk/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Ernesto12139/ConvictionDesk/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-27745F"></a>
+  <img alt="Python 3.12+" src="https://img.shields.io/badge/python-3.12%2B-27745F">
+</p>
+
+<p align="center">
+  <b>Investigate what changed in the US stocks you own, weigh the evidence against
+  your thesis, and see what a change would do to the account that pays for it.</b><br>
+  A local, open-source research workbench. No broker connection.
+</p>
+
+<p align="center">
+  <a href="#try-it-in-30-seconds"><b>Try it in 30 seconds</b></a> ·
+  <a href="#run-it">Run it</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#scope">Scope</a> ·
+  <a href="docs/README.md">Docs</a>
+</p>
 
 ## What it does
 
@@ -36,9 +46,12 @@ Missing prices stay unknown instead of becoming zero. Nothing is ordered and
 your saved holdings do not change.
 
 <p align="center">
-  <img src="docs/assets/cd-case-1440-light.png" alt="The Investment Case File for APP: the first Fast round and the Deep round side by side, each with its judgment, key counterevidence and next check, both UNDETERMINED, with links to the evidence and the account What-if." width="100%">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cd-case-proof-dark.png">
+    <img src="docs/assets/cd-case-proof-light.png" alt="Browser capture of the Investment Case File for APP in the synthetic growth account: the first Fast round and the same-task Deep round side by side, each with its judgment, key counterevidence and next check, both UNDETERMINED, with links to this revision's evidence and the account What-if." width="100%">
+  </picture>
 </p>
-<p align="center"><sub>The Case File after Fast and Deep on the same task. Both rounds stay readable.</sub></p>
+<p align="center"><sub>Real capture of the public build: one task after Fast, then Deep. Synthetic account, frozen public SEC filings, scripted research; the interface is in Chinese. <a href="release/ASSET_PROVENANCE.md">Asset provenance</a>.</sub></p>
 
 ## Try it in 30 seconds
 

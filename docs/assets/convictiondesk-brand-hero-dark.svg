@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="440" viewBox="0 0 1280 440" role="img" aria-labelledby="title desc">
+<title id="title">ConvictionDesk — From holdings to conviction</title>
+<desc id="desc">Original brand illustration. Holdings in research order and their evidence pass an evidence cutoff into one case file: a cited judgment or UNDETERMINED, counterevidence, what would change it and the next check, saved as Fast and Deep revisions, then a hypothetical What-if on cash, shares and concentration. A schematic, not a screenshot.</desc>
+<rect x="0" y="0" width="1280" height="440" rx="20" fill="#111614"/>
+<rect x="0.5" y="0.5" width="1279" height="439" rx="20" fill="none" stroke="#2A3430" stroke-width="1"/>
+<rect x="64" y="72" width="52" height="52" rx="12" fill="#8DC8B5"/>
+<text x="90" y="106" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="20" font-weight="700" fill="#102C23" text-anchor="middle">CD</text>
+<text x="132" y="109" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="30" font-weight="650" fill="#EEF2EE" text-anchor="start">ConvictionDesk</text>
+<text x="64" y="214" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="50" font-weight="650" fill="#EEF2EE" text-anchor="start">From holdings</text>
+<text x="64" y="272" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="50" font-weight="650" fill="#EEF2EE">to <tspan fill="#8DC8B5">conviction.</tspan></text>
+<rect x="64" y="298" width="44" height="3" rx="1.5" fill="#E6C481"/>
+<text x="64" y="336" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" font-weight="400" fill="#B2BEB8" text-anchor="start">Research the US stocks you own:</text>
+<text x="64" y="362" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="19" font-weight="400" fill="#B2BEB8" text-anchor="start">evidence, counterevidence, account consequence.</text>
+<text x="64" y="400" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" font-weight="500" fill="#B2BEB8" text-anchor="start">Local · open source · no broker connection</text>
+<text x="620" y="106" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#E6C481" text-anchor="start" letter-spacing="1.6">YOUR HOLDINGS</text>
+<rect x="620" y="120" width="212" height="38" rx="9" fill="#2D2819" stroke="#5E4F30" stroke-width="1"/>
+<text x="640" y="145" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#8DC8B5" text-anchor="middle">1</text>
+<text x="658" y="145" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14.5" font-weight="600" fill="#EEF2EE" text-anchor="start">new filing</text>
+<rect x="620" y="166" width="212" height="38" rx="9" fill="#1A211E" stroke="#303B36" stroke-width="1"/>
+<text x="640" y="191" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#8DC8B5" text-anchor="middle">2</text>
+<text x="658" y="191" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14.5" font-weight="400" fill="#B2BEB8" text-anchor="start">not yet researched</text>
+<rect x="620" y="212" width="212" height="38" rx="9" fill="#1A211E" stroke="#303B36" stroke-width="1"/>
+<text x="640" y="237" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="700" fill="#8DC8B5" text-anchor="middle">3</text>
+<text x="658" y="237" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14.5" font-weight="400" fill="#B2BEB8" text-anchor="start">research is stale</text>
+<text x="620" y="290" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#E6C481" text-anchor="start" letter-spacing="1.6">EVIDENCE</text>
+<rect x="620" y="302" width="100" height="30" rx="15" fill="#1A211E" stroke="#303B36" stroke-width="1"/>
+<text x="670.0" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" fill="#B2BEB8" text-anchor="middle">SEC filings</text>
+<rect x="728" y="302" width="60" height="30" rx="15" fill="#1A211E" stroke="#303B36" stroke-width="1"/>
+<text x="758.0" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" fill="#B2BEB8" text-anchor="middle">XBRL</text>
+<rect x="796" y="302" width="68" height="30" rx="15" fill="#1A211E" stroke="#303B36" stroke-width="1"/>
+<text x="830.0" y="322" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="500" fill="#B2BEB8" text-anchor="middle">Prices</text>
+<path d="M832 139 C 862 139, 860 214, 888 214" fill="none" stroke="#8DC8B5" stroke-width="1.75"/>
+<path d="M832 185 C 860 185, 860 226, 888 226" fill="none" stroke="#45524C" stroke-width="1.5"/>
+<path d="M864 317 C 878 317, 874 250, 888 250" fill="none" stroke="#45524C" stroke-width="1.5"/>
+<line x1="888" y1="96" x2="888" y2="392" stroke="#8DC8B5" stroke-width="2" stroke-dasharray="6 6"/>
+<text x="888" y="84" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13" font-weight="650" fill="#8DC8B5" text-anchor="middle">evidence cutoff</text>
+<path d="M888 232 L 916 232" stroke="#8DC8B5" stroke-width="2"/>
+<rect x="916" y="96" width="300" height="262" rx="14" fill="#1A211E" stroke="#303B36" stroke-width="1"/>
+<rect x="946" y="83" width="104" height="26" rx="6" fill="#2D2819" stroke="#5E4F30" stroke-width="1"/>
+<text x="998" y="101" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="700" fill="#E6C481" text-anchor="middle" letter-spacing="1.6">CASE FILE</text>
+<rect x="1100" y="118" width="46" height="24" rx="12" fill="#1A211E" stroke="#303B36" stroke-width="1"/>
+<text x="1123" y="135" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="600" fill="#B2BEB8" text-anchor="middle">Fast</text>
+<rect x="1152" y="118" width="48" height="24" rx="12" fill="#203A32"/>
+<text x="1176" y="135" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12.5" font-weight="650" fill="#8DC8B5" text-anchor="middle">Deep</text>
+<text x="936" y="136" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="15" font-weight="650" fill="#EEF2EE" text-anchor="start">Judgment</text>
+<text x="936" y="164" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="600" fill="#EEF2EE" text-anchor="start" letter-spacing="0.3">ADD · HOLD · REDUCE · EXIT</text>
+<rect x="936" y="176" width="260" height="24" rx="12" fill="#2D2819" stroke="#5E4F30" stroke-width="1"/>
+<text x="1066" y="192.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#E6C481" text-anchor="middle">or UNDETERMINED when evidence is thin</text>
+<text x="936" y="236" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#B2BEB8" text-anchor="start">Counterevidence</text>
+<rect x="1088" y="227" width="108" height="8" rx="4" fill="#2A3430"/>
+<text x="936" y="266" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#B2BEB8" text-anchor="start">What would change it</text>
+<rect x="1118" y="257" width="78" height="8" rx="4" fill="#2A3430"/>
+<text x="936" y="296" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="400" fill="#B2BEB8" text-anchor="start">Next check</text>
+<rect x="1056" y="287" width="140" height="8" rx="4" fill="#2A3430"/>
+<rect x="936" y="312" width="38" height="22" rx="6" fill="#203A32"/>
+<text x="955" y="327" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#8DC8B5" text-anchor="middle">[1]</text>
+<rect x="980" y="312" width="38" height="22" rx="6" fill="#203A32"/>
+<text x="999" y="327" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#8DC8B5" text-anchor="middle">[2]</text>
+<rect x="1024" y="312" width="38" height="22" rx="6" fill="#203A32"/>
+<text x="1043" y="327" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5" font-weight="650" fill="#8DC8B5" text-anchor="middle">[3]</text>
+<text x="1196" y="328" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="400" fill="#B2BEB8" text-anchor="end">cited sources</text>
+<line x1="1066.0" y1="358" x2="1066.0" y2="370" stroke="#8DC8B5" stroke-width="1.75"/>
+<rect x="924" y="370" width="284" height="34" rx="17" fill="#203A32"/>
+<text x="1066.0" y="392" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" font-weight="650" fill="#8DC8B5" text-anchor="middle">What-if → cash · shares · concentration</text>
+</svg>
