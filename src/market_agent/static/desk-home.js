@@ -11,7 +11,7 @@
   const publicDemo = runtime === "PUBLIC_DEMO";
   const el = (tag, text, className) => { const n = document.createElement(tag); if (text != null) n.textContent = text; if (className) n.className = className; return n; };
   const button = (text, onClick, primary = false) => { const b = el("button", text, primary ? "primary" : null); b.type = "button"; b.addEventListener("click", onClick); return b; };
-  const read = async url => { const r = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" } }); if (!r.ok) throw new Error(String(r.status)); return r.json(); };
+  const read = async url => { const r = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" } }); if (!r.ok) { await r.text(); throw new Error(String(r.status)); } return r.json(); };
   const optional = url => read(url).catch(() => null);
   const day = iso => iso ? new Date(iso).toLocaleDateString("zh-CN", { month: "numeric", day: "numeric" }) : "未知";
   const stamp = iso => iso ? new Date(iso).toLocaleString("zh-CN", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "未知";

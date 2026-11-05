@@ -35,9 +35,9 @@ async function completed(page, taskId, revision) {
       page.on('console', message => {
         if (message.type() !== 'error') return;
         const location = message.location().url;
-        if (emptyPreflight && location === `${base}/api/portfolio/current`
+        if (emptyPreflight && [`${base}/api/portfolio/current`, `${base}/api/console/portfolio-overview`].includes(location)
             && message.text() === 'Failed to load resource: the server responded with a status of 404 (Not Found)') {
-          expectedEmptyResponses.push({width, path: '/api/portfolio/current', status: 404});
+          expectedEmptyResponses.push({width, path: new URL(location).pathname, status: 404});
         } else errors.push(`${message.text()} @ ${location}`);
       });
       await page.route('**/*', route => {
