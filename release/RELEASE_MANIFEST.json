@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "f5c372d7c94151099a8cd1adb88b416dbd0706f2",
+  "upstream_source_sha": "48930a0f39e29719e7a3ea9533baf37600e5326b",
   "source_version": "0.14.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -54,8 +54,8 @@
     {
       "path": "README.md",
       "source": "README.md",
-      "git_blob": "619de266564444c5bf9314fc1a32a811c7bb33ef",
-      "sha256": "9795e184a92bcf906fb8151893b44ec485dc077155076e93c4abf892a1b2db96"
+      "git_blob": "6ae389d3858f4a887a7cd0219013bd9d16c1d43f",
+      "sha256": "5ffb97cf872a98f9abe711188338e2f7cc39a11d8d43563e87c805ed610b49c0"
     },
     {
       "path": "docs/README.md",
