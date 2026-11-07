@@ -1,5 +1,5 @@
 {
-  "upstream_source_sha": "0190782696b535d1322b898d3b32d2f5bfa8bfe2",
+  "upstream_source_sha": "4cecbc428e326757f7e73bed31076c91252846b8",
   "source_version": "0.14.0",
   "allowlist": "explicit paths and mappings",
   "files": [
@@ -54,14 +54,14 @@
     {
       "path": "README.md",
       "source": "README.md",
-      "git_blob": "925a62fc9f4e8c43240e37a2ae3858032bee43b7",
-      "sha256": "bf5cba5655712c27bc5104c43c76c74f93de706c1f6f8a3be6f223ddfd8f2bbd"
+      "git_blob": "f674cae3389e31720c7478e64d01d5aa5b9e1800",
+      "sha256": "44ad30573dde8127b228ccf43cb6ebe82737bb75df45fa34ce7ce2ccdf6d0abd"
     },
     {
       "path": "docs/README.md",
       "source": "docs/README.md",
-      "git_blob": "0fe225d043c4e89e851d5140e3d07815939cf78a",
-      "sha256": "4ca1a90f2dd3cc00f2e3ff2906df36356569d1da1d612c53067324dad9318543"
+      "git_blob": "e4edaebcc1263631d0de9eef1d513966dfc26429",
+      "sha256": "cfa24f765216e932b74846bf4c7c37db872110bcfdf4d2f60b23db4a4bf894d1"
     },
     {
       "path": "docs/architecture.md",
@@ -408,8 +408,8 @@
     {
       "path": "docs/getting-started.md",
       "source": "docs/getting-started.md",
-      "git_blob": "941fb2e7a281bab208ed7df1149496ff47c9f9fa",
-      "sha256": "d5a62a41adf1e1f07b310a611ffe529f3472bb6f8385356fafea0a170acb1a84"
+      "git_blob": "751738af3c2ac5e551e3f0f6aef41860f957b705",
+      "sha256": "91d6ee2d20178faba1a6c7419f0993635a2ffc66dcf32d4374b02b9557971a8f"
     },
     {
       "path": "docs/portfolio-priority-journey.md",
