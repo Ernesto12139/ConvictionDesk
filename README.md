@@ -28,11 +28,11 @@
 
 ## What it does
 
-**See what merits attention.** The home page lists your holdings in research order: new
-filings or news, then positions you have never researched, then stale research,
-then capital at stake. The daily scan says plainly whether it ran, found
-nothing new, or could not reach its source, so an old list never passes as
-today's news. Each quote carries its provider, market time and delay status.
+**Find a research starting point.** In the keyless portfolio-priority journey,
+synthetic holdings are ordered by committed cost (`quantity × average cost`),
+highest first, with symbol as the tie-breaker. Open a holding to examine captured
+filings and its research history. The sample list is not a live news ranking;
+live scans and quote references require the separate integrations described below.
 
 **Investigate real evidence.** Ask about one holding. Fast reads the filing;
 Deep adds comparable-period financials to the same task. Every round shows the
@@ -55,9 +55,11 @@ your saved holdings do not change.
 
 ## Try it in 30 seconds
 
+After the native installation below, follow this short synthetic journey:
+
 1. Open **组合研究优先级** (portfolio priority) and choose **APP**, then the Growth account.
 2. Run **Fast**, then continue **Deep** on the same task. The Case File keeps both rounds side by side.
-3. Follow **前往单账户 What-if** and preview five shares at $200 with a $1 fee. Cash moves from $1,200 to $199; no order is placed.
+3. Follow **前往单账户 What-if**, confirm the share-basis assumption, and preview five shares at $200 with a $1 fee. Cash moves from $1,200 to $199; no order is placed. Missing prices still leave NAV or concentration unknown.
 
 [The full walkthrough](docs/portfolio-priority-journey.md) lists every source and number.
 
