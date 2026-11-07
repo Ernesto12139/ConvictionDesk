@@ -1,6 +1,6 @@
 # Getting started
 
-## Default v0.12 workbench
+## Default public workbench
 
 After installation, run `python -m market_agent.serve` and open
 http://127.0.0.1:8080/. Choose **组合研究优先级** to operate the four-account
@@ -13,7 +13,7 @@ Native research writes require direct loopback and same-origin requests. The
 container's published replay remains read-only; its network-isolated installed
 journey check exercises the synthetic engine without enabling remote writes.
 
-## Unified v0.11 workbench
+## Explicit sample workspace setup
 
 After cloning and installing, start the Console with explicit sample boundaries:
 
@@ -124,10 +124,11 @@ in [Verification](verification.md).
 
 ### The earlier read-only replay
 
-`python -m market_agent.serve` starts the v0.9 replay on http://127.0.0.1:8080/:
-fictional companies XMPL and XGRD with saved Today items and research records.
-It only reads saved results, so it does not run research or the What-if. Docker
-builds this replay:
+The default native workbench also links to **返回只读示例**, the earlier replay
+with fictional companies XMPL and XGRD and saved Today and research records.
+That replay only reads saved results. The separate portfolio priority journey
+supports synthetic Fast, Deep and What-if through direct loopback requests.
+Docker publishes a read-only preview; use the native install for those writes:
 
 ```bash
 docker build -t convictiondesk .
@@ -136,13 +137,18 @@ docker run --rm -p 127.0.0.1:8080:8080 convictiondesk
 
 ### Live mode with your own keys (experimental)
 
-The same code can run on your own holdings with real providers. This mode is not
-part of the v0.10.0 verified scope and its answer quality has not been benchmarked.
+The repository contains adapters for local holdings and real providers. This is
+**not a turnkey live setup**. Keys alone do not satisfy the live transport:
+current model and rate qualifications, a funded task-bound budget, source and
+egress rights, and server-side consent must also pass. The public release and
+its CI verify keyless synthetic journeys, not live provider freshness or model
+answer quality. The table and variables below are configuration references,
+not a complete live launch procedure.
 
 | Powers | Provider | Variable |
 |---|---|---|
 | Fast / Deep research, Today screening | OpenAI Responses, `gpt-6.1-sol` (server profiles `sol-fast`, `sol-deep`) | `OPENAI_API_KEY` |
-| Company news for Today | Finnhub | `FINNHUB_API_KEY` |
+| Quote references and company news for Today | Finnhub | `FINNHUB_API_KEY` |
 | End-of-day prices | Massive | `MASSIVE_API_KEY` |
 | Filings and XBRL | SEC EDGAR | `SEC_USER_AGENT` (your name and contact email) |
 
@@ -153,16 +159,16 @@ export OPENAI_API_KEY=...
 export FINNHUB_API_KEY=...
 export MASSIVE_API_KEY=...
 export SEC_USER_AGENT="Your Name you@example.com"
-python -m uvicorn market_agent.main:app --host 127.0.0.1 --port 8000
 ```
 
-In PowerShell set the same variables with `$env:NAME = "value"` and run
-`.venv\Scripts\python.exe -m uvicorn market_agent.main:app --host 127.0.0.1 --port 8000`.
+In PowerShell set reference variables with `$env:NAME = "value"`. Do not infer
+live readiness from these settings; use the verified native Quickstart above
+for the public journey.
 
-Setting a key makes a provider available; it does not send anything by itself.
-Each Today scan and research run shows its scope and expected cost and waits for
-your confirmation; cancelling sends nothing. Keys are read only from the server's
-environment, `.env` files are not loaded, and keys are never returned to the
+Setting a key does not qualify or send a request. Live research must pass its
+server gates and confirmation before a send; cancelling consent permits no send.
+Keys are read only from the server's environment, `.env` files are not loaded,
+and keys are never returned to the
 browser. Research, holdings and history live in `data/market_agent.db` (set
 `MIA_DB_PATH` to move it). The service has no login, so keep it on `127.0.0.1`.
 Costs, limits and terms per provider: [Data sources and keys](data-sources.md).

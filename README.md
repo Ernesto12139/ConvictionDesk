@@ -79,7 +79,8 @@ python -m venv .venv; .venv\Scripts\python.exe -m pip install .
 .venv\Scripts\python.exe -m market_agent.serve
 ```
 
-Open <http://127.0.0.1:8080/>. Or run `docker build -t convictiondesk . && docker run --rm -p 127.0.0.1:8080:8080 convictiondesk`.
+Open <http://127.0.0.1:8080/>. Fast, Deep and the What-if use the native install above.
+For a read-only container preview, run `docker build -t convictiondesk . && docker run --rm -p 127.0.0.1:8080:8080 convictiondesk`.
 Packaged versions are on the [Releases page](https://github.com/Ernesto12139/ConvictionDesk/releases).
 
 ## How it works
@@ -100,14 +101,23 @@ evidence, code checks the result, and the task saves an immutable revision.
 - **Revisions and Trace.** Deep appends a revision; the first round is never rewritten. Each revision shows its own tool and model spans. [Trace](src/market_agent/research_execution_trace.py)
 - **Account consequence.** Python `Decimal` computes the What-if on an isolated copy of one account, with cash and cross-account checks. [What-if](src/market_agent/portfolio_whatif.py)
 
-[Architecture](docs/architecture.md) · [Verification and guard commands](docs/verification.md) · [Data sources](docs/data-sources.md)
+[Architecture](docs/architecture.md) · [Verification, evals and guard commands](docs/verification.md) · [Data sources](docs/data-sources.md)
 
 ## Scope
 
-The public build uses synthetic holdings and prices, frozen public SEC filings
-and scripted research; it calls no model or market-data provider. Live quotes
-need your own provider key and may be delayed. ConvictionDesk has no broker
-connection or order API, and it is not investment advice. The server listens on
-loopback by default.
+| | Public Quickstart (no keys) | Separate experimental integrations |
+|---|---|---|
+| Holdings and prices | `SYNTHETIC` accounts and price marks; no current quotes | Local holdings; Massive close and Finnhub quote adapters require qualified provider access and rights |
+| SEC filings | Real public filings, frozen capture with a 2026-10-30 cutoff | SEC EDGAR adapter requires your `SEC_USER_AGENT`; each filing keeps its accession and cutoff |
+| Fast / Deep research | `SCRIPTED` replay; no model is called | OpenAI `gpt-6.1-sol` adapter; live execution requires current model/rate qualification, a task budget and server-side consent |
+| What-if | Python `Decimal` on a copy of one account; nothing is ordered | Same |
+
+The Quickstart enables none of these live integrations. A key alone is not a
+complete live setup: current qualifications, source rights and budget gates
+must also pass. This release verifies the keyless journeys; live data freshness
+and model answer quality are not verified by public CI. See
+[Getting started](docs/getting-started.md#live-mode-with-your-own-keys-experimental).
+ConvictionDesk has no broker connection or order API, and it is not investment
+advice. The server listens on loopback by default.
 
 [Documentation](docs/README.md) · [Showcase](docs/showcase.md) · [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
