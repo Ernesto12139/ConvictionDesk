@@ -8,7 +8,7 @@
 | [Architecture](architecture.md) | The research loop, Fast and Deep, point-in-time evidence, `Decimal` finance, validation, MCP and evaluation |
 | [Data sources and keys](data-sources.md) | Each provider, what it can establish, costs, and where your keys and data live |
 | [Verification](verification.md) | How far each capability is verified, CI gates and known limits |
-| [Portfolio priority journey](portfolio-priority-journey.md) | The default v0.12 journey: four synthetic accounts, Fast then Deep on APP, What-if |
+| [Portfolio priority journey](portfolio-priority-journey.md) | The default keyless journey: four synthetic accounts, Fast then Deep on APP, What-if |
 | [Showcase](showcase.md) | v0.12.0 screens: research priority, a two-round record, the account What-if and the phone layout |
 
 ## Design notes

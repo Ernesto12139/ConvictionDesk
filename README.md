@@ -60,7 +60,7 @@ After the native installation below, follow this short synthetic journey:
 
 1. Open **组合研究优先级** (portfolio priority) and choose **APP**, then the Growth account.
 2. Run **Fast**, then continue **Deep** on the same task. The Case File keeps both rounds side by side.
-3. Follow **前往单账户 What-if**, confirm the share-basis assumption, and preview five shares at $200 with a $1 fee. Cash moves from $1,200 to $199; no order is placed. Missing prices still leave NAV or concentration unknown.
+3. Follow **前往单账户 What-if** and enter five shares at $200. Open **费用、其他持仓计价与资本假设** to set a $1 fee, tick the price and no-split confirmation, then preview. Cash moves from $1,200 to $199; no order is placed. Missing prices still leave NAV or concentration unknown.
 
 [The full walkthrough](docs/portfolio-priority-journey.md) lists every source and number.
 

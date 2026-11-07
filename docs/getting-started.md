@@ -32,22 +32,22 @@ reviewed source checkout with `python -m pip install -e .` for Windows DPAPI
 helpers in `scripts/`; keep private inputs and state outside the repository.
 `scripts/prepare_owner_inputs.py --help` describes read-only copy extraction,
 including an explicit protected original database path. The launcher binds
-loopback, defaults to port8797, and refuses8000 without an exact-source admission
+loopback, defaults to port 8797, and refuses 8000 without an exact-source admission
 record covering independent QA, CI and backup restore. No Owner data, keys or
 private history are packaged. Missing or stale prices remain unknown; What-if
 never changes the actual portfolio.
 
 Saved credentials, authentication, source rights, freshness and model budget are
 separate checks. Fast/Deep sends require scoped consent and the existing durable
-reservation; the launcher enforces an additional USD5 operation ceiling. No live
+reservation; the launcher enforces an additional USD 5 operation ceiling. No live
 research-quality claim follows from installation.
 
 ## Earlier standalone replay
 
-ConvictionDesk v0.10.0 runs the full research journey on your machine without an
-API key: real SEC filing metadata, a synthetic account and thesis, scripted
-Fast and Deep research, and a `Decimal` account What-if. You need Python 3.12 or
-later.
+The standalone IVS workbench (first shipped in v0.10.0) runs a full research
+journey on your machine without an API key: real SEC filing metadata, a synthetic
+account and thesis, scripted Fast and Deep research, and a `Decimal` account
+What-if. You need Python 3.12 or later.
 
 ## Run the workbench
 
