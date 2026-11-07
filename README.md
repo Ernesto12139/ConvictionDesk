@@ -34,8 +34,9 @@ highest first, with symbol as the tie-breaker. Open a holding to examine capture
 filings and its research history. The sample list is not a live news ranking;
 live scans and quote references require the separate integrations described below.
 
-**Investigate real evidence.** Ask about one holding. Fast reads the filing;
-Deep adds comparable-period financials to the same task. Every round shows the
+**Investigate real evidence.** Ask about one holding. In the public journey,
+Fast reads frozen filing metadata; Deep adds comparable-period SEC financial
+facts to the same task. Each scripted round shows the
 judgment, the strongest counterevidence, what would change it and the next
 check, each linked to its source. Thin evidence stays `UNDETERMINED`; it is
 never turned into a default hold.
