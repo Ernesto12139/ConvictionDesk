@@ -1,5 +1,5 @@
 """Exact-period XBRL normalization and Decimal arithmetic, with input lineage."""
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from decimal import Decimal, InvalidOperation, localcontext
 
 
@@ -10,6 +10,46 @@ CONCEPTS = {
     'capex': ('USD', ['PaymentsToAcquirePropertyPlantAndEquipment']),
     'sbc': ('USD', ['ShareBasedCompensation']),
     'diluted_eps': ('USD/shares', ['EarningsPerShareDiluted'])}
+
+
+def comparable_cash_conversion(rows, cutoff):
+    """Four same-filing entity facts; keep exact periods and Decimal lineage.
+
+    This validates reported comparability, not continuing-operations equivalence.
+    A nonpositive prior value has an absolute change but no growth percentage.
+    """
+    if (len(rows) != 4 or len({r['accession_number'] for r in rows}) != 1
+            or any(r['scope'] != 'ENTIRE_FILING_ENTITY' for r in rows)):
+        raise ValueError('One unambiguous entity filing and four comparative facts required')
+    result = {'basis': 'SAME_ACCESSION_SAME_DURATION_PYTHON_DECIMAL', 'inputs': rows}
+    periods = []
+    for metric in ('revenue', 'operating_cash_flow'):
+        selected = sorted((r for r in rows if r['metric'] == metric), key=lambda r: r['end'])
+        if len(selected) != 2 or len({r['concept'] for r in selected}) != 1:
+            raise ValueError('Same concept comparative pair required')
+        previous, current = selected
+        starts = [date.fromisoformat(r['start']) for r in selected]
+        ends = [date.fromisoformat(r['end']) for r in selected]
+        if (any(r['unit'] != 'USD' or datetime.fromisoformat(r['available_at']) > cutoff for r in selected)
+                or starts[1].year - starts[0].year != 1 or ends[1].year - ends[0].year != 1
+                or (starts[0].month, starts[0].day) != (starts[1].month, starts[1].day)
+                or (ends[0].month, ends[0].day) != (ends[1].month, ends[1].day)
+                or any(not 60 <= (end - start).days <= 380 for start, end in zip(starts, ends))
+                or any(end > cutoff.date() for end in ends)):
+            raise ValueError('Incomparable period/unit or PIT cutoff')
+        old, new = Decimal(previous['value']), Decimal(current['value'])
+        if not old.is_finite() or not new.is_finite():
+            raise ValueError('Finite reported facts required')
+        with localcontext() as ctx:
+            ctx.prec = 80
+            change = new - old
+            growth = ((change / old) * 100).quantize(Decimal('0.01')) if old > 0 else None
+        result[metric] = {'previous': str(old), 'current': str(new), 'change': str(change),
+            'yoy_pct': str(growth) if growth is not None else None}
+        periods.append([(r['start'], r['end']) for r in selected])
+    if periods[0] != periods[1]:
+        raise ValueError('Revenue and cash flow must cover identical fiscal durations')
+    return result
 
 
 def common_shares(raw, filings, cutoff):

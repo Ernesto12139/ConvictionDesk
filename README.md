@@ -41,6 +41,12 @@ judgment, the strongest counterevidence, what would change it and the next
 check, each linked to its source. Thin evidence stays `UNDETERMINED`; it is
 never turned into a default hold.
 
+Deep's Case File shows eight typed numeric receipts: four reported revenue and
+operating cash flow values, two Decimal changes and two year-over-year
+percentages, with exact periods and accessions. These use frozen, matching
+six-month `PUBLIC_SEC` facts with `SYNTHETIC` accounts and `SCRIPTED` research;
+the keyless journey makes no live data or model calls.
+
 **Understand portfolio consequences.** Preview a hypothetical buy or sell on a
 copy of one account and see cash, shares and concentration before and after.
 Missing prices stay unknown instead of becoming zero. Nothing is ordered and

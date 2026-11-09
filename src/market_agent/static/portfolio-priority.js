@@ -74,6 +74,42 @@
     finally { sending = false; start.disabled = !account.value || account.disabled; deep.disabled = false; retry.disabled = false; }
   }
 
+  function financialReceipts(delta) {
+    const values = delta.numeric_receipts || [];
+    if (!values.length) return null;
+    const section = el('section', undefined, 'pp-numeric-receipts'); section.style.overflowWrap = 'anywhere';
+    section.setAttribute('aria-label', '同期间财务数值收据');
+    section.append(el('h3', '同期间财务 · 8 份可核对收据'));
+    const rows = new Map(values.map(row => [row.field, row]));
+    const metrics = [['revenue', '收入'], ['operating_cash_flow', '经营现金流']];
+    const fields = metrics.flatMap(([metric]) => ['previous', 'current', 'change', 'yoy_pct'].map(field => `comparison.${metric}.${field}`));
+    if (values.length !== 8 || rows.size !== 8 || fields.some(field => !rows.has(field))) {
+      section.append(el('p', '本版本数值收据不完整，暂不展示比较；请核对下方原始证据。')); return section;
+    }
+    const table = el('table', undefined, 'pp-table pp-facts');
+    const header = el('tr'); ['指标', '上年同期 · USD', '本期 · USD', '差额 · USD', '同比', '准确期间'].forEach(text => header.append(el('th', text))); table.append(header);
+    for (const [metric, label] of metrics) {
+      const get = field => rows.get(`comparison.${metric}.${field}`);
+      const period = get('change').period;
+      const row = el('tr');
+      [label, get('previous').value, get('current').value, get('change').value, get('yoy_pct').value + '%',
+        `${period.previous.start} → ${period.previous.end} / ${period.current.start} → ${period.current.end}`]
+        .forEach(text => row.append(el('td', text)));
+      table.append(row);
+    }
+    const wrap = el('div', undefined, 'pp-table-wrap'); wrap.append(table); section.append(wrap);
+    section.append(el('p', '冻结 PUBLIC_SEC · Python Decimal。实体范围 ENTIRE_FILING_ENTITY；不证明持续经营业务可比，不是实时行情或模型新增结论。', 'small'));
+    const details = el('details'); details.append(el('summary', '核对 8 份收据的 ID、单位、期间与来源'));
+    const list = el('ul');
+    for (const field of fields) {
+      const row = rows.get(field);
+      list.append(el('li', `${row.receipt_id} · ${row.field} · ${row.value} ${row.unit} · ${JSON.stringify(row.period)} · ${stamp(row.as_of)} · ${row.basis} · ${row.evidence_ref} / ${row.evidence_id}`));
+    }
+    details.append(list, el('p', 'Packet ' + delta.numeric_receipt_packet_hash, 'small'));
+    for (const source of delta.numeric_receipt_sources || []) details.append(el('p', `${source.ref} / ${source.evidence_id} · ${source.source_hash}`, 'small'));
+    section.append(details); return section;
+  }
+
   async function readTask() {
     const generation = ++readGeneration;
     const params = new URL(location.href).searchParams;
@@ -138,6 +174,7 @@
       evidenceDetails.append(el('summary', '查看新增证据、财务期间与来源'));
       receipt.replaceChildren(header, actions, comparison,
         el('p', `${delta.information_gain === 'NEW_PUBLIC_SEC_FACTS' ? 'Deep 补入可比期间公开财务事实' : delta.information_gain === 'NEW_METADATA_ONLY' ? '仅补入其他申报元数据，没有可比财务增量' : 'NO_NEW_EVIDENCE · 尚未增加公司事实'}；${delta.decision_status}。`, 'pp-case-gain'));
+      const numbers = financialReceipts(delta); if (numbers) receipt.append(numbers);
       evidenceDetails.append(el('p', `${delta.prior_thesis}；${delta.prior_decision}。`, 'small'));
       for (const evidence of delta.new_evidence) {
         const d = evidence.structured_data;

@@ -1176,6 +1176,10 @@
     "path": "tests/test_product_journey_gate.py"
   },
   {
+    "source": "tests/test_public_comparable_receipts.py",
+    "path": "tests/test_public_comparable_receipts.py"
+  },
+  {
     "source": "tests/test_public_demo.py",
     "path": "tests/test_public_demo.py"
   },

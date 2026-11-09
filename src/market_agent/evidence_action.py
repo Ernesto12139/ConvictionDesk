@@ -19,6 +19,7 @@ from pydantic import Field
 
 from .domain import FrozenModel
 from .llm import LLMError
+from .tdb import content_hash
 from .research_task import (Identity, ResearchActionAssessment, ResearchAssessment,
                             ResearchEvidenceGap, ResearchStatement, numeric_facts,
                             validate_assessment)
@@ -326,6 +327,38 @@ def _receipt_rows(evidence):
             add('quarter.' + str(row.get('metric')), row.get('value'), row.get('unit'),
                 as_of=evidence.as_of, period={'start': row.get('start'), 'end': row.get('end')},
                 basis=row.get('basis'))
+    elif data.get('source_kind') == 'FROZEN_SEC_XBRL_YTD':
+        from .financial_series import comparable_cash_conversion
+        try:
+            if (evidence.provider != 'sec_edgar' or evidence.evidence_type != 'sec_filing'
+                    or data['rights'] != 'PUBLIC_SEC' or content_hash(data) != evidence.content_hash
+                    or data['symbol'] != evidence.symbol or not re.fullmatch(r'\d{10}', data['cik'])
+                    or evidence.source_uri != f"https://data.sec.gov/api/xbrl/companyfacts/CIK{data['cik']}.json"
+                    or evidence.source_record_id != data['accession']
+                    or datetime.fromisoformat(data['accepted_at']) != evidence.as_of):
+                return rows
+            inputs = data['metrics']
+            calculated = comparable_cash_conversion(inputs, evidence.as_of)
+            if (inputs[0]['accession_number'] != data['accession']
+                    or any(datetime.fromisoformat(r['available_at']) != evidence.as_of for r in inputs)
+                    or any(data['comparison'][metric] != calculated[metric]
+                           for metric in ('revenue', 'operating_cash_flow'))):
+                return rows
+        except (KeyError, TypeError, ValueError, ArithmeticError):
+            return rows
+        basis = (f"{calculated['basis']}; accession={data['accession']}; "
+                 'scope=ENTIRE_FILING_ENTITY')
+        for metric in ('revenue', 'operating_cash_flow'):
+            pair = sorted((r for r in inputs if r['metric'] == metric), key=lambda r: r['end'])
+            periods = {}
+            for label, row in zip(('previous', 'current'), pair):
+                periods[label] = {'start': row['start'], 'end': row['end']}
+                add(f'comparison.{metric}.{label}', row['value'], 'USD',
+                    period=periods[label], basis=basis)
+            add(f'comparison.{metric}.change', data['comparison'][metric]['change'], 'USD',
+                period=periods, basis=basis)
+            add(f'comparison.{metric}.yoy_pct', data['comparison'][metric]['yoy_pct'], 'percent',
+                period=periods, basis=basis)
     elif evidence.evidence_type == 'market_data':
         add('price', data.get('price'), 'usd_per_share', as_of=evidence.as_of,
             period={'instant': evidence.as_of.isoformat()} if evidence.as_of else None,
