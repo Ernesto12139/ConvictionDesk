@@ -223,3 +223,83 @@ def test_copying_github_committer_name_does_not_bypass_owner_identity(tmp_path):
     result=auditor.audit(root,EMAIL,expected_root=first)
     assert 'author/committer identity: '+forged in result['errors']
     assert result['witnessed_service_commits']==[]
+
+
+MERGE_SHA = '7bdaf6aef1a9e351a36c78d3ed37488081df2f08'
+MERGE_PARENTS = ['5950bae3a695fb2a9ac2745f8213cbfadacb678a',
+                 '3ca2dc7b2e2b58455663a5ce0ab9e43dfa2eae45']
+MERGE_WITNESS = {
+    'verification_status': 'GITHUB_API_VERIFIED',
+    'parents': MERGE_PARENTS,
+    'tree': 'e2c688aa8629c370df2389f81d825e9a3e01d4e5',
+    'identities_sha256': '91a5cb7e65f66dcde1025d01cef2a415ab5e98bed64923184826a29c75cf46e7',
+    'signature_sha256': 'a2e70da00188f143f756e2d5ee4b8643049106073767617bf33e72f501dc9d25',
+}
+
+
+def require_merge_object():
+    result = subprocess.run(['git', 'cat-file', '-e', MERGE_SHA+'^{commit}'], cwd=ROOT, capture_output=True)
+    if result.returncode:
+        pytest.skip('Published signed merge absent from an exported non-Git snapshot')
+
+
+def merge_identities():
+    return git(ROOT, 'show', '-s', '--format=%an%x00%ae%x00%cn%x00%ce', MERGE_SHA).split('\x00')
+
+
+def install_merge_witness(tmp_path, monkeypatch, changes=None, *, listed=True):
+    records = json.loads((ROOT/'release/verified_service_merges.json').read_text())
+    records.pop(MERGE_SHA, None)
+    if listed:
+        records[MERGE_SHA] = {**MERGE_WITNESS, **(changes or {})}
+    (tmp_path/'verified_service_merges.json').write_text(json.dumps(records))
+    monkeypatch.setattr(auditor, '__file__', str(tmp_path/'audit_public_git.py'))
+
+
+def test_exact_signed_two_parent_merge_requires_its_ordered_source_witness(tmp_path, monkeypatch):
+    require_merge_object()
+    assert git(ROOT, 'show', '-s', '--format=%P', MERGE_SHA).split() == MERGE_PARENTS
+    install_merge_witness(tmp_path, monkeypatch)
+    assert auditor.pinned_signed_service_merge(ROOT, MERGE_SHA, merge_identities())
+
+
+def test_published_two_parent_witness_is_bound_in_source():
+    require_merge_object()
+    assert auditor.pinned_signed_service_merge(ROOT, MERGE_SHA, merge_identities())
+
+
+@pytest.mark.parametrize('changes', [
+    {'parents': list(reversed(MERGE_PARENTS))},
+    {'parents': ['0'*40, MERGE_PARENTS[1]]},
+    {'parents': MERGE_PARENTS[:1]},
+    {'parents': [*MERGE_PARENTS, '0'*40]},
+    {'parents': [MERGE_PARENTS[0]]*2},
+    {'parents': ' '.join(MERGE_PARENTS)},
+    {'parents': [None, MERGE_PARENTS[1]]},
+    {'parent': MERGE_PARENTS[0]},
+    {'tree': '0'*40},
+    {'identities_sha256': '0'*64},
+    {'signature_sha256': '0'*64},
+    {'verification_status': 'UNVERIFIED'},
+])
+def test_two_parent_witness_tampering_fails_closed(tmp_path, monkeypatch, changes):
+    require_merge_object()
+    install_merge_witness(tmp_path, monkeypatch, changes)
+    assert not auditor.pinned_signed_service_merge(ROOT, MERGE_SHA, merge_identities())
+
+
+@pytest.mark.parametrize('field,value', [(0, 'Not Owner'), (1, 'different@example.com'),
+    (2, 'Impersonator'), (3, 'different@example.com')])
+def test_exact_signed_merge_does_not_admit_changed_identity(tmp_path, monkeypatch, field, value):
+    require_merge_object()
+    install_merge_witness(tmp_path, monkeypatch)
+    identities = merge_identities(); identities[field] = value
+    assert not auditor.pinned_signed_service_merge(ROOT, MERGE_SHA, identities)
+
+
+def test_unlisted_real_signed_merge_does_not_get_a_service_name_exemption(tmp_path, monkeypatch):
+    require_merge_object()
+    install_merge_witness(tmp_path, monkeypatch, listed=False)
+    assert merge_identities()[:2] == ['Ernesto12139', EMAIL]
+    assert merge_identities()[2:] == ['GitHub', published_service_identities()[3]]
+    assert not auditor.pinned_signed_service_merge(ROOT, MERGE_SHA, merge_identities())
