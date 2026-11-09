@@ -20,6 +20,7 @@ from pydantic import Field
 
 from .agent import MockLLMClient
 from .domain import EvidenceItem, FrozenModel, PriceObservation
+from .financial_series import comparable_cash_conversion
 from .llm import LLMError
 from .news import NewsResult
 from .portfolio_entry import PortfolioEntry
@@ -115,7 +116,6 @@ def financial_packet(data, cutoff):
     if set(groups) != {'revenue', 'operating_cash_flow'}:
         raise ValueError('COMPARABLE_METRICS_REQUIRED')
     periods = []
-    comparison = {}
     with localcontext() as ctx:
         ctx.prec = 80
         for metric, group in sorted(groups.items()):
@@ -128,14 +128,13 @@ def financial_packet(data, cutoff):
                     or previous['end'][5:] != current['end'][5:] or previous['start'] == previous['end']):
                 raise ValueError('COMPARABLE_PERIOD_REQUIRED')
             periods.append(tuple((f['start'], f['end']) for f in (previous, current)))
-            prior, present = Decimal(previous['value']), Decimal(current['value'])
-            if prior <= 0:
+            if Decimal(previous['value']) <= 0:
                 raise ValueError('POSITIVE_COMPARISON_BASE_REQUIRED')
-            comparison[metric] = {'previous': plain(prior), 'current': plain(present),
-                'change': plain(present - prior),
-                'yoy_pct': plain(((present / prior - 1) * 100).quantize(Decimal('.01')))}
     if periods[0] != periods[1]:
         raise ValueError('CROSS_METRIC_PERIOD_MISMATCH')
+    calculated = comparable_cash_conversion(facts, cutoff)
+    comparison = {metric: {field: plain(Decimal(value)) for field, value in calculated[metric].items()}
+                  for metric in sorted(groups)}
     comparison['relation'] = ('REVENUE_GROWTH_FASTER_THAN_OCF'
         if Decimal(comparison['revenue']['yoy_pct']) > Decimal(comparison['operating_cash_flow']['yoy_pct'])
         else 'REVENUE_GROWTH_NOT_FASTER_THAN_OCF')
@@ -447,12 +446,22 @@ def build_app(root: Path | str, *, public_navigation=False):
         first = tasks.revision(task_id, 1)
         old = {s.evidence.evidence_id for s in first.sources if s.evidence.evidence_type == 'sec_filing'}
         added = [s.evidence for s in task.sources if s.evidence.evidence_type == 'sec_filing' and s.evidence.evidence_id not in old]
+        from .evidence_action import build_evidence_packet
+        financial_ids = {e.evidence_id for e in added if (e.structured_data or {}).get('source_kind') == 'FROZEN_SEC_XBRL_YTD'}
+        # A read-only projection of this saved revision, never a new provider fetch,
+        # history rewrite, calculation by the scripted model or current-price claim.
+        packet = build_evidence_packet(task,
+            sources=[s for s in task.sources if s.evidence.evidence_id in financial_ids])
         return {'task_id': task_id, 'revision': task.revision, 'account_id': task.account_id,
             'model': 'SCRIPTED_NOT_LIVE', 'prior_thesis': 'NO_CONFIRMED_PRIOR_THESIS',
             'prior_decision': 'NO_PRIOR_VERSION' if task.revision == 1 else 'SAME_TASK_FAST_REVISION',
             'information_gain': ('NEW_PUBLIC_SEC_FACTS' if any(e.structured_data.get('source_kind') == 'FROZEN_SEC_XBRL_YTD' for e in added)
                 else 'NEW_METADATA_ONLY' if added else 'NO_NEW_EVIDENCE'),
             'new_evidence': [e.model_dump(mode='json') for e in added],
+            'numeric_receipts': [row.model_dump(mode='json') for row in packet.receipts],
+            'numeric_receipt_packet_hash': packet.packet_hash,
+            'numeric_receipt_sources': [{'evidence_id': ref.evidence_id, 'source_hash': ref.source_hash,
+                'source_uri': ref.source_uri, 'ref': ref.ref} for ref in packet.refs],
             'first_revision_hash': content_hash(first.model_dump(mode='json')),
             'current_revision_hash': content_hash(task.model_dump(mode='json')),
             'tool_selection': [{'sequence': c.sequence, 'tool': c.name, 'status': c.status,
