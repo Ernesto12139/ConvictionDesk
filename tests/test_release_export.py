@@ -301,5 +301,5 @@ def test_unlisted_real_signed_merge_does_not_get_a_service_name_exemption(tmp_pa
     require_merge_object()
     install_merge_witness(tmp_path, monkeypatch, listed=False)
     assert merge_identities()[:2] == ['Ernesto12139', EMAIL]
-    assert merge_identities()[2:] == ['GitHub', 'noreply@github.com']
+    assert merge_identities()[2:] == ['GitHub', published_service_identities()[3]]
     assert not auditor.pinned_signed_service_merge(ROOT, MERGE_SHA, merge_identities())
