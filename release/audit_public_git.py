@@ -32,12 +32,21 @@ def pinned_signed_service_merge(root, sha, identities):
     record = json.loads(witness_path.read_text(encoding='utf-8')).get(sha)
     if not record or record.get('verification_status') != 'GITHUB_API_VERIFIED':
         return False
+    if 'parents' in record:
+        parents = record['parents']
+        if 'parent' in record or not isinstance(parents, list) or len(parents) != 2:
+            return False
+    else:
+        parents = [record.get('parent')]
+    if any(not isinstance(parent, str) or not re.fullmatch('[0-9a-f]{40}', parent)
+           for parent in parents) or len(set(parents)) != len(parents):
+        return False
     identity_digest=hashlib.sha256('\0'.join(identities).encode()).hexdigest()
     if identity_digest != record['identities_sha256']:
         return False
     if git(root,'show','-s','--format=%T',sha) != record['tree']:
         return False
-    if git(root,'show','-s','--format=%P',sha).split() != [record['parent']]:
+    if git(root,'show','-s','--format=%P',sha).split() != parents:
         return False
     lines = git(root,'cat-file','-p',sha).splitlines()
     signature=[]

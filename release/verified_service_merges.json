@@ -10,5 +10,20 @@
     "identities_sha256": "91a5cb7e65f66dcde1025d01cef2a415ab5e98bed64923184826a29c75cf46e7",
     "owner_author": "Ernesto12139",
     "service_committer": "GitHub"
+  },
+  "7bdaf6aef1a9e351a36c78d3ed37488081df2f08": {
+    "verification_status": "GITHUB_API_VERIFIED",
+    "parents": [
+      "5950bae3a695fb2a9ac2745f8213cbfadacb678a",
+      "3ca2dc7b2e2b58455663a5ce0ab9e43dfa2eae45"
+    ],
+    "tree": "e2c688aa8629c370df2389f81d825e9a3e01d4e5",
+    "signature_sha256": "a2e70da00188f143f756e2d5ee4b8643049106073767617bf33e72f501dc9d25",
+    "verification_source": "https://api.github.com/repos/Ernesto12139/ConvictionDesk/commits/7bdaf6aef1a9e351a36c78d3ed37488081df2f08",
+    "reviewed_source_sha": "3ca2dc7b2e2b58455663a5ce0ab9e43dfa2eae45",
+    "scope": "One immutable GitHub-signed Owner-authored two-parent PR merge; not a blanket service identity exemption",
+    "identities_sha256": "91a5cb7e65f66dcde1025d01cef2a415ab5e98bed64923184826a29c75cf46e7",
+    "owner_author": "Ernesto12139",
+    "service_committer": "GitHub"
   }
 }
