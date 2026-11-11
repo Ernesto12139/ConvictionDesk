@@ -447,7 +447,7 @@
   question.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(previewRoute, 450); });
   window.addEventListener("mia-ask-draft", () => setTimeout(previewRoute, 50));
 
-  if (runtime === "OWNER") {
+  if (runtime === "OWNER" && document.body.dataset.publicIvs !== "1") {
     fetch("/api/workbench/identity", { cache: "no-store" }).then(response => response.ok ? response.json() : null).catch(() => null).then(identity => {
       noSendDeployment = noSendDeployment || identity?.deployment_mode === "NO_SEND_DEPLOYMENT";
       if (noSendDeployment) { state.data = { status: "NO_SEND_DEPLOYMENT", scopes: {} }; render(); }

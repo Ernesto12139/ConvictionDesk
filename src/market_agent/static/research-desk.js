@@ -1026,7 +1026,7 @@
   function applyNavigation(options={}) {
     if(active)return;
     const hash=location.hash,legacyRecord=new URLSearchParams(location.search).has("cockpit");
-    const view=legacyRecord ? "workspace" : (VIEW_BY_HASH[hash] || (publicReplay ? "home" : "today"));
+    const view=legacyRecord ? "workspace" : (VIEW_BY_HASH[hash] || (publicReplay || document.body.dataset.publicIvs === "1" ? "home" : "today"));
     document.body.dataset.consoleView=view;renderRecent();
     const heading=document.querySelector(".page-heading"),labels=VIEW_LABELS[view];
     heading.querySelector("h1").textContent=labels[0];heading.querySelector(".muted").textContent=labels[1];

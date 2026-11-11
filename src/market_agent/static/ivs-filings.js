@@ -26,7 +26,8 @@
     options.append(form.querySelector(".desk-prompt-ideas"),form.querySelector("fieldset"),actions);
     document.getElementById("desk-question").rows=2;
     document.querySelector('.skip-link').href="#ivs-filings";
-    document.querySelector('.desk-home-shortcuts a').href="#ivs-filings";
+    const shortcut=document.querySelector(".desk-home-shortcuts a");
+    if (shortcut) shortcut.href="#ivs-filings";
   } else host.before(lane);
   const states = {NOT_SCANNED: "尚未扫描当前范围。点击扫描，读取持仓和关注公司的公开 SEC 申报。", COMPLETE_NO_NEW_FILINGS: "已完成本次范围核查，时间窗口内没有新申报。", COMPLETE_WITH_FILINGS: "以下申报进入待核查队列；尚未形成研究判断。", PARTIAL: "部分标的未能完成核查；已取得的申报如下。", SOURCE_UNAVAILABLE: "SEC 来源暂不可用。恢复后可重新扫描，不能据此判断没有披露。", INVALID_DATA: "来源元数据未通过校验，未将其作为有效披露。"};
   const stamp = value => value ? new Date(value).toLocaleString("zh-CN", {hour12: false, timeZoneName: "short"}) : "时间未知";

@@ -274,8 +274,8 @@
       optional("/api/attention/queue"), optional("/api/console/portfolio-overview"),
       optional("/api/research/tasks"), publicDemo ? null : optional("/api/research/model-profiles"),
       runtime === "OWNER" && document.getElementById("owner-value") ? optional("/api/owner/market-observations") : null,
-      publicDemo ? null : optional("/api/workbench/identity")]);
-    const sourceHealth = publicDemo ? null : await optional("/api/provider-source-health");
+      publicDemo || body.dataset.publicIvs === "1" ? null : optional("/api/workbench/identity")]);
+    const sourceHealth = publicDemo || body.dataset.publicIvs === "1" ? null : await optional("/api/provider-source-health");
     noSendDeployment = noSendDeployment || identity?.deployment_mode === "NO_SEND_DEPLOYMENT";
     if (noSendDeployment) {
       body.dataset.deploymentMode = "NO_SEND_DEPLOYMENT";
