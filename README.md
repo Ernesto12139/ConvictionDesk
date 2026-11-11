@@ -130,3 +130,21 @@ ConvictionDesk has no broker connection or order API, and it is not investment
 advice. The server listens on loopback by default.
 
 [Documentation](docs/README.md) · [Showcase](docs/showcase.md) · [Contributing](CONTRIBUTING.md) · [MIT license](LICENSE)
+
+
+### Local candidate: five destinations and offline Agent boundaries
+
+The proposed 0.16.0 increment gives the read-only replay five destinations: Today,
+Market, Research, Portfolio, and Settings. Settings identifies SCRIPTED research;
+Market explicitly reports UNAVAILABLE because the keyless package contains no
+redistributable provider quotes or price history. The existing Portfolio Priority
+journey, frozen SEC inputs, synthetic accounts and Decimal What-if remain separate
+and unchanged. No visitor input starts a live model or provider request.
+
+The source also includes opt-in offline building blocks for a typed Research /
+Verifier boundary with one shared repair, append-only scoped memory and bounded
+same-source SEC windows. Tests use synthetic evidence and scripted callbacks.
+These blocks are not enabled in the default public replay and do not establish
+live model quality, two-model independence, Jev-Mem benefit or fresh data retrieval.
+Jev-Mem requires an optional separately obtained, hash-pinned upstream artifact;
+this package never downloads one. A saved key does not activate live research.

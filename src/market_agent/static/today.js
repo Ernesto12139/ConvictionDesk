@@ -19,6 +19,7 @@
     return hours < 24 ? `${hours} 小时前` : `${Math.round(hours / 24)} 天前`;
   };
   const state = { data: null, scope: "ALL", symbol: null };
+  let noSendDeployment = document.body.dataset.deploymentMode === "NO_SEND_DEPLOYMENT";
   const SCOPES = [["ALL", "全部"], ["HOLDING", "持仓"], ["WATCHING", "关注"], ["MARKET", "市场"]];
 
   const attention = $("attention");
@@ -114,11 +115,16 @@
       : "", "today-stamp");
     head.append(el("h3", "市场脉搏"), stamp, refresh);
     pulse.append(head);
+    if (noSendDeployment) {
+      refresh.disabled = true;
+      pulse.append(el("p", "NO_SEND：本部署禁止新的模型、SEC、行情与报道请求。已保存研究、历史快照及假设 What-if 可继续浏览。", "today-empty"));
+      return;
+    }
     if (data.status !== "AVAILABLE") {
-      const text = data.status === "NOT_CONFIGURED" ? "尚未配置 Finnhub 数据源，无法获取今日行情与报道。可在「模型与数据源」中添加。" :
+      const text = data.status === "NOT_CONFIGURED" ? "本次运行尚未启用 Finnhub 行情与报道读取。已保存密钥、来源权限与运行准入是不同状态；请在「模型与数据源」查看，勿重复录入已有密钥。" :
         data.status === "OFFLINE_REPLAY" ? "公开演示使用离线合成数据，不获取实时行情。" : "行情与报道暂不可用。";
       pulse.append(el("p", text, "today-empty"));
-      if (data.status === "NOT_CONFIGURED") { const go = button("配置数据源"); go.addEventListener("click", () => window.dispatchEvent(new CustomEvent("mia-open-providers"))); pulse.append(go); }
+      if (data.status === "NOT_CONFIGURED") { const go = button("查看来源与模型状态"); go.addEventListener("click", () => window.dispatchEvent(new CustomEvent("mia-open-providers"))); pulse.append(go); }
       refresh.hidden = data.status !== "NOT_CONFIGURED" ? true : refresh.hidden;
       return;
     }
@@ -216,6 +222,7 @@
   }
 
   function renderHeadlines() {
+    if (noSendDeployment) { headlines.replaceChildren(el("p", "NO_SEND：本部署不读取新的SEC、行情或报道。请查看已保存研究中的来源和历史截止时间。", "today-empty")); return; }
     headlines.replaceChildren();
     const data = state.data;
     if (!data || data.status !== "AVAILABLE") return;
@@ -272,6 +279,7 @@
   const REFRESH_TIMEOUT_MS = 20000;
 
   async function load(refresh = false) {
+    if (noSendDeployment) return;
     if (inflight) inflight.abort();
     const controller = new AbortController();
     inflight = controller;
@@ -307,6 +315,12 @@
   }
 
   function cancelLoad() { if (inflight) inflight.abort(); }
+  window.addEventListener("mia-no-send-deployment", () => {
+    noSendDeployment = true;
+    cancelLoad();
+    state.data = { status: "NO_SEND_DEPLOYMENT", scopes: {} };
+    render();
+  });
 
   // Attention cards render asynchronously; re-apply the scope filter when they land.
   new MutationObserver(() => renderTabs()).observe($("attention-queue"), { childList: true });
@@ -315,7 +329,7 @@
   const dialog = el("dialog", null, "today-whatif"); dialog.id = "today-whatif"; dialog.setAttribute("aria-labelledby", "today-whatif-title");
   document.body.append(dialog);
   async function openWhatIf(symbol) {
-    dialog.replaceChildren(el("h2", `调仓预演 · ${symbol}`), el("p", "正在读取当前组合与最新报价…", "small muted"));
+    dialog.replaceChildren(el("h2", `调仓预演 · ${symbol}`), el("p", "正在读取已保存快照与可用报价…", "small muted"));
     dialog.querySelector("h2").id = "today-whatif-title";
     dialog.showModal();
     let context;
@@ -334,7 +348,7 @@
     const field = (label, input) => { const wrap = el("label", label); wrap.append(input); form.append(wrap); return input; };
     const text = (value = "") => { const input = el("input"); input.type = "text"; input.inputMode = "decimal"; input.value = value; return input; };
     const account = field("账户", el("select"));
-    context.accounts.forEach(a => { const option = el("option", `${a.name} · ${held(a) ? `持有 ${held(a)} 股` : `未持有 ${symbol}`} · 现金 ${price(a.cash)}`); option.value = a.account_id; account.append(option); });
+    context.accounts.forEach(a => { const option = el("option", `${a.name} · ${held(a) ? `持有 ${held(a)} 股` : `未持有 ${symbol}`} · 快照现金 ${price(a.cash)}`); option.value = a.account_id; account.append(option); });
     if (holders.length) account.value = holders[0].account_id;
     const side = field("方向", el("select"));
     [["BUY", "加仓"], ["SELL", "减仓"]].forEach(([v, t]) => { const o = el("option", t); o.value = v; side.append(o); });
@@ -378,18 +392,19 @@
         showResult(result, value);
       } catch (error) { result.replaceChildren(el("p", whatIfError(error.message), "desk-error")); }
     });
-    dialog.replaceChildren(el("h2", `调仓预演 · ${symbol}`), el("p", `基于 ${clock(context.snapshot_as_of)} 的组合快照；只做计算，不下单，不改持仓。`, "small muted"), form, result);
+    const snapshotBasis = document.body.dataset.runtimeMode === "PUBLIC_DEMO" ? "合成示例快照" : "历史快照 HISTORICAL；当前持仓与现金未确认";
+    dialog.replaceChildren(el("h2", `调仓预演 · ${symbol}`), el("p", `基于 ${date(context.snapshot_as_of)} 的${snapshotBasis}；只做假设计算，不下单，不改持仓。`, "small muted"), form, result);
     dialog.querySelector("h2").id = "today-whatif-title";
   }
   function whatIfError(code) {
-    return ({ INSUFFICIENT_CASH_INCLUDING_FEES: "现金不足（含费用）。", OVERSELL_NOT_ALLOWED: "减仓股数超过该账户持有股数。",
+    return ({ INSUFFICIENT_CASH_INCLUDING_FEES: "按快照现金不足（含费用）。", OVERSELL_NOT_ALLOWED: "减仓股数超过该账户持有股数。",
       SHARE_BASIS_CONTINUITY_ATTESTATION_REQUIRED: "请先确认没有拆股或股本变化。", POSITIVE_SHARES_AND_PRICES_REQUIRED: "股数和价格必须为正数。",
       SCENARIO_PREDATES_SNAPSHOT: "情景日期不能早于组合快照。", INVALID_REQUEST: "请用普通小数填写股数和价格。" })[code] || "无法计算这次预演。";
   }
   function showResult(container, value) {
     const weight = v => v == null ? "未知" : `${(Number(v) * 100).toFixed(2)}%`;
     const shares = v => v == null ? "—" : String(Number(v));
-    const rows = [["股数", "shares", shares], ["现金 USD", "cash", price], ["持仓市值 USD", "focus_market_value", price], ["占该账户", "focus_weight", weight], ["账户最大单一持仓", "largest_weight", weight]];
+    const rows = [["股数", "shares", shares], ["快照现金 USD", "cash", price], ["持仓市值 USD", "focus_market_value", price], ["占该账户", "focus_weight", weight], ["账户最大单一持仓", "largest_weight", weight]];
     const list = el("dl", null, "today-whatif-deltas");
     rows.forEach(([label, key, format]) => { const cell = el("div"); cell.append(el("dt", label), el("dd", `${format(value.before[key])} → ${format(value.after[key])}`)); list.append(cell); });
     container.replaceChildren(list);
@@ -406,7 +421,7 @@
   let timer = null, generation = 0;
   async function previewRoute() {
     const text = question.value.trim(), mine = ++generation;
-    if (runtime !== "OWNER" || text.length < 4) { route.hidden = true; return; }
+    if (noSendDeployment || runtime !== "OWNER" || text.length < 4) { route.hidden = true; return; }
     try {
       const response = await fetch("/api/research/route-preview", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question: text }) });
       if (!response.ok || mine !== generation) return;
@@ -432,5 +447,11 @@
   question.addEventListener("input", () => { clearTimeout(timer); timer = setTimeout(previewRoute, 450); });
   window.addEventListener("mia-ask-draft", () => setTimeout(previewRoute, 50));
 
-  load();
+  if (runtime === "OWNER") {
+    fetch("/api/workbench/identity", { cache: "no-store" }).then(response => response.ok ? response.json() : null).catch(() => null).then(identity => {
+      noSendDeployment = noSendDeployment || identity?.deployment_mode === "NO_SEND_DEPLOYMENT";
+      if (noSendDeployment) { state.data = { status: "NO_SEND_DEPLOYMENT", scopes: {} }; render(); }
+      else load();
+    });
+  } else load();
 })();

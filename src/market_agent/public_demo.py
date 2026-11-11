@@ -174,6 +174,17 @@ def create_public_demo(create_app, environment):
         # No request body is read and no endpoint/background job executes first.
         if request.method not in {'GET', 'HEAD'}:
             response = JSONResponse(status_code=403, content={'detail': 'PUBLIC_DEMO_READ_ONLY'})
+        elif request.url.path == '/api/market/eod':
+            # A truthful empty destination, not an activation or a provider fetch.
+            response = JSONResponse({'last_completed_session': None,
+                'price_basis': None, 'provider': None, 'rights': 'PUBLIC_DEMO_UNAVAILABLE',
+                'retrieved_at': None, 'series': [
+                    {'symbol': symbol, 'role': role, 'status': 'UNAVAILABLE',
+                     'reason': '公开 Keyless 模式未包含获准再分发的行情；不会请求 Provider。',
+                     'bars': [], 'change_1d_pct': None, 'change_5d_pct': None,
+                     'change_20d_pct': None}
+                    for symbol, role in [('SPY', 'BENCHMARK'), ('QQQ', 'SECTOR'),
+                                         ('XMPL', 'WATCHING'), ('XGRD', 'WATCHING')]]})
         elif request.url.path == '/api/today/pulse':
             response = JSONResponse({'status': 'OFFLINE_REPLAY', 'scopes': {}, 'model_calls': 0})
         elif not READ_ROUTES.fullmatch(request.url.path):
