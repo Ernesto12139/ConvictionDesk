@@ -400,7 +400,7 @@ def build_app(root: Path | str, *, public_navigation=False):
 
     @app.get('/', include_in_schema=False)
     def console():
-        html = (Path(__file__).with_name('static') / 'index.html').read_text(encoding='utf-8')
+        html = (Path(__file__).with_name('static') / 'portfolio-priority-shell.html').read_text(encoding='utf-8')
         if public_navigation:
             html = html.replace('<nav>', '<nav><a href="/public-replay">返回只读示例</a>', 1)
         # Existing Console shell and research reader, with unavailable creation and

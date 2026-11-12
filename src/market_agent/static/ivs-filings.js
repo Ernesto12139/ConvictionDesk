@@ -26,10 +26,12 @@
     options.append(form.querySelector(".desk-prompt-ideas"),form.querySelector("fieldset"),actions);
     document.getElementById("desk-question").rows=2;
     document.querySelector('.skip-link').href="#ivs-filings";
-    document.querySelector('.desk-home-shortcuts a').href="#ivs-filings";
+    const shortcut=document.querySelector(".desk-home-shortcuts a");
+    if (shortcut) shortcut.href="#ivs-filings";
   } else host.before(lane);
   const states = {NOT_SCANNED: "尚未扫描当前范围。点击扫描，读取持仓和关注公司的公开 SEC 申报。", COMPLETE_NO_NEW_FILINGS: "已完成本次范围核查，时间窗口内没有新申报。", COMPLETE_WITH_FILINGS: "以下申报进入待核查队列；尚未形成研究判断。", PARTIAL: "部分标的未能完成核查；已取得的申报如下。", SOURCE_UNAVAILABLE: "SEC 来源暂不可用。恢复后可重新扫描，不能据此判断没有披露。", INVALID_DATA: "来源元数据未通过校验，未将其作为有效披露。"};
   const stamp = value => value ? new Date(value).toLocaleString("zh-CN", {hour12: false, timeZoneName: "short"}) : "时间未知";
+  let shadowLabels = new Map();
   let scanned = false;
   function render(data) {
     if (data.status !== "NOT_SCANNED") scanned = true;
@@ -46,6 +48,18 @@
       const source = node("a", `打开 SEC 原始申报 · ${filing.form}`); source.href = filing.source_url; source.target = "_blank"; source.rel = "noopener noreferrer"; source.dataset.secAccession = filing.accession;
       const time = filing.time_precision === "SECOND" ? `SEC 接收 ${stamp(filing.accepted_at)}` : `仅知申报日期 ${filing.filing_date || "未知"}；未伪造精确时刻`;
       item.append(lead, node("p", `${time} · 条目 ${(filing.items || []).join("、") || "未注明"}`, "small muted"));
+      const shadow = shadowLabels.get(filing.evidence_id);
+      if (shadow?.status === "SUCCESS" && shadow.applicability === "CURRENT") {
+        const priorities = { HIGH: "高", MEDIUM: "中", LOW: "低", VERIFY: "需核验" };
+        const steps = { FAST: "Fast 核查", DEEP: "Deep 核查", SKIP: "暂缓研究", UNKNOWN: "保留未知" };
+        if (priorities[shadow.priority] && steps[shadow.next_step]) {
+          const label = node("p", `Jev Shadow · 建议核查优先级 ${priorities[shadow.priority]} · ${steps[shadow.next_step]}。${shadow.agrees_with_baseline === true ? "与确定性基线一致" : shadow.agrees_with_baseline === false ? "与确定性基线不同，需核查理由" : "基线对照未知"}；未改变列表排序或自动启动研究。`, "small muted ivs-shadow-label");
+          label.dataset.mode = "SHADOW";
+          const provenance = node("details"), caption = node("summary", "Shadow 评测记录");
+          provenance.append(caption, node("p", `模型 ${String(shadow.model || "UNKNOWN").slice(0, 100)} · ${stamp(shadow.at)} · Call ${String(shadow.call_id || "UNKNOWN").slice(0, 100)}。影子建议不等于投资结论或已证明优于基线。`, "small muted"));
+          item.append(label, provenance);
+        }
+      }
       item.append(node("p", filing.scope?.kind === "HOLDING" ? "这家公司属于你的持仓范围，因此将原始披露列入待核查。" : "这家公司在你的关注范围，因此将原始披露列入待核查。", "small"));
       const held=filing.scope?.kind === "HOLDING", missing=delta?.status === "THESIS_NOT_AVAILABLE";
       let check = missing ? `先读原文，再记录你${held ? "持有" : "关注"} ${filing.symbol} 的理由，明确需要核查什么。` : delta?.next_check || filing.review_questions?.[0] || "先阅读原始披露，核查是否涉及当前投资逻辑。";
@@ -62,7 +76,9 @@
       detail.append(node("p", `读取于 ${stamp(filing.provenance?.retrieved_at)} · 待核查，尚未研究`, "small muted"));
       const actions = node("div", null, "ivs-filing-actions"), ask = node("button", "研究这份披露"), whatif = node("button", "账户 What-if");
       ask.type = whatif.type = "button";
-      ask.addEventListener("click", () => window.dispatchEvent(new CustomEvent("mia-ask-draft", {detail: {symbol: filing.symbol, filing_evidence_id: filing.evidence_id, question: `${filing.symbol} 的这份 SEC 披露需要如何核查？${check}`}})));
+      ask.addEventListener("click", () => window.dispatchEvent(new CustomEvent("mia-ask-draft", {detail: {symbol: filing.symbol, filing_evidence_id: filing.evidence_id, question: `${filing.symbol} 的这份 SEC 披露需要如何核查？${check}`,
+        lead: {headline: `${filing.event_label || filing.form} · 条目 ${(filing.items || []).join("、") || "未注明"}`, accession: filing.accession, time, next_check: check,
+          evidence: [{evidence_id: filing.evidence_id, provider: "SEC EDGAR", title: filing.form}]}}})));
       whatif.addEventListener("click", () => window.miaOpenWhatIf?.(filing.symbol));
       actions.append(source, ask, whatif); item.append(detail, actions); list.append(item);
     }
@@ -78,6 +94,22 @@
     try {
       const response = await fetch(scan ? "/api/today/filings/refresh" : "/api/today/filings", scan ? {method: "POST", headers: {"Content-Type": "application/json"}, body: "{}"} : {});
       if (!response.ok) { if (response.status === 429) { status.textContent = "扫描仍在进行或刚刚完成，请稍后重试；没有重复发起请求。"; return; } throw new Error("SEC_READ_FAILED"); }
+      // Local readback only: model dispatch belongs to an admitted exact Task.
+      // Public/keyless views never request the private Shadow history.
+      if (document.body.dataset.runtimeMode === "OWNER" && !publicIvs) {
+        try {
+          const reply = await fetch("/api/attention/filings/jev-shadow", { cache: "no-store" });
+          const labels = reply.ok ? await reply.json() : null;
+          shadowLabels = new Map();
+          if (labels?.scope === "PUBLIC_SEC_ONLY" && labels.mode === "SHADOW" && labels.production_routing === false) {
+            for (const row of labels.items || []) {
+              const previous = shadowLabels.get(row.evidence_id);
+              if (row.applicability === "CURRENT" && Number.isFinite(Date.parse(row.at))
+                  && (!previous || Date.parse(row.at) > Date.parse(previous.at))) shadowLabels.set(row.evidence_id, row);
+            }
+          }
+        } catch { shadowLabels = new Map(); }
+      }
       render(await response.json());
     } catch { status.textContent = "披露暂时无法读取。请重新扫描；这不表示没有新披露。"; }
     finally { refresh.disabled = false; lane.setAttribute("aria-busy", "false"); }

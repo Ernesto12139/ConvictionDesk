@@ -158,13 +158,9 @@
   }
   window.addEventListener("mia-open-providers", open);
   if (runtime === "OWNER") {
-    const entry = button("⚙ 模型与数据源", "rail-providers"); entry.id = "open-providers";
+    const entry = button("来源与模型", "rail-provider-entry"); entry.id = "open-providers";
     entry.addEventListener("click", open);
-    document.querySelector(".rail-foot")?.prepend(entry);
-    const compactEntry = button("模型与数据源", "providers-compact-entry");
-    compactEntry.id = "open-providers-compact";
-    compactEntry.addEventListener("click", open);
-    document.querySelector(".desk-nav-more")?.append(compactEntry);
+    document.querySelector(".rail nav")?.append(entry);
   }
 
   // The cost dialog's facts. With the Hub, the server preview that follows is the

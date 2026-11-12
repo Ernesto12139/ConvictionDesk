@@ -32,6 +32,19 @@ const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
    await page.setViewportSize({width,height:900});await page.goto(base);
    await page.locator('#mia-theme').selectOption(theme);
    if(flags.includes('--public-replay')){
+    if(await page.locator('.rail nav a[data-nav="today"]').count()) {
+     for(const destination of ['today','market','research','portfolio','settings']) {
+      await page.locator(`.rail nav a[data-nav="${destination}"]`).click();
+      check(await page.locator(`.rail nav a[data-nav="${destination}"]`).getAttribute('aria-current')==='page',`destination_${destination}_${width}_${theme}`);
+      check(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),`destination_${destination}_no_overflow_${width}_${theme}`);
+      if(destination==='market') {
+       await page.locator('#market [data-status="UNAVAILABLE"]').first().waitFor();
+       check(await page.locator('#market .market-chart').count()===0,`no_invented_market_chart_${width}_${theme}`);
+      }
+      if(destination==='settings') check((await page.locator('#settings').innerText()).includes('不调用外部模型'),`scripted_readiness_${width}_${theme}`);
+     }
+     await page.locator('.rail nav a[data-nav="today"]').click();
+    }
     await page.locator('#attention-queue .attention-item').first().waitFor();
     check(await page.locator('#public-demo-notice').isVisible(),`synthetic_identity_${width}_${theme}`);
     for(const mode of ['Fast','Deep']){
@@ -42,10 +55,10 @@ const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
       check(await page.locator('.desk-information-gain').isVisible(),`deep_actual_gain_explained_${width}_${theme}`);
       check(await page.locator('.desk-financial-scroll table').count()===1,`deep_quarters_rendered_${width}_${theme}`);
      }
-     await page.locator('#desk-home').click();await page.locator('.rail nav a[href="#attention"]:visible').click();
+     await page.locator('#desk-home').click();await page.locator('.rail nav a[data-nav="today"]:visible, .rail nav a[href="#attention"]:visible').first().click();
     }
    }
-   await page.locator('.rail nav a[href="#research-history"]:visible').click();
+   await page.locator('.rail nav a[data-nav="research"]:visible, .rail nav a[href="#research-history"]:visible').first().click();
    await page.locator('#desk-recent .desk-recent-task').first().waitFor();
    for(const [i,task]of tasks.entries()){
     const prefix=`${width}_${theme}_record${i+1}`;
@@ -100,7 +113,7 @@ const hash=value=>crypto.createHash('sha256').update(value).digest('hex');
     check(!(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)),prefix+'_no_horizontal_overflow');
     if(flags.includes('--screenshots')&&target.port!=='8000')await page.screenshot({path:path.join(output,prefix+'.png'),fullPage:true});
     await page.locator('#desk-home').click();
-    await page.locator('.rail nav a[href="#research-history"]:visible').click();
+    await page.locator('.rail nav a[data-nav="research"]:visible, .rail nav a[href="#research-history"]:visible').first().click();
     await page.locator('#desk-recent .desk-recent-task').first().waitFor();
    }
   }

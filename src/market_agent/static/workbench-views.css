@@ -1,0 +1,169 @@
+/* D104 workbench views: five destinations (今日/市场/研究/组合/设置), the readiness
+   ladder, the market view, today's data status and the decision-first card.
+   Loaded last. Uses the existing green / off-white / warm-gold tokens only. */
+
+/* ---------- One destination at a time ---------- */
+/* :where() keeps the hide list at zero specificity so each view's show rule wins. */
+html[data-theme] body[data-research-mode][data-console-view] main > :where(.desk-entry-grid,.today-pulse,#market,#research-history,#desk-diagnostics,#universe,#desk-legacy,#portfolio-disclosure,#inspector,.desk-runtime-details,#settings) { display:none; }
+html[data-theme] body[data-research-mode][data-console-view="today"] main > .desk-entry-grid { display:grid; grid-template-columns:minmax(0,1fr); }
+html[data-theme] body[data-research-mode][data-console-view="today"] #ask-mia { display:none; }
+html[data-theme] body[data-research-mode][data-console-view="market"] main > :is(#market,.today-pulse) { display:block; }
+html[data-theme] body[data-research-mode][data-console-view="home"] main > .desk-entry-grid { display:grid; grid-template-columns:minmax(0,1fr); max-width:960px; }
+html[data-theme] body[data-research-mode][data-console-view="home"] #attention { display:none; }
+html[data-theme] body[data-research-mode][data-console-view="home"] main > #research-history { display:block; max-width:960px; }
+html[data-theme] body[data-research-mode][data-console-view="history"] main > :is(#research-history,#desk-diagnostics) { display:block; }
+html[data-theme] body[data-research-mode][data-console-view="portfolio"] main > :is(#portfolio-disclosure,#universe) { display:block; }
+html[data-theme] body[data-research-mode][data-console-view="universe"] main > #universe { display:block; }
+html[data-theme] body[data-research-mode][data-console-view="settings"] main > :is(#settings,.desk-runtime-details,#desk-diagnostics) { display:block; }
+html[data-theme] body[data-research-mode][data-console-view="workspace"] main > #desk-legacy,
+html[data-theme] body[data-research-mode][data-console-view="inspector"] main > :is(#desk-legacy,#inspector) { display:block; }
+/* Reading a task replaces every destination. */
+html[data-theme] body[data-research-mode][data-desk-view="task"] main > :is(.desk-entry-grid,.today-pulse,#market,#research-history,#desk-diagnostics,#universe,#portfolio-disclosure,#settings,.desk-runtime-details) { display:none; }
+/* Settings is a destination now; the old rail button stays reachable from Settings. */
+html[data-theme] body[data-research-mode] .rail #open-providers { display:none; }
+html[data-theme] body[data-research-mode] main .page-heading h1:focus { outline:none; }
+html[data-theme] body[data-research-mode] main .page-heading h1:focus-visible { outline:2px solid var(--action); outline-offset:4px; border-radius:4px; }
+
+/* ---------- Rail navigation ---------- */
+html[data-theme] body[data-research-mode] .rail nav a.nav-dest { display:flex; align-items:center; gap:10px; min-height:44px; padding:10px 12px; border-radius:var(--radius-control,8px); color:var(--text-primary); background:transparent; font-size:15px; font-weight:600; text-align:left; text-decoration:none; }
+html[data-theme] body[data-research-mode] .rail nav a.nav-dest .nav-icon { flex:0 0 auto; color:var(--text-secondary); }
+html[data-theme] body[data-research-mode] .rail nav a.nav-dest:hover { background:var(--surface-hover); color:var(--text-strong); }
+html[data-theme] body[data-research-mode] .rail nav a.nav-dest[aria-current="page"],
+html[data-theme] body[data-research-mode][data-desk-view="task"] .rail nav a.nav-dest[data-nav="research"] { background:var(--surface-selected); color:var(--text-strong); box-shadow:inset 3px 0 0 var(--brand-gold); }
+html[data-theme] body[data-research-mode][data-desk-view="task"] .rail nav a.nav-dest[aria-current="page"]:not([data-nav="research"]) { background:transparent; box-shadow:none; }
+html[data-theme] body[data-research-mode] .rail nav a.nav-dest[aria-current="page"] .nav-icon { color:var(--brand-gold); }
+html[data-theme] body[data-research-mode] .rail nav a.nav-dest:focus-visible { outline:2px solid var(--action); outline-offset:2px; }
+html[data-theme] body[data-research-mode] .rail nav .desk-nav-more { margin-top:12px; }
+
+/* ---------- Mobile: fixed five-item bottom bar ---------- */
+@media (max-width:760px) {
+  html[data-theme] body[data-research-mode] { padding-bottom:calc(68px + env(safe-area-inset-bottom)); }
+  html[data-theme] body[data-research-mode] .rail { padding:10px 16px; }
+  html[data-theme] body[data-research-mode] .rail :is(.rail-label,.rail-foot) { display:none; }
+  html[data-theme] body[data-research-mode] .rail .brand { margin:0; }
+  html[data-theme] body[data-research-mode] .rail nav { position:fixed; left:0; right:0; bottom:0; z-index:60; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:2px; margin:0; padding:4px 4px calc(4px + env(safe-area-inset-bottom)); background:var(--surface-panel); border-top:1px solid var(--border-subtle); overflow:visible; }
+  html[data-theme] body[data-research-mode] .rail nav a.nav-dest { flex-direction:column; justify-content:center; gap:2px; min-height:54px; padding:4px 2px; font-size:12px; font-weight:600; text-align:center; }
+  html[data-theme] body[data-research-mode] .rail nav a.nav-dest[aria-current="page"],
+  html[data-theme] body[data-research-mode][data-desk-view="task"] .rail nav a.nav-dest[data-nav="research"] { box-shadow:inset 0 3px 0 var(--brand-gold); }
+  html[data-theme] body[data-research-mode] .rail nav .desk-nav-more { display:none; }
+  /* The reading view keeps one next-step entry above the bar. */
+  html[data-theme] body[data-research-mode][data-desk-view="task"] .desk-mobile-action { position:sticky; bottom:calc(66px + env(safe-area-inset-bottom)); z-index:20; display:flex; align-items:center; justify-content:center; min-height:44px; margin:12px 0 0; background:var(--action); color:var(--on-action,#fff); border-radius:var(--radius-control,8px); font-weight:650; text-decoration:none; }
+}
+
+/* ---------- 今日: data status ---------- */
+html[data-theme] .today-health { margin:0 0 18px; padding:14px 16px; border:1px solid var(--border-subtle); border-radius:var(--radius-panel,10px); background:var(--surface-panel); }
+html[data-theme] .today-health-top { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+html[data-theme] .today-health-top h2 { margin:0; font-size:18px; }
+html[data-theme] .today-health-list { list-style:none; margin:10px 0 0; padding:0; display:grid; gap:2px; }
+html[data-theme] .today-health-row { display:grid; grid-template-columns:minmax(96px,auto) auto minmax(0,1fr); align-items:baseline; gap:4px 12px; padding:7px 0; border-top:1px solid var(--border-subtle); }
+html[data-theme] .today-health-row:first-child { border-top:0; }
+html[data-theme] .today-health-name { font-weight:650; color:var(--text-primary); }
+html[data-theme] .today-health-state { font-size:12px; font-weight:650; padding:1px 8px; border-radius:999px; background:var(--status-uncertain-surface); color:var(--status-uncertain); }
+html[data-theme] .today-health-row[data-tone="ok"] .today-health-state { background:var(--status-success-surface); color:var(--status-success); }
+html[data-theme] .today-health-row[data-tone="blocked"] .today-health-state { background:var(--status-danger-surface); color:var(--status-danger); }
+html[data-theme] .today-health-text { color:var(--text-secondary); }
+html[data-theme] .today-update-steps { margin:8px 0 0; padding-left:20px; color:var(--text-secondary); font-size:13px; }
+html[data-theme] .today-update-steps li[data-state="DONE"] { color:var(--status-success); }
+html[data-theme] .today-update-steps li[data-state="FAILED"] { color:var(--status-danger); }
+@media (max-width:760px) {
+  html[data-theme] .today-health-row { grid-template-columns:minmax(0,1fr) auto; }
+  html[data-theme] .today-health-text { grid-column:1 / -1; }
+}
+
+/* ---------- 设置: research readiness ---------- */
+html[data-theme] .settings-view { margin:0 0 18px; padding:18px; border:1px solid var(--border-subtle); border-radius:var(--radius-panel,10px); background:var(--surface-panel); max-width:960px; }
+html[data-theme] .settings-head { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+html[data-theme] .settings-head h2 { margin:0; font-size:20px; }
+html[data-theme] .settings-summary { margin:8px 0 14px; color:var(--text-secondary); }
+html[data-theme] .settings-ladders { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; }
+html[data-theme] .ready-ladder { border:1px solid var(--border-subtle); border-radius:var(--radius-control,8px); padding:12px 14px; background:var(--surface-canvas); }
+html[data-theme] .ready-ladder h3 { margin:0 0 8px; font-size:15px; }
+html[data-theme] .ready-steps { list-style:none; margin:0; padding:0; counter-reset:ready; }
+html[data-theme] .ready-step { counter-increment:ready; padding:8px 0; border-top:1px solid var(--border-subtle); }
+html[data-theme] .ready-step:first-child { border-top:0; }
+html[data-theme] .ready-step-top { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+html[data-theme] .ready-step-name { font-weight:650; color:var(--text-primary); }
+html[data-theme] .ready-step-name::before { content:counter(ready) ". "; color:var(--text-secondary); font-weight:500; }
+html[data-theme] .ready-state { font-size:12px; font-weight:650; padding:1px 8px; border-radius:999px; background:var(--status-uncertain-surface); color:var(--status-uncertain); white-space:nowrap; }
+html[data-theme] .ready-step[data-state="PASS"] .ready-state { background:var(--status-success-surface); color:var(--status-success); }
+html[data-theme] .ready-step[data-state="BLOCKED"] .ready-state { background:var(--status-danger-surface); color:var(--status-danger); }
+html[data-theme] .ready-step[data-state="PER_TASK"] .ready-state { background:var(--brand-gold-soft); color:var(--brand-gold); }
+html[data-theme] .ready-means, html[data-theme] .ready-reason, html[data-theme] .ready-next { margin:3px 0 0; }
+html[data-theme] .ready-step[data-state="BLOCKED"] .ready-next { color:var(--text-primary); font-weight:600; }
+html[data-theme] .desk-readiness-line { margin:10px 0 0; padding:8px 10px; border-radius:var(--radius-control,8px); background:var(--status-uncertain-surface); color:var(--text-primary); }
+html[data-theme] .desk-readiness-line[data-tone="ok"] { background:var(--status-success-surface); }
+html[data-theme] .desk-readiness-line[data-tone="blocked"] { background:var(--status-danger-surface); }
+
+/* ---------- 市场 ---------- */
+html[data-theme] .market-view { margin:0 0 18px; }
+html[data-theme] .market-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+html[data-theme] .market-head h2 { margin:0; font-size:20px; }
+html[data-theme] .market-session { margin:0; color:var(--text-secondary); font-weight:600; }
+html[data-theme] .market-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px; }
+html[data-theme] .market-card { padding:14px 16px; border:1px solid var(--border-subtle); border-radius:var(--radius-panel,10px); background:var(--surface-panel); min-width:0; }
+html[data-theme] .market-card-top { display:flex; align-items:baseline; justify-content:space-between; gap:8px; }
+html[data-theme] .market-card-top h3 { margin:0; font-size:17px; }
+html[data-theme] .market-role { font-size:12px; color:var(--text-secondary); }
+html[data-theme] .market-close { margin:6px 0 2px; }
+html[data-theme] .market-num { font-variant-numeric:tabular-nums; }
+html[data-theme] .market-close strong { font-size:20px; }
+html[data-theme] .market-changes { margin:0 0 8px; color:var(--text-secondary); }
+html[data-theme] .market-chart { margin:0; color:var(--action); }
+html[data-theme] .market-chart svg { display:block; width:100%; height:88px; }
+html[data-theme] .market-chart figcaption { margin-top:4px; }
+html[data-theme] .market-bars summary { cursor:pointer; font-size:13px; margin-top:6px; }
+html[data-theme] .market-bars table { width:100%; border-collapse:collapse; font-size:13px; }
+html[data-theme] .market-bars :is(th,td) { padding:4px 6px; border-bottom:1px solid var(--border-subtle); text-align:left; font-weight:500; }
+html[data-theme] .market-unavailable { margin:6px 0; color:var(--text-secondary); }
+html[data-theme] .market-notice { grid-column:1 / -1; margin:0; padding:10px 12px; border:1px dashed var(--border-control); border-radius:var(--radius-control,8px); background:var(--surface-canvas); color:var(--text-primary); }
+html[data-theme] .market-meta { margin:8px 0 0; }
+html[data-theme] .market-foot { margin:12px 0 0; }
+html[data-theme] body[data-console-view="market"] main > .today-pulse { margin-top:8px; }
+
+/* ---------- 研究: decision-first card ---------- */
+html[data-theme] .desk-decision { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:0; margin:0 0 16px; border:1px solid var(--border-subtle); border-radius:var(--radius-panel,10px); background:var(--surface-panel); overflow:hidden; }
+html[data-theme] .desk-decision .dc-row { padding:14px 16px; border-top:1px solid var(--border-subtle); min-width:0; }
+html[data-theme] .desk-decision .dc-row:is(.dc-judgment,.dc-action) { border-top:0; }
+html[data-theme] .desk-decision .dc-action { border-left:1px solid var(--border-subtle); background:var(--surface-warm); }
+html[data-theme] .desk-decision .dc-reasons { grid-column:1 / -1; }
+html[data-theme] .desk-decision .dc-counter { border-right:1px solid var(--border-subtle); }
+html[data-theme] .desk-decision .dc-next { grid-column:1 / -1; background:var(--surface-canvas); }
+html[data-theme] .desk-decision .dc-label { margin:0 0 6px; font-size:13px; font-weight:650; letter-spacing:.02em; color:var(--text-secondary); }
+html[data-theme] .desk-decision .dc-judgment .dc-text { font-size:17px; line-height:1.55; font-weight:600; color:var(--text-strong); margin:0; }
+html[data-theme] .desk-decision .dc-text { margin:0; line-height:1.6; color:var(--text-primary); }
+html[data-theme] .desk-decision .dc-item .desk-source-button { margin-top:4px; }
+html[data-theme] .desk-decision .dc-chip { display:inline-block; margin-left:6px; padding:1px 8px; border-radius:999px; font-size:12px; background:var(--brand-gold-soft); color:var(--brand-gold); letter-spacing:0; }
+html[data-theme] .desk-decision .dc-action-chip { margin:0 0 6px; font-size:18px; font-weight:700; color:var(--text-strong); }
+html[data-theme] .desk-decision .dc-action-chip[data-action="NEEDS_DATA"], html[data-theme] .desk-decision .dc-action-chip[data-action="UNDETERMINED"] { color:var(--brand-gold); }
+html[data-theme] .desk-decision .dc-facts { list-style:none; margin:0; padding:0; display:grid; gap:2px; font-size:13px; color:var(--text-secondary); }
+html[data-theme] .desk-decision .dc-needs { margin:6px 0 0; color:var(--text-primary); font-weight:600; }
+html[data-theme] .desk-decision .dc-note { margin:6px 0 0; }
+html[data-theme] .desk-decision .dc-reasons ol { margin:0; padding-left:20px; display:grid; gap:8px; }
+html[data-theme] .desk-decision .dc-reasons li::marker { color:var(--brand-gold); font-weight:700; }
+html[data-theme] .desk-decision .dc-actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+html[data-theme] .desk-full-reading { margin:0 0 16px; border:1px solid var(--border-subtle); border-radius:var(--radius-control,8px); padding:0 14px; background:var(--surface-panel); }
+html[data-theme] .desk-full-reading > summary { cursor:pointer; min-height:44px; display:flex; align-items:center; font-weight:650; }
+@media (max-width:760px) {
+  html[data-theme] .desk-decision { grid-template-columns:minmax(0,1fr); }
+  html[data-theme] .desk-decision .dc-action { border-left:0; border-top:1px solid var(--border-subtle); }
+  html[data-theme] .desk-decision .dc-counter { border-right:0; }
+  html[data-theme] .desk-decision .dc-row { padding:12px 14px; }
+}
+
+/* ---------- Fixes found in the first 1440/390 pass ---------- */
+/* Legacy console.css shrinks and hides rail label spans; destination labels must show. */
+html[data-theme] body[data-research-mode] .rail nav a.nav-dest > span { display:inline; font-size:inherit; letter-spacing:0; opacity:1; }
+@media (max-width:760px) { html[data-theme] body[data-research-mode] .rail nav a.nav-dest > span { display:block; } }
+/* The public-only scope checkbox sits beside its label, on its own row. */
+html[data-theme] .desk-ask label[for="desk-public-context"] { grid-column:1 / -1; display:flex; align-items:center; gap:8px; font-weight:500; margin:0; }
+html[data-theme] .desk-ask label[for="desk-public-context"] input { width:auto; min-height:0; margin:0; flex:0 0 auto; }
+/* Reasons read as one line each: text, then its source link inline. */
+html[data-theme] .desk-decision .dc-reasons .dc-item { display:inline; }
+html[data-theme] .desk-decision .dc-reasons .dc-text { display:inline; margin:0; }
+html[data-theme] .desk-decision .dc-reasons .desk-source-button { display:inline; margin:0 0 0 6px; min-height:0; padding:0; vertical-align:baseline; }
+html[data-theme] .desk-decision .dc-reasons li { line-height:1.6; }
+/* Parent research-policy admission (Root A0 /api/research/admission). */
+html[data-theme] .ready-admission { grid-column:1 / -1; padding:10px 14px; border:1px solid var(--border-subtle); border-radius:var(--radius-control,8px); background:var(--status-danger-surface); }
+html[data-theme] .ready-admission[data-status="PREVIEW_QUALIFIED"] { background:var(--status-success-surface); }
+html[data-theme] .ready-admission h3 { margin:0 0 4px; font-size:15px; }
+html[data-theme] .ready-admission p { margin:2px 0 0; }

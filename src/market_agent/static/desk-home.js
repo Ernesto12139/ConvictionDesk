@@ -5,13 +5,14 @@
 // What-if dialog); nothing here submits research, spends budget or edits holdings.
 (() => {
   const body = document.body;
-  if (body.dataset.portfolioPriority || body.dataset.publicIvs === "1") return; // standalone journeys own their first-screen layout
+  if (body.dataset.portfolioPriority) return; // the priority journey has its own queue
   const $ = id => document.getElementById(id);
   const runtime = body.dataset.runtimeMode;
   const publicDemo = runtime === "PUBLIC_DEMO";
+  let noSendDeployment = false;
   const el = (tag, text, className) => { const n = document.createElement(tag); if (text != null) n.textContent = text; if (className) n.className = className; return n; };
   const button = (text, onClick, primary = false) => { const b = el("button", text, primary ? "primary" : null); b.type = "button"; b.addEventListener("click", onClick); return b; };
-  const read = async url => { const r = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" } }); if (!r.ok) { await r.text(); throw new Error(String(r.status)); } return r.json(); };
+  const read = async url => { const r = await fetch(url, { cache: "no-store", headers: { Accept: "application/json" } }); if (!r.ok) throw new Error(String(r.status)); return r.json(); };
   const optional = url => read(url).catch(() => null);
   const day = iso => iso ? new Date(iso).toLocaleDateString("zh-CN", { month: "numeric", day: "numeric" }) : "未知";
   const stamp = iso => iso ? new Date(iso).toLocaleString("zh-CN", { month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "未知";
@@ -26,8 +27,10 @@
   // ---- placement: the work first, the complete diagnostics after it ----
   const main = document.querySelector("main");
   const heading = document.querySelector(".page-heading");
-  const status = el("ul", null, "desk-status"); status.id = "desk-status"; status.setAttribute("aria-label", "数据状态");
-  heading?.after(status);
+  const status = el("ul", null, "desk-status"); status.id = "desk-status"; status.setAttribute("aria-label", "研究前提：数据、来源、模型与费用");
+  const readinessHome = $("ask-mia")?.querySelector(".desk-compose-actions");
+  if (readinessHome) { const title = el("p", "研究前提", "desk-status-title"); title.id = "desk-status-title"; readinessHome.after(title, status); }
+  else heading?.after(status);
   const diagnostics = el("details"); diagnostics.id = "desk-diagnostics";
   diagnostics.append(el("summary", "数据来源与运行状态"),
     el("p", "工作空间范围、价格观察、来源权限与模型状态的完整记录。首页只摘要显示，这里保留全部来源与时间。", "small muted"));
@@ -41,7 +44,8 @@
   const attention = $("attention");
   const todayHead = attention?.querySelector(".section-heading");
   const today = el("div"); today.id = "desk-today";
-  todayHead?.after(today);
+  const queueHint = attention?.querySelector(".desk-queue-hint");
+  (queueHint || todayHead)?.after(today);
 
   function chip(label, value, tone, action) {
     const li = el("li"); li.dataset.tone = tone || "neutral";
@@ -52,6 +56,7 @@
   }
 
   function todayState(queue) {
+    if (noSendDeployment) return { code: "NO_SEND_DEPLOYMENT" };
     if (!queue) return { code: "UNAVAILABLE" };
     const cov = queue.coverage_state || {};
     const items = (queue.items || []).length;
@@ -70,6 +75,7 @@
     const card = el("section", null, "today-state"); card.dataset.state = state.code; card.setAttribute("aria-label", "今日扫描状态");
     const actions = el("div");
     const copy = {
+      NO_SEND_DEPLOYMENT: ["NO_SEND · 本部署禁止外部请求", "禁止新的模型研究、SEC读取及行情与报道刷新。可浏览已保存研究、历史快照和假设 What-if；历史内容不代表最新持仓或行情。", []],
       NOT_SCANNED: ["今天还没有扫描", "持仓和关注公司的新闻与披露尚未检查。", [["扫描持仓变化", scan, true]]],
       PROVIDER_ERROR: ["新闻来源暂不可用", (state.attempt && state.attempt !== state.at
           ? `最近一次尝试 ${stamp(state.attempt)} 没有取得来源；上次成功扫描 ${stamp(state.at)}（${ago(state.at)}）。`
@@ -81,7 +87,8 @@
       SYNTHETIC_REPLAY: [`${state.items} 项合成变化 · 示例`, `冻结扫描 ${stamp(state.at)}。虚构公司与来源，不是实时新闻。`, []],
       UNAVAILABLE: ["今日关注暂时无法读取", "请刷新页面；已保存的研究记录不受影响。", [["刷新", () => location.reload()]]],
     }[state.code];
-    const code = el("span", state.code, "today-state-code");
+    const code = el("span", { HAS_EVENTS: "有新变化", SCANNED_NO_QUALIFYING_EVENTS: "已扫描 · 无优先变化", NOT_SCANNED: "未扫描", PROVIDER_ERROR: "来源不可用", STALE_SCAN: "扫描已过时", SYNTHETIC_REPLAY: "合成示例", UNAVAILABLE: "暂时无法读取", NO_SEND_DEPLOYMENT: "部署禁止发送" }[state.code] || "状态未知", "today-state-code");
+    code.dataset.code = state.code;
     card.append(code, el("h3", copy[0]), el("p", copy[1]));
     copy[2].forEach(([label, fn, primary]) => actions.append(button(label, fn, primary)));
     card.append(actions);
@@ -99,6 +106,32 @@
       if (!prior || String(task.updated_at) > String(prior.updated_at)) map.set(task.focus_symbol, task);
     }
     return map;
+  }
+
+  function leadDetail(row, question) {
+    const item = row.item;
+    return { question, attention_item_id: item.item_id, symbol: item.symbol,
+      lead: { headline: item.screen?.brief?.headline?.text || item.screen?.rationale?.text || item.what_changed?.text, next_check: item.screen?.brief?.next_check?.text || null,
+        event_key: `${row.research_event?.identity_basis || "SINGLE_RECEIPT"} · 扫描 ${item.scan_id}`,
+        evidence: (row.research_event?.evidence || item.packet?.evidence || []).map(e => ({ evidence_id: e.evidence_id, provider: e.provider, title: e.title })) } };
+  }
+  const handOff = detail => window.dispatchEvent(new CustomEvent("mia-ask-draft", { detail }));
+  // Leads next to the question: the top items hand off in one tap at any width.
+  function renderLeadStrip(queue, state) {
+    $("desk-lead-strip")?.remove();
+    const form = $("desk-question-form");
+    const rows = (queue?.items || []).filter(r => r.item?.item_id).slice(0, 3);
+    if (!form || !rows.length || noSendDeployment || $("desk-question")?.readOnly || publicDemo) return;
+    const strip = el("div", null, "desk-lead-strip"); strip.id = "desk-lead-strip"; strip.setAttribute("role", "group"); strip.setAttribute("aria-label", "今日线索 · 带入研究问题");
+    strip.append(el("p", `今日线索 · ${state.items} 项 · 选一条带入`, "desk-lead-strip-title"));
+    for (const row of rows) {
+      const headline = row.item.screen?.brief?.headline?.text || row.item.screen?.rationale?.text || row.item.what_changed?.text || "新的公开材料";
+      const b = button("", () => handOff(leadDetail(row, `${row.item.symbol}：「${headline}」会改变我的研究判断吗？`)));
+      b.append(el("b", row.item.symbol), el("span", headline));
+      b.setAttribute("aria-label", `带入 ${row.item.symbol}：${headline}`);
+      strip.append(b);
+    }
+    form.before(strip);
   }
 
   function openTask(task) {
@@ -152,7 +185,7 @@
     head.append(title, el("p", basis));
     const list = el("ol", null, "priority-rows");
     const whatIf = typeof window.miaOpenWhatIf === "function" && !publicDemo;
-    const canAsk = !$("desk-question")?.readOnly;
+    const canAsk = !noSendDeployment && !$("desk-question")?.readOnly;
     const render = row => {
       const { position, task, change, kind } = row;
       const li = el("li", null, "priority-row");
@@ -169,7 +202,8 @@
       if (quote) why.append(el("small", quote, "priority-quote"));
       const actions = el("div", null, "priority-actions");
       const question = change ? `${position.symbol}：这项新变化会改变我的持仓逻辑吗？` : task ? `${position.symbol}：上次判断之后，有什么新证据支持或推翻它？` : `${position.symbol}：我持有它的逻辑，现在有哪些公开证据支持和反对？`;
-      if (canAsk) actions.append(button("研究", () => ask(position.symbol, question), kind === "CHANGE" || kind === "NEVER"));
+      const row0 = change && (queue?.items || []).find(r => r.item?.item_id === change.item_id);
+      if (canAsk) actions.append(button("研究", () => row0 ? handOff(leadDetail(row0, question)) : ask(position.symbol, question), kind === "CHANGE" || kind === "NEVER"));
       if (task) actions.append(button("证据与反证", () => openTask(task)));
       if (whatIf) actions.append(button("账户后果", () => window.miaOpenWhatIf(position.symbol)));
       li.append(symbol, why, actions);
@@ -193,7 +227,12 @@
     const box = el("div", null, "ask-readiness"); box.id = "ask-readiness"; box.setAttribute("role", "status");
     const ready = profiles && Object.values(profiles.preview_mode_availability || {}).some(Boolean);
     box.dataset.ready = String(Boolean(ready));
-    if (ready) {
+    if (noSendDeployment) {
+      box.dataset.ready = "false";
+      box.append(el("b", "本部署禁止新的模型研究。"), el("span", " 已保存研究、历史快照和假设 What-if 可继续使用；更换密钥或重试不会解除部署限制。"));
+      help.after(box);
+      return false;
+    } else if (ready) {
       box.append(el("b", "可以开始研究。"), el("span", " 提交前会确认账户范围、模型与费用上限；Fast 结果可继续 Deep，同一任务保留每一轮。"));
       // Became ready after the providers dialog closed: research-desk read the old state at load.
       if (afterProviders && $("desk-submit")?.disabled) {
@@ -213,27 +252,72 @@
     return ready;
   }
 
+  function enforceNoSendControls() {
+    if (!noSendDeployment) return;
+    for (const id of ["attention-scan", "attention-continue", "desk-submit", "desk-continue", "desk-retry", "today-refresh"]) {
+      const control = $(id); if (control) { if (!control.disabled) control.disabled = true; control.title = "NO_SEND：本部署禁止新的外部请求"; }
+    }
+    for (const id of ["desk-question", "desk-followup"]) { const control = $(id); if (control && !control.readOnly) control.readOnly = true; }
+    document.querySelectorAll("[data-research-depth]").forEach(control => { if (!control.disabled) control.disabled = true; });
+    document.querySelectorAll(".desk-failure-kind button").forEach(control => { if (control.textContent.includes("模型与数据源")) control.hidden = true; });
+    const providers = $("providers-dialog");
+    if (providers && !$("no-send-provider-note")) { const note = el("p", "NO_SEND：本部署禁止外部请求；密钥录入与验证已停用。可继续查看已保存的来源与模型状态。", "small"); note.id = "no-send-provider-note"; providers.querySelector(".providers-head")?.after(note); }
+    providers?.querySelectorAll(".provider-key input, .provider-key button, button").forEach(control => {
+      if (control.matches(".provider-key input, .provider-key button") || ["添加", "更换", "验证授权"].includes(control.textContent.trim())) { if (!control.disabled) control.disabled = true; }
+    });
+    const help = $("desk-mode-help"), text = "NO_SEND：本部署禁止新的模型研究；可浏览已保存研究、历史快照与假设 What-if。";
+    if (help && help.textContent !== text) help.textContent = text;
+  }
+
   async function load(afterProviders = false) {
-    const [queue, overview, tasks, profiles, observations] = await Promise.all([
+    const [queue, overview, tasks, profiles, observations, identity] = await Promise.all([
       optional("/api/attention/queue"), optional("/api/console/portfolio-overview"),
       optional("/api/research/tasks"), publicDemo ? null : optional("/api/research/model-profiles"),
-      runtime === "OWNER" && document.getElementById("owner-value") ? optional("/api/owner/market-observations") : null]);
+      runtime === "OWNER" && document.getElementById("owner-value") ? optional("/api/owner/market-observations") : null,
+      publicDemo || body.dataset.publicIvs === "1" ? null : optional("/api/workbench/identity")]);
+    const sourceHealth = publicDemo || body.dataset.publicIvs === "1" ? null : await optional("/api/provider-source-health");
+    noSendDeployment = noSendDeployment || identity?.deployment_mode === "NO_SEND_DEPLOYMENT";
+    if (noSendDeployment) {
+      body.dataset.deploymentMode = "NO_SEND_DEPLOYMENT";
+      enforceNoSendControls();
+      window.dispatchEvent(new CustomEvent("mia-no-send-deployment"));
+    }
     const state = todayState(queue);
     today.replaceChildren(renderState(state));
     const priority = renderPriority(overview, tasks, queue, observations);
     if (priority) today.append(priority);
-    if ($("ask-mia")) { const jump = el("a", "提出研究问题 ↓", "desk-ask-jump"); jump.href = "#ask-mia"; today.append(jump); }
+    const count = $("desk-lead-count"); if (count) count.textContent = state.code === "HAS_EVENTS" || state.code === "SYNTHETIC_REPLAY" ? `${state.items} 项` : { NOT_SCANNED: "未扫描", PROVIDER_ERROR: "来源不可用", STALE_SCAN: "已过时", SCANNED_NO_QUALIFYING_EVENTS: "0 项", NO_SEND_DEPLOYMENT: "已禁用", UNAVAILABLE: "无法读取" }[state.code] || "";
     const ready = renderReadiness(profiles, afterProviders);
+    renderLeadStrip(queue, state);
 
     status.replaceChildren();
     chip("数据", publicDemo ? "公开合成示例" : runtime === "OWNER" ? "本机组合" : "本地", publicDemo ? "warn" : "ok", showDiagnostics);
-    if (overview?.portfolio_as_of) chip("持仓快照", day(overview.portfolio_as_of), "neutral");
+    if (overview?.portfolio_as_of) chip("持仓快照", `${date(overview.portfolio_as_of)} · ${publicDemo ? "合成示例" : "HISTORICAL · 当前未确认"}`, publicDemo ? "neutral" : "warn");
     const scanTone = { HAS_EVENTS: "ok", SCANNED_NO_QUALIFYING_EVENTS: "ok", SYNTHETIC_REPLAY: "neutral" }[state.code] || "warn";
-    chip("今日扫描", { NOT_SCANNED: "未扫描", PROVIDER_ERROR: "来源不可用", STALE_SCAN: ago(state.at), SCANNED_NO_QUALIFYING_EVENTS: stamp(state.at), HAS_EVENTS: stamp(state.at), SYNTHETIC_REPLAY: "冻结回放", UNAVAILABLE: "无法读取" }[state.code], scanTone);
+    chip("新闻扫描", { NO_SEND_DEPLOYMENT: "部署已禁止", NOT_SCANNED: "未扫描", PROVIDER_ERROR: "来源不可用", STALE_SCAN: ago(state.at), SCANNED_NO_QUALIFYING_EVENTS: stamp(state.at), HAS_EVENTS: stamp(state.at), SYNTHETIC_REPLAY: "冻结回放", UNAVAILABLE: "无法读取" }[state.code], scanTone);
     const missing = overview?.missing_price_symbol_count;
     if (overview) chip("价格", missing ? `${missing} 个缺价 · 市值未知` : overview.valuation_status === "complete" ? `快照 ${day(overview.market_cutoff)}` : "未计价", missing ? "warn" : "neutral", showDiagnostics);
-    if (!publicDemo) chip("研究模型", ready ? "可用" : "未就绪", ready ? "ok" : "warn", ready ? null : openProviders);
+    if (!publicDemo) chip("研究模型", noSendDeployment ? "本部署禁止" : ready ? "可用 · 见上方各深度" : "未就绪", ready ? "ok" : "warn", ready || noSendDeployment ? null : openProviders);
+    const dataRows = (sourceHealth?.providers || []).filter(row => ["Finnhub", "Massive", "SEC", "Longbridge"].includes(row.provider) && row.configured);
+    if (dataRows.length) {
+      const label = row => row.states.includes("RIGHTS_BLOCKED") ? "权限阻断" : row.states.includes("RESTART_REQUIRED") ? "需重启" : row.source_client_enabled ? "合格" : "未启用";
+      chip("数据 Provider", dataRows.map(row => `${row.provider} ${label(row)}`).join(" · "), dataRows.every(row => label(row) === "合格") ? "ok" : "warn", openProviders);
+    } else if (sourceHealth) chip("数据 Provider", "未配置 · 只用已保存资料", "warn", openProviders);
+    if (!publicDemo) {
+      const blockers = new Set(Object.values(profiles?.dispatch_blockers || {}));
+      chip("费用", noSendDeployment ? "不会产生" : blockers.has("PRICE_CARD_EXPIRED") ? "模型价格资格已过期" : "每次提交前确认上限 · 取消不发送", blockers.has("PRICE_CARD_EXPIRED") ? "warn" : "neutral");
+    }
   }
+
+  document.addEventListener("submit", event => {
+    if (noSendDeployment && ["desk-question-form", "desk-followup-form"].includes(event.target.id)) { event.preventDefault(); event.stopImmediatePropagation(); }
+  }, true);
+  document.addEventListener("click", event => {
+    const control = event.target.closest("button");
+    if (noSendDeployment && ["attention-scan", "attention-continue", "desk-submit", "desk-continue", "desk-retry"].includes(control?.id)) { event.preventDefault(); event.stopImmediatePropagation(); }
+  }, true);
+  new MutationObserver(enforceNoSendControls).observe(main, { childList: true, subtree: true, attributes: true, attributeFilter: ["disabled"] });
+  if ($("providers-dialog")) new MutationObserver(enforceNoSendControls).observe($("providers-dialog"), { childList: true, subtree: true });
 
   // Market pulse is useful only when configured; keep it under Today/Ask either way.
   const grid = document.querySelector(".desk-entry-grid");

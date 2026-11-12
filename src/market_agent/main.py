@@ -284,7 +284,8 @@ def create_app(db_path: str | Path = "data/market_agent.db",
         if getattr(app.state, "public_demo", None):
             html = (static / "index.html").read_text(encoding="utf-8")
             if getattr(app.state, 'public_navigation', False):
-                html = html.replace('<nav>', '<nav><a href="/portfolio-priority">组合研究优先级</a>', 1)
+                # Keep the fixed mobile navigation at exactly five destinations.
+                html = html.replace('<main>', '<main><p class="public-journey-switch"><a href="/portfolio-priority">组合研究优先级</a> · SYNTHETIC / SCRIPTED</p>', 1)
             html = html.replace('data-runtime-mode="OWNER"', 'data-runtime-mode="PUBLIC_DEMO"')
             return HTMLResponse(html.replace('role="note" hidden>', 'role="note">'))
         return FileResponse(static / "index.html")

@@ -131,3 +131,79 @@ html[data-theme] .desk-core .desk-core-thesis > h3 { font-size:14px; color:var(-
 }
 
 html[data-theme] .skip-link { background:var(--surface-panel); color:var(--text-strong); border:1px solid var(--border-control); }
+
+/* ---------- Unified research desk (D-100 P0-4) ----------
+   One entry: the question composer is the desk; Today's leads are its queue.
+   Layout only on existing tokens; no new palette or type scale. */
+html[data-theme] .rail nav a.desk-nav-primary { font-weight:700; font-size:16px; }
+html[data-theme] .rail nav a.desk-nav-sub { padding-left:28px; font-size:13px; color:var(--text-secondary); }
+html[data-theme] .rail nav a.desk-nav-sub::before { content:"↳ "; }
+html[data-theme] .rail nav a.desk-nav-sub.is-sub-current { color:var(--text-strong); font-weight:600; }
+html[data-theme] .desk-entry-grid { grid-template-columns:minmax(0,1.45fr) minmax(320px,1fr); }
+html[data-theme] .desk-entry-grid > .desk-ask { position:static; }
+.desk-composer-head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.desk-composer-head h2 { margin:0; }
+.desk-lead-jump { display:none; color:var(--action); font-weight:600; text-decoration:none; }
+.desk-lead-jump span { color:var(--text-secondary); font-weight:500; }
+.desk-queue-hint { margin:0 0 var(--space-2); }
+/* Lead card: what a Today/SEC hand-off carries into the question. */
+.desk-lead-context { margin:4px 0 14px; padding:12px 14px; border:1px solid var(--brand-gold-line); border-left:3px solid var(--brand-gold); border-radius:var(--radius-control); background:var(--surface-warm); }
+.desk-lead-head { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.desk-lead-kind { font-weight:650; color:var(--brand-gold); font-size:13px; letter-spacing:.02em; }
+html[data-theme] .desk-lead-head button { min-height:32px; padding:4px 10px; font-size:13px; }
+.desk-lead-fields { display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 12px; margin:8px 0 6px; }
+.desk-lead-fields > div { display:contents; }
+.desk-lead-fields dt { color:var(--text-secondary); font-size:13px; }
+.desk-lead-fields dd { margin:0; font-size:14px; color:var(--text-primary); overflow-wrap:anywhere; }
+.desk-lead-fields [data-field="headline"] dd { font-weight:650; color:var(--text-strong); }
+.desk-lead-context > .desk-lead-body > p { margin:0; }
+/* Depth options name their model and qualification. */
+html[data-theme] .ivs-research-mode-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+html[data-theme] .ivs-research-mode-options button { display:flex; flex-direction:column; align-items:flex-start; gap:2px; min-height:56px; padding:8px 12px; text-align:left; }
+.desk-mode-model { font-size:12px; font-weight:500; opacity:.9; overflow-wrap:anywhere; }
+html[data-theme] .ivs-research-mode-options button:not([aria-pressed="true"]) .desk-mode-model[data-ready="false"] { color:var(--brand-gold); }
+/* Readiness: data, sources, models and cost in one list inside the composer. */
+.desk-status-title { margin:10px 0 6px; font-size:13px; font-weight:650; color:var(--text-secondary); }
+.desk-ask .desk-status { margin-bottom:var(--space-1); }
+html[data-theme] .desk-ask .desk-strategy { display:flex; align-items:center; gap:8px; }
+html[data-theme] .desk-ask .desk-strategy input { width:auto; margin:0; }
+/* Result: gaps first, one verdict line, judgment change named. */
+.desk-gap-note { margin:0 0 14px; padding:12px 14px; border-radius:var(--radius-control); background:var(--brand-gold-soft); border:1px solid var(--brand-gold-line); }
+.desk-gap-note h3 { margin:0 0 4px; font-size:14px; color:var(--brand-gold); }
+.desk-gap-note p { margin:2px 0; font-size:14px; color:var(--text-primary); }
+.desk-judgment-change { grid-column:1 / -1; margin:6px 0 0; font-weight:600; color:var(--text-strong); }
+.desk-reading-tools { flex-wrap:wrap; }
+html[data-theme] .desk-ask textarea { min-height:112px; }
+html[data-theme] .desk-ask .desk-compose-actions { grid-template-columns:minmax(0,1fr) auto; align-items:center; }
+html[data-theme] .desk-ask #desk-model-readout { grid-column:1 / -1; order:-1; margin:0; }
+html[data-theme] .desk-ask .desk-compose-actions > details { grid-column:1 / -1; }
+html[data-theme] .desk-ask #desk-strategy-label { align-self:end; min-height:44px; }
+@media (max-width: 560px) { html[data-theme] .desk-ask .desk-compose-actions { grid-template-columns:minmax(0,1fr); } }
+/* Lead strip: the top leads, one tap into the question. */
+.desk-lead-strip { display:grid; gap:6px; margin:4px 0 14px; }
+.desk-lead-strip-title { margin:0; font-size:13px; font-weight:650; color:var(--text-secondary); }
+html[data-theme] .desk-lead-strip button { display:flex; align-items:baseline; gap:10px; min-height:44px; padding:8px 12px; text-align:left; border:1px solid var(--brand-gold-line); background:var(--surface-warm); color:var(--text-primary); }
+html[data-theme] .desk-lead-strip button b { color:var(--brand-gold); flex:none; }
+html[data-theme] .desk-lead-strip button span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+html[data-theme] .desk-lead-strip button:hover { border-color:var(--brand-gold); }
+#ask-mia:has(#desk-attention-context:not([hidden])) .desk-prompt-ideas { display:none; }
+html[data-theme] .ask-readiness[data-ready="true"]:not(:has(button)) { display:none; }
+/* The queue is a side panel at desktop width: holding rows use the stacked layout. */
+html[data-theme] .desk-entry-grid #attention .priority-row { grid-template-columns:minmax(64px,auto) minmax(0,1fr); }
+html[data-theme] .desk-entry-grid #attention .priority-actions { grid-column:1 / -1; justify-content:flex-start; }
+html[data-theme] .desk-ask .desk-compose-actions label.desk-strategy { display:flex; align-items:center; gap:8px; }
+html[data-theme] .desk-ask .desk-compose-actions label.desk-strategy input { width:auto; min-height:0; margin:0; }
+html[data-theme] body[data-desk-view="task"] .rail nav a.desk-nav-primary:not(:hover) { background:transparent; color:var(--text-primary); }
+.desk-lead-more > summary { font-size:13px; color:var(--text-secondary); cursor:pointer; min-height:32px; display:flex; align-items:center; }
+.desk-lead-more[open] > summary { display:none; }
+@media (max-width: 760px) { .desk-lead-more[open] > summary { display:flex; } }
+@media (max-width: 1100px) {
+  html[data-theme] .desk-entry-grid { grid-template-columns:minmax(0,1fr); }
+  .desk-lead-jump { display:inline; }
+}
+@media (max-width: 760px) {
+  html[data-theme] .ivs-research-mode-options { grid-template-columns:minmax(0,1fr); }
+  html[data-theme] .ivs-research-mode-options button { flex-direction:row; align-items:baseline; justify-content:space-between; min-height:44px; }
+  .desk-lead-fields { grid-template-columns:minmax(0,1fr); gap:0; }
+  .desk-lead-fields dd { margin-bottom:6px; }
+}

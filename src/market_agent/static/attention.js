@@ -163,7 +163,12 @@
     const askButton=el("button","提问核查此事");askButton.type="button";
     askButton.addEventListener("click",()=>{closeDetail(false);window.dispatchEvent(new CustomEvent("mia-ask-draft",{
       detail:{question:`${item.symbol}：「${brief?.headline.text || item.screen.rationale.text}」会改变我的研究判断吗？`,
-        attention_item_id:item.item_id, symbol:item.symbol}}));});
+        attention_item_id:item.item_id, symbol:item.symbol,
+        // Display-only hand-off context; the request still carries only attention_item_id.
+        lead:{headline:brief?.headline.text || item.screen.rationale.text, next_check:brief?.next_check.text || null,
+          event_key:`${event?.identity_basis || "SINGLE_RECEIPT"} · 扫描 ${item.scan_id}`,
+          time:`发布 ${publication(item.packet.evidence[0])} · 获取 ${stamp(item.packet.evidence[0].retrieved_at)}`,
+          evidence:receipts.map(e=>({evidence_id:e.evidence_id,provider:e.provider,title:e.title}))}}}));});
     const reviewed=el("button","已复核，移出关注");reviewed.type="button";
     reviewed.title="移出卡片所列记录，保留历史证据；新材料仍会进入筛选。";
     const evidenceBody=()=>{
@@ -380,7 +385,9 @@
     }
     const hl=data.headline;
     if(hl){
-      const line=el("p",hl.sentence,hl.available?"attention-headline":"attention-headline is-empty");
+      // The server sentence carries the novelty code (e.g. NEW_TO_US); show the same words as the chips.
+      const sentence=String(hl.sentence||"").replace(/\b(NEW_TO_US|MATERIAL_UPDATE|REPUBLISHED|AGED_IN|UNKNOWN)\b/g,code=>noveltyLabels[code]);
+      const line=el("p",sentence,hl.available?"attention-headline":"attention-headline is-empty");
       line.dataset.available=String(!!hl.available);
       queue.append(line);
     }

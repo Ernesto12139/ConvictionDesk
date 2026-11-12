@@ -304,7 +304,8 @@ function renderPortfolio(snapshot) {
     return;
   }
   $("manage-portfolio").textContent = "管理持仓";
-  $("portfolio-state").textContent = "已保存";
+  const synthetic = document.body.dataset.runtimeMode === "PUBLIC_DEMO";
+  $("portfolio-state").textContent = synthetic ? "合成快照" : "历史快照 · HISTORICAL";
   const overview = el("div", null, "portfolio-overview");
   for (const [count, title] of [
     [snapshot.accounts.length, "账户"],
@@ -314,7 +315,7 @@ function renderPortfolio(snapshot) {
     node.append(el("strong", count), el("p", title, "small muted"));
     overview.append(node);
   }
-  overview.append(el("span", `更新于 ${date(snapshot.as_of)}`, "small muted"));
+  overview.append(el("span", `快照时点 ${date(snapshot.as_of)} · ${synthetic ? "合成示例" : "当前持仓与现金未确认"}`, "small muted"));
   $("portfolio-summary").append(overview);
   $("accounts").replaceChildren();
   $("positions").replaceChildren();
@@ -326,7 +327,7 @@ function renderPortfolio(snapshot) {
     card.append(
       el("span", account.name),
       el("strong", `$${account.cash}`),
-      el("span", "账户现金 · USD", "muted"),
+      el("span", "快照现金 · USD", "muted"),
     );
     $("accounts").append(card);
   }
@@ -406,7 +407,10 @@ function renderOverview(overview) {
   $("portfolio-cards").replaceChildren();
   for (const card of overview.cards) {
     const node = el("div", null, "portfolio-card");
-    node.append(el("span", card.label), el("strong", card.value), el("small", card.note));
+    const savedCash = card.label === "现金";
+    const cashScope = document.body.dataset.runtimeMode === "PUBLIC_DEMO" ? "合成示例" : "历史记录，当前现金未确认";
+    const note = savedCash ? `${card.note} · 快照时点 ${date(overview.portfolio_as_of)} · ${cashScope}` : card.note;
+    node.append(el("span", savedCash ? "快照现金" : card.label), el("strong", card.value), el("small", note));
     $("portfolio-cards").append(node);
   }
   const notice = $("valuation-notice");

@@ -1013,28 +1013,44 @@
   $("desk-history-open").addEventListener("click",()=>{$("desk-history").open=!$("desk-history").open;if($("desk-history").open)$("desk-history-select").focus();});
   $("desk-read-saved").addEventListener("click",()=>{if(active)void openTask(active.task_id,historicalView ? String(active.revision) : "");});
   $("desk-pause-motion").addEventListener("click",event=>{const paused=event.currentTarget.getAttribute("aria-pressed")!=="true";event.currentTarget.setAttribute("aria-pressed",String(paused));event.currentTarget.textContent=paused?"恢复动画":"暂停动画";$("desk-task").dataset.motion=paused?"paused":"playing";});
-  function applyNavigation() {
+  // Five destinations (今日/市场/研究/组合/设置). Each view shows only its own sections
+  // (workbench-views.css); legacy anchors map onto them so old links keep working.
+  const VIEW_BY_HASH={"#today":"today","#attention":"today","#market":"market","#today-pulse":"market",
+    "#research":"home","#ask-mia":"home","#research-history":"history","#portfolio":"portfolio","#universe":"universe",
+    "#settings":"settings","#inspector":"inspector","#workspace":"home"};
+  const NAV_OF_VIEW={today:"today",market:"market",home:"research",history:"research",workspace:"research",inspector:"research",portfolio:"portfolio",universe:"portfolio",settings:"settings"};
+  const VIEW_LABELS={today:["今日","上一完整交易日、数据是否可用，以及值得研究的变化。"],market:["市场","上一完整交易日的收盘、近 20 个交易日走势与数据来源。"],
+    home:["研究","提出问题或带入线索；结论、最强反证与下一步在同一条研究里。"],history:["研究记录","重新打开结果、核对来源，或从最新一轮继续。"],
+    portfolio:["组合","持仓快照、成本与集中度；What-if 只预演，不下单。"],universe:["研究范围","选择持续跟踪的公司；持仓会自动纳入。"],
+    settings:["设置","研究能否发起：密钥、认证、模型资格、预算与外传同意，逐项说明。"],workspace:["旧版研究记录","读取已保存的判断；新研究从「研究」发起。"],inspector:["依据与执行面板","查看现有工具结果、证据和可观察记录。"]};
+  function applyNavigation(options={}) {
     if(active)return;
-    const hash=location.hash,legacyRecord=new URLSearchParams(location.search).has("cockpit"),view=legacyRecord ? "workspace" : ({"#universe":"universe","#portfolio":"portfolio","#inspector":"inspector","#research-history":"history"}[hash]||"home");
+    const hash=location.hash,legacyRecord=new URLSearchParams(location.search).has("cockpit");
+    const view=legacyRecord ? "workspace" : (VIEW_BY_HASH[hash] || (publicReplay || document.body.dataset.publicIvs === "1" ? "home" : "today"));
     document.body.dataset.consoleView=view;renderRecent();
-    const labels={home:["你的研究工作台","先看与你相关的变化，再研究一个重要问题。"],history:["你的研究记录","重新打开结果、核对来源，或从最新一轮继续。"],portfolio:["我的组合","管理持仓快照，查看已保存的成本、现金与集中度。"],universe:["研究范围","选择持续跟踪的公司；持仓会自动纳入。"],workspace:["旧版研究记录","读取已保存的判断；新研究从工作台的研究提问发起。"],inspector:["依据与执行面板","查看现有工具结果、证据和可观察记录。"]};
-    const heading=document.querySelector(".page-heading");heading.querySelector("h1").textContent=labels[view][0];heading.querySelector(".muted").textContent=labels[view][1];$("manage-portfolio").hidden=publicReplay || !["home","portfolio"].includes(view);
-    $("universe").open=view==="universe";
+    const heading=document.querySelector(".page-heading"),labels=VIEW_LABELS[view];
+    heading.querySelector("h1").textContent=labels[0];heading.querySelector(".muted").textContent=labels[1];
+    document.title=`ConvictionDesk · ${labels[0]}`;
+    const crumb=document.querySelector(".topbar > span:first-child");if(crumb&&crumb.lastChild)crumb.lastChild.textContent=` ${labels[0]}`;
+    $("manage-portfolio").hidden=publicReplay || !["portfolio"].includes(view);
+    $("universe").open=["universe","portfolio"].includes(view);
     $("portfolio-disclosure").open=view==="portfolio";
     $("desk-legacy").open=["workspace","inspector"].includes(view);
     if(hash==="#workspace" && !legacyRecord){
-      const target=new URL(location.href);target.hash="#ask-mia";history.replaceState(null,"",target);
+      const target=new URL(location.href);target.hash="#research";history.replaceState(null,"",target);
       $("desk-request-status").textContent="新研究使用统一入口；旧版记录可通过原来的链接读取。";
-      const focusQuestion=()=>setTimeout(()=>{$("ask-mia").scrollIntoView({block:"start"});$("desk-question").focus({preventScroll:true});},0);
-      if(document.readyState==="complete")focusQuestion();else window.addEventListener("load",focusQuestion,{once:true});
     }
-    document.querySelectorAll(".rail nav a").forEach(link=>{const selected=view==="home"?link.hash==="#attention":link.hash===hash;link.classList.toggle("active",selected);if(selected)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");});
+    const current=NAV_OF_VIEW[view];
+    document.querySelectorAll(".rail nav a.nav-dest").forEach(link=>{const selected=link.dataset.nav===current;link.classList.toggle("active",selected);if(selected)link.setAttribute("aria-current","page");else link.removeAttribute("aria-current");});
+    // Moving between destinations moves focus to the new view's title (not on first load).
+    if(options.focus){scrollTo({top:0});heading.querySelector("h1").focus({preventScroll:true});}
+    window.dispatchEvent(new CustomEvent("mia-view",{detail:{view}}));
   }
-  function leaveTask(destination=null) {clearAttentionDraft();++viewGeneration;active=null;historicalView=false;renderKey="";$("desk-evidence-dialog").close();$("desk-task").hidden=true;delete document.body.dataset.deskView;const url=new URL(location.href);url.searchParams.delete("research_task");url.searchParams.delete("revision");if(destination!==null){url.searchParams.delete("cockpit");url.hash=destination;}if(destination!==null&&url.href!==location.href)history.pushState(null,"",url);else history.replaceState(null,"",url);applyNavigation();void recent();}
-  $("desk-home").addEventListener("click",()=>{leaveTask("#ask-mia");$("ask-mia").scrollIntoView({block:"start"});$("desk-question").focus({preventScroll:true});});
-  document.querySelectorAll(".rail nav a,.desk-home-shortcuts a").forEach(link=>link.addEventListener("click",()=>leaveTask(link.hash)));
+  function leaveTask(destination=null,navigation={}) {clearAttentionDraft();++viewGeneration;active=null;historicalView=false;renderKey="";$("desk-evidence-dialog").close();$("desk-task").hidden=true;delete document.body.dataset.deskView;const url=new URL(location.href);url.searchParams.delete("research_task");url.searchParams.delete("revision");if(destination!==null){url.searchParams.delete("cockpit");url.hash=destination;}if(destination!==null&&url.href!==location.href)history.pushState(null,"",url);else history.replaceState(null,"",url);applyNavigation(navigation);void recent();window.dispatchEvent(new Event('mia-research-navigation'));}
+  $("desk-home").addEventListener("click",()=>{leaveTask("#research");$("ask-mia").scrollIntoView({block:"start"});$("desk-question").focus({preventScroll:true});});
+  document.querySelectorAll(".rail nav a,.desk-home-shortcuts a").forEach(link=>link.addEventListener("click",event=>{if(!link.hash || link.pathname!==location.pathname)return;event.preventDefault();leaveTask(link.hash,{focus:true});}));
   $("back-to-brief").addEventListener("click",()=>{leaveTask("#workspace");$("result").scrollIntoView({block:"start",behavior:motion()});});
-  window.addEventListener("popstate",()=>{const params=new URL(location.href).searchParams;if(params.has("research_task")){const id=params.get("research_task"),revision=params.get("revision")||"";if(active?.task_id===id && revision===(historicalView?String(active.revision):""))return;void openTask(id,revision);}else leaveTask();});
+  window.addEventListener("popstate",()=>{const params=new URL(location.href).searchParams;if(params.has("research_task")){const id=params.get("research_task"),revision=params.get("revision")||"";if(active?.task_id===id && revision===(historicalView?String(active.revision):""))return;void openTask(id,revision);}else leaveTask(null,{focus:true});});
   document.querySelectorAll("[data-desk-prompt]").forEach(button=>button.addEventListener("click",()=>{clearAttentionDraft();$("desk-question").value=button.dataset.deskPrompt;$("desk-question").focus();}));
   const mobileAction=document.querySelector(".desk-mobile-action");
   mobileAction.addEventListener("click",()=>{const target=document.querySelector(mobileAction.getAttribute("href"));target.tabIndex=-1;target.focus({preventScroll:true});});
@@ -1062,7 +1078,7 @@
       observationLost("历史版本暂时无法读取，仍显示原版本；没有改写任务或重新提交。");
     }}
   });
-  window.addEventListener("hashchange",applyNavigation);
+  window.addEventListener("hashchange",()=>applyNavigation({focus:true}));
   // Portfolio is owned by existing Console; update choices when its snapshot changes.
   function accountOptions(){
     if(accountsSnapshot===state.snapshot?.snapshot_id)return;

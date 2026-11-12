@@ -46,6 +46,10 @@ async function completed(page, taskId, revision) {
       for (const token of ['REAL_PUBLIC_SEC_METADATA', 'SYNTHETIC', 'SCRIPTED']) assert.ok(banner.includes(token));
       await disclosure.click();
       await page.getByRole('button', {name: '研究这份披露', exact: true}).first().waitFor();
+      // Legacy IVS remains usable after the five-destination shell removed shortcuts.
+      assert.equal(await page.locator('.desk-home-shortcuts a').count(), 0);
+      assert.equal(await page.locator('body').getAttribute('data-console-view'), 'home');
+      assert.equal(await page.locator('#ask-mia').isVisible(), true);
       const firstCard = await page.locator('.ivs-filing').first().boundingBox();
       assert.ok(firstCard && firstCard.y < page.viewportSize().height, 'First SEC card must be inside the initial viewport');
       assert.equal(await page.locator('#today-pulse').isVisible(), false);
@@ -53,7 +57,10 @@ async function completed(page, taskId, revision) {
       await page.screenshot({path: path.join(output, `public-ivs-${width}.png`)});
       await page.getByRole('button', {name: '研究这份披露', exact: true}).first().click();
       await page.getByText('研究范围与深度', {exact: true}).click();
-      await page.getByRole('button', {name: 'Fast · 快速', exact: true}).click();
+      const fastChoice = page.locator('button[data-research-depth="FAST"]');
+      assert.equal(await fastChoice.locator('span').innerText(), 'Fast · 快速');
+      assert.equal(await fastChoice.isEnabled(), true);
+      await fastChoice.click();
       await page.getByRole('button', {name: '开始研究', exact: true}).click();
       const dialog = page.getByRole('dialog');
       assert.ok((await dialog.innerText()).includes('无费用'));
