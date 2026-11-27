@@ -1,9 +1,4 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/convictiondesk-brand-hero-dark.svg">
-    <img src="docs/assets/convictiondesk-brand-hero-light.svg" alt="ConvictionDesk: from holdings to conviction. Your holdings in research order and their evidence pass an evidence cutoff into one case file with a cited judgment, or UNDETERMINED when evidence is thin, plus counterevidence, what would change it and the next check, kept as Fast and Deep revisions, then a What-if on cash, shares and concentration. Original brand illustration, not a screenshot." width="100%">
-  </picture>
-</p>
+# ConvictionDesk
 
 <p align="center">
   <a href="https://github.com/Ernesto12139/ConvictionDesk/releases"><img alt="Latest release" src="https://img.shields.io/github/v/release/Ernesto12139/ConvictionDesk?color=27745F&amp;label=release"></a>
@@ -26,6 +21,14 @@
   <a href="docs/README.md">Docs</a>
 </p>
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cd-case-proof-dark.png">
+    <img src="docs/assets/cd-case-proof-light.png" alt="Browser capture of the Investment Case File for APP in the synthetic growth account: the first Fast round and the same-task Deep round side by side, each with its judgment, key counterevidence and next check, both UNDETERMINED, with links to this revision's evidence and the account What-if." width="100%">
+  </picture>
+</p>
+<p align="center"><sub>Real capture of the public build: one task after Fast, then Deep. Synthetic account, frozen public SEC filings, scripted research; the interface is in Chinese. <a href="release/ASSET_PROVENANCE.md">Asset provenance</a>.</sub></p>
+
 ## What it does
 
 **Find a research starting point.** In the keyless portfolio-priority journey,
@@ -41,24 +44,10 @@ judgment, the strongest counterevidence, what would change it and the next
 check, each linked to its source. Thin evidence stays `UNDETERMINED`; it is
 never turned into a default hold.
 
-Deep's Case File shows eight typed numeric receipts: four reported revenue and
-operating cash flow values, two Decimal changes and two year-over-year
-percentages, with exact periods and accessions. These use frozen, matching
-six-month `PUBLIC_SEC` facts with `SYNTHETIC` accounts and `SCRIPTED` research;
-the keyless journey makes no live data or model calls.
-
 **Understand portfolio consequences.** Preview a hypothetical buy or sell on a
 copy of one account and see cash, shares and concentration before and after.
 Missing prices stay unknown instead of becoming zero. Nothing is ordered and
 your saved holdings do not change.
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cd-case-proof-dark.png">
-    <img src="docs/assets/cd-case-proof-light.png" alt="Browser capture of the Investment Case File for APP in the synthetic growth account: the first Fast round and the same-task Deep round side by side, each with its judgment, key counterevidence and next check, both UNDETERMINED, with links to this revision's evidence and the account What-if." width="100%">
-  </picture>
-</p>
-<p align="center"><sub>Real capture of the public build: one task after Fast, then Deep. Synthetic account, frozen public SEC filings, scripted research; the interface is in Chinese. <a href="release/ASSET_PROVENANCE.md">Asset provenance</a>.</sub></p>
 
 ## Try it in 30 seconds
 
